@@ -1495,3 +1495,115 @@ perfil y no lee ni un byte. Quedan **fuera** a propósito, con su motivo:
 esa clave en el servidor; `conectar` clona una URL que manda quien llama, que
 es la superficie más grande del producto; `ortografia` y `exportar` son
 herramientas del árbol, no del cliente.
+
+## Quinta pasada — recorrer el producto como cliente, con un navegador
+
+Playwright, pantalla por pantalla, parándose en cada acción. Es la primera
+pasada que MIRA en vez de leer, y por eso encontró una clase de defecto que
+ninguna de las cuatro anteriores podía encontrar: cosas que compilan, pasan
+todas las puertas y no funcionan **para una persona**.
+
+### El panel enseñaba cuatro de sus once vistas, y pintaba bien una
+
+- **D-108. Siete vistas de once no se podían pulsar nunca.** `RUTAS` pasó de
+  cuatro a once y las **dos** tablas que deciden qué se ve se quedaron en
+  cuatro. `CATEGORIAS` no listaba las nuevas, así que ninguna categoría las
+  enseñaba; y `pintarBotones` llevaba cuatro pares escritos a mano, así que
+  los otros siete botones conservaban el `disabled` del HTML **para siempre**,
+  en cualquier categoría. El Anexo IV, la declaración de aplicabilidad, el
+  cuestionario, el almacén de evidencia, la revisión por la dirección, la
+  aplicabilidad y el control del artículo 50: justo lo que la portada vende.
+
+  Y el texto de cada categoría ya **prometía** lo que la categoría no daba:
+  «Pyme: lo que te ata, lo que falta por contestar y el expediente» enseñaba el
+  plan y los vencimientos. El reparto nuevo es el que ese texto ya decía.
+
+  La lección estaba aprendida **veinte líneas más abajo**, donde los clics se
+  enganchan recorriendo `Object.keys(RUTAS)` con este comentario: «con nueve
+  vistas, la novena es la que alguien olvida y el botón no hace nada sin que
+  falle nada». Se arregló ahí y se dejó intacto aquí. Es el mismo defecto que
+  tuvo la API una capa más abajo —traducía cinco de diecinueve verbos—
+  reaparecido una capa más arriba: se arregló la API, se amplió `RUTAS`, y el
+  arreglo nunca llegó a la pantalla.
+
+  Nadie lo echó de menos porque **un botón oculto no deja hueco**. La puerta
+  que ya había comprobaba que cada vista tuviera botón y texto, y las once lo
+  tenían: lo que faltaba era que alguien pudiera llegar a pulsarlo. La puerta
+  nueva mira la cadena entera.
+
+- **D-109. `lineasDe` conocía tres formas de documento de las once que el panel
+  pide.** Las demás caían a cero filas y lo único que veía quien las pedía era
+  el volcado de JSON: el cuestionario son **noventa** preguntas y salía como
+  425 KB de JSON; la SoA, treinta y ocho controles; el Anexo IV, veintitrés
+  secciones. Adaptadores para las cuatro, más el control del artículo 50.
+  Ninguno inventa un dato: si un campo no viene, la fila lo deja vacío.
+
+- **D-110. Ganaba la lista vacía.** `Array.isArray([])` es cierto, así que una
+  lista vacía que apareciera antes en la cadena tapaba a una llena de después.
+  La revisión por la dirección decía «ninguna línea encaja con este filtro»
+  teniendo diez entradas, porque su documento trae `no_conformidades` vacío.
+
+- **D-111. El estado vacío te mandaba hacer lo que acababas de hacer.** «Conecta
+  un servidor y pide el plan», también después de conectar. Una pantalla que no
+  se entera de lo que acabas de hacer te dice que no funciona.
+
+- **D-112. «1 líneas»,** en un producto que tiene una puerta para las tildes del
+  castellano.
+
+### La portada era un documento excelente sin una sola forma de actuar
+
+- **D-113. El bloque de código salía como un párrafo corrido.** `.cod` es un
+  `div` con saltos de línea dentro y **sin `white-space:pre`**, y el HTML los
+  colapsa. Las cinco órdenes y sus comentarios salían pegados en una línea
+  ilegible. Es el único elemento de la página que alguien va a **copiar**, y
+  era el que peor estaba. Llevaba así desde siempre.
+
+- **D-114. Ni un enlace externo, ni un botón en las tarjetas, ni un contacto.**
+  Se podía leer entera, admirarla, y no hacer nada. Y el argumento entero del
+  producto es «el motor es el mismo fichero que puedes leer»: no había dónde
+  pulsar para leerlo. Además «Empezar gratis» llevaba a la **tabla de
+  precios** —pulsar «gratis» y aterrizar en los precios es una promesa rota en
+  el primer clic— y el segundo botón del hero llevaba **también** a `#como`.
+
+### La plataforma en seis idiomas, y la trampa que tenía dentro
+
+La portada ya hablaba seis y el panel y la consola dos. Al ponerlos a seis
+apareció lo único interesante de todo esto:
+
+- **D-115. El idioma de la interfaz no es el del contenido, y no puede serlo.**
+  El motor emite en dos idiomas y el catálogo está en dos, porque es contenido
+  normativo y lo escribe una persona. Atar los dos ajustes habría dejado el
+  panel en francés **con el contenido en blanco** —`bil()` devuelve vacío a
+  propósito cuando falta el idioma pedido, y eso es correcto— y la consola en
+  francés escribiendo **`undefined`** en cada título de la tabla, que es peor
+  que vacío: vacío se nota, `undefined` parece un dato. Son dos ajustes, el
+  contenido cae al inglés, y la pantalla lo **dice** en los seis idiomas.
+
+- **D-116. Dos fugas de idioma que se veían a simple vista.**
+  `#servidor-nota` se escribía una sola vez, dentro de `arrancar()`, así que
+  quien cambiaba de idioma se quedaba con ese párrafo en castellano dentro de
+  una pantalla en alemán. Y el vocabulario de roles caía a `es`, así que un
+  alemán veía la interfaz en alemán y los roles en castellano.
+
+- **D-117. La puerta contra D-116 nació muerta.** Se escribió con un heredoc de
+  bash, que convirtió el `\b` de la expresión regular en un **byte de retroceso
+  de verdad**: buscaba un carácter de control y no casaba nunca. Pasó verde con
+  el fallo delante, y sólo se vio al intentar verla FALLAR contra el código
+  roto. Segunda vez que este árbol tropieza con lo mismo, y la razón por la que
+  la regla de la casa es «toda puerta nueva hay que verla fallar antes de
+  creérsela» y no «toda puerta nueva hay que escribirla».
+
+### Lo que esta pasada dice del resto
+
+Ninguna de las cuatro pasadas anteriores podía encontrar esto, y no por falta
+de rigor: **el panel no tiene una sola prueba que ejecute su JavaScript**. Un
+`ReferenceError` que rompía las once vistas —`total is not defined`, y lo
+introduje yo arreglando D-112— pasó la reproducibilidad, la accesibilidad, las
+claves de texto y el contrato de campos sin que ninguna se inmutara. Lo cazó
+el navegador a los treinta segundos.
+
+Las puertas nuevas de esta pasada son estructurales porque es lo que se puede
+leer sin navegador: que toda vista sea alcanzable, que `pintarBotones` recorra
+`RUTAS`, que el texto se escriba al pintar y no al arrancar. Sujetan la causa,
+no el síntoma. Lo que sigue sin sujetarse —y se dice— es el síntoma: nadie
+corre esta página en un navegador salvo a mano.
