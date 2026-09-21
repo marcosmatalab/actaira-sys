@@ -1607,3 +1607,159 @@ leer sin navegador: que toda vista sea alcanzable, que `pintarBotones` recorra
 `RUTAS`, que el texto se escriba al pintar y no al arrancar. Sujetan la causa,
 no el síntoma. Lo que sigue sin sujetarse —y se dice— es el síntoma: nadie
 corre esta página en un navegador salvo a mano.
+
+
+## Sexta pasada — poner el navegador dentro de la puerta
+
+La quinta pasada encontró diez defectos recorriendo el producto a mano y cerró
+diciendo lo que faltaba: *«lo que sigue sin sujetarse es el síntoma: nadie corre
+esta página en un navegador salvo a mano»*. Esta pasada lo sujeta —
+`herramientas/navegador.py` y la fase `navegador`, que abre el panel en
+Chromium, pulsa las once vistas contra la API de verdad y mira lo que sale.
+
+Encontró cinco defectos **la primera vez que corrió**, y el más caro no estaba
+en el producto.
+
+### Lo que la puerta nueva cazó en su primera ejecución
+
+- **D-118. La vista del almacén de evidencia no podía pintar una fila nunca.**
+  La pasada anterior arregló `lineasDe`, que conocía tres formas de documento
+  de once, y dio las once por buenas. Pero las que arregló tenían todas una
+  LISTA que recorrer. El almacén no la tiene: su documento es un **estado** —
+  existe o no, la cadena cuadra o no, cuál es la cabeza, cuántas líneas no se
+  puede demostrar que estén intactas—, así que la cadena de formas acababa
+  devolviendo cero filas y la pantalla dejaba el volcado de JSON como única
+  respuesta.
+
+  Y es la vista que sostiene la única afirmación que este producto hace frente a
+  un tercero: que la evidencia es la que esta casa escribió. Arreglar ocho de
+  once y contar once es la misma aritmética que dejó `CATEGORIAS` con cuatro
+  cuando `RUTAS` tenía once. El navegador la cazó a los treinta segundos.
+
+- **D-119. «Ninguna línea encaja con este filtro», con el filtro en «todas».**
+  Un documento que no trae nada y un filtro que lo esconde todo se decían con la
+  misma frase. El caso normal es vencimientos un día tranquilo: el recuento dice
+  «nada que avisar hoy» y justo debajo salía «ninguna línea encaja con este
+  filtro» sin que nadie hubiera tocado el filtro. Quien lo lee busca el filtro
+  que no puso.
+
+- **D-120. Los botones de categoría no eran direccionables.** Los de idioma y
+  los de tema llevan `data-l` y `data-t`; estos no llevaban nada, así que la
+  única forma de pulsar una categoría desde fuera era contar posiciones. Una
+  prueba que cuenta posiciones se rompe el día que se reordenan, que es el día
+  en que deja de mirar.
+
+### El caro, y no estaba en el producto
+
+- **D-121. El arnés estrangulaba al servidor por su propia bitácora.**
+  Las tres fases que levantan la API lo hacían con `stdout=subprocess.PIPE` y
+  nadie leyendo. El buffer del sistema operativo son unos pocos kilobytes: al
+  llenarse, el servidor **se bloquea escribiendo su siguiente línea de
+  bitácora**. No se muere, no cierra el puerto y no dice nada; simplemente deja
+  de contestar.
+
+  Se vio midiendo latencias: veinticinco llamadas seguidas iban bien y a partir
+  de ahí **todas** se quedaban colgadas, incluidas las baratas que no arrancan
+  ningún proceso. Parecía el limitador de concurrencia —que es lo que uno mira
+  primero, y el código del limitador es correcto— y era el medidor ahogando al
+  medido.
+
+  Es también la causa del rojo intermitente que la fase `api` llevaba dando:
+  `ConnectionResetError` bajo la ráfaga de concurrencia, sin nada roto en el
+  producto. **Un rojo intermitente es peor que un rojo**: el rojo se arregla, y
+  el intermitente se vuelve a correr hasta que sale verde.
+
+  Arreglado en un solo sitio —`arrancar_servidor` y `parar_servidor`— que usan
+  las cuatro fases que levantan un servidor, porque dos definiciones de «cómo se
+  levanta esto» acaban diciendo cosas distintas.
+
+- **D-122. La puerta imprimía una línea por excepción inesperada, sin traza.**
+  Un `AssertionError` de esta casa se explica solo: el mensaje dice qué se
+  esperaba y qué salió. Un `ConnectionResetError` no dice nada sin su traza, y
+  el runner imprimía el tipo y el mensaje y tiraba el resto. El rojo de D-121
+  decía *qué* reventó y no *dónde*, así que no se podía distinguir «el servidor
+  se cayó al arrancar» de «se cayó bajo los topes». Un rojo que no se puede
+  localizar se acaba leyendo como ruido, y un ruido que se ignora es una puerta
+  apagada.
+
+- **D-123. El medidor de latencias contaba como CERO justo lo lento.**
+  `duracion` es una duración de Go, y Go escribe `633ms` por debajo del segundo
+  y `1.815s` por encima. El parseo quitaba `"ms"` y llamaba a `float`, así que
+  toda llamada de más de un segundo salía a 0 ms de motor — y ese cero se
+  restaba del total y aparecía como **transporte**. La primera tabla que salió
+  decía que el motor no tarda nada y que la culpa era de la red, que es
+  exactamente lo contrario de lo que pasa.
+
+### Lo que la medición dijo, ya bien
+
+| | |
+|---|---|
+| cargar el panel | ~200 ms, un fichero, cero peticiones |
+| transporte de un verbo | ~4 ms de mediana |
+| el análisis en sí | 9–28 ms |
+| arrancar el intérprete que lo corre | 440–1 750 ms |
+
+El último renglón es el 97 %, y no es un defecto: es la frontera de la
+arquitectura —un proceso por verbo para que el binario que contesta por HTTP sea
+el mismo que corre quien audita—. Cargar el catálogo entero cuesta 4 ms. No hay
+nada que optimizar en el motor; lo que se optimizaría es el intérprete. Se
+publica en el README con el comando que lo reproduce, porque una cifra de
+rendimiento sin la forma de repetirla es publicidad.
+
+## Cerrado en la sexta pasada, segunda vuelta
+
+- **D-124. El almacen de evidencia del servidor lo leian tres rutas y no lo
+  escribia ninguna.** Se reporto abierto (B-004) porque tenia dos arreglos
+  opuestos: o sobraba la frase del permiso, o faltaba el cableado. Se decidio
+  lo segundo, y la razon es que el almacen del servidor **no tiene otro
+  escritor**: `c.Almacen()` era una ruta que nadie escribia nunca.
+
+  `rbac.go` le pedia a `vigilar` papel de observacion diciendo que «arranca un
+  proceso que lee el repositorio entero **y escribe evidencia en el
+  expediente**». Lo segundo no era verdad: la ruta no pasaba `--registrar`, asi
+  que el motor observaba y tiraba lo observado. A traves de la plataforma el
+  expediente estaba SIEMPRE vacio, y con el la vigilancia, los vencimientos y la
+  revision por la direccion. Tres pantallas correctas encima de un fichero que
+  no existe.
+
+  Arreglado en la ruta que lee el repositorio, y **solo** en esa: la de
+  `vencimientos` invoca el mismo verbo con `--solo-almacen`, no mira el codigo
+  y no tiene nada que observar. Escribir desde ahi seria registrar una
+  observacion que nadie hizo.
+
+  Medido: de `existe: false` a **14 observaciones**, cadena que verifica y
+  cabeza sellada; la segunda llamada registra **0** y revalida **14**, que es lo
+  que debe hacer — la revalidacion mueve el reloj de la frescura sin inflar el
+  fichero. `revision` paso de 0 a 10 entradas y `vencimientos` de 0 a 14
+  veredictos.
+
+  Y de paso se corrigio la frase del permiso, que agrupaba tres verbos
+  diciendo que los tres escriben evidencia: `plan` y `comprobar` no escriben
+  ninguna. Su papel se justifica por la maquina que cuestan, que es cierto. Un
+  comentario que avala un control es peor que ninguno cuando es falso, porque
+  quien lo lee deja de comprobarlo.
+
+- **D-125. Una fila sin estado pintaba una insignia vacia.** La insignia se
+  pintaba siempre, asi que las dos filas que son un recuento a secas en la
+  vista del almacen salian con una pastilla gris vacia al final, que parece un
+  estado que no se pudo leer. Enseñar un hueco donde no hay dato invita a
+  buscarle un significado.
+
+### Lo que la puerta nueva de esta vuelta habria cazado
+
+Ninguna prueba veia D-124 porque **todas eran ciertas por separado**: el verbo
+registra cuando se le pide, la ruta contesta 200, el documento valida contra su
+esquema, el papel es el correcto. Lo que fallaba era el CABLEADO, que es lo
+mismo que le paso al revisor de vencimientos cuando se construia con `nil`.
+
+Por eso la puerta nueva vive en la fase `api`, contra el servidor levantado, y
+afirma el ciclo entero: almacen vacio -> vigilar -> almacen con cadena que
+verifica -> vigilar otra vez -> revalida sin duplicar -> y las dos rutas que
+leen ese almacen ven lo escrito. Se vio fallar quitando el `--registrar`.
+
+Y dos puertas mas de documentacion, que son baratas y cubren el defecto que peor
+envejece: que las imagenes que los documentos ensenan existan, lleven texto
+alternativo y esten todas citadas — con el reves incluido, una captura que ya no
+ensena nadie es un fichero que viaja en cada clon para siempre — y que los
+enlaces internos lleven a algun sitio. La primera version del manual tenia cinco
+capturas huerfanas y la puerta las canto el dia que nacio.

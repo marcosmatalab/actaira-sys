@@ -88,6 +88,32 @@ jobs:
       - name: Instalar el motor y lo que la suite necesita
         run: pip install -e ".[dev]"
 
+      # EL NAVEGADOR, EN LOS DOS SISTEMAS.
+      #
+      # La fase `navegador` es la unica que EJECUTA el JavaScript del panel.
+      # Las demas leen el fichero, y por eso la quinta pasada adversarial
+      # encontro siete vistas que no se podian pulsar despues de cuatro
+      # pasadas que no podian verlas: un boton desactivado no deja hueco, y un
+      # `ReferenceError` que rompe las once vistas no rompe ninguna prueba que
+      # no abra la pagina.
+      #
+      # Se instala aqui y no dentro de la puerta porque descargar un Chromium
+      # a mitad de una fase esconde el tiempo y el fallo de red donde nadie los
+      # mira.
+      #
+      # `--with-deps` SOLO en Linux: instala paquetes del sistema con `apt`, y
+      # en el agente de Windows la bandera no tiene nada que instalar. Dos
+      # pasos y no uno con una bandera condicional porque una bandera que solo
+      # vale en un sistema dentro de una matriz de dos es la forma de que el
+      # otro falle sin que nadie lo haya probado.
+      - name: El navegador con el que se corre el panel (Linux)
+        if: runner.os == 'Linux'
+        run: python -m playwright install --with-deps chromium
+
+      - name: El navegador con el que se corre el panel (Windows)
+        if: runner.os == 'Windows'
+        run: python -m playwright install chromium
+
       # En Linux esta todo: docker para el proveedor de identidad de verdad,
       # node, y los bits de permiso que en Windows no informan. Asi que aqui
       # una fase OMITIDA es un fallo: significa que algo dejo de estar

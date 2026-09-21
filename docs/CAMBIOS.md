@@ -5,6 +5,99 @@ no dice qué rompe obliga a cada cliente a descubrirlo en producción.
 
 ---
 
+## Sin publicar — el navegador dentro de la puerta
+
+No cambia el motor ni el contrato. Cambia lo que se puede ver de la pantalla
+antes de que lo vea un cliente.
+
+### Nuevo
+
+- **Una fase `navegador` en la puerta de aceptación.** Abre el panel en
+  Chromium, pulsa las once vistas contra la API de verdad y afirma que cada una
+  trae documento y lo pinta —o dice por qué no—, que los seis idiomas no
+  escriben `undefined`, y que la consola no suelta ni un error. Es la única
+  fase que **ejecuta** el JavaScript del panel; las demás leen el fichero.
+
+      python herramientas/navegador.py --puerta
+
+  Necesita `playwright` (ya está en el extra `dev`) y un Chromium
+  (`python -m playwright install chromium`). Sin ellos la fase se declara
+  OMITIDA con el motivo. En integración continua se instala explícitamente y se
+  corre con `--sin-omitir`, así que allí una omisión es un rojo.
+
+- **La regla del idioma, afirmada.** La pantalla habla seis idiomas y el motor
+  emite contenido normativo en dos. No son dos ajustes: el del documento se
+  **deriva** del de la pantalla —castellano con la pantalla en castellano,
+  inglés con cualquiera de los otros cinco— y la puerta lo comprueba mirando la
+  cabecera `Accept-Language` que el panel manda de verdad, más que no exista un
+  segundo mando donde elegirlo por separado.
+
+- **Las imágenes del README se generan, no se montan.**
+
+      python herramientas/navegador.py --capturas
+      python herramientas/navegador.py --gif
+
+  Contra la misma pila que la puerta: servidor Go compilado, motor como proceso
+  aparte, repositorio de ejemplo. Y la puerta comprueba que las que el README
+  enseña existen y llevan texto alternativo.
+
+- **Un medidor de latencias** que separa las tres cosas que componen el tiempo
+  de un verbo —el motor, el transporte y la pantalla— porque medirlas juntas
+  hace que se optimice la equivocada.
+
+      python herramientas/navegador.py --latencias
+
+### Arreglado
+
+- **La vista del almacén de evidencia no podía pintar una fila nunca** (D-118).
+  Su documento es un estado y no una lista, así que caía al volcado de JSON.
+  Ahora se pinta como filas: si el fichero existe, si la cadena cuadra, cuál es
+  la cabeza, cuántas observaciones y cuántas líneas sin cadena demostrable. Y si
+  no existe, lo dice con todas las letras en vez de callarse.
+- **«Ninguna línea encaja con este filtro» salía con el filtro en «todas»**
+  (D-119). Ahora un documento vacío y un filtro que lo esconde todo dicen cosas
+  distintas.
+- **El rojo intermitente de la fase `api`** (D-121). No estaba en el producto:
+  las fases que levantan el servidor le daban un `PIPE` que nadie leía, se
+  llenaba el buffer del sistema y el servidor se bloqueaba escribiendo su
+  bitácora. Dejaba de contestar a todo sin morirse. Ahora la bitácora va a un
+  fichero, en un solo sitio que usan las cuatro fases que levantan un servidor.
+- **La puerta imprime la traza de una excepción inesperada** (D-122). Antes, una
+  línea con el tipo y el mensaje: el rojo decía qué reventó y no dónde.
+- **Los botones de categoría del panel llevan `data-c`** (D-120), como los de
+  idioma y los de tema.
+
+- **La plataforma escribe evidencia** (D-124, antes B-004). `POST
+  /v1/clientes/{c}/vigilar` pasa ahora `--registrar`, que es lo que su permiso
+  ya decía que hacía. Antes el almacén del servidor lo leían tres rutas y no lo
+  escribía ninguna, así que a través de la plataforma estaba siempre vacío — y
+  con él la vigilancia, los vencimientos y la revisión por la dirección.
+
+  `GET /v1/clientes/{c}/vencimientos` **no** registra y no debe: invoca el mismo
+  verbo con `--solo-almacen`, no mira el repositorio y no tiene nada que
+  observar.
+
+  Repetir la llamada no infla el almacén: lo que ya estaba y sigue igual se
+  **revalida**, que mueve el reloj de la frescura sin reescribir el registro.
+
+- **Una fila sin estado ya no pinta una insignia vacía** (D-125).
+
+### Nuevo, en la documentación
+
+- **Manual de uso** en los dos idiomas: [`docs/MANUAL.md`](MANUAL.md) y
+  [`docs/MANUAL.en.md`](MANUAL.en.md). Cada comando, cada botón, cada estado,
+  el arranque paso a paso y las preguntas que salen siempre, con capturas
+  generadas contra la pila de verdad.
+- **README en inglés**: `README.en.md`.
+- Dos puertas nuevas sobre los cuatro documentos: que sus imágenes existan,
+  lleven texto alternativo y estén todas citadas —también al revés: una captura
+  que ya no enseña nadie es un fichero que viaja en cada clon— y que sus enlaces
+  internos lleven a algún sitio.
+- `python herramientas/navegador.py --web CARPETA` saca la portada entera en los
+  seis idiomas, fuera del árbol.
+
+---
+
 ## 0.15.0 — 21 de septiembre de 2026
 
 Salida de una auditoría externa que puntuó el producto 4,5 sobre 10 y listó

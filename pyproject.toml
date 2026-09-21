@@ -82,6 +82,15 @@ dev = [
   # no se pueda medir. Es la tercera vez que este extra se queda corto: ver
   # D-93 con `pyyaml`. Ahora la lista es la que la puerta necesita ENTERA.
   "build>=1",
+  # `playwright` lo necesita la fase `navegador`, que es la unica que EJECUTA
+  # el JavaScript del panel. Cuarta vez que este extra se queda corto, y la
+  # unica que se declara el mismo dia que la fase: la anterior -- `build` --
+  # se omitio en silencio hasta que alguien miro el resumen.
+  #
+  # El modulo no trae el navegador: hace falta `python -m playwright install
+  # chromium` una vez. Sin el, la fase se declara OMITIDA con ese motivo en vez
+  # de fingir que midio algo.
+  "playwright>=1.44",
 ]
 
 [project.urls]

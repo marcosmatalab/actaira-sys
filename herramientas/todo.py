@@ -52,6 +52,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import traceback
 import urllib.error
 import urllib.request
 from collections.abc import Callable
@@ -356,6 +357,58 @@ def fase_contrato(reg: list[str]) -> None:
     reg.append(f"contrato verde | {esquemas} esquemas publicados")
 
 
+def arrancar_servidor(comando: list[str], *, cwd: Path, env: dict[str, str],
+                      registro: Path) -> tuple[subprocess.Popen, Callable[[], str]]:
+    """Arranca el servidor con su bitacora en un FICHERO, y devuelve como leerla.
+
+    POR QUE NO UN `PIPE`
+    ----------------------
+    Con `stdout=PIPE` y nadie leyendo, el buffer del sistema operativo se llena
+    -- son unos pocos kilobytes, no un limite configurable -- y el servidor SE
+    BLOQUEA escribiendo su siguiente linea de bitacora. No se muere, no cierra
+    el puerto y no dice nada: simplemente deja de contestar.
+
+    Esto no es teorico. Las tres fases que levantan un servidor lo hacian asi, y
+    la fase `api` salia roja de vez en cuando con `ConnectionResetError` sin que
+    hubiera nada roto en el producto. Se vio al medir latencias: veinticinco
+    llamadas seguidas iban bien y a partir de ahi TODAS se quedaban colgadas,
+    incluidas las que no arrancan ningun proceso. Parecia el limitador de
+    concurrencia -- que es lo que uno mira primero -- y era el arnes
+    estrangulando al servidor por su propia bitacora.
+
+    Un rojo intermitente es peor que un rojo: el rojo se arregla, y el
+    intermitente se vuelve a correr hasta que sale verde.
+
+    Un fichero no se llena, se lee entero cuando algo falla, y de paso queda
+    como prueba de lo que el servidor dijo mientras se le media.
+    """
+    bitacora = open(registro, "w", encoding="utf-8")
+    proceso = subprocess.Popen(comando, cwd=cwd, env=env,
+                               stdout=bitacora, stderr=subprocess.STDOUT, text=True)
+    proceso.bitacora = bitacora                       # type: ignore[attr-defined]
+
+    def dijo(cuanto: int = 1500) -> str:
+        try:
+            bitacora.flush()
+            return registro.read_text(encoding="utf-8", errors="replace")[-cuanto:]
+        except OSError:
+            return "(sin bitacora)"
+
+    return proceso, dijo
+
+
+def parar_servidor(proceso: subprocess.Popen) -> None:
+    """Lo para, y cierra su bitacora. Nunca revienta: se llama desde un `finally`."""
+    proceso.terminate()
+    try:
+        proceso.wait(timeout=10)
+    except subprocess.TimeoutExpired:
+        proceso.kill()
+    bitacora = getattr(proceso, "bitacora", None)
+    if bitacora is not None:
+        bitacora.close()
+
+
 def lanzador_del_motor(carpeta: Path) -> Path:
     """Escribe un ejecutable `actaira` que reenvia al CLI de este arbol.
 
@@ -521,20 +574,19 @@ def fase_api(reg: list[str]) -> None:
             # Aqui el fichero acaba de crearse en un temporal del proceso, asi
             # que la afirmacion es cierta y se hace explicita.
             env["ACTAIRA_PERMISOS_AFIRMADOS_POR_EL_OPERADOR"] = "1"
-        proceso = subprocess.Popen(
+        proceso, dijo = arrancar_servidor(
             [str(binario), "--clientes", str(t / "clientes"), "--credenciales", str(cred),
              "--motor", str(motor_exe), "--escucha", f"127.0.0.1:{puerto}",
              # La vigilancia, arrancada de verdad y con un intervalo corto para
              # que de mas de una pasada mientras dura esta fase.
              "--revisar-cada", "2s", "--bitacora", str(t / "vigilancia.jsonl")],
-            cwd=RAIZ / "plataforma", env=env,
-            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+            cwd=RAIZ / "plataforma", env=env, registro=t / "servidor.log")
         try:
             salud = None
             for _ in range(60):
                 if proceso.poll() is not None:
                     raise AssertionError(
-                        f"el servidor murio al arrancar:\n{proceso.stdout.read()[-1500:]}")
+                        f"el servidor murio al arrancar:\n{dijo()}")
                 try:
                     with urllib.request.urlopen(base + "/salud", timeout=1) as resp:
                         salud = resp.read().decode("utf-8")
@@ -639,6 +691,84 @@ def fase_api(reg: list[str]) -> None:
             _afirma(vig2["pasadas"] >= 2,
                     f"/salud dice {vig2['pasadas']} pasadas y la bitacora {pasadas}")
 
+            # EL ALMACEN DE EVIDENCIA SE ESCRIBE DESDE LA PLATAFORMA.
+            #
+            # Lo leen TRES rutas -- `almacen`, `vencimientos` y `revision` -- y
+            # durante un tiempo no lo escribio ninguna: la ruta de `vigilar` no
+            # pasaba `--registrar`, asi que el motor observaba y tiraba lo
+            # observado. A traves de la plataforma el expediente estaba SIEMPRE
+            # vacio, y con el la vigilancia, los vencimientos y la revision por
+            # la direccion. Tres pantallas correctas encima de un fichero que no
+            # existe (B-004).
+            #
+            # Ninguna prueba lo veia porque todas eran ciertas por separado: el
+            # verbo registra cuando se le pide, la ruta contesta 200, el
+            # documento valida contra su esquema. Lo que fallaba era el CABLEADO,
+            # que es lo mismo que le paso al revisor de vencimientos cuando se
+            # construia con `nil`. Por eso se comprueba aqui, contra el servidor
+            # levantado, y no en unidad.
+            def _almacen():
+                pet = urllib.request.Request(
+                    base + "/v1/clientes/acme/almacen",
+                    headers={"Authorization": f"Bearer {token}"})
+                with urllib.request.urlopen(pet, timeout=60) as resp:
+                    return json.loads(resp.read().decode("utf-8"))["documento"]
+
+            def _vigilar():
+                pet = urllib.request.Request(
+                    base + "/v1/clientes/acme/vigilar", data=cuerpo,
+                    headers={"Content-Type": "application/json",
+                             "Authorization": f"Bearer {token}"})
+                with urllib.request.urlopen(pet, timeout=180) as resp:
+                    return json.loads(resp.read().decode("utf-8"))["documento"]
+
+            antes = _almacen()
+            _afirma(antes["existe"] is False and antes["observaciones"] == 0,
+                    f"el cliente de esta fase arranca con almacen: {antes['ruta']}")
+
+            uno = _vigilar()
+            despues = _almacen()
+            _afirma(despues["existe"] and despues["observaciones"] > 0,
+                    f"se vigilo y el almacen sigue vacio: la plataforma no escribe "
+                    f"evidencia, asi que `vencimientos` y `revision` leen de un "
+                    f"fichero que no existe. Vigilancia dijo {uno.get('registradas')} "
+                    f"registradas y el almacen {despues}")
+            _afirma(despues["verifica"] and not despues["roturas"],
+                    f"la plataforma escribio una cadena que no verifica: {despues}")
+            _afirma(uno["registradas"] == despues["observaciones"],
+                    f"vigilancia dice {uno['registradas']} registradas y el almacen "
+                    f"tiene {despues['observaciones']} observaciones")
+
+            # Y que la SEGUNDA pasada revalide en vez de duplicar. Sin esto, el
+            # tamano del almacen mide la frecuencia con la que alguien pulsa el
+            # boton en vez de la actividad del cliente, y la frescura se
+            # quedaria quieta aunque se este mirando cada dia.
+            dos = _vigilar()
+            otra_vez = _almacen()
+            _afirma(dos["registradas"] == 0 and dos["revalidadas"] > 0,
+                    f"la segunda pasada volvio a registrar en vez de revalidar: {dos}")
+            _afirma(otra_vez["observaciones"] == despues["observaciones"],
+                    f"el almacen crecio al repetir la misma observacion: "
+                    f"{despues['observaciones']} -> {otra_vez['observaciones']}")
+
+            # Y que las dos rutas que LEEN ese almacen vean lo escrito. Es la
+            # mitad que de verdad importa: lo otro es un fichero con lineas.
+            for ruta, cuantos in (("vencimientos", "veredictos"), ("revision", "entradas")):
+                pet = urllib.request.Request(
+                    base + f"/v1/clientes/acme/{ruta}",
+                    headers={"Authorization": f"Bearer {token}"})
+                with urllib.request.urlopen(pet, timeout=60) as resp:
+                    doc = json.loads(resp.read().decode("utf-8"))["documento"]
+                _afirma(len(doc.get(cuantos) or []) > 0,
+                        f"`{ruta}` no ve la evidencia que `vigilar` acaba de escribir: "
+                        f"{cuantos} vacio con {otra_vez['observaciones']} observaciones "
+                        f"en el almacen")
+
+            reg.append(f"evidencia: la plataforma escribe -- {uno['registradas']} "
+                       f"observaciones, cadena que verifica, cabeza "
+                       f"{str(despues['cabeza'])[:19]}... -- y al repetir revalida "
+                       f"{dos['revalidadas']} sin duplicar ninguna")
+
             reg.append(f"API: /salud responde, sin credencial {codigo}, "
                        f"con credencial esquema {d['documento']['esquema']}")
             reg.append(f"vigilancia: activa, {vig2['pasadas']} pasadas sin que nadie "
@@ -699,11 +829,7 @@ def fase_api(reg: list[str]) -> None:
                        f"los dos no_ata={ata_dos['no_ata']}, "
                        f"nombre equivocado -> {estado_malo}")
         finally:
-            proceso.terminate()
-            try:
-                proceso.wait(timeout=10)
-            except subprocess.TimeoutExpired:
-                proceso.kill()
+            parar_servidor(proceso)
 
 
 def fase_paquete(reg: list[str]) -> None:
@@ -772,6 +898,14 @@ def fase_paquete(reg: list[str]) -> None:
 # exacta en vez de aproximada.
 DONDE_SE_INSTRUYE_INSTALAR = (
     "README.md",
+    # El README en ingles y el manual en los dos idiomas mandan instalar
+    # tambien, y son ahora los documentos por los que alguien entra. Se anaden
+    # el mismo dia que nacen: la unica forma de que esta lista se quede corta
+    # es que un documento nuevo diga `pip install actaira-motor` y nadie lo
+    # comprobara, que es exactamente el fallo que esta fase existe para cazar.
+    "README.en.md",
+    "docs/MANUAL.md",
+    "docs/MANUAL.en.md",
     "integraciones/README.md",
     "integraciones/github/actaira.yml",
     "docs/ARQUITECTURA.md",
@@ -861,6 +995,93 @@ def fase_documentacion(reg: list[str]) -> None:
     reg.append(f"version {__version__} en el paquete, en la plantilla y en el registro "
                f"de cambios")
 
+    # LAS IMAGENES QUE EL README ENSENA, QUE EXISTAN.
+    #
+    # Es el documento que mas gente lee y el unico que ensena la pantalla. Una
+    # imagen rota no rompe nada, no falla ninguna prueba y se ve desde el
+    # primer segundo: es la forma mas barata que tiene este repositorio de
+    # parecer abandonado. Y el que las genera -- `herramientas/navegador.py
+    # --capturas` -- puede renombrar una salida sin que nadie se entere.
+    import re as _re2
+
+    # Los documentos que ENSENAN la pantalla, y la carpeta desde la que cada uno
+    # la referencia. El README esta en la raiz y el manual en `docs/`, asi que la
+    # misma imagen se escribe de dos formas distintas.
+    CON_IMAGENES = {
+        "README.md": "docs/imagenes/",
+        "README.en.md": "docs/imagenes/",
+        "docs/MANUAL.md": "imagenes/",
+        "docs/MANUAL.en.md": "imagenes/",
+    }
+    todas, faltan, sin_alt = set(), [], []
+    for rel, prefijo in CON_IMAGENES.items():
+        fichero = RAIZ / rel
+        _afirma(fichero.is_file(), f"{rel} no existe y esta en la lista")
+        texto = fichero.read_text(encoding="utf-8")
+        # Las dos formas de poner una imagen: Markdown y `<img>`. Mirar solo una
+        # dejaria la mitad del manual sin comprobar.
+        citadas = set(_re2.findall(rf'src="({prefijo}[^"]+)"', texto))
+        citadas |= set(_re2.findall(rf'!\[[^\]]*\]\(({prefijo}[^)]+)\)', texto))
+        _afirma(citadas, f"{rel} no ensena ni una imagen de la pantalla")
+        base = fichero.parent
+        for x in sorted(citadas):
+            ruta = (base / x).resolve()
+            todas.add(ruta)
+            if not ruta.is_file():
+                faltan.append(f"{rel} -> {x}")
+        # Y que ninguna se quede sin texto alternativo. Es lo primero que lee
+        # alguien con un lector de pantalla, y este producto tiene una fase
+        # entera dedicada a la accesibilidad de sus otras dos paginas.
+        sin_alt += [f"{rel}: {x[:70]}" for x in _re2.findall(r'<img [^>]*>', texto)
+                    if 'alt="' not in x or 'alt=""' in x]
+        sin_alt += [f"{rel}: ![]({x})" for x in _re2.findall(r'!\[\]\(([^)]+)\)', texto)]
+
+    _afirma(not faltan,
+            f"hay documentos que ensenan imagenes que no existen: {faltan}. "
+            f"Se regeneran con `python herramientas/navegador.py --capturas` y "
+            f"`--gif`")
+    _afirma(not sin_alt, f"hay imagenes sin texto alternativo: {sin_alt}")
+
+    # Y al reves: una captura que ya no ensena nadie. No es un fallo del
+    # producto, pero son megabytes que viajan en cada clon para siempre, y el
+    # generador que las hace puede renombrar una salida sin que nadie note que
+    # la vieja se queda.
+    carpeta = RAIZ / "docs" / "imagenes"
+    huerfanas = sorted(x.name for x in carpeta.glob("*")
+                       if x.resolve() not in todas)
+    _afirma(not huerfanas,
+            f"hay imagenes en docs/imagenes/ que no ensena ningun documento: "
+            f"{huerfanas}. O se citan, o se borran")
+
+    peso = sum(x.stat().st_size for x in todas) / 1e6
+    reg.append(f"las {len(todas)} imagenes de los {len(CON_IMAGENES)} documentos "
+               f"existen, todas con texto alternativo y todas citadas, "
+               f"{peso:.1f} MB en total")
+
+    # Y QUE LOS ENLACES LLEVEN A ALGUN SITIO.
+    #
+    # Estos cuatro documentos se enlazan entre si, mandan a la plantilla de
+    # integracion continua, a la licencia y al registro de cambios. Un enlace
+    # roto en el documento que alguien lee primero no rompe nada y se ve desde
+    # el primer segundo, que es la peor combinacion posible: nadie se entera
+    # hasta que lo pulsa un cliente.
+    #
+    # NO se comprueban los `http`: una puerta que pregunta a la red se pone
+    # roja el dia que la red este mal y se aprende a ignorar. Aqui se comprueba
+    # lo que este arbol controla, que es lo que este arbol puede romper.
+    enlaces, rotos = 0, []
+    for rel in CON_IMAGENES:
+        fichero = RAIZ / rel
+        texto = fichero.read_text(encoding="utf-8")
+        for destino in _re2.findall(r"\]\(([^)#][^)]*)\)", texto):
+            if destino.startswith(("http://", "https://", "mailto:")):
+                continue
+            enlaces += 1
+            if not (fichero.parent / destino.split("#")[0]).exists():
+                rotos.append(f"{rel} -> {destino}")
+    _afirma(not rotos, f"hay enlaces que no llevan a ningun sitio: {rotos}")
+    reg.append(f"los {enlaces} enlaces internos de esos documentos existen")
+
 
 def fase_identidad(reg: list[str]) -> None:
     """OIDC y papeles, contra el servidor LEVANTADO.
@@ -934,19 +1155,18 @@ def fase_identidad(reg: list[str]) -> None:
         env = dict(os.environ)
         if os.name == "nt":
             env["ACTAIRA_PERMISOS_AFIRMADOS_POR_EL_OPERADOR"] = "1"
-        proceso = subprocess.Popen(
+        proceso, dijo = arrancar_servidor(
             [str(binario), "--clientes", str(t / "clientes"),
              "--credenciales", str(cred), "--emisor", str(emisor),
              "--motor", str(exe), "--escucha", f"127.0.0.1:{puerto}",
              "--revisar-cada", "0"],
-            cwd=RAIZ / "plataforma", env=env,
-            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+            cwd=RAIZ / "plataforma", env=env, registro=t / "servidor.log")
         try:
             vivo = False
             for _ in range(60):
                 if proceso.poll() is not None:
                     raise AssertionError(
-                        f"el servidor murio: {proceso.stdout.read()[-1200:]}")
+                        f"el servidor murio: {dijo(1200)}")
                 try:
                     urllib.request.urlopen(base + "/salud", timeout=1).read()
                     vivo = True
@@ -1023,11 +1243,7 @@ def fase_identidad(reg: list[str]) -> None:
             reg.append("  (el emisor es un doble local; contra uno de verdad "
                        "lo prueba la fase `identidad_real`)")
         finally:
-            proceso.terminate()
-            try:
-                proceso.wait(timeout=10)
-            except subprocess.TimeoutExpired:
-                proceso.kill()
+            parar_servidor(proceso)
 
 def fase_identidad_real(reg: list[str]) -> None:
     """Lo mismo que `identidad`, pero contra un proveedor que no escribimos.
@@ -1119,20 +1335,18 @@ def fase_identidad_real(reg: list[str]) -> None:
             env = dict(os.environ)
             if os.name == "nt":
                 env["ACTAIRA_PERMISOS_AFIRMADOS_POR_EL_OPERADOR"] = "1"
-            proceso = subprocess.Popen(
+            proceso, dijo = arrancar_servidor(
                 [str(binario), "--clientes", str(t / "clientes"),
                  "--credenciales", str(cred), "--emisor", str(emisor),
                  "--motor", str(exe), "--escucha", f"127.0.0.1:{puerto}",
                  "--revisar-cada", "0"],
-                cwd=RAIZ / "plataforma", env=env,
-                stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
-                encoding="utf-8", errors="replace")
+                cwd=RAIZ / "plataforma", env=env, registro=t / "servidor.log")
             try:
                 vivo = False
                 for _ in range(60):
                     if proceso.poll() is not None:
                         raise AssertionError(
-                            f"el servidor murio: {proceso.stdout.read()[-1200:]}")
+                            f"el servidor murio: {dijo(1200)}")
                     try:
                         urllib.request.urlopen(base + "/salud", timeout=1).read()
                         vivo = True
@@ -1198,11 +1412,7 @@ def fase_identidad_real(reg: list[str]) -> None:
                 reg.append("  (Entra ID sigue sin probarse: `iss` con inquilino, "
                            "`oid` en vez de `sub`, roles en `wids`)")
             finally:
-                proceso.terminate()
-                try:
-                    proceso.wait(timeout=10)
-                except subprocess.TimeoutExpired:
-                    proceso.kill()
+                parar_servidor(proceso)
     finally:
         if lo_arranque_yo:
             idp.parar()
@@ -1361,6 +1571,23 @@ def fase_matriz(reg: list[str]) -> None:
                "sistema --, no la suite entera)")
 
 
+
+def fase_navegador(reg: list[str]) -> None:
+    """El panel abierto en un navegador de verdad: las once vistas, pulsadas.
+
+    Vive en `herramientas/navegador.py` porque necesita Playwright y un
+    Chromium, y esta fase es la unica de la puerta que depende de algo que hay
+    que descargar. Si no esta, se declara OMITIDA con el motivo -- y en la
+    integracion continua, donde se corre con `--sin-omitir`, una omision es un
+    rojo, que es exactamente lo que se quiere: el dia que Chromium deje de
+    instalarse, el sintoma no puede volver a quedarse sin puerta en silencio.
+
+    Es la unica fase que ejecuta el JavaScript del panel. Las demas leen el
+    fichero; esta lo corre.
+    """
+    import navegador
+    navegador.puerta(reg)
+
 FASES: dict[str, Callable[[list[str]], None]] = {
     "catalogo": fase_catalogo,
     "consola": fase_consola,
@@ -1385,6 +1612,7 @@ FASES: dict[str, Callable[[list[str]], None]] = {
     "matriz": fase_matriz,
     "instalacion": fase_instalacion,
     "documentacion": fase_documentacion,
+    "navegador": fase_navegador,
 }
 
 
@@ -1406,6 +1634,22 @@ def correr(nombres: list[str], sin_omitir: bool = False) -> int:
             for linea in lineas:
                 print(f"  {linea}", flush=True)
             print(f"  FALLO: {detalle}", flush=True)
+            # LA TRAZA DE LO INESPERADO, ENTERA.
+            #
+            # Un `AssertionError` de esta casa se explica solo: el mensaje dice
+            # que se esperaba y que salio. Una excepcion que no escribio nadie
+            # -- un `ConnectionResetError`, un `KeyError` -- no dice nada sin su
+            # traza, y aqui se imprimia UNA linea con el tipo y el mensaje.
+            #
+            # Eso paso de verdad: la fase `api` salio roja con
+            # `ConnectionResetError` y el rojo no decia en que peticion, asi
+            # que no se podia distinguir «el servidor se cayo al arrancar» de
+            # «se cayo bajo los topes de concurrencia». Un rojo que no se puede
+            # localizar se acaba leyendo como ruido, y un ruido que se ignora
+            # es una puerta apagada.
+            if not isinstance(e, AssertionError):
+                print("".join(f"  {x}" for x in
+                              traceback.format_exception(e)), end="", flush=True)
             continue
         for linea in lineas:
             print(f"  {linea}", flush=True)
