@@ -58,12 +58,19 @@ var PERMISOS = map[string]string{
 	// No lee ni un byte del repositorio: la aplicabilidad sale del perfil.
 	"aplicabilidad": PapelLectura,
 
-	// Mirar de nuevo. Arranca un proceso que lee el repositorio entero y
-	// escribe evidencia en el expediente.
-	"plan":    PapelObservacion,
-	"vigilar": PapelObservacion,
-	// Arranca el control sobre el repositorio entero del cliente.
+	// Mirar de nuevo. Arrancan un proceso que lee el repositorio ENTERO del
+	// cliente, que es lo que cuesta maquina.
+	//
+	// De los tres, solo `vigilar` ESCRIBE evidencia en el expediente. Esta
+	// frase los agrupaba diciendo que lo hacian los tres, y durante un tiempo
+	// no lo hacia ninguno: la ruta de `vigilar` no pasaba `--registrar`, asi
+	// que el permiso se justificaba con un comportamiento que no ocurria. Un
+	// comentario que avala un control es peor que ninguno cuando es falso,
+	// porque quien lo lee deja de comprobarlo.
+	"plan":      PapelObservacion,
 	"comprobar": PapelObservacion,
+	// Este ademas anade al almacen lo observado, o revalida lo que ya estaba.
+	"vigilar": PapelObservacion,
 
 	// Mover trabajo y recibir eventos de fuera.
 	"empujon":  PapelRemediacion,

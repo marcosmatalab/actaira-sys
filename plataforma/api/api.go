@@ -742,7 +742,34 @@ func (s *Servidor) vigilar(w http.ResponseWriter, r *http.Request, c *cliente.Cl
 	if p.Fecha != "" {
 		args = append(args, "--ahora", p.Fecha+"T00:00:00+00:00")
 	}
-	args = append(args, "--almacen", c.Almacen(), "--idioma", idiomaDe(r))
+	// `--registrar`, Y ESTA ES LA RUTA QUE TIENE QUE LLEVARLO.
+	//
+	// Sin el, el motor OBSERVA y tira lo observado. El almacen de este cliente
+	// lo leen tres rutas -- `almacen`, `vencimientos` y `revision` -- y no lo
+	// escribia ninguna, asi que a traves de la plataforma estaba SIEMPRE
+	// vacio: la vigilancia no tenia nada que reconciliar, los vencimientos
+	// nada que vencer y la revision por la direccion nada en que apoyarse. Tres
+	// pantallas correctas encima de un fichero que no existe.
+	//
+	// El permiso ya decia lo que este verbo hace: `rbac.go` le pide papel de
+	// observacion porque «arranca un proceso que lee el repositorio entero y
+	// escribe evidencia en el expediente». Lo segundo no era verdad. Se elige
+	// hacerlo verdad y no borrar la frase, porque el almacen del servidor no
+	// tiene otro escritor: sin esto, `c.Almacen()` es una ruta que nadie
+	// escribe nunca.
+	//
+	// Registrar en CADA llamada no infla nada: `Almacen.anadir` compara por
+	// (control, digest del sujeto, contenido) y lo que ya estaba escribe una
+	// linea de REVALIDACION, que es un identificador y una fecha. Y eso es lo
+	// que se quiere, porque una revalidacion mueve el reloj de la frescura:
+	// alguien volvio a mirar de verdad.
+	//
+	// La otra ruta que invoca este verbo -- `vencimientos`, con
+	// `--solo-almacen` -- NO lo lleva y no debe llevarlo: no mira el
+	// repositorio, asi que no tiene nada que observar. Escribir desde ahi seria
+	// registrar una observacion que nadie hizo.
+	args = append(args, "--almacen", c.Almacen(), "--registrar",
+		"--idioma", idiomaDe(r))
 	s.correr(w, r, c, "vigilar", c.Trabajo(), args...)
 }
 
@@ -776,8 +803,14 @@ func quitar(args []string, bandera string) []string {
 // entrada por cada verbo de `VERBOS`: olvidarse de declarar pasa a ser el fallo,
 // en vez de la forma de saltarse la comprobacion.
 var BANDERAS = map[string][]string{
-	"plan":          {"--idioma", "--json", "--fecha", "--rol", "--alto-riesgo", "--via-anexo"},
-	"vigilar":       {"--idioma", "--json", "--almacen", "--ahora", "--rol", "--alto-riesgo", "--via-anexo"},
+	"plan": {"--idioma", "--json", "--fecha", "--rol", "--alto-riesgo", "--via-anexo"},
+	"vigilar": {"--idioma", "--json", "--almacen", "--ahora", "--rol", "--alto-riesgo",
+		"--via-anexo",
+		// La escribe el servidor, no quien llama: `leerPerfil` solo produce
+		// banderas de perfil, y esta se anade en el manejador. Esta aqui
+		// porque esta tabla es una lista BLANCA y lo que no declare se
+		// rechaza en el borde.
+		"--registrar"},
 	"noconformidad": {"--idioma", "--json", "--almacen"},
 	"empujon":       {"--idioma", "--json", "--almacen"},
 	// `almacen` NO lleva `--idioma`: su veredicto no tiene prosa traducible
