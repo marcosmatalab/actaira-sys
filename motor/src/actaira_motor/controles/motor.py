@@ -308,6 +308,39 @@ class Arbol:
     @staticmethod
     def leer(raiz: str | Path) -> "Arbol":
         raiz = Path(raiz)
+        # UNA RUTA QUE NO ESTA NO ES UN REPOSITORIO VACIO.
+        #
+        # `rglob` sobre una ruta que no existe no falla: devuelve cero
+        # entradas. Asi que un arbol inexistente se leia como un arbol vacio, y
+        # de ahi salia el peor documento que este producto puede emitir:
+        #
+        #   actaira comprobar /ruta/mal-escrita   ->   exit 0
+        #   {"resultado": "no_aplica", "inspeccionado": [],
+        #    "motivo_indeterminado": null}
+        #
+        # Es decir, una afirmacion de que el articulo 50 NO TE ATA, sin haber
+        # mirado nada, con el codigo de salida que significa «se miro y no
+        # aparecio nada». Y `sellar` la convertia en evidencia con su raiz
+        # Merkle, lista para un auditor.
+        #
+        # Es la tercera negativa de la casa al reves: «nunca inferir lo no
+        # observado». Y es «tres estados, nunca dos» otra vez -- «mire y no hay
+        # puntos de generacion» y «no pude mirar» tienen que ser respuestas
+        # distintas, porque significan cosas distintas.
+        #
+        # El motor generico SI sujetaba la invariante, pero desde el otro lado:
+        # `Ejecucion.__post_init__` revienta si una ejecucion COMPLETADA no
+        # leyo ni un fichero. Eso dejaba a `plan` y a `vigilar` soltando un
+        # `ValueError` crudo con codigo 1, y al control del articulo 50 --que
+        # sale por NO_APLICABLE, no por COMPLETADA-- sin sujetar en absoluto.
+        # Se sujeta aqui porque aqui es donde se entra a mirar, y asi vale para
+        # todos los verbos que leen un arbol.
+        if not raiz.is_dir():
+            que = "no existe" if not raiz.exists() else "no es un directorio"
+            raise FileNotFoundError(
+                f"{raiz}: {que}. No se puede observar lo que no se puede abrir, "
+                f"y un arbol que no se pudo leer NO es un arbol vacio: decir "
+                f"«no aplica» sobre el habria sido inventar el resultado.")
         raiz_real = raiz.resolve()
         a = Arbol(raiz)
         for p in sorted(raiz.rglob("*")):

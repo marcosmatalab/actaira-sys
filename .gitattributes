@@ -1,0 +1,21 @@
+# EL ARBOL ES LF, TAMBIEN CUANDO GIT LO SACA EN WINDOWS
+#
+# Este repositorio es todo LF y hay una prueba permanente que lo sujeta
+# (`test_ningun_fichero_de_texto_del_arbol_lleva_finales_de_linea_de_windows`).
+# Lo que esa prueba NO podia ver es que `git` en un Windows con `core.autocrlf`
+# activado -- que es el valor por defecto del agente de integracion continua --
+# convierte al SACAR el arbol, despues de que la prueba se escribiera. El
+# resultado fue que `gofmt` puso en rojo los veintitantos ficheros de Go del
+# agente de Windows, y solo alli.
+#
+# Con esto el final de linea deja de depender de la configuracion de quien
+# clona, que es lo unico que hace falta para que la prueba y la realidad digan
+# lo mismo en los dos sistemas.
+* text=auto eol=lf
+
+# Binarios: que nadie les toque un byte.
+*.png binary
+*.jpg binary
+*.ico binary
+*.pdf binary
+*.whl binary

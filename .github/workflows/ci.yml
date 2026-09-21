@@ -56,8 +56,13 @@ jobs:
         # Los dos sistemas donde este producto corre de verdad, y las dos
         # versiones de Python que `pyproject.toml` declara soportar: la minima
         # y la ultima. Probar solo la ultima deja sin cubrir lo que se promete.
+        #
+        # La minima era 3.11 hasta que esta misma matriz enseno, el primer dia
+        # que corrio, que el corrector de ortografia no ve dentro de las
+        # f-strings antes de PEP 701. Se subio a 3.12 y se escribio el porque
+        # en `pyproject.toml`, en vez de quitar la version de aqui.
         sistema: [ubuntu-latest, windows-latest]
-        python: ["3.11", "3.13"]
+        python: ["3.12", "3.13"]
 
     steps:
       - uses: actions/checkout@v5

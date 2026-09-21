@@ -1231,6 +1231,19 @@ def fase_matriz(reg: list[str]) -> None:
     if not shutil.which("wsl.exe"):
         raise Omitida("no hay WSL para correr el otro lado; la matriz entera es "
                       "trabajo de la integracion continua")
+    # QUE `wsl.exe` EXISTA NO ES QUE HAYA UN LINUX DETRAS.
+    #
+    # El agente de Windows de la integracion continua trae el ejecutable y CERO
+    # distribuciones, asi que cualquier orden devuelve el texto de ayuda de
+    # `wsl --install`. La primera version de esta fase lo tomaba por la salida
+    # de pytest y se ponia ROJA por no reconocerla, que es poner en rojo el
+    # producto por como esta montado el agente.
+    sonda = subprocess.run(["wsl.exe", "-e", "true"], capture_output=True,
+                           text=True, encoding="utf-8", errors="replace",
+                           timeout=120)
+    if sonda.returncode != 0:
+        raise Omitida("hay `wsl.exe` pero ninguna distribucion instalada detras; "
+                      "la matriz entera es trabajo de la integracion continua")
 
     ruta = str(RAIZ).replace("\\", "/")
     unidad, resto = ruta[0].lower(), ruta[2:]

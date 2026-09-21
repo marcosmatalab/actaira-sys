@@ -1686,6 +1686,24 @@ def main(argv: list[str] | None = None) -> int:
         # visto un traceback de un producto de cumplimiento.
         os.dup2(os.open(os.devnull, os.O_WRONLY), sys.stdout.fileno())
         return 0
+    except OSError as e:
+        # UN FICHERO QUE NO ESTA NO ES UN HALLAZGO.
+        #
+        # `verificar`, `contestar` y `empujon` reciben una ruta y la abren. Si
+        # no existe, Python lanzaba un `FileNotFoundError` que nadie capturaba,
+        # el cliente veia una traza cruda y el proceso salia con 1 -- que
+        # arriba esta escrito que significa «aparecio algo».
+        #
+        # Es la misma forma del defecto que ya se arreglo con la salida en una
+        # consola que no es UTF-8: una excepcion sin capturar se disfraza de
+        # veredicto legitimo, y una integracion continua con la puerta
+        # encendida para un despliegue citando hallazgos que no existen.
+        #
+        # Va DESPUES de `BrokenPipeError` a proposito, que es una subclase de
+        # `OSError`: al reves, la tuberia cerrada de `| head` entraria por aqui
+        # y saldria 4 en vez de 0.
+        print(f"NO SE PUDO LEER LO QUE SE PIDIO MIRAR\n  {e}", file=sys.stderr)
+        return SALIDA_ERROR
 
 
 if __name__ == "__main__":

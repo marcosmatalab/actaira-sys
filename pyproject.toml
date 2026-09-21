@@ -14,7 +14,18 @@ name = "actaira-motor"
 dynamic = ["version"]
 description = "El Reglamento (UE) 2024/1689 y la ISO/IEC 42001 comprobados leyendo tu repositorio, con procedencia por afirmación."
 readme = "README.md"
-requires-python = ">=3.11"
+# POR QUE 3.12 Y NO 3.11
+#
+# `actaira ortografia --arreglar` corrige tambien la prosa que vive DENTRO de
+# las llaves de una f-string. Para eso hace falta que el tokenizador vea ahi
+# dentro, y eso es PEP 701, que llego en Python 3.12: en 3.11 la f-string
+# entera es un unico componente y el corrector pasa de largo sin decir nada.
+#
+# Esto lo encontro la matriz de integracion continua el primer dia que corrio,
+# y no se podia ver antes porque aqui se desarrolla en 3.13. Declarar 3.11 era
+# prometer un verbo que alli no hace su trabajo, y callarlo es peor que no
+# tenerlo: el corrector no fallaba, devolvia el texto sin corregir.
+requires-python = ">=3.12"
 license = "Apache-2.0"
 license-files = ["LICENSE", "NOTICE"]
 authors = [{ name = "Marcos Mata García" }]
@@ -23,8 +34,8 @@ classifiers = [
   "Development Status :: 4 - Beta",
   "Intended Audience :: Developers",
   "Intended Audience :: Legal Industry",
-  "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Topic :: Software Development :: Quality Assurance",
   "Natural Language :: Spanish",
   "Natural Language :: English",
@@ -64,6 +75,13 @@ dev = [
   # estaba aqui: la prueba salia verde solo si el interprete traia PyYAML por
   # otra via, que es el mismo defecto que este bloque documenta mas arriba.
   "pyyaml>=6",
+  # `build` lo necesita la fase `paquete` para construir la rueda y probar que
+  # instala en un entorno virgen. No estaba declarado, asi que esa fase se
+  # OMITIA en cualquier maquina que no lo trajera puesto -- incluida la de
+  # integracion continua, donde una omision significa que algo falta, no que
+  # no se pueda medir. Es la tercera vez que este extra se queda corto: ver
+  # D-93 con `pyyaml`. Ahora la lista es la que la puerta necesita ENTERA.
+  "build>=1",
 ]
 
 [project.urls]
