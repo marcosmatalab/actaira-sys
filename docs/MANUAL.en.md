@@ -16,16 +16,17 @@ minutes](#start-in-five-minutes).
 
 1. [What Actaira is, in one paragraph](#what-actaira-is-in-one-paragraph)
 2. [Start in five minutes](#start-in-five-minutes)
-3. [The commands](#the-commands)
-4. [Exit codes](#exit-codes)
-5. [Running the platform](#running-the-platform)
-6. [The panel, piece by piece](#the-panel-piece-by-piece)
-7. [The eleven views, one by one](#the-eleven-views-one-by-one)
-8. [How to read a row](#how-to-read-a-row)
-9. [Languages](#languages)
-10. [The landing page](#the-landing-page)
-11. [Putting it in your CI](#putting-it-in-your-ci)
-12. [Questions that always come up](#questions-that-always-come-up)
+3. [The vocabulary is Spanish](#the-vocabulary-is-spanish-and-it-stays-that-way)
+4. [The commands](#the-commands)
+5. [Exit codes](#exit-codes)
+6. [Running the platform](#running-the-platform)
+7. [The panel, piece by piece](#the-panel-piece-by-piece)
+8. [The eleven views, one by one](#the-eleven-views-one-by-one)
+9. [How to read a row](#how-to-read-a-row)
+10. [Languages](#languages)
+11. [The landing page](#the-landing-page)
+12. [Putting it in your CI](#putting-it-in-your-ci)
+13. [Questions that always come up](#questions-that-always-come-up)
 
 ---
 
@@ -94,10 +95,83 @@ That is the whole product from the command line. What follows — the platform a
 the panel — is the same thing with a screen, for several people and several
 systems.
 
-> **The command names and the flags are in Spanish, and they stay that way.**
-> They are part of the product's vocabulary, like the state names the engine
-> emits: translating them would make two documents of the same run impossible to
-> compare.
+---
+
+## The vocabulary is Spanish, and it stays that way
+
+Before the first command: **the verbs and the flags are Spanish words, and the
+values are too.** `actaira preguntar . --alto-riesgo si` is not a typo.
+
+That is a decision, not an oversight. The engine emits this same vocabulary
+*inside* the documents it produces — the state of every obligation, the reason,
+the verb that produced it — so that two runs of the same thing can be compared
+line by line. Adding English spellings would mean **two names for one verb**,
+and this tree has already been bitten four times by two lists that were supposed
+to say the same thing and drifted: the role names, the flag whitelist, the view
+table and the published figures. A wrong value is rejected loudly — `--alto-riesgo yes`
+exits with `invalid choice: 'yes' (choose from si, no, null)` — so nothing here
+fails quietly.
+
+So instead of a second vocabulary, here is the whole first one.
+
+### The verbs
+
+| you type | it means |
+|---|---|
+| `aplicabilidad` | applicability — what binds you |
+| `plan` | plan |
+| `preguntar` | ask — what is left to answer |
+| `contestar` | answer — seals a person's answers as evidence |
+| `comprobar` | check — the article 50 control |
+| `soa` | statement of applicability |
+| `anexo` | annex — the technical file |
+| `vigilar` | monitor |
+| `almacen` | store — the evidence chain |
+| `noconformidad` | nonconformity |
+| `revision` | review — management review |
+| `empujon` | push — an outside event |
+| `remediar` | remediate |
+| `conectar` | connect — fetch the code from wherever it lives and run the plan |
+| `sellar` | seal — sign the file |
+| `verificar` | verify a seal |
+| `exportar` | export |
+| `ortografia` | spelling — checks the catalogue's Spanish accents |
+
+### The flags
+
+| you type | it means |
+|---|---|
+| `--rol` | role. Repeatable |
+| `--alto-riesgo` | high-risk |
+| `--via-anexo` | by which annex route: `anexo_iii` or `anexo_i` |
+| `--sector-publico` | public sector |
+| `--modelo-uso-general` | general-purpose model |
+| `--riesgo-sistemico` | systemic risk |
+| `--fecha` | date, `YYYY-MM-DD` |
+| `--ahora` | now — the clock, for expiry |
+| `--idioma` | language: `es` or `en` |
+| `--almacen` | store — path to the evidence file |
+| `--registrar` | record what was observed into the store |
+| `--solo-almacen` | store only — do not read the repository |
+| `--respuestas` | answers — path to the form answers |
+| `--cual` | which — e.g. `--cual iv` for Annex IV |
+| `--catalogo` | catalogue path |
+| `--clave-esperada` | expected key, for verifying a seal |
+| `--json` | raw document instead of prose |
+
+### The values
+
+| you type | it means |
+|---|---|
+| `si` | yes |
+| `no` | no |
+| `null` | unanswered — and this is a real state, not a blank |
+
+And the ones the server takes: `--clientes` (client root), `--credenciales`
+(credentials file), `--motor` (the engine executable), `--escucha` (listen
+address), `--revisar-cada` (how often to review), `--bitacora` (log file),
+`--emisor` (identity provider), `--tope-global` and `--tope-por-cliente`
+(concurrency caps), `--plazo` (per-verb deadline).
 
 ---
 

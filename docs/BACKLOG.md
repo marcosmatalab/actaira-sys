@@ -1771,3 +1771,72 @@ dos. Una bandera renombrada en el motor dejaria el manual mandando teclear algo
 que contesta «unrecognized arguments», igual de creible y sin que nada se ponga
 rojo. Ahora se le pregunta al CLI de verdad con `--help`, verbo por verbo. Se
 vio fallar cambiando `--cual` por `--que-anexo` en una linea del manual.
+
+
+## Las dos que se reportaron sabidas, decididas
+
+Las dos salieron de mirar el resultado, no de una prueba en rojo. Ninguna era un
+fallo; las dos eran decisiones aplazadas, que es la forma educada de no tomarlas.
+
+- **D-126. El GIF pesaba 8,2 MB, y lo caro no era ese fichero: era la serie.**
+  Un video grabado nunca sale igual dos veces, asi que CADA regeneracion mete un
+  objeto nuevo en la historia de git y ninguno se va nunca. A ocho megas por
+  pasada, cinco pasadas son cuarenta megas que todo el mundo se clona para
+  siempre. El coste que se veia --lo que tarda en cargar un README-- era el
+  pequeno.
+
+  Se midio en vez de estimarlo: se grabo el recorrido UNA vez y se probaron
+  cinco codificaciones sobre el mismo video. Dos cosas que no se esperaban:
+
+  - El **webm sale a 3,1 MB**, menos que casi todos los GIF. Se descarto de
+    todos modos porque un `<video>` con ruta relativa no se ve seguro en GitHub,
+    y un heroe roto es peor que uno pesado. Un GIF se ve en todas partes.
+  - Grabar una ventana MAS PEQUENA para escalar menos **sube** el peso: 1120x740
+    escalado a 820 px pesa mas que 1400x900 escalado a 760. Lo que cuesta es la
+    densidad de lo que cambia, no el factor de escala. La intuicion iba al
+    reves.
+
+  Queda en **680 px, 5 fps, 64 colores: 3,1 MB**, un 62 % menos. Se miro un
+  fotograma antes de decidir: el titular, las categorias y el ciclo se siguen
+  leyendo, que es lo que un GIF de README tiene que ensenar; la letra pequena
+  no, y nadie la lee ahi. El presupuesto del comando baja de 10 MB a 5, y el
+  ancho del `<img>` del README baja a 680 para no escalar hacia arriba una
+  imagen de 680.
+
+- **D-127. La documentacion inglesa mandaba teclear castellano sin traducirlo.**
+  `actaira preguntar . --alto-riesgo si` en un manual en ingles. Estaba dicho y
+  justificado, y seguia sin poder leerse.
+
+  **No se anaden alias ingleses**, y esa es la parte con criterio. El motor
+  emite ESE MISMO vocabulario dentro de los documentos que produce, asi que dos
+  pasadas de lo mismo se comparan linea a linea; un segundo juego de nombres
+  serian DOS nombres para un verbo, que es el fallo con el que este arbol ha
+  tropezado cuatro veces --los roles, la lista blanca de banderas, la tabla de
+  vistas y las cifras publicadas--. Y `--alto-riesgo si` lleva el valor `si`:
+  aliasarlo tambien seria aliasar el vocabulario que viaja dentro del documento.
+
+  Se comprobo antes de decidir que el caso malo no es silencioso:
+  `--alto-riesgo yes` sale con codigo 2 y `invalid choice: 'yes' (choose from
+  si, no, null)`. No hay respuesta equivocada callada, solo friccion.
+
+  Asi que se paga la friccion donde se paga: un **glosario** de los 16 verbos,
+  las 17 banderas y los 3 valores, antes del primer comando del manual ingles, y
+  una nota en el README ingles que enlaza a el. Con su puerta, porque un
+  glosario es justo la clase de lista que se queda corta: el dia que el manual
+  nombre un verbo nuevo sin glosarlo, la puerta lo dice. Vista fallar quitando
+  `--registrar` del glosario y dejandolo citado en el resto del manual.
+
+  Y el glosario **nacio corto**, que es la parte que hay que contar. Decia «here
+  is the whole first one» y listaba DIECISEIS verbos de los dieciocho que el
+  motor tiene: faltaban `contestar` y `conectar`. La primera version de su
+  puerta tampoco lo veia, porque comprobaba solo los verbos que la
+  documentacion CITA -- y un verbo que no se cita tampoco se echa de menos, que
+  es literalmente el mismo razonamiento por el que siete vistas del panel
+  estuvieron inalcanzables sin que nadie las echara en falta.
+
+  Ahora la puerta compara el glosario con `actaira --help`, que es la unica
+  lista que no puede mentir sobre si misma. Vista fallar quitando `exportar`.
+
+  Tercera vez en esta pasada que un heredoc de bash se come una barra
+  invertida al escribir codigo (D-117 fue la primera). Se dejo de usar heredocs
+  para eso.

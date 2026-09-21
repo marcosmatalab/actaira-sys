@@ -96,6 +96,15 @@ antes de que lo vea un cliente.
   de verdad con sus banderas, preguntándoselo al CLI.
 - `python herramientas/navegador.py --web CARPETA` saca la portada entera en los
   seis idiomas, fuera del árbol.
+- **Glosario del vocabulario castellano** en el manual inglés: los 16 verbos, las
+  17 banderas y los 3 valores que manda teclear, con su significado. No hay
+  alias ingleses y no los habrá: el motor emite ese mismo vocabulario dentro de
+  los documentos, y dos nombres para un verbo es el fallo con el que este árbol
+  ya ha tropezado cuatro veces. Con su puerta, para que el glosario no se quede
+  corto.
+- **El GIF pesa 3,1 MB en vez de 8,2** (680 px, 5 fps, 64 colores), y el comando
+  se pone rojo por encima de 5 MB. Lo caro no era el fichero: era que cada
+  regeneración mete un objeto nuevo en la historia de git y ninguno se va.
 
 ---
 

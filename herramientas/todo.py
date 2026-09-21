@@ -1120,6 +1120,67 @@ def fase_documentacion(reg: list[str]) -> None:
     reg.append(f"las {len(citadas)} ordenes que esos documentos mandan teclear existen, "
                f"con sus banderas ({len(ayudas)} verbos)")
 
+    # Y QUE LA DOCUMENTACION INGLESA GLOSE CADA PALABRA CASTELLANA QUE MANDA
+    # TECLEAR.
+    #
+    # Los verbos, las banderas y los valores son palabras castellanas, y se
+    # quedan asi: el motor emite ESE MISMO vocabulario dentro de los documentos
+    # que produce, asi que dos pasadas de lo mismo se comparan linea a linea.
+    # Un juego de nombres ingleses seria DOS nombres para un verbo, que es el
+    # fallo con el que este arbol ha tropezado cuatro veces -- los roles, la
+    # lista blanca de banderas, la tabla de vistas y las cifras publicadas.
+    #
+    # El precio de esa decision lo paga quien lee en ingles, y se paga con un
+    # glosario. Lo que esta puerta impide es que el glosario se quede corto: el
+    # dia que el manual ingles nombre un verbo nuevo sin glosarlo, ahi se queda
+    # una palabra que quien lee no puede ni pronunciar.
+    manual_en = (RAIZ / "docs" / "MANUAL.en.md").read_text(encoding="utf-8")
+    _afirma("## The vocabulary is Spanish" in manual_en,
+            "el manual ingles ya no trae el glosario del vocabulario castellano")
+    glosario = manual_en.split("## The vocabulary is Spanish", 1)[1]
+    for linea in glosario.splitlines():
+        if linea.startswith('## '):
+            glosario = glosario.split(linea, 1)[0]
+            break
+    glosados = set(_re2.findall(r"`([^`]+)`", glosario))
+
+    sueltas: set[str] = set()
+    for rel in ("README.en.md", "docs/MANUAL.en.md"):
+        for linea in (RAIZ / rel).read_text(encoding="utf-8").splitlines():
+            if "actaira" not in linea:
+                continue
+            sueltas |= {v for v in _re2.findall(r"actaira(?:-api)? ([a-z]+)", linea)
+                        if v != "api"}
+            sueltas |= set(_re2.findall(r"(--[a-z-]+)", linea))
+    faltan_glosa = sorted(x for x in sueltas if x not in glosados)
+    _afirma(not faltan_glosa,
+            f"la documentacion inglesa manda teclear palabras castellanas que el "
+            f"glosario no explica: {faltan_glosa}")
+
+    # Y EL GLOSARIO DE VERBOS, COMPLETO CONTRA EL CLI.
+    #
+    # Comprobar solo los verbos que la documentacion CITA deja pasar el defecto
+    # de siempre: el glosario dice «here is the whole first one» y se queda en
+    # dieciseis de dieciocho sin que nada lo diga. Se quedo, el dia que nacio.
+    #
+    # Los verbos se leen de `actaira --help`, que es la unica lista que no
+    # puede mentir sobre si misma.
+    r = subprocess.run([PY, "-m", "actaira_motor.cli", "--help"], cwd=RAIZ,
+                       env=entorno(), capture_output=True, text=True,
+                       encoding="utf-8", errors="replace")
+    _afirma(r.returncode == 0, f"`actaira --help` salio {r.returncode}")
+    dentro = _re2.search(r"\{([a-z,]+)\}", r.stdout)
+    _afirma(dentro, "no se pueden leer los verbos de `actaira --help`")
+    verbos_del_motor = set(dentro.group(1).split(","))
+    sin_glosar = sorted(verbos_del_motor - glosados)
+    _afirma(not sin_glosar,
+            f"el glosario ingles dice ser el vocabulario entero y le faltan verbos "
+            f"que el motor tiene: {sin_glosar}")
+
+    reg.append(f"el glosario ingles cubre las {len(sueltas)} palabras castellanas "
+               f"que esa documentacion manda teclear, y los "
+               f"{len(verbos_del_motor)} verbos que el motor tiene")
+
 
 def fase_identidad(reg: list[str]) -> None:
     """OIDC y papeles, contra el servidor LEVANTADO.
