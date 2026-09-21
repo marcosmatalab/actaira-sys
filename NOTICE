@@ -13,3 +13,29 @@ ISO/IEC 42001:2023 NO se reproduce: la norma es de pago. El texto del Reglamento
 Las reglas y las remediaciones de `catalogo/reglas/` las escribió una persona.
 Un modelo puede proponer el borrador de una regla fuera de línea; nunca redacta
 reglas ni remediaciones en ejecución.
+
+TIPOGRAFÍAS
+
+`tipografias/` contiene tres familias de terceros, incrustadas en base64 y
+recortadas a los caracteres que este producto escribe. Recortar es modificar, y
+las tres licencias lo permiten expresamente con la atribución puesta:
+
+  Archivo         Copyright 2018 The Archivo Project Authors
+                  (https://github.com/Omnibus-Type/Archivo)
+                  SIL Open Font License 1.1
+
+  IBM Plex Mono   Copyright 2017 IBM Corp.
+                  (https://github.com/IBM/plex)
+                  SIL Open Font License 1.1
+
+  Newsreader      Copyright 2019 The Newsreader Project Authors
+                  (https://github.com/productiontype/Newsreader)
+                  SIL Open Font License 1.1
+
+El texto de la SIL Open Font License 1.1 está en `tipografias/LICENCIA-OFL.txt`.
+
+Van dentro del árbol, y no pedidas a `fonts.googleapis.com`, por tres razones
+escritas en `herramientas/fuentes.py`: el panel promete ser un solo fichero que
+se abre sin servidor, la consola existe para leerse sin conexión, y un `<link>`
+a Google le cuenta a Google la dirección IP de quien abre el expediente de
+cumplimiento de un cliente.

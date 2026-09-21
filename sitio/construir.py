@@ -102,6 +102,16 @@ def _href(desde: str, hacia: str) -> str:
     return subir if hacia == "es" else f"{subir}{hacia}/"
 
 
+def _ruta_de_fuentes(idioma: str) -> str:
+    """Donde esta `tipografias.css` visto desde la pagina de ese idioma.
+
+    Se calcula, como la de los idiomas: el castellano vive en la raiz y los
+    otros cinco en su carpeta, asi que la ruta no es la misma y escribirla a
+    mano serian seis sitios donde equivocarse.
+    """
+    return "tipografias.css" if idioma == "es" else "../tipografias.css"
+
+
 def _conmutador(idioma: str) -> str:
     """Los seis enlaces. `aria-current` dice cual estas leyendo a quien no ve el color."""
     fuera = []
@@ -116,6 +126,22 @@ def _conmutador(idioma: str) -> str:
 def construir(idioma: str, textos: dict, valores: dict[str, str]) -> str:
     conf = IDIOMAS[idioma]
     plantilla = (SITIO / "plantilla" / "pagina.html").read_text(encoding="utf-8")
+
+    # LAS TIPOGRAFIAS, EN UN FICHERO AL LADO Y NO DENTRO DE CADA PAGINA.
+    #
+    # Aqui son seis paginas, y el panel es UNA. Incrustarlas en las seis --que
+    # es lo que se hizo primero-- metia el mismo cuarto de mega de base64 seis
+    # veces: las paginas pasaban de 29 KB a 199 KB cada una y el repositorio se
+    # comia un mega de duplicado. Duplicar algo GENERADO que tiene que estar
+    # sincronizado es justo lo que esta casa no hace.
+    #
+    # En un fichero al lado, el navegador se lo descarga una vez y lo reutiliza
+    # en los seis idiomas. Sigue siendo el MISMO origen: lo que se arreglo era
+    # pedirselo a Google, no pedirlo.
+    #
+    # El panel y la consola si las llevan dentro, y ahi es correcto: los dos
+    # prometen ser un solo fichero que se abre sin servidor.
+    plantilla = plantilla.replace("__FUENTES__", _ruta_de_fuentes(idioma), 1)
 
     def pon(m: re.Match) -> str:
         k = m.group(1)
@@ -162,6 +188,16 @@ def main() -> int:
     faltan = [i for i in IDIOMAS if i not in textos]
     if faltan:
         raise SystemExit(f"`textos.json` no trae {faltan}")
+
+    # Las tipografias, UNA vez, junto a las seis paginas. Son las mismas que
+    # lleva dentro el panel mas `Newsreader`, que solo usan estos titulares.
+    fuentes = SITIO / "tipografias.css"
+    fuentes.write_text(
+        "".join((RAIZ / "tipografias" / f"{n}.css").read_text(encoding="utf-8")
+                for n in ("interfaz", "portada")),
+        encoding="utf-8", newline="\n")
+    print(f"  sitio/tipografias.css: {fuentes.stat().st_size // 1024} KB, "
+          f"una vez para los seis idiomas")
 
     for idioma in IDIOMAS:
         # `cifras.de()` sabe en que idioma se le pide: la unica palabra que

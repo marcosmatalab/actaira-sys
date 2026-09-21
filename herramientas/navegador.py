@@ -173,11 +173,47 @@ class Pagina:
         page.on("request", lambda r: self.idiomas_pedidos.append(
             r.headers.get("accept-language", "")) if "/v1/clientes/" in r.url else None)
 
-    def abrir(self) -> float:
-        t0 = time.perf_counter()
+    def abrir(self) -> dict:
+        """Abre el panel y devuelve lo que costo, separado de lo que no es suyo.
+
+        EL RELOJ DE FUERA MIDE LA MAQUINA, NO LA PAGINA
+        -------------------------------------------------
+        La primera version cronometraba `goto` con un reloj de Python y
+        afirmaba que tardaba menos de tres segundos. En esta maquina daba 200
+        ms; en el agente de Windows de integracion continua dio 4.265 ms y puso
+        la puerta en rojo con el producto intacto.
+
+        Y no era ruido que subir el umbral arregle: ese reloj incluye arrancar
+        un proceso de Chromium en frio en una maquina virtual compartida, que
+        es un coste del agente y no de esta pagina. Una puerta que se pone roja
+        por algo que el producto no controla se acaba leyendo como ruido, y un
+        ruido que se ignora es una puerta apagada -- que es exactamente lo que
+        ya paso con el rojo intermitente de `api`.
+
+        Asi que se mide DENTRO del navegador, con el reloj de navegacion, que
+        empieza cuando empieza la navegacion y no cuando arranca el proceso. Y
+        lo que se afirma fuerte es lo que NO depende de la maquina: que la
+        pagina sea un solo fichero y pese lo que dice pesar.
+        """
+        fuera = time.perf_counter()
         self.page.goto(self.base, wait_until="load")
         self.page.wait_for_selector("#conectar", state="visible")
-        return (time.perf_counter() - t0) * 1000
+        reloj_de_fuera = (time.perf_counter() - fuera) * 1000
+
+        medida = self.page.evaluate("""() => {
+          const n = performance.getEntriesByType('navigation')[0] || {};
+          const recursos = performance.getEntriesByType('resource')
+            .filter(r => r.initiatorType !== 'beacon');
+          return {
+            respuesta: Math.round((n.responseEnd || 0) - (n.requestStart || 0)),
+            dom: Math.round(n.domContentLoadedEventEnd || 0),
+            carga: Math.round(n.loadEventEnd || 0),
+            bytes: n.transferSize || n.encodedBodySize || 0,
+            subrecursos: recursos.map(r => r.name),
+          };
+        }""")
+        medida["reloj_de_fuera"] = round(reloj_de_fuera)
+        return medida
 
     def conectar(self, cliente: str = "acme") -> None:
         self.page.fill("#servidor", self.base)
@@ -330,8 +366,36 @@ def puerta(reg: list[str]) -> None:
             carga = pag.abrir()
             todo._afirma(not pag.errores,
                          f"la consola del navegador escribio errores al cargar: {pag.errores}")
-            todo._afirma(carga < 3000, f"la pagina tardo {carga:.0f} ms en cargar")
-            reg.append(f"la pagina carga en {carga:.0f} ms, sin errores de consola")
+
+            # LO QUE SE AFIRMA FUERTE: UN FICHERO Y NINGUNA PETICION MAS.
+            #
+            # Es la propiedad que el README promete --«un solo fichero, cero
+            # peticiones de red»-- y la unica que no depende de lo cargada que
+            # este la maquina. Ademas es la que cazaria la regresion de verdad:
+            # el dia que alguien saque el CSS o los textos a un fichero aparte,
+            # o le cuelgue una fuente de un tercero, esto se pone rojo. Un
+            # panel que pide cosas fuera deja de poder abrirse sin servidor, y
+            # eso es media promesa del producto.
+            todo._afirma(not carga["subrecursos"],
+                         f"la pagina pidio {len(carga['subrecursos'])} recursos mas "
+                         f"ademas de si misma: {carga['subrecursos'][:5]}. El panel es "
+                         f"UN fichero que se abre sin servidor")
+            peso = (RAIZ / "panel" / "panel.html").stat().st_size / 1024
+            todo._afirma(peso < 400,
+                         f"el panel pesa {peso:.0f} KB y el presupuesto son 400")
+
+            # Y lo que se afirma flojo: el tiempo, medido DENTRO del navegador
+            # --el reloj de navegacion no incluye arrancar el proceso-- y con
+            # un techo alto a proposito. No esta para medir rendimiento: esta
+            # para cazar algo patologico, como una espera sincrona al arrancar.
+            # El numero fino se saca con `--latencias`, que no es una puerta.
+            todo._afirma(carga["dom"] < 5000,
+                         f"el DOM de la pagina tardo {carga['dom']} ms en estar listo, "
+                         f"medido dentro del navegador. Eso ya no es la maquina")
+            reg.append(f"la pagina: {peso:.0f} KB en 1 peticion y 0 subrecursos; "
+                       f"respuesta {carga['respuesta']} ms, DOM {carga['dom']} ms "
+                       f"(reloj de fuera {carga['reloj_de_fuera']} ms, incluye arrancar "
+                       f"el navegador); sin errores de consola")
 
             pag.conectar()
             pag.categoria(CATEGORIA_COMPLETA)
@@ -565,8 +629,11 @@ def latencias(repeticiones: int = 5) -> int:
 
     peso = (RAIZ / "panel" / "panel.html").stat().st_size / 1024
     print()
-    print(f"carga de la pagina: {carga:.0f} ms "
-          f"({peso:.0f} KB, un fichero, cero peticiones de red)")
+    print(f"carga de la pagina: {carga['dom']} ms hasta el DOM, "
+          f"{carga['respuesta']} ms de respuesta "
+          f"({peso:.0f} KB, un fichero, cero peticiones de red). "
+          f"El reloj de fuera dice {carga['reloj_de_fuera']} ms e incluye "
+          f"arrancar el navegador, que no es de la pagina")
     print()
     print(f"mediana de {repeticiones} llamadas a cada verbo, en milisegundos")
     print()

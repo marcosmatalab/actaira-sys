@@ -152,8 +152,8 @@ Ninguno está escrito a mano. Salen del catálogo y del árbol, los rellena
 | Reglas que leen código | <!--cifra:reglas-->68<!--/cifra--> en <!--cifra:paquetes_de_reglas-->17<!--/cifra--> paquetes |
 | Preguntas del banco | <!--cifra:preguntas-->90<!--/cifra-->, cada una atada a los tres catálogos |
 | Pruebas | <!--cifra:pruebas-->563<!--/cifra--> de Python + <!--cifra:pruebas_go-->98<!--/cifra--> de Go |
-| Fases de la puerta de aceptación | <!--cifra:fases_de_la_puerta-->24<!--/cifra--> |
-| Defectos de las pasadas adversariales | <!--cifra:defectos_adversariales-->127<!--/cifra-->, cada uno con su nombre en `docs/BACKLOG.md` |
+| Fases de la puerta de aceptación | <!--cifra:fases_de_la_puerta-->25<!--/cifra--> |
+| Defectos de las pasadas adversariales | <!--cifra:defectos_adversariales-->129<!--/cifra-->, cada uno con su nombre en `docs/BACKLOG.md` |
 
 Y el número que **no** existe: no hay porcentaje de cumplimiento. Con un perfil
 sin responder, <!--cifra:indeterminadas_perfil_vacio-->48<!--/cifra-->
@@ -171,7 +171,7 @@ python herramientas/navegador.py --latencias
 
 | | |
 |---|---|
-| Cargar el panel | **~200 ms**, un solo fichero de 208 KB, cero peticiones de red |
+| Cargar el panel | **21 ms** hasta el DOM, **1 ms** de respuesta: un solo fichero de <!--cifra:panel_kb-->269<!--/cifra--> KB —tipografías incluidas— y **cero peticiones de red** |
 | Transporte de un verbo (HTTP + JSON) | **~4 ms** de mediana; las 11 vistas suman menos de 100 ms |
 | El análisis en sí | **9–28 ms**, según el verbo, sobre el repositorio de ejemplo |
 | Arrancar el intérprete que lo corre | **440–1 750 ms** |
@@ -224,7 +224,7 @@ de estar instalado, el resumen no puede seguir diciendo «0 en rojo».
   en vez de que la pantalla se quede en blanco sin que falle nada.
 - **Las pasadas adversariales.** Cada fase cierra con una antes de abrir la
   siguiente, y lo encontrado se escribe en `docs/BACKLOG.md` con su número y su
-  lección. <!--cifra:defectos_adversariales-->127<!--/cifra--> hasta hoy. Los más
+  lección. <!--cifra:defectos_adversariales-->129<!--/cifra--> hasta hoy. Los más
   caros no eran fallos: eran respuestas plausibles y falsas, que es lo peor que
   puede emitir una herramienta que va a un auditor.
 

@@ -1840,3 +1840,81 @@ fallo; las dos eran decisiones aplazadas, que es la forma educada de no tomarlas
   Tercera vez en esta pasada que un heredoc de bash se come una barra
   invertida al escribir codigo (D-117 fue la primera). Se dejo de usar heredocs
   para eso.
+
+
+## Lo que la matriz vio y esta maquina no, y lo que salio de tirar del hilo
+
+- **D-128. Una puerta mia se ponia roja por algo que el producto no controla.**
+  La fase `navegador` afirmaba que la pagina carga en menos de tres segundos,
+  cronometrada con un reloj de Python alrededor de `goto`. En esta maquina daba
+  200 ms. El agente de Windows de integracion continua dio **4.265 ms** y puso
+  la puerta en rojo con el producto intacto. Linux paso; Windows no. Tercera vez
+  que la matriz ve algo que aqui no se ve.
+
+  Y no era ruido que arregle subir el umbral: ese reloj incluye arrancar un
+  proceso de Chromium en frio en una maquina virtual compartida, que es un coste
+  del agente. Una puerta que se pone roja por algo ajeno al producto se acaba
+  leyendo como ruido, y un ruido que se ignora es una puerta apagada -- que es
+  exactamente lo que ya habia pasado con el rojo intermitente de `api`.
+
+  Se cambio por lo que SI es del producto: se mide dentro del navegador con el
+  reloj de navegacion (que empieza con la navegacion, no con el proceso) y se
+  afirma fuerte lo que no depende de la maquina -- que la pagina sea **un solo
+  fichero, sin un solo subrecurso**, y que pese menos de 400 KB. El tiempo se
+  sigue afirmando, pero con un techo alto y medido por dentro: esta para cazar
+  algo patologico, no para medir rendimiento. Medido asi: **respuesta 1 ms, DOM
+  21 ms**. Los 4.265 eran enteros del agente.
+
+- **D-129. Y al afirmar «ni un subrecurso», la pagina confeso: le pedia las
+  tipografias a Google.** Esto es lo gordo de la pasada, y se encontro solo
+  porque una afirmacion nueva obligo a la pagina a decir la verdad sobre si
+  misma.
+
+  El panel, la consola y la portada traian un `<link>` a
+  `fonts.googleapis.com`. Tres cosas rotas a la vez:
+
+  1. El README promete que el panel es «un solo fichero, **cero peticiones de
+     red**» y el manual dice que se abre sin servidor. Era falso, y lo habia
+     escrito esta casa la semana pasada.
+  2. La consola existe para leerse **offline**. Pedirle una tipografia a
+     internet para leerla es lo contrario de lo que es.
+  3. Y la que decide: cada carga le contaba a Google la **direccion IP de quien
+     abre el expediente de cumplimiento de un cliente**. En una herramienta del
+     Reglamento de IA y de la ISO 42001 eso no es un detalle de estilo: es una
+     transferencia a un tercero que el cliente no declaro, y hay jurisprudencia
+     europea sobre exactamente ese `<link>` (LG Munchen I, 3 O 17493/20). La
+     portada publicaba «0 telemetria» tres centimetros mas abajo.
+
+  Arreglado sin perder el diseno: `herramientas/fuentes.py` baja las tres
+  familias, las **recorta** a los 141 caracteres que este producto escribe y las
+  incrusta en base64. La politica de seguridad deja de permitir los dos
+  origenes de Google y pasa a `font-src data:`.
+
+  Dos cosas que se midieron en vez de suponerse:
+
+  - `Newsreader` es variable en `opsz` y recortarla la dejaba en 92 KB por cara,
+    para un eje que estas paginas no mueven. **Fijando el eje: 40 KB.** 129 ->
+    40 por cara.
+  - Incrustarlas en las SEIS paginas de la portada metia el mismo cuarto de
+    mega seis veces. Ahi van en un fichero al lado --el navegador se lo baja una
+    vez-- y las paginas vuelven de 199 KB a 29 KB. En el panel y en la consola
+    si van dentro, porque los dos prometen ser un solo fichero.
+
+  Con dos puertas: una fase `fuentes` que afirma que ninguna de las diez paginas
+  construidas **carga** nada de un tercero al abrirse --distinguiendo cargar de
+  enlazar, que la primera version no hacia y se ponia roja por los enlaces al
+  repositorio-- y `--comprobar`, que vuelve a contar los caracteres contra el
+  `cmap` real de lo incrustado, porque un subconjunto es una afirmacion sobre el
+  contenido y el contenido crece.
+
+  Se vio fallar volviendo a meter el `<link>` en la consola.
+
+  Cuatro caracteres se quedan fuera a proposito y escritos uno a uno: ▸ ▾ ☼ ☾.
+  Ninguna de las tres familias los trae --tampoco en el `latin` completo de
+  Google-- asi que ya se pintaban con el respaldo del sistema antes de tocar
+  nada. Estan en una lista explicita y no filtrados por rango: filtrar «lo que
+  parezca un simbolo» seria apagar la comprobacion.
+
+  Y la atribucion, que tambien es parte del arreglo: recortar es modificar, las
+  tres son SIL OFL 1.1, y eso pide atribucion. Esta en `NOTICE` y el texto de la
+  licencia en `tipografias/LICENCIA-OFL.txt`.

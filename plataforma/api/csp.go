@@ -82,10 +82,14 @@ func politicaDe(html []byte) string {
 		// bloque, asi que hace falta esta palabra aparte. Es mucho mas
 		// estrecha que `'unsafe-inline'`: permite atributos de estilo y NO
 		// permite un `<style>` inyectado.
-		"style-src " + strings.Join(estilo, " ") +
-			" 'unsafe-hashes' https://fonts.googleapis.com",
+		"style-src " + strings.Join(estilo, " ") + " 'unsafe-hashes'",
 		"style-src-attr 'unsafe-inline'",
-		"font-src https://fonts.gstatic.com",
+		// `data:` y NADA de terceros. Las tipografias viajan dentro de la
+		// pagina, en base64, desde que se quito el enlace a Google: esta
+		// politica permitia DOS origenes suyos para servir una tipografia,
+		// y con ello le contaba a Google la IP de quien abre el expediente
+		// de un cliente. Ver `herramientas/fuentes.py`.
+		"font-src data:",
 		"script-src " + strings.Join(script, " "),
 		"connect-src 'self'",
 		"base-uri 'none'",

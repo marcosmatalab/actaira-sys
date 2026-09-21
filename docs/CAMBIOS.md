@@ -106,6 +106,32 @@ antes de que lo vea un cliente.
   se pone rojo por encima de 5 MB. Lo caro no era el fichero: era que cada
   regeneración mete un objeto nuevo en la historia de git y ninguno se va.
 
+### INCOMPATIBLE: las páginas ya no piden nada a Google
+
+- **Las tipografías viajan dentro** (D-129). El panel, la consola y la portada
+  traían un `<link>` a `fonts.googleapis.com`. Ahora van incrustadas y
+  recortadas a los 141 caracteres que este producto escribe, y **la política de
+  seguridad del servidor deja de permitir `fonts.googleapis.com` y
+  `fonts.gstatic.com`**: pasa a `font-src data:`.
+
+  Si alguien había ajustado su propia CSP delante del servidor para permitir
+  esos dos orígenes, puede quitarlos. Y si alguien servía el panel desde otro
+  sitio con una política propia, esa política ahora puede ser más estrecha.
+
+  Por qué: el panel promete ser un solo fichero que se abre sin servidor, la
+  consola existe para leerse sin conexión, y cada carga le contaba a Google la
+  IP de quien abre el expediente de un cliente — con jurisprudencia europea
+  sobre ese mismo `<link>`. El detalle está en `herramientas/fuentes.py`.
+
+  Nueva fase de la puerta, `fuentes`, que lo sujeta en las diez páginas
+  construidas. Y `python herramientas/fuentes.py --traer` las regenera.
+
+- **La fase `navegador` ya no cronometra desde fuera** (D-128). Afirmaba que la
+  página carga en menos de 3 s con un reloj que incluía arrancar Chromium, y se
+  ponía roja en el agente de Windows con el producto intacto. Ahora afirma lo
+  que no depende de la máquina —un fichero, cero subrecursos, menos de 400 KB—
+  y mide el tiempo dentro del navegador.
+
 ---
 
 ## 0.15.0 — 21 de septiembre de 2026

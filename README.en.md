@@ -162,8 +162,8 @@ stale.
 | Rules that read code | <!--cifra:reglas-->68<!--/cifra--> in <!--cifra:paquetes_de_reglas-->17<!--/cifra--> packs |
 | Questions in the bank | <!--cifra:preguntas-->90<!--/cifra-->, each tied to all three catalogues |
 | Tests | <!--cifra:pruebas-->563<!--/cifra--> Python + <!--cifra:pruebas_go-->98<!--/cifra--> Go |
-| Acceptance gate phases | <!--cifra:fases_de_la_puerta-->24<!--/cifra--> |
-| Defects from adversarial passes | <!--cifra:defectos_adversariales-->127<!--/cifra-->, each named in `docs/BACKLOG.md` |
+| Acceptance gate phases | <!--cifra:fases_de_la_puerta-->25<!--/cifra--> |
+| Defects from adversarial passes | <!--cifra:defectos_adversariales-->129<!--/cifra-->, each named in `docs/BACKLOG.md` |
 
 And the number that does **not** exist: there is no compliance percentage. With
 an unanswered profile, <!--cifra:indeterminadas_perfil_vacio-->48<!--/cifra-->
@@ -181,7 +181,7 @@ python herramientas/navegador.py --latencias
 
 | | |
 |---|---|
-| Loading the panel | **~200 ms**, a single 208 KB file, zero network requests |
+| Loading the panel | **21 ms** to DOM, **1 ms** response: a single <!--cifra:panel_kb-->269<!--/cifra--> KB file —fonts included— and **zero network requests** |
 | Transport for one verb (HTTP + JSON) | **~4 ms** median; all 11 views add up to under 100 ms |
 | The analysis itself | **9–28 ms**, depending on the verb, on the example repository |
 | Starting the interpreter that runs it | **440–1,750 ms** |
@@ -234,7 +234,7 @@ something stops being installed, the summary cannot keep saying «0 red».
   instead of the screen going blank with nothing failing.
 - **The adversarial passes.** Every phase closes with one before the next opens,
   and what turns up is written into `docs/BACKLOG.md` with its number and its
-  lesson. <!--cifra:defectos_adversariales-->127<!--/cifra--> so far. The
+  lesson. <!--cifra:defectos_adversariales-->129<!--/cifra--> so far. The
   expensive ones were not crashes: they were plausible, false answers, which is
   the worst thing a tool headed for an auditor can emit.
 

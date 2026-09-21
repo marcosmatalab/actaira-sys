@@ -1687,6 +1687,69 @@ def fase_navegador(reg: list[str]) -> None:
     import navegador
     navegador.puerta(reg)
 
+
+def fase_fuentes(reg: list[str]) -> None:
+    """Que las paginas no le pidan NADA a un tercero.
+
+    Las tres traian las tipografias con un `<link>` a `fonts.googleapis.com`, y
+    eso rompia tres cosas a la vez: el README promete que el panel es un solo
+    fichero con cero peticiones de red, la consola existe para leerse sin
+    conexion, y cada carga le contaba a Google la direccion IP de quien abre el
+    expediente de cumplimiento de un cliente -- que en una herramienta del
+    Reglamento de IA es una transferencia a un tercero sin declarar, con
+    jurisprudencia europea sobre ese mismo `<link>`.
+
+    Lo cazo la fase `navegador` el dia que se le pidio afirmar lo que el README
+    ya decia. Esta fase lo sujeta MAS BARATO y en los tres artefactos: el
+    navegador solo abre el panel, y la consola y la portada no los abre nadie.
+    """
+    r = subprocess.run([PY, str(RAIZ / "herramientas" / "fuentes.py"), "--comprobar"],
+                       cwd=RAIZ, capture_output=True, text=True,
+                       encoding="utf-8", errors="replace")
+    _afirma(r.returncode == 0, f"tipografias: {r.stdout}{r.stderr}")
+    reg.append(r.stdout.strip().splitlines()[-1])
+
+    # Y que NINGUNA pagina construida CARGUE nada de fuera. Se mira el
+    # artefacto servido y no la plantilla: lo que le llega a un cliente es el
+    # artefacto.
+    #
+    # Cargar no es enlazar. Un `<a href>` a GitHub es un enlace: no se pide
+    # nada hasta que alguien lo pulsa, y esa es su funcion. Lo que no puede
+    # haber es algo que el navegador se traiga SOLO al abrir la pagina --
+    # `<link rel=stylesheet>`, `<script src>`, `<img src>`, una `@import` o una
+    # `url()` de CSS -- porque eso ocurre sin que nadie lo pida y le dice a un
+    # tercero que alguien abrio esta pagina.
+    #
+    # La primera version de esta afirmacion no distinguia las dos cosas y se
+    # puso roja por los enlaces al repositorio. Una puerta que confunde un
+    # enlace con una peticion obliga a quitar los enlaces, que era justamente
+    # el defecto anterior de la portada.
+    import re as _ref
+    CARGAS = (
+        _ref.compile(r'<(?:link|script|img|iframe|source|video|audio)\b[^>]*'
+                     r'\b(?:src|href)="(https?:)?//([^"]+)"', _ref.I),
+        _ref.compile(r'@import\s+(?:url\()?["\']?(https?:)?//([^"\')]+)', _ref.I),
+        _ref.compile(r'url\(\s*["\']?(https?:)?//([^"\')]+)', _ref.I),
+    )
+    paginas = ["panel/panel.html", "plataforma/api/panel.html", "consola/consola.html",
+               "sitio/tipografias.css",
+               "sitio/index.html", "sitio/en/index.html", "sitio/fr/index.html",
+               "sitio/pt/index.html", "sitio/it/index.html", "sitio/de/index.html"]
+    malas = []
+    for rel in paginas:
+        f = RAIZ / rel
+        _afirma(f.is_file(), f"{rel} no existe y esta en la lista")
+        texto = f.read_text(encoding="utf-8")
+        for patron in CARGAS:
+            for _, donde in patron.findall(texto):
+                malas.append(f"{rel} -> {donde[:60]}")
+    _afirma(not malas,
+            f"hay paginas que CARGAN cosas de un tercero al abrirse: "
+            f"{sorted(set(malas))[:5]}. Estas paginas tienen que poder abrirse sin "
+            f"conexion, y lo que se traigan solas le dice a un tercero quien las abre")
+    reg.append(f"las {len(paginas)} paginas construidas no cargan nada de ningun "
+               f"tercero al abrirse")
+
 FASES: dict[str, Callable[[list[str]], None]] = {
     "catalogo": fase_catalogo,
     "consola": fase_consola,
@@ -1712,6 +1775,7 @@ FASES: dict[str, Callable[[list[str]], None]] = {
     "instalacion": fase_instalacion,
     "documentacion": fase_documentacion,
     "navegador": fase_navegador,
+    "fuentes": fase_fuentes,
 }
 
 

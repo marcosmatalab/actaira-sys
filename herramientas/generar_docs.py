@@ -198,6 +198,10 @@ def cifras() -> dict[str, str]:
         "defectos_adversariales": str(_defectos_adversariales()),
         "pruebas_go": str(_pruebas_go()),
         "vistas_del_panel": str(_vistas_del_panel()),
+        # Lo que pesa la pagina que se sirve. Entra aqui el mismo dia que se le
+        # incrustaron las tipografias, porque ese dia paso de 208 a 269 KB y
+        # los dos README lo decian a mano.
+        "panel_kb": str(round((RAIZ / "panel" / "panel.html").stat().st_size / 1024)),
         "fases_de_la_puerta": str(_fases_de_la_puerta()),
         "idiomas": str(_idiomas()[0]),
         "claves_de_texto": str(_idiomas()[1]),

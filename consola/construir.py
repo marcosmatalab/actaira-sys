@@ -72,7 +72,17 @@ def construir() -> str:
     if faltan:
         raise SystemExit(f"textos.json: claves que faltan en un idioma: {faltan}")
 
-    css = (RAIZ / "plantilla" / "estilo.css").read_text(encoding="utf-8")
+# LAS TIPOGRAFIAS VAN DELANTE, Y VIENEN DE DENTRO.
+    #
+    # Antes las traia un `<link>` a `fonts.googleapis.com` en la plantilla. Eso
+    # rompia la promesa de esta pagina -- un solo fichero que se abre sin servidor
+    # -- y le contaba a Google quien abre el expediente de un cliente. El porque
+    # entero esta en `herramientas/fuentes.py`.
+    #
+    # Delante del estilo porque un `@font-face` tiene que estar declarado antes de
+    # que alguien use su familia.
+    fuentes = (RAIZ.parent / "tipografias" / "interfaz.css").read_text(encoding="utf-8")
+    css = fuentes + (RAIZ / "plantilla" / "estilo.css").read_text(encoding="utf-8")
     css = css.replace("__LOGO_COLOR__", _logo("actaira-lockup.png"))
     css = css.replace("__LOGO_BLANCO__", _logo("actaira-lockup-white.png"))
 
