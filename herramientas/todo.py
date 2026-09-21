@@ -1286,12 +1286,31 @@ def fase_matriz(reg: list[str]) -> None:
                f"versiones de Python, sin omisiones en Linux y con -race")
 
     # --- y ahora, el otro sistema de verdad, si se alcanza ------------------
+    #
+    # ESTA FASE MIDE DOS COSAS, Y LA SEGUNDA NO SIEMPRE SE PUEDE MEDIR.
+    #
+    # Lo de arriba -- que el flujo declare los dos sistemas y no afloje -- se
+    # comprobo y paso. Correr ADEMAS el otro sistema desde aqui es un extra que
+    # depende de la maquina, y en un agente de integracion continua no depende:
+    # ahi el otro sistema lo corre la propia matriz, en su propio trabajo.
+    #
+    # La primera version levantaba `Omitida` en ese caso, y con `--sin-omitir`
+    # -- que es como corre la integracion continua en Linux -- eso ponia la
+    # puerta ROJA por no poder hacer algo que ahi no hay que hacer. Una puerta
+    # que se pone roja donde el producto esta bien ensena a apagar la puerta.
+    #
+    # Asi que no se omite: se dice en una linea que esa mitad no se midio y
+    # por que. Lo que NO se hace es callarlo.
+    def _sin_segundo_sistema(motivo: str) -> None:
+        reg.append(f"  la otra mitad no se midio aqui: {motivo}")
+
     if os.name != "nt":
-        raise Omitida("desde aqui no se alcanza un segundo sistema; la matriz "
-                      "entera es trabajo de la integracion continua")
+        _sin_segundo_sistema("desde este sistema no se alcanza otro; en la "
+                             "integracion continua lo cubre la propia matriz")
+        return
     if not shutil.which("wsl.exe"):
-        raise Omitida("no hay WSL para correr el otro lado; la matriz entera es "
-                      "trabajo de la integracion continua")
+        _sin_segundo_sistema("no hay WSL instalado")
+        return
     # QUE `wsl.exe` EXISTA NO ES QUE HAYA UN LINUX DETRAS.
     #
     # El agente de Windows de la integracion continua trae el ejecutable y CERO
@@ -1303,8 +1322,8 @@ def fase_matriz(reg: list[str]) -> None:
                            text=True, encoding="utf-8", errors="replace",
                            timeout=120)
     if sonda.returncode != 0:
-        raise Omitida("hay `wsl.exe` pero ninguna distribucion instalada detras; "
-                      "la matriz entera es trabajo de la integracion continua")
+        _sin_segundo_sistema("hay `wsl.exe` pero ninguna distribucion detras")
+        return
 
     ruta = str(RAIZ).replace("\\", "/")
     unidad, resto = ruta[0].lower(), ruta[2:]
@@ -1322,12 +1341,14 @@ def fase_matriz(reg: list[str]) -> None:
                        errors="replace", timeout=900)
     salida = (r.stdout or "").replace("\x00", "").strip()
     if "FALTA_ENTORNO" in salida:
-        raise Omitida(
-            "hay WSL pero sin entorno preparado. Una vez: "
-            "`wsl -e bash -lc \'python3 -m venv $HOME/.venvs/actaira && "
-            "$HOME/.venvs/actaira/bin/pip install -e \"<el arbol>[dev]\"\'`")
+        _sin_segundo_sistema(
+            "hay WSL sin entorno preparado. Una vez: `wsl -e bash -lc "
+            "'python3 -m venv $HOME/.venvs/actaira && "
+            "$HOME/.venvs/actaira/bin/pip install -e \"<el arbol>[dev]\"'`")
+        return
     if "NO_LLEGA_AL_ARBOL" in salida:
-        raise Omitida(f"WSL no ve el arbol en {dentro}")
+        _sin_segundo_sistema(f"WSL no ve el arbol en {dentro}")
+        return
 
     ultima = salida.splitlines()[-1] if salida else ""
     _afirma("failed" not in ultima and "error" not in ultima.lower(),
