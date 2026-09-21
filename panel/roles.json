@@ -1,0 +1,93 @@
+{
+ "esquema": "actaira/roles/v1",
+ "nota": {
+  "es": "Generado desde `motor/src/actaira_motor/roles.py`. NO se edita a mano. Había cuatro listas de roles escritas por separado y dos estaban mal: el panel mandaba `responsable_del_despliegue`, la API lo validaba contra su propia lista equivocada y lo dejaba pasar, y el motor devolvia cero obligaciones aplicables a un responsable del despliegue de verdad.",
+  "en": "Generated from `motor/src/actaira_motor/roles.py`. NOT edited by hand. There were four separately written role lists and two were wrong: the panel sent `responsable_del_despliegue`, the API validated it against its own wrong list and let it through, and the engine returned zero applicable obligations to a real deployer."
+ },
+ "roles": [
+  {
+   "id": "proveedor",
+   "articulo": "3.3",
+   "nombre": {
+    "es": "proveedor",
+    "en": "provider"
+   },
+   "definicion": {
+    "es": "quien desarrolla un sistema de IA, o lo manda desarrollar, y lo introduce en el mercado o lo pone en servicio con su nombre o marca",
+    "en": "who develops an AI system, or has one developed, and places it on the market or puts it into service under their own name or trademark"
+   }
+  },
+  {
+   "id": "responsable_despliegue",
+   "articulo": "3.4",
+   "nombre": {
+    "es": "responsable del despliegue",
+    "en": "deployer"
+   },
+   "definicion": {
+    "es": "quien utiliza un sistema de IA bajo su propia autoridad, salvo uso personal no profesional",
+    "en": "who uses an AI system under their own authority, except for personal non-professional use"
+   }
+  },
+  {
+   "id": "representante_autorizado",
+   "articulo": "3.5",
+   "nombre": {
+    "es": "representante autorizado",
+    "en": "authorised representative"
+   },
+   "definicion": {
+    "es": "quien, establecido en la Union, recibe mandato escrito de un proveedor para cumplir sus obligaciones en su nombre",
+    "en": "who, established in the Union, has a written mandate from a provider to carry out their obligations on their behalf"
+   }
+  },
+  {
+   "id": "importador",
+   "articulo": "3.6",
+   "nombre": {
+    "es": "importador",
+    "en": "importer"
+   },
+   "definicion": {
+    "es": "quien, establecido en la Union, introduce en el mercado un sistema de IA que lleva el nombre de una persona establecida fuera",
+    "en": "who, established in the Union, places on the market an AI system bearing the name of a person established outside"
+   }
+  },
+  {
+   "id": "distribuidor",
+   "articulo": "3.7",
+   "nombre": {
+    "es": "distribuidor",
+    "en": "distributor"
+   },
+   "definicion": {
+    "es": "quien, en la cadena de suministro y sin ser proveedor ni importador, comercializa un sistema de IA",
+    "en": "who, in the supply chain and being neither provider nor importer, makes an AI system available on the market"
+   }
+  },
+  {
+   "id": "fabricante_producto",
+   "articulo": "25.3",
+   "nombre": {
+    "es": "fabricante de productos",
+    "en": "product manufacturer"
+   },
+   "definicion": {
+    "es": "quien introduce en el mercado un producto del Anexo I con un sistema de IA de alto riesgo como componente de seguridad, con su nombre",
+    "en": "who places on the market an Annex I product with a high-risk AI system as a safety component, under their own name"
+   }
+  },
+  {
+   "id": "proveedor_modelo",
+   "articulo": "53",
+   "nombre": {
+    "es": "proveedor de modelo de uso general",
+    "en": "general-purpose AI model provider"
+   },
+   "definicion": {
+    "es": "quien introduce en el mercado un modelo de IA de uso general, con o sin riesgo sistemico",
+    "en": "who places on the market a general-purpose AI model, with or without systemic risk"
+   }
+  }
+ ]
+}

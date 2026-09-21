@@ -1,0 +1,411 @@
+{
+  "$schema": "../esquema/control.schema.json",
+  "norma": {
+    "referencia": "ISO/IEC 42001:2023",
+    "titulo": {
+      "es": "Tecnología de la información. Inteligencia artificial. Sistema de gestión",
+      "en": "Information technology. Artificial intelligence. Management system"
+    },
+    "version_catalogo": "2026-09-20",
+    "aviso_de_fuente": {
+      "es": "La norma es de pago y su texto no se reproduce aquí. Este fichero lista los identificadores y títulos de los controles del Anexo A y añade el nivel de comprobabilidad y el cruce con el Reglamento, que son trabajo propio. El recuento total de controles lo emite `make catálogo` contando este fichero, no se escribe a mano: las fuentes públicas discrepan entre 38 y 41 y ninguna es la norma.",
+      "en": "The standard is paywalled and its text is not reproduced here. This file lists the Annex A control identifiers and titles and adds the checkability tier and the Regulation crosswalk, which are our own work. The total control count is emitted by `make catalogo` counting this file, never typed: public sources disagree between 38 and 41 and none of them is the standard."
+    }
+  },
+  "grupos": {
+    "A.2": {
+      "es": "Políticas relativas a la IA",
+      "en": "Policies related to AI"
+    },
+    "A.3": {
+      "es": "Organización interna",
+      "en": "Internal organization"
+    },
+    "A.4": {
+      "es": "Recursos para los sistemas de IA",
+      "en": "Resources for AI systems"
+    },
+    "A.5": {
+      "es": "Evaluación de impactos de los sistemas de IA",
+      "en": "Assessing impacts of AI systems"
+    },
+    "A.6": {
+      "es": "Ciclo de vida del sistema de IA",
+      "en": "AI system life cycle"
+    },
+    "A.7": {
+      "es": "Datos para los sistemas de IA",
+      "en": "Data for AI systems"
+    },
+    "A.8": {
+      "es": "Información para las partes interesadas",
+      "en": "Information for interested parties"
+    },
+    "A.9": {
+      "es": "Uso de los sistemas de IA",
+      "en": "Use of AI systems"
+    },
+    "A.10": {
+      "es": "Relaciones con terceros y clientes",
+      "en": "Third-party and customer relationships"
+    }
+  },
+  "controles": [
+    {
+      "id": "A.2.2",
+      "titulo": {
+        "es": "Política de IA",
+        "en": "AI policy"
+      },
+      "nivel": "organizativa"
+    },
+    {
+      "id": "A.2.3",
+      "titulo": {
+        "es": "Alineación con otras políticas de la organización",
+        "en": "Alignment with other organizational policies"
+      },
+      "nivel": "organizativa"
+    },
+    {
+      "id": "A.2.4",
+      "titulo": {
+        "es": "Revisión de la política de IA",
+        "en": "Review of the AI policy"
+      },
+      "nivel": "organizativa"
+    },
+    {
+      "id": "A.3.2",
+      "titulo": {
+        "es": "Funciones y responsabilidades de IA",
+        "en": "AI roles and responsibilities"
+      },
+      "nivel": "organizativa"
+    },
+    {
+      "id": "A.3.3",
+      "titulo": {
+        "es": "Comunicación de preocupaciones",
+        "en": "Reporting of concerns"
+      },
+      "nivel": "organizativa"
+    },
+    {
+      "id": "A.4.2",
+      "titulo": {
+        "es": "Documentación de recursos",
+        "en": "Resource documentation"
+      },
+      "nivel": "generable",
+      "genera": [
+        "inventario_recursos"
+      ]
+    },
+    {
+      "id": "A.4.3",
+      "titulo": {
+        "es": "Recursos de datos",
+        "en": "Data resources"
+      },
+      "nivel": "maquina",
+      "comprueba": [
+        "inventario_datos_con_digest",
+        "linaje_declarado"
+      ]
+    },
+    {
+      "id": "A.4.4",
+      "titulo": {
+        "es": "Recursos de herramientas",
+        "en": "Tooling resources"
+      },
+      "nivel": "maquina",
+      "comprueba": [
+        "dependencias_fijadas",
+        "sbom_presente"
+      ]
+    },
+    {
+      "id": "A.4.5",
+      "titulo": {
+        "es": "Recursos de sistema y de cómputo",
+        "en": "System and computing resources"
+      },
+      "nivel": "maquina",
+      "comprueba": [
+        "computo_declarado_en_despliegue"
+      ]
+    },
+    {
+      "id": "A.4.6",
+      "titulo": {
+        "es": "Recursos humanos",
+        "en": "Human resources"
+      },
+      "nivel": "organizativa"
+    },
+    {
+      "id": "A.5.2",
+      "titulo": {
+        "es": "Proceso de evaluación de impacto del sistema de IA",
+        "en": "AI system impact assessment process"
+      },
+      "nivel": "organizativa"
+    },
+    {
+      "id": "A.5.3",
+      "titulo": {
+        "es": "Documentación de las evaluaciones de impacto",
+        "en": "Documentation of AI system impact assessments"
+      },
+      "nivel": "generable"
+    },
+    {
+      "id": "A.5.4",
+      "titulo": {
+        "es": "Evaluación del impacto sobre personas o grupos",
+        "en": "Assessing AI system impact on individuals or groups"
+      },
+      "nivel": "juzgada"
+    },
+    {
+      "id": "A.5.5",
+      "titulo": {
+        "es": "Evaluación de los impactos sociales",
+        "en": "Assessing societal impacts of AI systems"
+      },
+      "nivel": "juzgada"
+    },
+    {
+      "id": "A.6.1.2",
+      "titulo": {
+        "es": "Objetivos para el desarrollo responsable",
+        "en": "Objectives for responsible development"
+      },
+      "nivel": "organizativa"
+    },
+    {
+      "id": "A.6.1.3",
+      "titulo": {
+        "es": "Procesos de diseño y desarrollo responsables",
+        "en": "Processes for responsible design and development"
+      },
+      "nivel": "organizativa"
+    },
+    {
+      "id": "A.6.2.2",
+      "titulo": {
+        "es": "Requisitos y especificación del sistema de IA",
+        "en": "AI system requirements and specification"
+      },
+      "nivel": "generable"
+    },
+    {
+      "id": "A.6.2.3",
+      "titulo": {
+        "es": "Documentación del diseño y desarrollo",
+        "en": "Documentation of AI system design and development"
+      },
+      "nivel": "generable",
+      "genera": [
+        "arquitectura_del_sistema"
+      ]
+    },
+    {
+      "id": "A.6.2.4",
+      "titulo": {
+        "es": "Verificación y validación del sistema de IA",
+        "en": "AI system verification and validation"
+      },
+      "nivel": "maquina",
+      "comprueba": [
+        "cifra_declarada_reproducible",
+        "suite_evaluacion_existe",
+        "suite_corre_en_ci"
+      ]
+    },
+    {
+      "id": "A.6.2.5",
+      "titulo": {
+        "es": "Despliegue del sistema de IA",
+        "en": "AI system deployment"
+      },
+      "nivel": "maquina",
+      "comprueba": [
+        "digest_desplegado_coincide_con_aprobado"
+      ]
+    },
+    {
+      "id": "A.6.2.6",
+      "titulo": {
+        "es": "Operación y seguimiento del sistema de IA",
+        "en": "AI system operation and monitoring"
+      },
+      "nivel": "maquina",
+      "comprueba": [
+        "senal_declarada_emitida",
+        "umbral_deteccion_cableado"
+      ]
+    },
+    {
+      "id": "A.6.2.7",
+      "titulo": {
+        "es": "Documentación técnica del sistema de IA",
+        "en": "AI system technical documentation"
+      },
+      "nivel": "generable"
+    },
+    {
+      "id": "A.6.2.8",
+      "titulo": {
+        "es": "Registro de acontecimientos del sistema de IA",
+        "en": "AI system record keeping"
+      },
+      "nivel": "maquina",
+      "comprueba": [
+        "punto_invocacion_registra",
+        "campos_minimos_presentes",
+        "retencion_configurada"
+      ]
+    },
+    {
+      "id": "A.7.2",
+      "titulo": {
+        "es": "Datos para el desarrollo y la mejora",
+        "en": "Data for development and enhancement"
+      },
+      "nivel": "maquina",
+      "comprueba": [
+        "particiones_declaradas",
+        "fuga_entre_particiones"
+      ]
+    },
+    {
+      "id": "A.7.3",
+      "titulo": {
+        "es": "Adquisición de datos",
+        "en": "Acquisition of data"
+      },
+      "nivel": "juzgada"
+    },
+    {
+      "id": "A.7.4",
+      "titulo": {
+        "es": "Calidad de los datos para los sistemas de IA",
+        "en": "Quality of data for AI systems"
+      },
+      "nivel": "juzgada"
+    },
+    {
+      "id": "A.7.5",
+      "titulo": {
+        "es": "Procedencia de los datos",
+        "en": "Data provenance"
+      },
+      "nivel": "maquina",
+      "comprueba": [
+        "linaje_conjunto_datos",
+        "digest_declarado_coincide"
+      ]
+    },
+    {
+      "id": "A.7.6",
+      "titulo": {
+        "es": "Preparación de los datos",
+        "en": "Data preparation"
+      },
+      "nivel": "maquina",
+      "comprueba": [
+        "transformaciones_registradas"
+      ]
+    },
+    {
+      "id": "A.8.2",
+      "titulo": {
+        "es": "Documentación del sistema e información para los usuarios",
+        "en": "System documentation and information for users"
+      },
+      "nivel": "generable"
+    },
+    {
+      "id": "A.8.3",
+      "titulo": {
+        "es": "Información externa",
+        "en": "External reporting"
+      },
+      "nivel": "organizativa"
+    },
+    {
+      "id": "A.8.4",
+      "titulo": {
+        "es": "Comunicación de incidentes",
+        "en": "Communication of incidents"
+      },
+      "nivel": "maquina",
+      "comprueba": [
+        "ruta_alerta_a_incidente"
+      ]
+    },
+    {
+      "id": "A.8.5",
+      "titulo": {
+        "es": "Información para las partes interesadas",
+        "en": "Information for interested parties"
+      },
+      "nivel": "organizativa"
+    },
+    {
+      "id": "A.9.2",
+      "titulo": {
+        "es": "Procesos para el uso responsable de los sistemas de IA",
+        "en": "Processes for responsible use of AI systems"
+      },
+      "nivel": "organizativa"
+    },
+    {
+      "id": "A.9.3",
+      "titulo": {
+        "es": "Objetivos para el uso responsable del sistema de IA",
+        "en": "Objectives for responsible use of AI system"
+      },
+      "nivel": "organizativa"
+    },
+    {
+      "id": "A.9.4",
+      "titulo": {
+        "es": "Uso previsto del sistema de IA",
+        "en": "Intended use of the AI system"
+      },
+      "nivel": "juzgada"
+    },
+    {
+      "id": "A.10.2",
+      "titulo": {
+        "es": "Asignación de responsabilidades",
+        "en": "Allocating responsibilities"
+      },
+      "nivel": "organizativa"
+    },
+    {
+      "id": "A.10.3",
+      "titulo": {
+        "es": "Proveedores",
+        "en": "Suppliers"
+      },
+      "nivel": "maquina",
+      "comprueba": [
+        "procedencia_modelo_tercero",
+        "firma_artefacto_verificada"
+      ]
+    },
+    {
+      "id": "A.10.4",
+      "titulo": {
+        "es": "Clientes",
+        "en": "Customers"
+      },
+      "nivel": "organizativa"
+    }
+  ]
+}

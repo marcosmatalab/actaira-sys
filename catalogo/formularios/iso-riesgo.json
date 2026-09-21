@@ -1,0 +1,162 @@
+{
+ "$schema": "../esquema/formulario.schema.json",
+ "paquete": "iso-riesgo",
+ "version": "1.0.0",
+ "autor": "Actaira",
+ "titulo": {
+  "es": "Riesgo, tratamiento e impacto",
+  "en": "Risk, treatment and impact"
+ },
+ "destinatario_principal": "responsable",
+ "preguntas": [
+  {
+   "id": "F-RSK-1",
+   "sirve_a": [
+    "AIA-009",
+    "ISO-6.1.1"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "¿Cuáles son sus criterios de riesgo de IA: qué separa un riesgo aceptable de uno que no lo es?",
+    "en": "What are your AI risk criteria: what separates an acceptable risk from an unacceptable one?"
+   },
+   "ayuda": {
+    "es": "Es la cláusula que más sistemas de gestión suspende, porque casi nadie la escribe y sin ella la evaluación de riesgos no es repetible. Necesita una escala, un umbral y quien decide cuando algo está en el límite. Si su criterio es cualitativo, dígalo: cualitativo y explícito vale, implícito no.",
+    "en": "This is the clause that fails the most management systems, because almost nobody writes it and without it the risk assessment is not repeatable. You need a scale, a threshold and who decides when something is borderline. If your criterion is qualitative, say so: qualitative and explicit is fine, implicit is not."
+   },
+   "formato": "texto_largo",
+   "vigencia_dias": 365,
+   "exige": {
+    "minimo_caracteres": 200
+   }
+  },
+  {
+   "id": "F-RSK-2",
+   "sirve_a": [
+    "ISO-6.1.2",
+    "AIA-009"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "Describa su proceso de evaluación de riesgos: quién lo ejecuta, cada cuánto, y cómo asegura que dos personas distintas lleguen al mismo resultado.",
+    "en": "Describe your risk assessment process: who runs it, how often, and how you ensure two different people reach the same result."
+   },
+   "ayuda": {
+    "es": "La cláusula 6.1.2.b pide resultados consistentes, válidos y comparables entre evaluaciones repetidas. Eso, en la práctica, significa que el proceso esté escrito con suficiente detalle como para que no dependa de quien lo hace. El artículo 9 del Reglamento pide además que el sistema de gestión de riesgos sea iterativo y continuo a lo largo de todo el ciclo de vida, no una foto anual.",
+    "en": "Clause 6.1.2 b) requires consistent, valid and comparable results across repeated assessments. In practice that means the process is written in enough detail that it does not depend on who runs it. Article 9 of the Regulation further requires the risk management system to be iterative and continuous across the whole lifecycle, not an annual snapshot."
+   },
+   "formato": "texto_largo",
+   "vigencia_dias": 365,
+   "exige": {
+    "minimo_caracteres": 200
+   },
+   "produce": "proceso-de-riesgo"
+  },
+  {
+   "id": "F-RSK-3",
+   "sirve_a": [
+    "ISO-6.1.3"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "¿Quién aprueba el plan de tratamiento de riesgos y quién acepta formalmente el riesgo residual?",
+    "en": "Who approves the risk treatment plan and who formally accepts the residual risk?"
+   },
+   "ayuda": {
+    "es": "La cláusula 6.1.3 exige aprobación de la dirección designada para las dos cosas por separado. Aceptar riesgo residual es una decisión de negocio con nombre y fecha, y es la que un auditor busca cuando algo ha salido mal.",
+    "en": "Clause 6.1.3 requires approval by designated management for both, separately. Accepting residual risk is a business decision with a name and a date, and it is the one an auditor looks for when something has gone wrong."
+   },
+   "formato": "persona",
+   "vigencia_dias": 180,
+   "exige": {
+    "minimo_elementos": 1
+   }
+  },
+  {
+   "id": "F-RSK-4",
+   "sirve_a": [
+    "ISO-6.1.4",
+    "AIA-027",
+    "A.5.2"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "Describa su proceso de evaluación del impacto del sistema de IA sobre personas, grupos y sociedades.",
+    "en": "Describe your process for assessing the AI system's impact on individuals, groups and societies."
+   },
+   "ayuda": {
+    "es": "No es la evaluación de riesgos: la 6.1.2 mira el riesgo para la organización y sus objetivos, la 6.1.4 mira las consecuencias para las personas, incluido el uso indebido previsible. Tiene que tener en cuenta el contexto técnico y social concreto donde se despliega y las jurisdicciones aplicables. Si su sistema entra en el artículo 27 del Reglamento, esta evaluación y la de derechos fundamentales comparten casi toda la evidencia: se pregunta una vez.",
+    "en": "It is not the risk assessment: 6.1.2 looks at risk to the organization and its objectives, 6.1.4 looks at consequences for people, including foreseeable misuse. It must take into account the specific technical and societal context of deployment and the applicable jurisdictions. If your system falls under Article 27 of the Regulation, this assessment and the fundamental rights one share nearly all their evidence: it is asked once."
+   },
+   "formato": "texto_largo",
+   "vigencia_dias": 365,
+   "exige": {
+    "minimo_caracteres": 200
+   },
+   "produce": "evaluacion-de-impacto"
+  },
+  {
+   "id": "F-RSK-5",
+   "sirve_a": [
+    "ISO-6.1.4",
+    "A.5.4",
+    "AIA-027"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "¿Qué personas o grupos pueden verse perjudicados por este sistema, y cómo lo ha comprobado?",
+    "en": "Which individuals or groups can be harmed by this system, and how have you checked?"
+   },
+   "ayuda": {
+    "es": "Nombre los grupos concretos y el perjuicio concreto. 'Los usuarios' no es un grupo. Si ha medido diferencias de comportamiento del modelo entre grupos, diga con que métrica y con que datos; si no lo ha medido, dígalo también: una evaluación de impacto que declara lo que no ha mirado vale más que una que insinúa que lo ha mirado todo.",
+    "en": "Name the specific groups and the specific harm. 'Users' is not a group. If you have measured differences in model behaviour across groups, say with which metric and which data; if you have not measured it, say that too: an impact assessment that declares what it did not look at is worth more than one implying it looked at everything."
+   },
+   "formato": "texto_largo",
+   "vigencia_dias": 180,
+   "exige": {
+    "minimo_caracteres": 200
+   }
+  },
+  {
+   "id": "F-RSK-6",
+   "sirve_a": [
+    "ISO-6.1.4",
+    "A.5.5"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "¿Ha valorado los impactos sociales más amplios de este sistema más allá de sus usuarios directos?",
+    "en": "Have you assessed this system's broader societal impacts beyond its direct users?"
+   },
+   "ayuda": {
+    "es": "El control A.5.5 separa el impacto sobre individuos del impacto sobre la sociedad: efectos sobre el empleo del sector, sobre el acceso a un servicio, sobre la concentración de un mercado, sobre el medio ambiente. Si concluye que no hay impacto social relevante, esa conclusión también se firma.",
+    "en": "Control A.5.5 separates impact on individuals from impact on society: effects on sector employment, on access to a service, on market concentration, on the environment. If you conclude there is no relevant societal impact, that conclusion is signed too."
+   },
+   "formato": "texto_largo",
+   "vigencia_dias": 365,
+   "exige": {
+    "minimo_caracteres": 150
+   }
+  },
+  {
+   "id": "F-RSK-7",
+   "sirve_a": [
+    "ISO-6.3"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "¿Cómo se planifican los cambios en el sistema de gestión de la IA?",
+    "en": "How are changes to the AI management system planned?"
+   },
+   "ayuda": {
+    "es": "La cláusula 6.3 es corta y se pasa por alto: pide que los cambios se hagan de manera planificada. Basta con decir quién los propone, quién los aprueba y dónde se registran.",
+    "en": "Clause 6.3 is short and gets overlooked: it requires changes to be carried out in a planned manner. It is enough to say who proposes them, who approves them and where they are recorded."
+   },
+   "formato": "texto_corto",
+   "vigencia_dias": 365,
+   "exige": {
+    "minimo_caracteres": 80
+   }
+  }
+ ]
+}

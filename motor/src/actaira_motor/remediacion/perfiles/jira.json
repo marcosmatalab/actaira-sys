@@ -1,0 +1,40 @@
+{
+  "sistema": "jira",
+  "nota": "Jira Cloud. El proyecto y el tipo de incidencia se escriben en el destino como ?proyecto=ACT&tipo=Task; se rellenan en la plantilla por sustitucion de texto.",
+  "credencial": {
+    "variable": "ACTAIRA_JIRA_TOKEN",
+    "cabeceras": {"Authorization": "Basic {credencial}"}
+  },
+  "abrir": {
+    "metodo": "POST",
+    "url": "{destino}/rest/api/3/issue",
+    "cuerpo": {
+      "fields": {
+        "summary": "{titulo}",
+        "description": {
+          "type": "doc", "version": 1,
+          "content": [{"type": "paragraph",
+                       "content": [{"type": "text", "text": "{cuerpo}"}]}]
+        },
+        "labels": ["actaira", "{nc}"]
+      }
+    },
+    "ruta_referencia": "key",
+    "ruta_url": "self"
+  },
+  "consultar": {
+    "metodo": "GET",
+    "url": "{destino}/rest/api/3/issue/{referencia}?expand=changelog",
+    "ruta_estado": "fields.status.name",
+    "ruta_actor": "fields.assignee.displayName",
+    "ruta_cuando": "fields.statuscategorychangedate"
+  },
+  "limites": [
+    {"que": {"es": "no se leen los comentarios del ticket: lo que se discutio ahi no entra en el expediente",
+             "en": "ticket comments are not read: what was discussed there does not enter the file"},
+     "por_que": "fuera_del_alcance_de_la_regla"},
+    {"que": {"es": "el cargo de quien mueve el ticket no lo guarda Jira, asi que hay que pasarlo",
+             "en": "Jira does not store the role of whoever moves the ticket, so it must be supplied"},
+     "por_que": "falta_aporte"}
+  ]
+}

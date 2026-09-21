@@ -1,0 +1,242 @@
+{
+  "$schema": "../esquema/formulario.schema.json",
+  "paquete": "aia-clasificacion",
+  "version": "1.0.0",
+  "autor": "Actaira",
+  "titulo": {
+    "es": "Clasificación del sistema",
+    "en": "System classification"
+  },
+  "destinatario_principal": "responsable",
+  "nota": {
+    "es": "Estas respuestas deciden que obligaciones le atan. Se preguntan primero y se firman aparte: una clasificación equivocada no produce un expediente incompleto, produce un expediente sobre otro sistema.",
+    "en": "These answers decide which obligations bind you. They are asked first and signed separately: a wrong classification does not produce an incomplete file, it produces a file about a different system."
+  },
+  "preguntas": [
+    {
+      "id": "F-CLS-1",
+      "sirve_a": [
+        "AIA-005"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Hace su sistema alguna de las prácticas prohibidas del artículo 5?",
+        "en": "Does your system perform any of the prohibited practices in Article 5?"
+      },
+      "ayuda": {
+        "es": "El artículo 5 no admite mitigación: si entra, no se despliega. Está en vigor desde el 2 de febrero de 2025 y es la única parte del Reglamento donde la respuesta correcta a un hallazgo es apagar el sistema, no documentarlo. Marque todas las que apliquen o la última opción.",
+        "en": "Article 5 admits no mitigation: if you fall under it, you do not deploy. It has applied since 2 February 2025 and is the only part of the Regulation where the right response to a finding is to switch the system off, not to document it. Tick all that apply or the last option."
+      },
+      "formato": "eleccion",
+      "vigencia_dias": 180,
+      "opciones": [
+        {
+          "valor": "subliminal",
+          "es": "Técnicas subliminales o deliberadamente manipuladoras que mermen la capacidad de decidir",
+          "en": "Subliminal or purposefully manipulative techniques impairing the ability to decide"
+        },
+        {
+          "valor": "vulnerabilidad",
+          "es": "Explotación de vulnerabilidades por edad, discapacidad o situación social o económica",
+          "en": "Exploitation of vulnerabilities due to age, disability or social or economic situation"
+        },
+        {
+          "valor": "puntuacion_social",
+          "es": "Puntuación social que lleve a trato perjudicial en contextos no relacionados",
+          "en": "Social scoring leading to detrimental treatment in unrelated contexts"
+        },
+        {
+          "valor": "prediccion_delictiva",
+          "es": "Predicción del riesgo de que una persona cometa un delito basada solo en perfilado o rasgos",
+          "en": "Predicting a person's risk of committing a crime based solely on profiling or traits"
+        },
+        {
+          "valor": "raspado_facial",
+          "es": "Creación de bases de reconocimiento facial mediante raspado no selectivo",
+          "en": "Building facial recognition databases through untargeted scraping"
+        },
+        {
+          "valor": "emociones_trabajo",
+          "es": "Inferencia de emociones en el lugar de trabajo o en centros educativos",
+          "en": "Emotion inference in the workplace or in educational institutions"
+        },
+        {
+          "valor": "categorizacion",
+          "es": "Categorización biométrica para deducir raza, opiniones políticas, afiliación sindical, creencias, vida u orientación sexual",
+          "en": "Biometric categorisation to infer race, political opinions, trade union membership, beliefs, sex life or sexual orientation"
+        },
+        {
+          "valor": "identificacion_remota",
+          "es": "Identificación biométrica remota en tiempo real en espacios de acceso público con fines policiales",
+          "en": "Real-time remote biometric identification in publicly accessible spaces for law enforcement"
+        },
+        {
+          "valor": "ninguna",
+          "es": "Ninguna de las anteriores",
+          "en": "None of the above"
+        }
+      ],
+      "exige": {
+        "excluyente": "ninguna",
+        "minimo_elementos": 1
+      }
+    },
+    {
+      "id": "F-CLS-2",
+      "sirve_a": [
+        "AIA-006"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Es su sistema un componente de seguridad de un producto cubierto por la legislación de armonización del Anexo I, o es el producto mismo?",
+        "en": "Is your system a safety component of a product covered by the Annex I harmonisation legislation, or the product itself?"
+      },
+      "ayuda": {
+        "es": "Esta es la primera de las dos puertas del artículo 6. Si la respuesta es si y el producto necesita evaluación de la conformidad por un tercero, el sistema es de alto riesgo por el apartado 1, sin pasar por el Anexo III.",
+        "en": "This is the first of Article 6's two gates. If the answer is yes and the product requires third-party conformity assessment, the system is high-risk under paragraph 1, without going through Annex III."
+      },
+      "formato": "si_no",
+      "vigencia_dias": 180
+    },
+    {
+      "id": "F-CLS-3",
+      "sirve_a": [
+        "AIA-006"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿En cuál de los ocho ámbitos del Anexo III encaja el uso previsto de su sistema?",
+        "en": "Which of the eight Annex III areas does your system's intended use fall into?"
+      },
+      "ayuda": {
+        "es": "La puerta del apartado 2. Si encaja en alguno, el sistema es de alto riesgo salvo que pueda acogerse a la excepción del artículo 6.3, que exige que no plantee un riesgo importante de perjuicio y que además se documente y se registre esa evaluación antes de comercializar.",
+        "en": "The paragraph 2 gate. If it fits any, the system is high-risk unless it can rely on the Article 6(3) derogation, which requires that it does not pose a significant risk of harm and that the assessment be documented and registered before placing on the market."
+      },
+      "formato": "eleccion",
+      "vigencia_dias": 180,
+      "opciones": [
+        {
+          "valor": "biometria",
+          "es": "Biometría",
+          "en": "Biometrics"
+        },
+        {
+          "valor": "infraestructuras",
+          "es": "Infraestructuras críticas",
+          "en": "Critical infrastructure"
+        },
+        {
+          "valor": "educacion",
+          "es": "Educación y formación profesional",
+          "en": "Education and vocational training"
+        },
+        {
+          "valor": "empleo",
+          "es": "Empleo, gestión de trabajadores y acceso al autoempleo",
+          "en": "Employment, workers management and access to self-employment"
+        },
+        {
+          "valor": "servicios",
+          "es": "Acceso a servicios esenciales públicos y privados",
+          "en": "Access to essential public and private services"
+        },
+        {
+          "valor": "policial",
+          "es": "Garantía del cumplimiento del Derecho",
+          "en": "Law enforcement"
+        },
+        {
+          "valor": "migracion",
+          "es": "Migración, asilo y control fronterizo",
+          "en": "Migration, asylum and border control"
+        },
+        {
+          "valor": "justicia",
+          "es": "Administración de justicia y procesos democraticos",
+          "en": "Administration of justice and democratic processes"
+        },
+        {
+          "valor": "ninguno",
+          "es": "Ninguno de los ocho",
+          "en": "None of the eight"
+        }
+      ],
+      "exige": {
+        "excluyente": "ninguno",
+        "minimo_elementos": 1
+      }
+    },
+    {
+      "id": "F-CLS-4",
+      "sirve_a": [
+        "AIA-006"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Se acoge a la excepción del artículo 6, apartado 3, y con qué fundamento?",
+        "en": "Are you relying on the Article 6(3) derogation, and on what basis?"
+      },
+      "ayuda": {
+        "es": "La excepción solo cabe si el sistema no plantea un riesgo importante de perjuicio para la salud, la seguridad o los derechos fundamentales, y el Reglamento cierra la puerta cuando el sistema realiza perfilado de personas físicas: ahi no cabe excepción nunca. Tiene que documentar la evaluación ANTES de comercializar y registrarla. Si se acoge y no lo documenta, no se ha acogido.",
+        "en": "The derogation only applies if the system does not pose a significant risk of harm to health, safety or fundamental rights, and the Regulation shuts the door when the system performs profiling of natural persons: there the derogation never applies. You must document the assessment BEFORE placing on the market and register it. If you rely on it and do not document it, you have not relied on it."
+      },
+      "formato": "texto_largo",
+      "vigencia_dias": 180,
+      "exige": {
+        "minimo_caracteres": 200
+      },
+      "si": {
+        "pregunta": "F-CLS-3",
+        "distinto_de": "ninguno"
+      }
+    },
+    {
+      "id": "F-CLS-5",
+      "sirve_a": [
+        "AIA-050"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Interactúa su sistema directamente con personas, genera o manipula contenido sintético, o infiere emociones o categorías biométricas?",
+        "en": "Does your system interact directly with people, generate or manipulate synthetic content, or infer emotions or biometric categories?"
+      },
+      "ayuda": {
+        "es": "El artículo 50 se aplica desde el 2 de agosto de 2026 y no depende del alto riesgo: ata también a sistemas de riesgo limitado. Cada una de estas cuatro situaciones arrastra una obligación de transparencia distinta y Actaira comprueba en el código las que se pueden comprobar.",
+        "en": "Article 50 applies from 2 August 2026 and does not depend on high-risk status: it also binds limited-risk systems. Each of these four situations carries a different transparency duty and Actaira checks in code the ones that can be checked."
+      },
+      "formato": "eleccion",
+      "vigencia_dias": 180,
+      "opciones": [
+        {
+          "valor": "interaccion",
+          "es": "Interactúa directamente con personas físicas",
+          "en": "Interacts directly with natural persons"
+        },
+        {
+          "valor": "sintetico",
+          "es": "Genera o manipula imagen, sonido, video o texto sintéticos",
+          "en": "Generates or manipulates synthetic image, audio, video or text"
+        },
+        {
+          "valor": "emociones",
+          "es": "Reconoce emociones o hace categorización biométrica",
+          "en": "Performs emotion recognition or biometric categorisation"
+        },
+        {
+          "valor": "ultrasuplantacion",
+          "es": "Produce ultrasuplantaciones o texto publicado para informar al público",
+          "en": "Produces deep fakes or text published to inform the public"
+        },
+        {
+          "valor": "ninguna",
+          "es": "Ninguna de las cuatro",
+          "en": "None of the four"
+        }
+      ],
+      "exige": {
+        "excluyente": "ninguna",
+        "minimo_elementos": 1
+      }
+    }
+  ]
+}

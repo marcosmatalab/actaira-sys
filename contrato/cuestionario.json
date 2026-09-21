@@ -1,0 +1,270 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://actaira.com/contrato/cuestionario.json",
+ "title": "El cuestionario, y la resta que hace el codigo",
+ "type": "object",
+ "properties": {
+  "esquema": {
+   "const": "actaira/cuestionario/v1"
+  },
+  "fecha": {
+   "type": "string",
+   "format": "date"
+  },
+  "recuento": {
+   "type": "object",
+   "propertyNames": {
+    "enum": [
+     "pendiente",
+     "contestada",
+     "rancia",
+     "superada",
+     "no_fiable",
+     "no_procede",
+     "espera_a",
+     "la_contesta_el_codigo"
+    ]
+   },
+   "additionalProperties": {
+    "type": "integer",
+    "minimum": 0
+   }
+  },
+  "ahorro": {
+   "type": "object",
+   "properties": {
+    "preguntas_que_contesta_el_codigo": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "porque": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "nota": {
+     "type": "object",
+     "properties": {
+      "es": {
+       "type": "string",
+       "minLength": 1
+      },
+      "en": {
+       "type": "string",
+       "minLength": 1
+      }
+     },
+     "required": [
+      "es",
+      "en"
+     ]
+    }
+   },
+   "required": [
+    "preguntas_que_contesta_el_codigo",
+    "porque",
+    "nota"
+   ]
+  },
+  "preguntas": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string",
+      "pattern": "^F-"
+     },
+     "estado": {
+      "enum": [
+       "pendiente",
+       "contestada",
+       "rancia",
+       "superada",
+       "no_fiable",
+       "no_procede",
+       "espera_a",
+       "la_contesta_el_codigo"
+      ]
+     },
+     "destinatario": {
+      "enum": [
+       "direccion",
+       "responsable",
+       "tecnico"
+      ]
+     },
+     "texto": {
+      "type": "object",
+      "properties": {
+       "es": {
+        "type": "string",
+        "minLength": 1
+       },
+       "en": {
+        "type": "string",
+        "minLength": 1
+       }
+      },
+      "required": [
+       "es",
+       "en"
+      ]
+     },
+     "ayuda": {
+      "type": "object",
+      "properties": {
+       "es": {
+        "type": "string",
+        "minLength": 1
+       },
+       "en": {
+        "type": "string",
+        "minLength": 1
+       }
+      },
+      "required": [
+       "es",
+       "en"
+      ]
+     },
+     "huella": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+     },
+     "por_que": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+       "type": "object",
+       "properties": {
+        "id": {
+         "type": "string"
+        },
+        "marco": {
+         "enum": [
+          "ai-act",
+          "iso42001"
+         ]
+        },
+        "referencia": {
+         "type": "object",
+         "properties": {
+          "es": {
+           "type": "string",
+           "minLength": 1
+          },
+          "en": {
+           "type": "string",
+           "minLength": 1
+          }
+         },
+         "required": [
+          "es",
+          "en"
+         ]
+        },
+        "titulo": {
+         "type": "object",
+         "properties": {
+          "es": {
+           "type": "string",
+           "minLength": 1
+          },
+          "en": {
+           "type": "string",
+           "minLength": 1
+          }
+         },
+         "required": [
+          "es",
+          "en"
+         ]
+        }
+       },
+       "required": [
+        "id",
+        "marco",
+        "referencia",
+        "titulo"
+       ]
+      }
+     }
+    },
+    "required": [
+     "id",
+     "estado",
+     "destinatario",
+     "texto",
+     "ayuda",
+     "huella",
+     "por_que"
+    ]
+   }
+  },
+  "nombres_de_estado": {
+   "type": "object",
+   "additionalProperties": {
+    "type": "object",
+    "properties": {
+     "es": {
+      "type": "string",
+      "minLength": 1
+     },
+     "en": {
+      "type": "string",
+      "minLength": 1
+     }
+    },
+    "required": [
+     "es",
+     "en"
+    ],
+    "additionalProperties": false
+   }
+  },
+  "recuento_por_confianza": {
+   "type": "object",
+   "description": "Cuantas respuestas hay de cada nivel de confianza. Va aparte del recuento por estado y no resta de el: una respuesta sin firma sigue siendo una respuesta contestada; lo que no puede es sostener una afirmacion sobre QUIEN la dio.",
+   "additionalProperties": {
+    "type": "integer",
+    "minimum": 0
+   },
+   "propertyNames": {
+    "enum": [
+     "sin_firma",
+     "firma_rota",
+     "firmada",
+     "identidad_verificada"
+    ]
+   }
+  },
+  "nota_de_confianza": {
+   "type": "object",
+   "description": "Que significa cada nivel, en los dos idiomas.",
+   "required": [
+    "es",
+    "en"
+   ],
+   "properties": {
+    "es": {
+     "type": "string"
+    },
+    "en": {
+     "type": "string"
+    }
+   }
+  }
+ },
+ "required": [
+  "ahorro",
+  "esquema",
+  "fecha",
+  "nombres_de_estado",
+  "nota_de_confianza",
+  "preguntas",
+  "recuento",
+  "recuento_por_confianza"
+ ]
+}

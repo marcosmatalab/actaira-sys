@@ -1,0 +1,417 @@
+{
+ "version_catalogo": "2026-09-20",
+ "por_que_un_solo_fichero": {
+  "es": "El cruce vivia duplicado, declarado en el catálogo del Reglamento y otra vez en el de la norma. La primera pasada del cargador encontró 30 asimetrías entre las dos copias. La regla 10 de la constitución dice que dos comprobaciones sobre la misma propiedad comparten su definición o se anulan, y esto era la misma frase escrita dos veces: cada copia era coherente consigo misma y el desacuerdo quedaba invisible entre las dos. Alternativa rechazada: dejar las dos copias y añadir una puerta de simetría. Se rechaza porque una puerta que compara dos copias solo dice que difieren, no cuál tiene razón, y obliga a editar dos ficheros por cada cambio normativo, que es donde se cuela el error que la puerta luego encuentra.",
+  "en": "The crosswalk was duplicated, declared in the Regulation catalogue and again in the standard's. The loader's first run found 30 asymmetries between the two copies. Rule 10 of the constitution says two checks on the same property share their definition or they cancel out, and this was one sentence written twice: each copy was self-consistent and the disagreement stayed invisible between them. Rejected alternative: keep both copies and add a symmetry gate. Rejected because a gate comparing two copies only says they differ, not which is right, and it forces editing two files per legal change, which is where the error the gate later finds gets in."
+ },
+ "nota_de_alcance": {
+  "es": "Un cruce dice que dos textos hablan de lo mismo, NO que cumplir uno cumpla el otro. La evidencia se reutiliza; la conclusión no se hereda.",
+  "en": "A crosswalk says two texts are about the same thing, NOT that satisfying one satisfies the other. Evidence is reused; the conclusion is not inherited."
+ },
+ "pares": [
+  {
+   "aiact": "AIA-004",
+   "iso42001": "A.4.6"
+  },
+  {
+   "aiact": "AIA-005",
+   "iso42001": "A.5.2"
+  },
+  {
+   "aiact": "AIA-005",
+   "iso42001": "A.5.4"
+  },
+  {
+   "aiact": "AIA-006",
+   "iso42001": "A.5.2"
+  },
+  {
+   "aiact": "AIA-006",
+   "iso42001": "A.9.4"
+  },
+  {
+   "aiact": "AIA-009",
+   "iso42001": "A.5.2"
+  },
+  {
+   "aiact": "AIA-009",
+   "iso42001": "A.5.3"
+  },
+  {
+   "aiact": "AIA-009",
+   "iso42001": "A.5.4"
+  },
+  {
+   "aiact": "AIA-009",
+   "iso42001": "A.6.1.2"
+  },
+  {
+   "aiact": "AIA-010",
+   "iso42001": "A.4.3"
+  },
+  {
+   "aiact": "AIA-010",
+   "iso42001": "A.7.2"
+  },
+  {
+   "aiact": "AIA-010",
+   "iso42001": "A.7.3"
+  },
+  {
+   "aiact": "AIA-010",
+   "iso42001": "A.7.4"
+  },
+  {
+   "aiact": "AIA-010",
+   "iso42001": "A.7.5"
+  },
+  {
+   "aiact": "AIA-010",
+   "iso42001": "A.7.6"
+  },
+  {
+   "aiact": "AIA-011",
+   "iso42001": "A.4.2"
+  },
+  {
+   "aiact": "AIA-011",
+   "iso42001": "A.4.4"
+  },
+  {
+   "aiact": "AIA-011",
+   "iso42001": "A.4.5"
+  },
+  {
+   "aiact": "AIA-011",
+   "iso42001": "A.6.2.2"
+  },
+  {
+   "aiact": "AIA-011",
+   "iso42001": "A.6.2.3"
+  },
+  {
+   "aiact": "AIA-011",
+   "iso42001": "A.6.2.7"
+  },
+  {
+   "aiact": "AIA-011",
+   "iso42001": "A.6.2.8"
+  },
+  {
+   "aiact": "AIA-012",
+   "iso42001": "A.6.2.8"
+  },
+  {
+   "aiact": "AIA-013",
+   "iso42001": "A.8.2"
+  },
+  {
+   "aiact": "AIA-013",
+   "iso42001": "A.8.3"
+  },
+  {
+   "aiact": "AIA-013",
+   "iso42001": "A.8.5"
+  },
+  {
+   "aiact": "AIA-014",
+   "iso42001": "A.9.2"
+  },
+  {
+   "aiact": "AIA-014",
+   "iso42001": "A.9.3"
+  },
+  {
+   "aiact": "AIA-014",
+   "iso42001": "A.9.4"
+  },
+  {
+   "aiact": "AIA-015",
+   "iso42001": "A.6.2.4"
+  },
+  {
+   "aiact": "AIA-015",
+   "iso42001": "A.6.2.6"
+  },
+  {
+   "aiact": "AIA-017",
+   "iso42001": "A.2.2"
+  },
+  {
+   "aiact": "AIA-017",
+   "iso42001": "A.2.3"
+  },
+  {
+   "aiact": "AIA-017",
+   "iso42001": "A.2.4"
+  },
+  {
+   "aiact": "AIA-017",
+   "iso42001": "A.3.2"
+  },
+  {
+   "aiact": "AIA-017",
+   "iso42001": "A.3.3"
+  },
+  {
+   "aiact": "AIA-017",
+   "iso42001": "A.4.2"
+  },
+  {
+   "aiact": "AIA-017",
+   "iso42001": "A.6.1.2"
+  },
+  {
+   "aiact": "AIA-017",
+   "iso42001": "A.6.1.3"
+  },
+  {
+   "aiact": "AIA-019",
+   "iso42001": "A.6.2.8"
+  },
+  {
+   "aiact": "AIA-026",
+   "iso42001": "A.10.3"
+  },
+  {
+   "aiact": "AIA-026",
+   "iso42001": "A.9.2"
+  },
+  {
+   "aiact": "AIA-026",
+   "iso42001": "A.9.3"
+  },
+  {
+   "aiact": "AIA-026",
+   "iso42001": "A.9.4"
+  },
+  {
+   "aiact": "AIA-027",
+   "iso42001": "A.5.2"
+  },
+  {
+   "aiact": "AIA-027",
+   "iso42001": "A.5.3"
+  },
+  {
+   "aiact": "AIA-027",
+   "iso42001": "A.5.4"
+  },
+  {
+   "aiact": "AIA-027",
+   "iso42001": "A.5.5"
+  },
+  {
+   "aiact": "AIA-050",
+   "iso42001": "A.8.2"
+  },
+  {
+   "aiact": "AIA-050",
+   "iso42001": "A.8.4"
+  },
+  {
+   "aiact": "AIA-053",
+   "iso42001": "A.10.2"
+  },
+  {
+   "aiact": "AIA-053",
+   "iso42001": "A.10.3"
+  },
+  {
+   "aiact": "AIA-053",
+   "iso42001": "A.6.2.7"
+  },
+  {
+   "aiact": "AIA-055",
+   "iso42001": "A.6.2.4"
+  },
+  {
+   "aiact": "AIA-055",
+   "iso42001": "A.6.2.6"
+  },
+  {
+   "aiact": "AIA-072",
+   "iso42001": "A.6.2.6"
+  },
+  {
+   "aiact": "AIA-073",
+   "iso42001": "A.10.4"
+  },
+  {
+   "aiact": "AIA-073",
+   "iso42001": "A.3.3"
+  },
+  {
+   "aiact": "AIA-073",
+   "iso42001": "A.6.2.6"
+  },
+  {
+   "aiact": "AIA-073",
+   "iso42001": "A.8.4"
+  },
+  {
+   "aiact": "AIA-008",
+   "iso42001": "A.6.2.2"
+  },
+  {
+   "aiact": "AIA-018",
+   "iso42001": "A.6.2.7"
+  },
+  {
+   "aiact": "AIA-018",
+   "iso42001": "A.4.2"
+  },
+  {
+   "aiact": "AIA-020",
+   "iso42001": "A.8.4"
+  },
+  {
+   "aiact": "AIA-020",
+   "iso42001": "A.10.2"
+  },
+  {
+   "aiact": "AIA-021",
+   "iso42001": "A.10.2"
+  },
+  {
+   "aiact": "AIA-021",
+   "iso42001": "A.8.3"
+  },
+  {
+   "aiact": "AIA-022",
+   "iso42001": "A.10.2"
+  },
+  {
+   "aiact": "AIA-022",
+   "iso42001": "A.10.3"
+  },
+  {
+   "aiact": "AIA-023",
+   "iso42001": "A.10.3"
+  },
+  {
+   "aiact": "AIA-024",
+   "iso42001": "A.10.3"
+  },
+  {
+   "aiact": "AIA-024",
+   "iso42001": "A.10.4"
+  },
+  {
+   "aiact": "AIA-046",
+   "iso42001": "A.6.2.4"
+  },
+  {
+   "aiact": "AIA-048",
+   "iso42001": "A.8.2"
+  },
+  {
+   "aiact": "AIA-052",
+   "iso42001": "A.8.3"
+  },
+  {
+   "aiact": "AIA-052",
+   "iso42001": "A.10.2"
+  },
+  {
+   "aiact": "AIA-054",
+   "iso42001": "A.10.2"
+  },
+  {
+   "aiact": "AIA-054",
+   "iso42001": "A.10.3"
+  },
+  {
+   "aiact": "AIA-059",
+   "iso42001": "A.7.3"
+  },
+  {
+   "aiact": "AIA-059",
+   "iso42001": "A.7.5"
+  },
+  {
+   "aiact": "AIA-060",
+   "iso42001": "A.6.2.4"
+  },
+  {
+   "aiact": "AIA-060",
+   "iso42001": "A.6.2.5"
+  },
+  {
+   "aiact": "AIA-061",
+   "iso42001": "A.8.5"
+  },
+  {
+   "aiact": "AIA-063",
+   "iso42001": "A.4.2"
+  },
+  {
+   "aiact": "AIA-085",
+   "iso42001": "A.3.3"
+  },
+  {
+   "aiact": "AIA-085",
+   "iso42001": "A.8.4"
+  },
+  {
+   "aiact": "AIA-086",
+   "iso42001": "A.8.2"
+  },
+  {
+   "aiact": "AIA-086",
+   "iso42001": "A.8.5"
+  },
+  {
+   "aiact": "AIA-087",
+   "iso42001": "A.3.3"
+  },
+  {
+   "aiact": "AIA-091",
+   "iso42001": "A.6.2.7"
+  },
+  {
+   "aiact": "AIA-091",
+   "iso42001": "A.8.3"
+  },
+  {
+   "aiact": "AIA-092",
+   "iso42001": "A.6.2.4"
+  },
+  {
+   "aiact": "AIA-093",
+   "iso42001": "A.8.4"
+  },
+  {
+   "aiact": "AIA-093",
+   "iso42001": "A.10.2"
+  },
+  {
+   "aiact": "AIA-095",
+   "iso42001": "A.2.2"
+  },
+  {
+   "aiact": "AIA-095",
+   "iso42001": "A.2.3"
+  },
+  {
+   "aiact": "AIA-004A",
+   "iso42001": "A.7.4"
+  },
+  {
+   "aiact": "AIA-004A",
+   "iso42001": "A.7.6"
+  },
+  {
+   "aiact": "AIA-004A",
+   "iso42001": "A.5.4"
+  },
+  {
+   "aiact": "AIA-060A",
+   "iso42001": "A.6.2.4"
+  },
+  {
+   "aiact": "AIA-060A",
+   "iso42001": "A.6.2.5"
+  }
+ ]
+}

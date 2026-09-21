@@ -1,0 +1,80 @@
+{
+  "paquete": "actaira/art09",
+  "version": "1.0.0",
+  "autor": "Actaira",
+  "licencia": "Apache-2.0",
+  "obligacion": "AIA-009",
+  "nota_de_autoria": {
+    "es": "Cada regla y cada remediación de este fichero las escribió una persona. Un modelo puede proponer el borrador de una regla fuera de línea; nunca redacta reglas ni remediaciones en ejecución. Segunda negativa.",
+    "en": "Every rule and every remediation in this file was written by a person. A model may draft a candidate rule offline; it never writes rules or remediations at runtime. Second negative."
+  },
+  "reglas": [
+    {
+      "id": "ACT-09-UMBRAL",
+      "version": "1.0.0",
+      "tipo": "fichero",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "un fichero que declare los criterios de aceptación del riesgo",
+        "en": "a file declaring the risk acceptance criteria"
+      },
+      "titulo": {
+        "es": "No hay criterios de aceptación declarados",
+        "en": "No acceptance criteria are declared"
+      },
+      "remediacion": {
+        "es": "El artículo 9 exige criterios de aceptación del riesgo residual decididos ANTES de desplegar. Escríbelos en un fichero versionado del repositorio, no en una diapositiva: si no están en el árbol, no hay nada que comparar contra la ejecución.",
+        "en": "Article 9 requires residual risk acceptance criteria decided BEFORE deployment. Write them in a versioned file in the repository, not in a slide: if they are not in the tree, there is nothing to compare the run against."
+      },
+      "patrones": [
+        "(?i)(umbrales?|thresholds?|acceptance|criterios).*\\.(ya?ml|json|toml)$",
+        "(?i)riesgo.*\\.(ya?ml|json)$"
+      ]
+    },
+    {
+      "id": "ACT-09-GATE",
+      "version": "1.0.0",
+      "tipo": "contenido",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "que la suite de riesgo corra en integración continua",
+        "en": "that the risk suite runs in continuous integration"
+      },
+      "titulo": {
+        "es": "La suite de riesgo no corre en CI",
+        "en": "The risk suite does not run in CI"
+      },
+      "remediacion": {
+        "es": "Una comprobación de riesgo que solo corre cuando alguien se acuerda no es gestión continua. Añade el paso al flujo de CI y haz que el fallo corte la publicación.",
+        "en": "A risk check that only runs when somebody remembers is not continuous management. Add the step to the CI workflow and make failure block the release."
+      },
+      "patrones": [
+        "(?i)(pytest|make).*(riesgo|risk|eval)"
+      ],
+      "solo_en": "\\.github/workflows/.*\\.ya?ml$"
+    },
+    {
+      "id": "ACT-09-RESIDUAL",
+      "version": "1.0.0",
+      "tipo": "aportado",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "el riesgo residual aceptado y quien lo acepto",
+        "en": "the accepted residual risk and who accepted it"
+      },
+      "titulo": {
+        "es": "Riesgo residual sin aceptación firmada",
+        "en": "Residual risk with no signed acceptance"
+      },
+      "remediacion": {
+        "es": "Que un riesgo residual sea aceptable es un juicio de la organización y no puede salir de leer código. Hace falta el nombre de quien lo acepta y la fecha.",
+        "en": "Whether residual risk is acceptable is the organisation's judgement and cannot come from reading code. The name of whoever accepts it and the date are required."
+      },
+      "pregunta": {
+        "es": "¿Para cada riesgo identificado, qué riesgo residual habéis aceptado, quién lo acepto y en qué fecha?",
+        "en": "For each identified risk, what residual risk have you accepted, who accepted it and on what date?"
+      },
+      "formato": "tabla"
+    }
+  ]
+}

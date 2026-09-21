@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://actaira.com/contrato/vigilancia.json",
+  "title": "Que sigue valiendo, que caduco y que hay que volver a mirar",
+  "type": "object",
+  "properties": {
+    "esquema": {
+      "const": "actaira/vigilancia/v1"
+    },
+    "fecha": {
+      "type": "string",
+      "format": "date"
+    },
+    "recuento": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "a_reobservar": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ahorro_de_barridos": {
+      "type": "object",
+      "properties": {
+        "controles_con_evidencia": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "hay_que_volver_a_correr": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "nota": {
+          "type": "object",
+          "properties": {
+            "es": {
+              "type": "string",
+              "minLength": 1
+            },
+            "en": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "es",
+            "en"
+          ]
+        }
+      },
+      "required": [
+        "controles_con_evidencia",
+        "hay_que_volver_a_correr",
+        "nota"
+      ]
+    },
+    "nota_de_no_accion": {
+      "type": "object",
+      "properties": {
+        "es": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "es",
+        "en"
+      ]
+    },
+    "veredictos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "control_id": {
+            "type": "string"
+          },
+          "obligacion_id": {
+            "type": "string"
+          },
+          "estado": {
+            "enum": [
+              "valida",
+              "rancia",
+              "superada",
+              "revocada",
+              "no_fiable",
+              "sin_evidencia",
+              "fuera_de_alcance"
+            ]
+          },
+          "accion": {
+            "enum": [
+              "nada",
+              "reobservar",
+              "corregir"
+            ]
+          },
+          "motivo": {
+            "type": "object",
+            "properties": {
+              "es": {
+                "type": "string",
+                "minLength": 1
+              },
+              "en": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "es",
+              "en"
+            ]
+          },
+          "detalle": {
+            "type": "object",
+            "properties": {
+              "es": {
+                "type": "string",
+                "minLength": 1
+              },
+              "en": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "es",
+              "en"
+            ]
+          }
+        },
+        "required": [
+          "control_id",
+          "obligacion_id",
+          "estado",
+          "accion",
+          "motivo"
+        ]
+      }
+    }
+  },
+  "required": [
+    "esquema",
+    "fecha",
+    "recuento",
+    "a_reobservar",
+    "ahorro_de_barridos",
+    "nota_de_no_accion",
+    "veredictos"
+  ]
+}

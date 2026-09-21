@@ -1,0 +1,161 @@
+{
+ "$schema": "../esquema/formulario.schema.json",
+ "paquete": "iso-soporte",
+ "version": "1.0.0",
+ "autor": "Actaira",
+ "titulo": {
+  "es": "Soporte: recursos, competencia e información documentada",
+  "en": "Support: resources, competence and documented information"
+ },
+ "destinatario_principal": "responsable",
+ "preguntas": [
+  {
+   "id": "F-SOP-1",
+   "sirve_a": [
+    "ISO-7.2",
+    "A.4.6",
+    "AIA-004"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "¿Qué competencia necesitan las personas que trabajan con sus sistemas de IA, y qué evidencia tiene de que la tienen?",
+    "en": "What competence do the people working with your AI systems need, and what evidence do you have that they have it?"
+   },
+   "ayuda": {
+    "es": "La cláusula 7.2 exige información documentada como evidencia de competencia: títulos, formación con fecha y asistentes, o experiencia acreditada. Ojo con la diferencia: el artículo 4 del Reglamento pide alfabetización en IA para todo el que opere o se vea afectado, y la 7.2 pide competencia técnica del que hace el trabajo. Se responden juntas pero no son lo mismo.",
+    "en": "Clause 7.2 requires documented information as evidence of competence: qualifications, dated training with attendees, or demonstrated experience. Note the difference: Article 4 of the Regulation requires AI literacy for everyone who operates or is affected by the system, while 7.2 requires technical competence of whoever does the work. They are answered together but they are not the same."
+   },
+   "formato": "texto_largo",
+   "vigencia_dias": 365,
+   "exige": {
+    "minimo_caracteres": 150
+   }
+  },
+  {
+   "id": "F-SOP-2",
+   "sirve_a": [
+    "AIA-004"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "¿Qué formación en IA ha impartido, a quién y cuándo?",
+    "en": "What AI training have you delivered, to whom and when?"
+   },
+   "ayuda": {
+    "es": "El artículo 4 del Reglamento obliga a proveedores y responsables del despliegue a garantizar un nivel suficiente de alfabetización en IA de su personal y de quien opere los sistemas en su nombre, teniendo en cuenta sus conocimientos, el contexto de uso y las personas sobre las que se usa. Está en vigor desde el 2 de febrero de 2025. Una lista con fecha, contenido y asistentes es la evidencia; un curso comprado y no hecho no lo es.",
+    "en": "Article 4 of the Regulation requires providers and deployers to ensure a sufficient level of AI literacy among their staff and anyone operating the systems on their behalf, taking into account their knowledge, the context of use and the persons the systems are used on. It has applied since 2 February 2025. A list with date, content and attendees is the evidence; a purchased course nobody took is not."
+   },
+   "formato": "lista",
+   "vigencia_dias": 365,
+   "exige": {
+    "minimo_elementos": 1
+   }
+  },
+  {
+   "id": "F-SOP-3",
+   "sirve_a": [
+    "ISO-7.3"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "¿Cómo sabe una persona de su organización cuál es la política de IA y qué pasa si no la cumple?",
+    "en": "How does someone in your organization learn the AI policy and what happens if they do not follow it?"
+   },
+   "ayuda": {
+    "es": "La toma de conciencia de la 7.3 no es formación: es que la gente sepa que existe la política, en que contribuye su trabajo y que implica no cumplirla. Un correo de alta y un apartado en el manual de acogida suelen bastar si se demuestra que llegaron.",
+    "en": "Awareness under 7.3 is not training: it is that people know the policy exists, how their work contributes, and what not conforming implies. An onboarding email and a section in the handbook usually suffice if you can show they arrived."
+   },
+   "formato": "texto_corto",
+   "vigencia_dias": 365,
+   "exige": {
+    "minimo_caracteres": 80
+   }
+  },
+  {
+   "id": "F-SOP-4",
+   "sirve_a": [
+    "ISO-7.4",
+    "A.8.3",
+    "A.8.5"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "¿Qué comunica sobre sus sistemas de IA, cuándo, a quién y por qué medio?",
+    "en": "What do you communicate about your AI systems, when, to whom and by which means?"
+   },
+   "ayuda": {
+    "es": "La 7.4 pide las cuatro cosas explicitamente. Incluya la comunicación externa: si publica una nota cuando el modelo cambia, si avisa a los clientes de un incidente, si tiene un punto de contacto publicado. El artículo 73 del Reglamento le pone plazos duros a algunas de esas comunicaciones.",
+    "en": "Clause 7.4 asks for all four explicitly. Include external communication: whether you publish a note when the model changes, whether you notify customers of an incident, whether you have a published point of contact. Article 73 of the Regulation puts hard deadlines on some of those communications."
+   },
+   "formato": "texto_largo",
+   "vigencia_dias": 365,
+   "exige": {
+    "minimo_caracteres": 150
+   }
+  },
+  {
+   "id": "F-SOP-5",
+   "sirve_a": [
+    "ISO-7.5.1",
+    "ISO-7.5.2",
+    "ISO-7.5.3"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "¿Dónde vive la información documentada de su sistema de gestión y quién controla su versión?",
+    "en": "Where does your management system's documented information live and who controls its version?"
+   },
+   "ayuda": {
+    "es": "Si la respuesta es una carpeta compartida sin control de versiones, la cláusula 7.5.3 no se cumple: pide control de cambios, retención, disposición y protección frente a perdida de integridad. Actaira sella cada evidencia que recibe y guarda su huella, lo que cubre la parte de integridad; el resto es suyo.",
+    "en": "If the answer is a shared folder with no version control, clause 7.5.3 is not met: it requires change control, retention, disposition and protection against loss of integrity. Actaira seals every piece of evidence it receives and keeps its digest, which covers the integrity part; the rest is yours."
+   },
+   "formato": "texto_corto",
+   "vigencia_dias": 365,
+   "exige": {
+    "minimo_caracteres": 80
+   }
+  },
+  {
+   "id": "F-SOP-R1",
+   "sirve_a": [
+    "A.4.3",
+    "A.7.2"
+   ],
+   "destinatario": "tecnico",
+   "texto": {
+    "es": "Para cada conjunto de datos que usa el sistema: de dónde salió, con qué permiso lo usan, y quién responde de él.",
+    "en": "For each dataset the system uses: where it came from, under what permission you use it, and who is accountable for it."
+   },
+   "ayuda": {
+    "es": "Controles A.4.3 y A.7.2. No pide un inventario bonito: pide que por cada conjunto se pueda contestar la cadena entera. Origen (comprado, recogido, público, generado, cedido por el cliente), base que les permite usarlo para ESTO —un contrato, un consentimiento, una licencia, una base legal—, quién es su propietario dentro de la organización y desde cuándo no se revisa.\n\nActaira puede ver si existe una ficha de datos en el repositorio; lo que no puede ver es nada de lo anterior, y esa diferencia es justo la que separa «hay un fichero» de «los datos se pueden usar». Si un conjunto lo aportó un cliente, dígalo: suele ser el que peor documentado está y el que más problemas da después.",
+    "en": "Controls A.4.3 and A.7.2. It does not ask for a pretty inventory: it asks that for each dataset the whole chain can be answered. Origin (bought, collected, public, generated, supplied by the customer), the basis that lets you use it for THIS —a contract, consent, a licence, a legal basis—, who owns it inside the organisation and how long since it was last reviewed.\n\nActaira can see whether a dataset card exists in the repository; what it cannot see is any of the above, and that difference is exactly what separates «there is a file» from «the data can be used». If a dataset was supplied by a customer, say so: it is usually the worst documented and the one that causes the most trouble later."
+   },
+   "formato": "texto_largo",
+   "vigencia_dias": 365,
+   "exige": {
+    "minimo_caracteres": 250
+   }
+  },
+  {
+   "id": "F-SOP-R2",
+   "sirve_a": [
+    "A.4.4",
+    "A.4.5"
+   ],
+   "destinatario": "tecnico",
+   "texto": {
+    "es": "¿Qué herramientas y qué recursos de cómputo sostienen este sistema, y qué pasa el día que uno de ellos deje de estar disponible?",
+    "en": "Which tools and which compute resources hold this system up, and what happens the day one of them stops being available?"
+   },
+   "ayuda": {
+    "es": "Controles A.4.4 y A.4.5. Dos listas y una pregunta. Las herramientas: marcos, bibliotecas, servicios de terceros y modelos de los que depende, con su versión. El cómputo: dónde se entrena y dónde se sirve, con qué capacidad y bajo qué contrato.\n\nLa pregunta es la que de verdad mide el control, y es la que casi nadie tiene contestada: si mañana un proveedor de modelo cambia los términos, sube el precio, retira una versión o cierra, ¿qué hacen? Un sistema entero apoyado en un punto único del que no se puede salir es un riesgo de continuidad, y la norma lo pide como recurso porque de ahí vienen los incidentes que no se ven venir.",
+    "en": "Controls A.4.4 and A.4.5. Two lists and one question. Tools: frameworks, libraries, third-party services and models it depends on, with versions. Compute: where it trains and where it serves, at what capacity and under what contract.\n\nThe question is what really measures the control, and it is the one almost nobody has answered: if tomorrow a model provider changes terms, raises the price, retires a version or shuts down, what do you do? A whole system resting on a single point you cannot leave is a continuity risk, and the standard asks for it as a resource because that is where the incidents nobody saw coming come from."
+   },
+   "formato": "texto_largo",
+   "vigencia_dias": 365,
+   "exige": {
+    "minimo_caracteres": 250
+   }
+  }
+ ]
+}

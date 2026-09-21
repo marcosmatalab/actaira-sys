@@ -1,0 +1,245 @@
+{
+  "referencia": {
+    "es": "Anexo IV del Reglamento (UE) 2024/1689, documentación técnica a que se refiere el artículo 11, apartado 1",
+    "en": "Annex IV to Regulation (EU) 2024/1689, technical documentation referred to in Article 11(1)"
+  },
+  "version_catalogo": "2026-09-20",
+  "nota_de_procedencia": {
+    "es": "Cada sección publica de dónde sale: DERIVADA del código, APORTADA por una persona, o AUSENTE. Nunca en blanco y nunca inventada. Un expediente cuyas secciones no dicen su origen es indistinguible de uno redactado por un modelo, y ante un auditor eso vale cero.",
+    "en": "Every section publishes where it comes from: DERIVED from code, SUPPLIED by a person, or MISSING. Never blank and never invented. A file whose sections do not state their origin is indistinguishable from one drafted by a model, and before an auditor that is worth nothing."
+  },
+  "secciones": [
+    {
+      "id": "AIV-1-a",
+      "punto": "1.a",
+      "titulo": {
+        "es": "Finalidad prevista, proveedor y versión del sistema",
+        "en": "Intended purpose, provider and system version"
+      },
+      "origen": "derivada",
+      "extractor": "version_y_proveedor",
+      "tambien_humana": true
+    },
+    {
+      "id": "AIV-1-b",
+      "punto": "1.b",
+      "titulo": {
+        "es": "Interacción con hardware, software y otros sistemas de IA",
+        "en": "Interaction with hardware, software and other AI systems"
+      },
+      "origen": "humana"
+    },
+    {
+      "id": "AIV-1-c",
+      "punto": "1.c",
+      "titulo": {
+        "es": "Versiones de software o firmware y requisitos de actualización",
+        "en": "Software or firmware versions and update requirements"
+      },
+      "origen": "derivada",
+      "extractor": "dependencias"
+    },
+    {
+      "id": "AIV-1-d",
+      "punto": "1.d",
+      "titulo": {
+        "es": "Formas de introducción en el mercado o puesta en servicio",
+        "en": "Forms in which it is placed on the market or put into service"
+      },
+      "origen": "humana"
+    },
+    {
+      "id": "AIV-1-e",
+      "punto": "1.e",
+      "titulo": {
+        "es": "Hardware en el que está previsto que se ejecute",
+        "en": "Hardware on which it is intended to run"
+      },
+      "origen": "derivada",
+      "extractor": "computo",
+      "tambien_humana": true
+    },
+    {
+      "id": "AIV-1-f",
+      "punto": "1.f",
+      "titulo": {
+        "es": "Si es componente de un producto: caracteristicas exteriores, marcado y configuración",
+        "en": "If a product component: external features, marking and internal layout"
+      },
+      "origen": "humana"
+    },
+    {
+      "id": "AIV-1-g",
+      "punto": "1.g",
+      "titulo": {
+        "es": "Interfaz de usuario facilitada al responsable del despliegue",
+        "en": "User interface provided to the deployer"
+      },
+      "origen": "humana"
+    },
+    {
+      "id": "AIV-1-h",
+      "punto": "1.h",
+      "titulo": {
+        "es": "Instrucciones de uso para el responsable del despliegue",
+        "en": "Instructions for use for the deployer"
+      },
+      "origen": "derivada",
+      "extractor": "instrucciones",
+      "tambien_humana": true
+    },
+    {
+      "id": "AIV-2-a",
+      "punto": "2.a",
+      "titulo": {
+        "es": "Métodos de desarrollo y sistemas preentrenados de terceros",
+        "en": "Development methods and third-party pre-trained systems"
+      },
+      "origen": "derivada",
+      "extractor": "terceros"
+    },
+    {
+      "id": "AIV-2-b",
+      "punto": "2.b",
+      "titulo": {
+        "es": "Especificaciones de diseño, lógica y decisiones de clasificación",
+        "en": "Design specifications, logic and classification choices"
+      },
+      "origen": "humana"
+    },
+    {
+      "id": "AIV-2-c",
+      "punto": "2.c",
+      "titulo": {
+        "es": "Arquitectura del sistema y recursos informáticos",
+        "en": "System architecture and computational resources"
+      },
+      "origen": "derivada",
+      "extractor": "arquitectura"
+    },
+    {
+      "id": "AIV-2-d",
+      "punto": "2.d",
+      "titulo": {
+        "es": "Requisitos en materia de datos, en forma de fichas técnicas",
+        "en": "Data requirements, in the form of datasheets"
+      },
+      "origen": "derivada",
+      "extractor": "datos"
+    },
+    {
+      "id": "AIV-2-e",
+      "punto": "2.e",
+      "titulo": {
+        "es": "Evaluación de las medidas de supervisión humana del artículo 14",
+        "en": "Assessment of the Article 14 human oversight measures"
+      },
+      "origen": "derivada",
+      "extractor": "control",
+      "obligacion": "AIA-014"
+    },
+    {
+      "id": "AIV-2-f",
+      "punto": "2.f",
+      "titulo": {
+        "es": "Cambios predeterminados en el sistema y su funcionamiento",
+        "en": "Pre-determined changes to the system and its performance"
+      },
+      "origen": "humana"
+    },
+    {
+      "id": "AIV-2-g",
+      "punto": "2.g",
+      "titulo": {
+        "es": "Procedimientos de validación y prueba, con sus métricas",
+        "en": "Validation and testing procedures, with their metrics"
+      },
+      "origen": "derivada",
+      "extractor": "control",
+      "obligacion": "AIA-015"
+    },
+    {
+      "id": "AIV-2-h",
+      "punto": "2.h",
+      "titulo": {
+        "es": "Medidas de ciberseguridad adoptadas",
+        "en": "Cybersecurity measures adopted"
+      },
+      "origen": "derivada",
+      "extractor": "ciberseguridad"
+    },
+    {
+      "id": "AIV-3",
+      "punto": "3",
+      "titulo": {
+        "es": "Supervisión, funcionamiento y control del sistema",
+        "en": "Monitoring, functioning and control of the system"
+      },
+      "origen": "derivada",
+      "extractor": "control",
+      "obligacion": "AIA-013",
+      "tambien_humana": true
+    },
+    {
+      "id": "AIV-4",
+      "punto": "4",
+      "titulo": {
+        "es": "Idoneidad de los parámetros de rendimiento",
+        "en": "Appropriateness of the performance metrics"
+      },
+      "origen": "humana"
+    },
+    {
+      "id": "AIV-5",
+      "punto": "5",
+      "titulo": {
+        "es": "Sistema de gestión de riesgos del artículo 9",
+        "en": "The Article 9 risk management system"
+      },
+      "origen": "derivada",
+      "extractor": "control",
+      "obligacion": "AIA-009",
+      "tambien_humana": true
+    },
+    {
+      "id": "AIV-6",
+      "punto": "6",
+      "titulo": {
+        "es": "Cambios pertinentes a lo largo del ciclo de vida",
+        "en": "Relevant changes over the lifecycle"
+      },
+      "origen": "derivada",
+      "extractor": "cambios"
+    },
+    {
+      "id": "AIV-7",
+      "punto": "7",
+      "titulo": {
+        "es": "Normas armonizadas aplicadas, total o parcialmente",
+        "en": "Harmonised standards applied, in full or in part"
+      },
+      "origen": "humana"
+    },
+    {
+      "id": "AIV-8",
+      "punto": "8",
+      "titulo": {
+        "es": "Copia de la declaración UE de conformidad del artículo 47",
+        "en": "Copy of the Article 47 EU declaration of conformity"
+      },
+      "origen": "humana"
+    },
+    {
+      "id": "AIV-9",
+      "punto": "9",
+      "titulo": {
+        "es": "Sistema de vigilancia poscomercialización del artículo 72",
+        "en": "The Article 72 post-market monitoring system"
+      },
+      "origen": "derivada",
+      "extractor": "control",
+      "obligacion": "AIA-072",
+      "tambien_humana": true
+    }
+  ]
+}

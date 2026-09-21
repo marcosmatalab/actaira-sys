@@ -1,0 +1,122 @@
+{
+  "paquete": "actaira/art15",
+  "version": "1.0.0",
+  "autor": "Actaira",
+  "licencia": "Apache-2.0",
+  "obligacion": "AIA-015",
+  "nota_de_autoria": {
+    "es": "Cada regla y cada remediación de este fichero las escribió una persona. Un modelo puede proponer el borrador de una regla fuera de línea; nunca redacta reglas ni remediaciones en ejecución. Segunda negativa.",
+    "en": "Every rule and every remediation in this file was written by a person. A model may draft a candidate rule offline; it never writes rules or remediations at runtime. Second negative."
+  },
+  "reglas": [
+    {
+      "id": "ACT-15-EVALS",
+      "version": "1.0.0",
+      "tipo": "fichero",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "una suite de evaluación ejecutable",
+        "en": "a runnable evaluation suite"
+      },
+      "titulo": {
+        "es": "No hay suite de evaluación",
+        "en": "There is no evaluation suite"
+      },
+      "remediacion": {
+        "es": "El artículo 15 pide un nivel adecuado de exactitud MANTENIDO durante el ciclo de vida. Sin un arnes ejecutable no hay forma de saber si sigue siendo adecuado mañana.",
+        "en": "Article 15 asks for an appropriate level of accuracy MAINTAINED over the lifecycle. Without an executable harness there is no way to know whether it is still appropriate tomorrow."
+      },
+      "patrones": [
+        "(?i)(evals?|benchmark|evaluacion)/",
+        "(?i)test_.*(eval|accuracy|exactitud|metric)"
+      ]
+    },
+    {
+      "id": "ACT-15-CI",
+      "version": "1.0.0",
+      "tipo": "contenido",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "que la suite corra en integración continua y corte",
+        "en": "that the suite runs in continuous integration and blocks"
+      },
+      "titulo": {
+        "es": "La evaluación no corta la publicación",
+        "en": "Evaluation does not gate the release"
+      },
+      "remediacion": {
+        "es": "Una evaluación que corre y no corta es un informe, no un control. Haz que el flujo falle cuando la métrica baje del umbral declarado.",
+        "en": "An evaluation that runs and does not gate is a report, not a control. Make the workflow fail when the metric drops below the declared threshold."
+      },
+      "patrones": [
+        "(?i)(pytest|make|python).*(eval|benchmark|accuracy)"
+      ],
+      "solo_en": "\\.github/workflows/.*\\.ya?ml$"
+    },
+    {
+      "id": "ACT-15-INYECCION",
+      "version": "1.0.0",
+      "tipo": "fichero",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "pruebas de resistencia a la inyección de instrucciones",
+        "en": "tests for resistance to prompt injection"
+      },
+      "titulo": {
+        "es": "Sin pruebas de inyección de instrucciones",
+        "en": "No prompt injection tests"
+      },
+      "remediacion": {
+        "es": "El artículo 15(5) nombra expresamente los intentos de alterar el uso o la salida explotando vulnerabilidades. En un sistema con LLM eso es, antes que nada, la inyección de instrucciones. Añade casos hostiles al arnes.",
+        "en": "Article 15(5) expressly names attempts to alter use or output by exploiting vulnerabilities. In an LLM system that is, first of all, prompt injection. Add hostile cases to the harness."
+      },
+      "patrones": [
+        "(?i)(injection|inyeccion|jailbreak|redteam|red_team|adversarial|hostil)"
+      ]
+    },
+    {
+      "id": "ACT-15-DIGEST",
+      "version": "1.0.0",
+      "tipo": "contenido",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "que el artefacto del modelo este fijado por digest o versión exacta",
+        "en": "that the model artefact is pinned by digest or exact version"
+      },
+      "titulo": {
+        "es": "El modelo no está fijado",
+        "en": "The model is not pinned"
+      },
+      "remediacion": {
+        "es": "Si el modelo se referencia por una etiqueta movil, la exactitud que mediste ayer no describe lo que corre hoy, y ninguna evidencia sobre el sirve. Fija el digest o la versión exacta.",
+        "en": "If the model is referenced by a moving tag, the accuracy you measured yesterday does not describe what runs today, and no evidence about it holds. Pin the digest or the exact version."
+      },
+      "patrones": [
+        "(?i)(sha256:|revision\\s*=|model_sha|digest)"
+      ]
+    },
+    {
+      "id": "ACT-15-CIFRA",
+      "version": "1.0.0",
+      "tipo": "aportado",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "la cifra de exactitud declarada y el comando que la reproduce",
+        "en": "the declared accuracy figure and the command that reproduces it"
+      },
+      "titulo": {
+        "es": "Exactitud declarada sin comando que la reproduzca",
+        "en": "Declared accuracy with no command that reproduces it"
+      },
+      "remediacion": {
+        "es": "El artículo 13(2) obliga a declarar el nivel de exactitud en las instrucciones. Una cifra que ningún comando regenera no es una medición, es una afirmación, y es la única que puede tumbar el control entero.",
+        "en": "Article 13(2) requires declaring the accuracy level in the instructions. A figure no command regenerates is not a measurement, it is a claim, and it is the one thing that can fail this control outright."
+      },
+      "pregunta": {
+        "es": "¿Qué nivel de exactitud declaráis en las instrucciones de uso, y qué comando exacto lo reproduce sobre qué partición?",
+        "en": "What accuracy level do you declare in the instructions for use, and what exact command reproduces it over which split?"
+      },
+      "formato": "texto"
+    }
+  ]
+}

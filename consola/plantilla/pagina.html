@@ -1,0 +1,121 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Actaira</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+__ESTILO__
+</style>
+
+
+<header>
+  <div class="wrap bar">
+    <div class="logo" role="img" aria-label="Actaira"></div>
+    <div class="controles">
+      <div class="seg" id="idioma" role="group" aria-label="Idioma">
+        <button data-l="es" aria-pressed="true">ES</button><button data-l="en" aria-pressed="false">EN</button>
+      </div>
+      <div class="seg" id="tema" role="group" aria-label="Tema">
+        <button data-t="light" aria-pressed="false">☼</button><button data-t="dark" aria-pressed="false">☾</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap hero">
+  <p class="eyebrow">Reglamento (UE) 2024/1689 · ISO/IEC 42001:2023</p>
+  <h1 id="titular"></h1>
+  <p id="entradilla"></p>
+</div>
+
+<div class="ciclo wrap" id="ciclo"></div>
+
+<nav class="wrap vistas" id="vistas" role="tablist">
+  <button data-v="aplica" role="tab" aria-selected="true"></button>
+  <button data-v="pregunta" role="tab" aria-selected="false"></button>
+  <button data-v="soa" role="tab" aria-selected="false"></button>
+</nav>
+
+<main class="wrap" id="v-aplica">
+  <div class="panel">
+    <aside class="tarjeta">
+      <h2><span id="lb-perfil"></span><span id="lb-fecha-corta"></span></h2>
+      <div class="cuerpo">
+        <div class="campo">
+          <span class="pregunta" id="lb-roles"></span>
+          <div class="roles" id="roles"></div>
+        </div>
+        <div id="exclusiones" style="border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:17px"></div>
+        <div id="preguntas"></div>
+        <div class="campo">
+          <span class="pregunta" id="lb-fecha"></span>
+          <div class="seg" id="fecha" style="width:100%">
+            <button data-f="2026-09-20" aria-pressed="true" style="flex:1"></button>
+            <button data-f="2027-12-02" aria-pressed="false" style="flex:1"></button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <section>
+      <div class="recuento" id="recuento"></div>
+      <div id="aviso"></div>
+      <div class="lista" id="lista"></div>
+    </section>
+  </div>
+
+  <section class="seccion">
+    <h2 id="cat-t"></h2>
+    <p id="cat-p"></p>
+    <div class="tablawrap"><table><thead><tr>
+      <th id="th-id"></th><th id="th-tit"></th><th id="th-niv"></th><th id="th-cruce"></th>
+    </tr></thead><tbody id="tbody-iso"></tbody></table></div>
+  </section>
+
+  <p class="pie" id="pie"></p>
+</main>
+
+<main class="wrap oculto" id="v-pregunta">
+  <section class="seccion">
+    <h2 id="q-t"></h2>
+    <p id="q-p"></p>
+    <div class="firmante">
+      <label><span id="lb-q-nombre"></span><input id="q-nombre" autocomplete="off"></label>
+      <label><span id="lb-q-cargo"></span><input id="q-cargo" autocomplete="off"></label>
+      <button class="accion" id="q-descargar"></button>
+    </div>
+    <p class="pie" id="q-descarga-p"></p>
+    <div class="recuento" id="q-recuento"></div>
+    <div class="seg filtro" id="q-filtro" role="group"></div>
+    <div id="q-lista"></div>
+  </section>
+</main>
+
+<main class="wrap oculto" id="v-soa">
+  <section class="seccion">
+    <h2 id="soa-t"></h2>
+    <p id="soa-p"></p>
+    <div class="aviso" id="soa-notas"></div>
+    <div class="recuento" id="soa-recuento"></div>
+    <div class="tablawrap"><table><thead><tr>
+      <th id="soa-th-ctrl"></th><th id="soa-th-entra"></th>
+      <th id="soa-th-proc"></th><th id="soa-th-just"></th>
+    </tr></thead><tbody id="tbody-soa"></tbody></table></div>
+  </section>
+
+  <section class="seccion">
+    <h2 id="cl-t"></h2>
+    <p id="cl-p"></p>
+    <div class="tablawrap"><table><thead><tr>
+      <th id="cl-th-id"></th><th id="cl-th-tit"></th>
+      <th id="cl-th-doc"></th><th id="cl-th-prod"></th>
+    </tr></thead><tbody id="tbody-cl"></tbody></table></div>
+  </section>
+</main>
+
+<div id="detalle"></div>
+
+<script>
+__LOGICA__
+</script>

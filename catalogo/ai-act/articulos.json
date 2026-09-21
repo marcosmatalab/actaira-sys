@@ -1,0 +1,2280 @@
+{
+ "$schema": "actaira/catalogo/articulos/v1",
+ "instrumento": {
+  "id": "AIA",
+  "referencia": "Reglamento (UE) 2024/1689",
+  "modificado_por": [
+   "Reglamento (UE) 2026/1744"
+  ],
+  "titulo": {
+   "es": "Reglamento de Inteligencia Artificial",
+   "en": "Artificial Intelligence Act"
+  },
+  "articulos_anadidos": {
+   "es": "El Reglamento (UE) 2026/1744 añadió los artículos 4 bis y 60 bis y dos prohibiciones nuevas dentro del artículo 5(1), letras ba) y bb). Van con su instrumento de origen escrito al lado: un artículo que no estaba en el texto de 2024 no puede parecer que sí estaba.",
+   "en": "Regulation (EU) 2026/1744 added Articles 4a and 60a and two new prohibitions inside Article 5(1), points (ba) and (bb). They carry their source instrument written beside them: an article that was not in the 2024 text cannot look as if it was."
+  }
+ },
+ "procedencia": {
+  "es": "Los números de artículo, los títulos en castellano, el capítulo y la sección del acto base se extrajeron del texto publicado en el Diario Oficial de la Unión Europea, Serie L, Reglamento (UE) 2024/1689, de 12 de julio de 2024 (CELEX 32024R1689). Los artículos 4 bis y 60 bis y las prohibiciones del artículo 5(1), letras ba) y bb), vienen del Reglamento (UE) 2026/1744 (CELEX 32026R1744), publicado el 24 de julio de 2026. Los títulos en inglés son los oficiales de los mismos actos y NO se extrajeron de un documento en esta máquina: están marcados como deuda en el registro, porque afirmar una procedencia que no se tiene es exactamente lo que este producto existe para evitar.\n\nEste campo nombraba solo el acto de 2024 cuando el fichero ya traía artículos del de 2026. No era falso en lo que decía: era falso en lo que dejaba de decir, que es la forma en que una procedencia se estropea sin que nadie la toque.",
+  "en": "Article numbers, Spanish headings, chapter and section of the base act were extracted from the text published in the Official Journal of the European Union, L series, Regulation (EU) 2024/1689 of 12 July 2024 (CELEX 32024R1689). Articles 4a and 60a and the Article 5(1)(ba) and (bb) prohibitions come from Regulation (EU) 2026/1744 (CELEX 32026R1744), published on 24 July 2026. The English headings are the official ones for the same acts and were NOT extracted from a document on this machine: they are recorded as debt, because claiming a provenance one does not have is exactly what this product exists to prevent.\n\nThis field named only the 2024 act when the file already carried articles from the 2026 one. It was not false in what it said: it was false in what it stopped saying, which is how a provenance decays without anyone touching it."
+ },
+ "vinculos": {
+  "operador": {
+   "es": "Obliga a un operador regulado: es a quien sirve este producto.",
+   "en": "It binds a regulated operator: this product's audience."
+  },
+  "clasificacion": {
+   "es": "No obliga: decide qué obliga. Ámbito, definiciones, clasificación y calendario.",
+   "en": "It does not bind: it decides what binds. Scope, definitions, classification and calendar."
+  },
+  "derecho": {
+   "es": "Un derecho de una persona afectada, que crea en el operador el deber de responderlo.",
+   "en": "A right of an affected person, which creates a duty on the operator to answer it."
+  },
+  "organismo_notificado": {
+   "es": "Obliga a un organismo notificado o de evaluación de la conformidad.",
+   "en": "It binds a notified or conformity assessment body."
+  },
+  "autoridad": {
+   "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro.",
+   "en": "It binds the Commission, the AI Office or a Member State."
+  },
+  "instrumento": {
+   "es": "Modifica otras normas, delega poderes o cierra el texto.",
+   "en": "It amends other instruments, delegates powers or closes the text."
+  }
+ },
+ "articulos": [
+  {
+   "articulo": "1",
+   "titulo": {
+    "es": "Objeto",
+    "en": "Subject matter"
+   },
+   "capitulo": "I",
+   "capitulo_titulo": {
+    "es": "Disposiciones generales",
+    "en": "General provisions"
+   },
+   "seccion": null,
+   "vincula": "instrumento",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Modifica otras normas, delega poderes o cierra el texto. No crea ninguna conducta exigible a un operador.",
+    "en": "It amends other instruments, delegates powers or closes the text. It creates no conduct required of an operator."
+   }
+  },
+  {
+   "articulo": "2",
+   "titulo": {
+    "es": "Ámbito de aplicación",
+    "en": "Scope"
+   },
+   "capitulo": "I",
+   "capitulo_titulo": {
+    "es": "Disposiciones generales",
+    "en": "General provisions"
+   },
+   "seccion": null,
+   "vincula": "clasificacion",
+   "actores": [
+    "todos"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "3",
+   "titulo": {
+    "es": "Definiciones",
+    "en": "Definitions"
+   },
+   "capitulo": "I",
+   "capitulo_titulo": {
+    "es": "Disposiciones generales",
+    "en": "General provisions"
+   },
+   "seccion": null,
+   "vincula": "clasificacion",
+   "actores": [
+    "todos"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "4",
+   "titulo": {
+    "es": "Alfabetización en materia de IA",
+    "en": "AI literacy"
+   },
+   "capitulo": "I",
+   "capitulo_titulo": {
+    "es": "Disposiciones generales",
+    "en": "General provisions"
+   },
+   "seccion": null,
+   "vincula": "operador",
+   "actores": [
+    "proveedor",
+    "responsable_despliegue"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "4a",
+   "titulo": {
+    "es": "Tratamiento de datos para la detección y corrección de sesgos",
+    "en": "Processing of data for bias detection and correction"
+   },
+   "capitulo": "I",
+   "capitulo_titulo": {
+    "es": "Disposiciones generales",
+    "en": "General provisions"
+   },
+   "seccion": null,
+   "vincula": "operador",
+   "actores": [
+    "proveedor",
+    "responsable_despliegue"
+   ],
+   "en_alcance_del_producto": true,
+   "anadido_por": "Reglamento (UE) 2026/1744"
+  },
+  {
+   "articulo": "5",
+   "titulo": {
+    "es": "Prácticas de IA prohibidas",
+    "en": "Prohibited AI practices"
+   },
+   "capitulo": "II",
+   "capitulo_titulo": {
+    "es": "Prácticas de IA prohibidas",
+    "en": "Prohibited AI practices"
+   },
+   "seccion": null,
+   "vincula": "operador",
+   "actores": [
+    "proveedor",
+    "responsable_despliegue",
+    "importador",
+    "distribuidor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "6",
+   "titulo": {
+    "es": "Reglas de clasificación de los sistemas de IA de alto riesgo",
+    "en": "Classification rules for high-risk AI systems"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 1,
+   "vincula": "clasificacion",
+   "actores": [
+    "proveedor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "7",
+   "titulo": {
+    "es": "Modificaciones del anexo III",
+    "en": "Amendments to Annex III"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 1,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "8",
+   "titulo": {
+    "es": "Cumplimiento de los requisitos",
+    "en": "Compliance with the requirements"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 2,
+   "vincula": "operador",
+   "actores": [
+    "proveedor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "9",
+   "titulo": {
+    "es": "Sistema de gestión de riesgos",
+    "en": "Risk management system"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 2,
+   "vincula": "operador",
+   "actores": [
+    "proveedor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "10",
+   "titulo": {
+    "es": "Datos y gobernanza de datos",
+    "en": "Data and data governance"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 2,
+   "vincula": "operador",
+   "actores": [
+    "proveedor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "11",
+   "titulo": {
+    "es": "Documentación técnica",
+    "en": "Technical documentation"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 2,
+   "vincula": "operador",
+   "actores": [
+    "proveedor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "12",
+   "titulo": {
+    "es": "Conservación de registros",
+    "en": "Record-keeping"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 2,
+   "vincula": "operador",
+   "actores": [
+    "proveedor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "13",
+   "titulo": {
+    "es": "Transparencia y comunicación de información a los responsables del despliegue",
+    "en": "Transparency and provision of information to deployers"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 2,
+   "vincula": "operador",
+   "actores": [
+    "proveedor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "14",
+   "titulo": {
+    "es": "Supervisión humana",
+    "en": "Human oversight"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 2,
+   "vincula": "operador",
+   "actores": [
+    "proveedor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "15",
+   "titulo": {
+    "es": "Precisión, solidez y ciberseguridad",
+    "en": "Accuracy, robustness and cybersecurity"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 2,
+   "vincula": "operador",
+   "actores": [
+    "proveedor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "16",
+   "titulo": {
+    "es": "Obligaciones de los proveedores de sistemas de IA de alto riesgo",
+    "en": "Obligations of providers of high-risk AI systems"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 3,
+   "vincula": "operador",
+   "actores": [
+    "proveedor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "17",
+   "titulo": {
+    "es": "Sistema de gestión de la calidad",
+    "en": "Quality management system"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 3,
+   "vincula": "operador",
+   "actores": [
+    "proveedor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "18",
+   "titulo": {
+    "es": "Conservación de la documentación",
+    "en": "Documentation keeping"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 3,
+   "vincula": "operador",
+   "actores": [
+    "proveedor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "19",
+   "titulo": {
+    "es": "Archivos de registro generados automáticamente",
+    "en": "Automatically generated logs"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 3,
+   "vincula": "operador",
+   "actores": [
+    "proveedor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "20",
+   "titulo": {
+    "es": "Medidas correctoras y obligación de información",
+    "en": "Corrective actions and duty of information"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 3,
+   "vincula": "operador",
+   "actores": [
+    "proveedor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "21",
+   "titulo": {
+    "es": "Cooperación con las autoridades competentes",
+    "en": "Cooperation with competent authorities"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 3,
+   "vincula": "operador",
+   "actores": [
+    "proveedor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "22",
+   "titulo": {
+    "es": "Representantes autorizados de los proveedores de sistemas de IA de alto riesgo",
+    "en": "Authorised representatives of providers of high-risk AI systems"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 3,
+   "vincula": "operador",
+   "actores": [
+    "proveedor",
+    "representante_autorizado"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "23",
+   "titulo": {
+    "es": "Obligaciones de los importadores",
+    "en": "Obligations of importers"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 3,
+   "vincula": "operador",
+   "actores": [
+    "importador"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "24",
+   "titulo": {
+    "es": "Obligaciones de los distribuidores",
+    "en": "Obligations of distributors"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 3,
+   "vincula": "operador",
+   "actores": [
+    "distribuidor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "25",
+   "titulo": {
+    "es": "Responsabilidades a lo largo de la cadena de valor de la IA",
+    "en": "Responsibilities along the AI value chain"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 3,
+   "vincula": "operador",
+   "actores": [
+    "proveedor",
+    "responsable_despliegue",
+    "importador",
+    "distribuidor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "26",
+   "titulo": {
+    "es": "Obligaciones de los responsables del despliegue de sistemas de IA de alto riesgo",
+    "en": "Obligations of deployers of high-risk AI systems"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 3,
+   "vincula": "operador",
+   "actores": [
+    "responsable_despliegue"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "27",
+   "titulo": {
+    "es": "Evaluación de impacto relativa a los derechos fundamentales para los sistemas de IA de alto riesgo",
+    "en": "Fundamental rights impact assessment for high-risk AI systems"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 3,
+   "vincula": "operador",
+   "actores": [
+    "responsable_despliegue"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "28",
+   "titulo": {
+    "es": "Autoridades notificantes",
+    "en": "Notifying authorities"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 4,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "29",
+   "titulo": {
+    "es": "Solicitud de notificación por parte de un organismo de evaluación de la conformidad",
+    "en": "Application of a conformity assessment body for notification"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 4,
+   "vincula": "organismo_notificado",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a los organismos notificados y de evaluación de la conformidad. Es un operador regulado de verdad, pero no es el destinatario de este producto hoy: decirlo es más honesto que catalogar requisitos que nadie va a comprobar aquí.",
+    "en": "It binds notified and conformity assessment bodies. That is a real regulated operator, but not this product's audience today: saying so is more honest than cataloguing requirements nobody will check here."
+   }
+  },
+  {
+   "articulo": "30",
+   "titulo": {
+    "es": "Procedimiento de notificación",
+    "en": "Notification procedure"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 4,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "31",
+   "titulo": {
+    "es": "Requisitos relativos a los organismos notificados",
+    "en": "Requirements relating to notified bodies"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 4,
+   "vincula": "organismo_notificado",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a los organismos notificados y de evaluación de la conformidad. Es un operador regulado de verdad, pero no es el destinatario de este producto hoy: decirlo es más honesto que catalogar requisitos que nadie va a comprobar aquí.",
+    "en": "It binds notified and conformity assessment bodies. That is a real regulated operator, but not this product's audience today: saying so is more honest than cataloguing requirements nobody will check here."
+   }
+  },
+  {
+   "articulo": "32",
+   "titulo": {
+    "es": "Presunción de conformidad con los requisitos relativos a los organismos notificados",
+    "en": "Presumption of conformity with requirements relating to notified bodies"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 4,
+   "vincula": "organismo_notificado",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a los organismos notificados y de evaluación de la conformidad. Es un operador regulado de verdad, pero no es el destinatario de este producto hoy: decirlo es más honesto que catalogar requisitos que nadie va a comprobar aquí.",
+    "en": "It binds notified and conformity assessment bodies. That is a real regulated operator, but not this product's audience today: saying so is more honest than cataloguing requirements nobody will check here."
+   }
+  },
+  {
+   "articulo": "33",
+   "titulo": {
+    "es": "Filiales de organismos notificados y subcontratación",
+    "en": "Subsidiaries of notified bodies and subcontracting"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 4,
+   "vincula": "organismo_notificado",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a los organismos notificados y de evaluación de la conformidad. Es un operador regulado de verdad, pero no es el destinatario de este producto hoy: decirlo es más honesto que catalogar requisitos que nadie va a comprobar aquí.",
+    "en": "It binds notified and conformity assessment bodies. That is a real regulated operator, but not this product's audience today: saying so is more honest than cataloguing requirements nobody will check here."
+   }
+  },
+  {
+   "articulo": "34",
+   "titulo": {
+    "es": "Obligaciones operativas de los organismos notificados",
+    "en": "Operational obligations of notified bodies"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 4,
+   "vincula": "organismo_notificado",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a los organismos notificados y de evaluación de la conformidad. Es un operador regulado de verdad, pero no es el destinatario de este producto hoy: decirlo es más honesto que catalogar requisitos que nadie va a comprobar aquí.",
+    "en": "It binds notified and conformity assessment bodies. That is a real regulated operator, but not this product's audience today: saying so is more honest than cataloguing requirements nobody will check here."
+   }
+  },
+  {
+   "articulo": "35",
+   "titulo": {
+    "es": "Números de identificación y listas de organismos notificados",
+    "en": "Identification numbers and lists of notified bodies"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 4,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "36",
+   "titulo": {
+    "es": "Cambios en las notificaciones",
+    "en": "Changes to notifications"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 4,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "37",
+   "titulo": {
+    "es": "Cuestionamiento de la competencia de los organismos notificados",
+    "en": "Challenge to the competence of notified bodies"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 4,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "38",
+   "titulo": {
+    "es": "Coordinación de los organismos notificados",
+    "en": "Coordination of notified bodies"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 4,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "39",
+   "titulo": {
+    "es": "Organismos de evaluación de la conformidad de terceros países",
+    "en": "Conformity assessment bodies of third countries"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 4,
+   "vincula": "organismo_notificado",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a los organismos notificados y de evaluación de la conformidad. Es un operador regulado de verdad, pero no es el destinatario de este producto hoy: decirlo es más honesto que catalogar requisitos que nadie va a comprobar aquí.",
+    "en": "It binds notified and conformity assessment bodies. That is a real regulated operator, but not this product's audience today: saying so is more honest than cataloguing requirements nobody will check here."
+   }
+  },
+  {
+   "articulo": "40",
+   "titulo": {
+    "es": "Normas armonizadas y documentos de normalización",
+    "en": "Harmonised standards and standardisation deliverables"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 5,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "41",
+   "titulo": {
+    "es": "Especificaciones comunes",
+    "en": "Common specifications"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 5,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "42",
+   "titulo": {
+    "es": "Presunción de conformidad con determinados requisitos",
+    "en": "Presumption of conformity with certain requirements"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 5,
+   "vincula": "clasificacion",
+   "actores": [
+    "proveedor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "43",
+   "titulo": {
+    "es": "Evaluación de la conformidad",
+    "en": "Conformity assessment"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 5,
+   "vincula": "operador",
+   "actores": [
+    "proveedor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "44",
+   "titulo": {
+    "es": "Certificados",
+    "en": "Certificates"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 5,
+   "vincula": "organismo_notificado",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a los organismos notificados y de evaluación de la conformidad. Es un operador regulado de verdad, pero no es el destinatario de este producto hoy: decirlo es más honesto que catalogar requisitos que nadie va a comprobar aquí.",
+    "en": "It binds notified and conformity assessment bodies. That is a real regulated operator, but not this product's audience today: saying so is more honest than cataloguing requirements nobody will check here."
+   }
+  },
+  {
+   "articulo": "45",
+   "titulo": {
+    "es": "Obligaciones de información de los organismos notificados",
+    "en": "Information obligations of notified bodies"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 5,
+   "vincula": "organismo_notificado",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a los organismos notificados y de evaluación de la conformidad. Es un operador regulado de verdad, pero no es el destinatario de este producto hoy: decirlo es más honesto que catalogar requisitos que nadie va a comprobar aquí.",
+    "en": "It binds notified and conformity assessment bodies. That is a real regulated operator, but not this product's audience today: saying so is more honest than cataloguing requirements nobody will check here."
+   }
+  },
+  {
+   "articulo": "46",
+   "titulo": {
+    "es": "Exención del procedimiento de evaluación de la conformidad",
+    "en": "Derogation from conformity assessment procedure"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 5,
+   "vincula": "operador",
+   "actores": [
+    "proveedor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "47",
+   "titulo": {
+    "es": "Declaración UE de conformidad",
+    "en": "EU declaration of conformity"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 5,
+   "vincula": "operador",
+   "actores": [
+    "proveedor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "48",
+   "titulo": {
+    "es": "Marcado CE",
+    "en": "CE marking"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 5,
+   "vincula": "operador",
+   "actores": [
+    "proveedor",
+    "fabricante_producto"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "49",
+   "titulo": {
+    "es": "Registro",
+    "en": "Registration"
+   },
+   "capitulo": "III",
+   "capitulo_titulo": {
+    "es": "Sistemas de IA de alto riesgo",
+    "en": "High-risk AI systems"
+   },
+   "seccion": 5,
+   "vincula": "operador",
+   "actores": [
+    "proveedor",
+    "responsable_despliegue"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "50",
+   "titulo": {
+    "es": "Obligaciones de transparencia de los proveedores y responsables del despliegue de determinados sistemas de IA",
+    "en": "Transparency obligations for providers and deployers of certain AI systems"
+   },
+   "capitulo": "IV",
+   "capitulo_titulo": {
+    "es": "Obligaciones de transparencia",
+    "en": "Transparency obligations"
+   },
+   "seccion": null,
+   "vincula": "operador",
+   "actores": [
+    "proveedor",
+    "responsable_despliegue"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "51",
+   "titulo": {
+    "es": "Reglas de clasificación de los modelos de IA de uso general como modelos de IA de uso general con riesgo sistémico",
+    "en": "Classification of general-purpose AI models as general-purpose AI models with systemic risk"
+   },
+   "capitulo": "V",
+   "capitulo_titulo": {
+    "es": "Modelos de IA de uso general",
+    "en": "General-purpose AI models"
+   },
+   "seccion": 1,
+   "vincula": "clasificacion",
+   "actores": [
+    "proveedor_modelo"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "52",
+   "titulo": {
+    "es": "Procedimiento",
+    "en": "Procedure"
+   },
+   "capitulo": "V",
+   "capitulo_titulo": {
+    "es": "Modelos de IA de uso general",
+    "en": "General-purpose AI models"
+   },
+   "seccion": 1,
+   "vincula": "operador",
+   "actores": [
+    "proveedor_modelo"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "53",
+   "titulo": {
+    "es": "Obligaciones de los proveedores de modelos de IA de uso general",
+    "en": "Obligations for providers of general-purpose AI models"
+   },
+   "capitulo": "V",
+   "capitulo_titulo": {
+    "es": "Modelos de IA de uso general",
+    "en": "General-purpose AI models"
+   },
+   "seccion": 2,
+   "vincula": "operador",
+   "actores": [
+    "proveedor_modelo"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "54",
+   "titulo": {
+    "es": "Representantes autorizados de los proveedores de modelos de IA de uso general",
+    "en": "Authorised representatives of providers of general-purpose AI models"
+   },
+   "capitulo": "V",
+   "capitulo_titulo": {
+    "es": "Modelos de IA de uso general",
+    "en": "General-purpose AI models"
+   },
+   "seccion": 2,
+   "vincula": "operador",
+   "actores": [
+    "proveedor_modelo",
+    "representante_autorizado"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "55",
+   "titulo": {
+    "es": "Obligaciones de los proveedores de modelos de IA de uso general con riesgo sistémico",
+    "en": "Obligations of providers of general-purpose AI models with systemic risk"
+   },
+   "capitulo": "V",
+   "capitulo_titulo": {
+    "es": "Modelos de IA de uso general",
+    "en": "General-purpose AI models"
+   },
+   "seccion": 3,
+   "vincula": "operador",
+   "actores": [
+    "proveedor_modelo"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "56",
+   "titulo": {
+    "es": "Códigos de buenas prácticas",
+    "en": "Codes of practice"
+   },
+   "capitulo": "V",
+   "capitulo_titulo": {
+    "es": "Modelos de IA de uso general",
+    "en": "General-purpose AI models"
+   },
+   "seccion": 4,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "57",
+   "titulo": {
+    "es": "Espacios controlados de pruebas para la IA",
+    "en": "AI regulatory sandboxes"
+   },
+   "capitulo": "VI",
+   "capitulo_titulo": {
+    "es": "Medidas de apoyo a la innovación",
+    "en": "Measures in support of innovation"
+   },
+   "seccion": null,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "58",
+   "titulo": {
+    "es": "Disposiciones detalladas relativas a los espacios controlados de pruebas para la IA y al funcionamiento de dichos espacios",
+    "en": "Detailed arrangements for, and functioning of, AI regulatory sandboxes"
+   },
+   "capitulo": "VI",
+   "capitulo_titulo": {
+    "es": "Medidas de apoyo a la innovación",
+    "en": "Measures in support of innovation"
+   },
+   "seccion": null,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "59",
+   "titulo": {
+    "es": "Tratamiento ulterior de datos personales para el desarrollo de determinados sistemas de IA en favor del interés público en el espacio controlado de pruebas para la IA",
+    "en": "Further processing of personal data for developing certain AI systems in the public interest in the AI regulatory sandbox"
+   },
+   "capitulo": "VI",
+   "capitulo_titulo": {
+    "es": "Medidas de apoyo a la innovación",
+    "en": "Measures in support of innovation"
+   },
+   "seccion": null,
+   "vincula": "operador",
+   "actores": [
+    "proveedor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "60",
+   "titulo": {
+    "es": "Pruebas de sistemas de IA de alto riesgo en condiciones reales fuera de los espacios controlados de pruebas para la IA",
+    "en": "Testing of high-risk AI systems in real world conditions outside AI regulatory sandboxes"
+   },
+   "capitulo": "VI",
+   "capitulo_titulo": {
+    "es": "Medidas de apoyo a la innovación",
+    "en": "Measures in support of innovation"
+   },
+   "seccion": null,
+   "vincula": "operador",
+   "actores": [
+    "proveedor",
+    "responsable_despliegue"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "60a",
+   "titulo": {
+    "es": "Pruebas en condiciones reales de los sistemas de la sección B",
+    "en": "Testing in real world conditions of Section B systems"
+   },
+   "capitulo": "VI",
+   "capitulo_titulo": {
+    "es": "Medidas de apoyo a la innovación",
+    "en": "Measures in support of innovation"
+   },
+   "seccion": null,
+   "vincula": "operador",
+   "actores": [
+    "proveedor"
+   ],
+   "en_alcance_del_producto": true,
+   "anadido_por": "Reglamento (UE) 2026/1744"
+  },
+  {
+   "articulo": "61",
+   "titulo": {
+    "es": "Consentimiento informado para participar en pruebas en condiciones reales fuera de los espacios controlados de pruebas para la IA",
+    "en": "Informed consent to participate in testing in real world conditions outside AI regulatory sandboxes"
+   },
+   "capitulo": "VI",
+   "capitulo_titulo": {
+    "es": "Medidas de apoyo a la innovación",
+    "en": "Measures in support of innovation"
+   },
+   "seccion": null,
+   "vincula": "operador",
+   "actores": [
+    "proveedor",
+    "responsable_despliegue"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "62",
+   "titulo": {
+    "es": "Medidas dirigidas a proveedores y responsables del despliegue, en particular pymes, incluidas las empresas emergentes",
+    "en": "Measures for providers and deployers, in particular SMEs, including start-ups"
+   },
+   "capitulo": "VI",
+   "capitulo_titulo": {
+    "es": "Medidas de apoyo a la innovación",
+    "en": "Measures in support of innovation"
+   },
+   "seccion": null,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "63",
+   "titulo": {
+    "es": "Excepciones para operadores específicos",
+    "en": "Derogations for specific operators"
+   },
+   "capitulo": "VI",
+   "capitulo_titulo": {
+    "es": "Medidas de apoyo a la innovación",
+    "en": "Measures in support of innovation"
+   },
+   "seccion": null,
+   "vincula": "operador",
+   "actores": [
+    "proveedor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "64",
+   "titulo": {
+    "es": "Oficina de IA",
+    "en": "AI Office"
+   },
+   "capitulo": "VII",
+   "capitulo_titulo": {
+    "es": "Gobernanza",
+    "en": "Governance"
+   },
+   "seccion": 1,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "65",
+   "titulo": {
+    "es": "Creación y estructura del Consejo Europeo de Inteligencia Artificial",
+    "en": "Establishment and structure of the European Artificial Intelligence Board"
+   },
+   "capitulo": "VII",
+   "capitulo_titulo": {
+    "es": "Gobernanza",
+    "en": "Governance"
+   },
+   "seccion": 1,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "66",
+   "titulo": {
+    "es": "Funciones del Consejo de IA",
+    "en": "Tasks of the Board"
+   },
+   "capitulo": "VII",
+   "capitulo_titulo": {
+    "es": "Gobernanza",
+    "en": "Governance"
+   },
+   "seccion": 1,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "67",
+   "titulo": {
+    "es": "Foro consultivo",
+    "en": "Advisory forum"
+   },
+   "capitulo": "VII",
+   "capitulo_titulo": {
+    "es": "Gobernanza",
+    "en": "Governance"
+   },
+   "seccion": 1,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "68",
+   "titulo": {
+    "es": "Grupo de expertos científicos independientes",
+    "en": "Scientific panel of independent experts"
+   },
+   "capitulo": "VII",
+   "capitulo_titulo": {
+    "es": "Gobernanza",
+    "en": "Governance"
+   },
+   "seccion": 1,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "69",
+   "titulo": {
+    "es": "Acceso a expertos por parte de los Estados miembros",
+    "en": "Access to the pool of experts by the Member States"
+   },
+   "capitulo": "VII",
+   "capitulo_titulo": {
+    "es": "Gobernanza",
+    "en": "Governance"
+   },
+   "seccion": 1,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "70",
+   "titulo": {
+    "es": "Designación de las autoridades nacionales competentes y de los puntos de contacto único",
+    "en": "Designation of national competent authorities and single points of contact"
+   },
+   "capitulo": "VII",
+   "capitulo_titulo": {
+    "es": "Gobernanza",
+    "en": "Governance"
+   },
+   "seccion": 2,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "71",
+   "titulo": {
+    "es": "Base de datos de la UE para los sistemas de IA de alto riesgo enumerados en el ANEXO III",
+    "en": "EU database for high-risk AI systems listed in Annex III"
+   },
+   "capitulo": "VIII",
+   "capitulo_titulo": {
+    "es": "Base de datos de la UE",
+    "en": "EU database"
+   },
+   "seccion": null,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "72",
+   "titulo": {
+    "es": "Vigilancia poscomercialización por parte de los proveedores y plan de vigilancia poscomercialización para sistemas de IA de alto riesgo",
+    "en": "Post-market monitoring by providers and post-market monitoring plan for high-risk AI systems"
+   },
+   "capitulo": "IX",
+   "capitulo_titulo": {
+    "es": "Vigilancia poscomercialización y del mercado",
+    "en": "Post-market and market surveillance"
+   },
+   "seccion": 1,
+   "vincula": "operador",
+   "actores": [
+    "proveedor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "73",
+   "titulo": {
+    "es": "Notificación de incidentes graves",
+    "en": "Reporting of serious incidents"
+   },
+   "capitulo": "IX",
+   "capitulo_titulo": {
+    "es": "Vigilancia poscomercialización y del mercado",
+    "en": "Post-market and market surveillance"
+   },
+   "seccion": 2,
+   "vincula": "operador",
+   "actores": [
+    "proveedor"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "74",
+   "titulo": {
+    "es": "Vigilancia del mercado y control de los sistemas de IA en el mercado de la Unión",
+    "en": "Market surveillance and control of AI systems in the Union market"
+   },
+   "capitulo": "IX",
+   "capitulo_titulo": {
+    "es": "Vigilancia poscomercialización y del mercado",
+    "en": "Post-market and market surveillance"
+   },
+   "seccion": 3,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "75",
+   "titulo": {
+    "es": "Asistencia mutua, vigilancia del mercado y control de sistemas de IA de uso general",
+    "en": "Mutual assistance, market surveillance and control of general-purpose AI systems"
+   },
+   "capitulo": "IX",
+   "capitulo_titulo": {
+    "es": "Vigilancia poscomercialización y del mercado",
+    "en": "Post-market and market surveillance"
+   },
+   "seccion": 3,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "76",
+   "titulo": {
+    "es": "Supervisión de las pruebas en condiciones reales por las autoridades de vigilancia del mercado",
+    "en": "Supervision of testing in real world conditions by market surveillance authorities"
+   },
+   "capitulo": "IX",
+   "capitulo_titulo": {
+    "es": "Vigilancia poscomercialización y del mercado",
+    "en": "Post-market and market surveillance"
+   },
+   "seccion": 3,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "77",
+   "titulo": {
+    "es": "Poderes de las autoridades encargadas de proteger los derechos fundamentales",
+    "en": "Powers of authorities protecting fundamental rights"
+   },
+   "capitulo": "IX",
+   "capitulo_titulo": {
+    "es": "Vigilancia poscomercialización y del mercado",
+    "en": "Post-market and market surveillance"
+   },
+   "seccion": 3,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "78",
+   "titulo": {
+    "es": "Confidencialidad",
+    "en": "Confidentiality"
+   },
+   "capitulo": "IX",
+   "capitulo_titulo": {
+    "es": "Vigilancia poscomercialización y del mercado",
+    "en": "Post-market and market surveillance"
+   },
+   "seccion": 3,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "79",
+   "titulo": {
+    "es": "Procedimiento aplicable a escala nacional a los sistemas de IA que presenten un riesgo",
+    "en": "Procedure at national level for dealing with AI systems presenting a risk"
+   },
+   "capitulo": "IX",
+   "capitulo_titulo": {
+    "es": "Vigilancia poscomercialización y del mercado",
+    "en": "Post-market and market surveillance"
+   },
+   "seccion": 3,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "80",
+   "titulo": {
+    "es": "Procedimiento aplicable a los sistemas de IA clasificados por el proveedor como no de alto riesgo en aplicación del anexo III",
+    "en": "Procedure for dealing with AI systems classified by the provider as not high-risk in application of Annex III"
+   },
+   "capitulo": "IX",
+   "capitulo_titulo": {
+    "es": "Vigilancia poscomercialización y del mercado",
+    "en": "Post-market and market surveillance"
+   },
+   "seccion": 3,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "81",
+   "titulo": {
+    "es": "Procedimiento de salvaguardia de la Unión",
+    "en": "Union safeguard procedure"
+   },
+   "capitulo": "IX",
+   "capitulo_titulo": {
+    "es": "Vigilancia poscomercialización y del mercado",
+    "en": "Post-market and market surveillance"
+   },
+   "seccion": 3,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "82",
+   "titulo": {
+    "es": "Sistemas de IA conformes que presenten un riesgo",
+    "en": "Compliant AI systems which present a risk"
+   },
+   "capitulo": "IX",
+   "capitulo_titulo": {
+    "es": "Vigilancia poscomercialización y del mercado",
+    "en": "Post-market and market surveillance"
+   },
+   "seccion": 3,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "83",
+   "titulo": {
+    "es": "Incumplimiento formal",
+    "en": "Formal non-compliance"
+   },
+   "capitulo": "IX",
+   "capitulo_titulo": {
+    "es": "Vigilancia poscomercialización y del mercado",
+    "en": "Post-market and market surveillance"
+   },
+   "seccion": 3,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "84",
+   "titulo": {
+    "es": "Estructuras de apoyo a los ensayos de IA de la Unión",
+    "en": "Union AI testing support structures"
+   },
+   "capitulo": "IX",
+   "capitulo_titulo": {
+    "es": "Vigilancia poscomercialización y del mercado",
+    "en": "Post-market and market surveillance"
+   },
+   "seccion": 3,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "85",
+   "titulo": {
+    "es": "Derecho a presentar una reclamación ante una autoridad de vigilancia del mercado",
+    "en": "Right to lodge a complaint with a market surveillance authority"
+   },
+   "capitulo": "IX",
+   "capitulo_titulo": {
+    "es": "Vigilancia poscomercialización y del mercado",
+    "en": "Post-market and market surveillance"
+   },
+   "seccion": 4,
+   "vincula": "derecho",
+   "actores": [
+    "proveedor",
+    "responsable_despliegue"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "86",
+   "titulo": {
+    "es": "Derecho a explicación de decisiones tomadas individualmente",
+    "en": "Right to explanation of individual decision-making"
+   },
+   "capitulo": "IX",
+   "capitulo_titulo": {
+    "es": "Vigilancia poscomercialización y del mercado",
+    "en": "Post-market and market surveillance"
+   },
+   "seccion": 4,
+   "vincula": "derecho",
+   "actores": [
+    "responsable_despliegue"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "87",
+   "titulo": {
+    "es": "Denuncia de infracciones y protección de los denunciantes",
+    "en": "Reporting of infringements and protection of reporting persons"
+   },
+   "capitulo": "IX",
+   "capitulo_titulo": {
+    "es": "Vigilancia poscomercialización y del mercado",
+    "en": "Post-market and market surveillance"
+   },
+   "seccion": 4,
+   "vincula": "derecho",
+   "actores": [
+    "proveedor",
+    "responsable_despliegue"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "88",
+   "titulo": {
+    "es": "Cumplimiento de las obligaciones de los proveedores de modelos de IA de uso general",
+    "en": "Enforcement of obligations of providers of general-purpose AI models"
+   },
+   "capitulo": "IX",
+   "capitulo_titulo": {
+    "es": "Vigilancia poscomercialización y del mercado",
+    "en": "Post-market and market surveillance"
+   },
+   "seccion": 5,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "89",
+   "titulo": {
+    "es": "Medidas de seguimiento",
+    "en": "Monitoring actions"
+   },
+   "capitulo": "IX",
+   "capitulo_titulo": {
+    "es": "Vigilancia poscomercialización y del mercado",
+    "en": "Post-market and market surveillance"
+   },
+   "seccion": 5,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "90",
+   "titulo": {
+    "es": "Alertas del grupo de expertos científicos sobre riesgos sistémicos",
+    "en": "Alerts of systemic risks by the scientific panel"
+   },
+   "capitulo": "IX",
+   "capitulo_titulo": {
+    "es": "Vigilancia poscomercialización y del mercado",
+    "en": "Post-market and market surveillance"
+   },
+   "seccion": 5,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "91",
+   "titulo": {
+    "es": "Poderes para solicitar documentación e información",
+    "en": "Power to request documentation and information"
+   },
+   "capitulo": "IX",
+   "capitulo_titulo": {
+    "es": "Vigilancia poscomercialización y del mercado",
+    "en": "Post-market and market surveillance"
+   },
+   "seccion": 5,
+   "vincula": "operador",
+   "actores": [
+    "proveedor_modelo"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "92",
+   "titulo": {
+    "es": "Poderes para realizar evaluaciones",
+    "en": "Power to conduct evaluations"
+   },
+   "capitulo": "IX",
+   "capitulo_titulo": {
+    "es": "Vigilancia poscomercialización y del mercado",
+    "en": "Post-market and market surveillance"
+   },
+   "seccion": 5,
+   "vincula": "operador",
+   "actores": [
+    "proveedor_modelo"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "93",
+   "titulo": {
+    "es": "Poderes para solicitar la adopción de medidas",
+    "en": "Power to request measures"
+   },
+   "capitulo": "IX",
+   "capitulo_titulo": {
+    "es": "Vigilancia poscomercialización y del mercado",
+    "en": "Post-market and market surveillance"
+   },
+   "seccion": 5,
+   "vincula": "operador",
+   "actores": [
+    "proveedor_modelo"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "94",
+   "titulo": {
+    "es": "Garantías procesales de los operadores económicos del modelo de IA de uso general",
+    "en": "Procedural rights of economic operators of the general-purpose AI model"
+   },
+   "capitulo": "IX",
+   "capitulo_titulo": {
+    "es": "Vigilancia poscomercialización y del mercado",
+    "en": "Post-market and market surveillance"
+   },
+   "seccion": 5,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "95",
+   "titulo": {
+    "es": "Códigos de conducta para la aplicación voluntaria de requisitos específicos",
+    "en": "Codes of conduct for voluntary application of specific requirements"
+   },
+   "capitulo": "X",
+   "capitulo_titulo": {
+    "es": "Códigos de conducta y directrices",
+    "en": "Codes of conduct and guidelines"
+   },
+   "seccion": null,
+   "vincula": "operador",
+   "actores": [
+    "proveedor",
+    "responsable_despliegue"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "96",
+   "titulo": {
+    "es": "Directrices de la Comisión sobre la aplicación del presente Reglamento",
+    "en": "Commission guidelines on the implementation of this Regulation"
+   },
+   "capitulo": "X",
+   "capitulo_titulo": {
+    "es": "Códigos de conducta y directrices",
+    "en": "Codes of conduct and guidelines"
+   },
+   "seccion": null,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "97",
+   "titulo": {
+    "es": "Ejercicio de la delegación",
+    "en": "Exercise of the delegation"
+   },
+   "capitulo": "XI",
+   "capitulo_titulo": {
+    "es": "Delegación de poderes y comité",
+    "en": "Delegation of power and committee procedure"
+   },
+   "seccion": null,
+   "vincula": "instrumento",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Modifica otras normas, delega poderes o cierra el texto. No crea ninguna conducta exigible a un operador.",
+    "en": "It amends other instruments, delegates powers or closes the text. It creates no conduct required of an operator."
+   }
+  },
+  {
+   "articulo": "98",
+   "titulo": {
+    "es": "Procedimiento de comité",
+    "en": "Committee procedure"
+   },
+   "capitulo": "XI",
+   "capitulo_titulo": {
+    "es": "Delegación de poderes y comité",
+    "en": "Delegation of power and committee procedure"
+   },
+   "seccion": null,
+   "vincula": "instrumento",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Modifica otras normas, delega poderes o cierra el texto. No crea ninguna conducta exigible a un operador.",
+    "en": "It amends other instruments, delegates powers or closes the text. It creates no conduct required of an operator."
+   }
+  },
+  {
+   "articulo": "99",
+   "titulo": {
+    "es": "Sanciones",
+    "en": "Penalties"
+   },
+   "capitulo": "XII",
+   "capitulo_titulo": {
+    "es": "Sanciones",
+    "en": "Penalties"
+   },
+   "seccion": null,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "100",
+   "titulo": {
+    "es": "Multas administrativas a instituciones, órganos y organismos de la Unión",
+    "en": "Administrative fines on Union institutions, bodies, offices and agencies"
+   },
+   "capitulo": "XII",
+   "capitulo_titulo": {
+    "es": "Sanciones",
+    "en": "Penalties"
+   },
+   "seccion": null,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "101",
+   "titulo": {
+    "es": "Multas a proveedores de modelos de IA de uso general",
+    "en": "Fines for providers of general-purpose AI models"
+   },
+   "capitulo": "XII",
+   "capitulo_titulo": {
+    "es": "Sanciones",
+    "en": "Penalties"
+   },
+   "seccion": null,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "102",
+   "titulo": {
+    "es": "Modificación del Reglamento (CE) n.o 300/2008",
+    "en": "Amendment to Regulation (EC) No 300/2008"
+   },
+   "capitulo": "XIII",
+   "capitulo_titulo": {
+    "es": "Disposiciones finales",
+    "en": "Final provisions"
+   },
+   "seccion": null,
+   "vincula": "instrumento",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Modifica otras normas, delega poderes o cierra el texto. No crea ninguna conducta exigible a un operador.",
+    "en": "It amends other instruments, delegates powers or closes the text. It creates no conduct required of an operator."
+   }
+  },
+  {
+   "articulo": "103",
+   "titulo": {
+    "es": "Modificación del Reglamento (UE) n.o 167/2013",
+    "en": "Amendment to Regulation (EU) No 167/2013"
+   },
+   "capitulo": "XIII",
+   "capitulo_titulo": {
+    "es": "Disposiciones finales",
+    "en": "Final provisions"
+   },
+   "seccion": null,
+   "vincula": "instrumento",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Modifica otras normas, delega poderes o cierra el texto. No crea ninguna conducta exigible a un operador.",
+    "en": "It amends other instruments, delegates powers or closes the text. It creates no conduct required of an operator."
+   }
+  },
+  {
+   "articulo": "104",
+   "titulo": {
+    "es": "Modificación del Reglamento (UE) n.o 168/2013",
+    "en": "Amendment to Regulation (EU) No 168/2013"
+   },
+   "capitulo": "XIII",
+   "capitulo_titulo": {
+    "es": "Disposiciones finales",
+    "en": "Final provisions"
+   },
+   "seccion": null,
+   "vincula": "instrumento",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Modifica otras normas, delega poderes o cierra el texto. No crea ninguna conducta exigible a un operador.",
+    "en": "It amends other instruments, delegates powers or closes the text. It creates no conduct required of an operator."
+   }
+  },
+  {
+   "articulo": "105",
+   "titulo": {
+    "es": "Modificación de la Directiva 2014/90/UE",
+    "en": "Amendment to Directive 2014/90/EU"
+   },
+   "capitulo": "XIII",
+   "capitulo_titulo": {
+    "es": "Disposiciones finales",
+    "en": "Final provisions"
+   },
+   "seccion": null,
+   "vincula": "instrumento",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Modifica otras normas, delega poderes o cierra el texto. No crea ninguna conducta exigible a un operador.",
+    "en": "It amends other instruments, delegates powers or closes the text. It creates no conduct required of an operator."
+   }
+  },
+  {
+   "articulo": "106",
+   "titulo": {
+    "es": "Modificación de la Directiva (UE) 2016/797",
+    "en": "Amendment to Directive (EU) 2016/797"
+   },
+   "capitulo": "XIII",
+   "capitulo_titulo": {
+    "es": "Disposiciones finales",
+    "en": "Final provisions"
+   },
+   "seccion": null,
+   "vincula": "instrumento",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Modifica otras normas, delega poderes o cierra el texto. No crea ninguna conducta exigible a un operador.",
+    "en": "It amends other instruments, delegates powers or closes the text. It creates no conduct required of an operator."
+   }
+  },
+  {
+   "articulo": "107",
+   "titulo": {
+    "es": "Modificación del Reglamento (UE) 2018/858",
+    "en": "Amendment to Regulation (EU) 2018/858"
+   },
+   "capitulo": "XIII",
+   "capitulo_titulo": {
+    "es": "Disposiciones finales",
+    "en": "Final provisions"
+   },
+   "seccion": null,
+   "vincula": "instrumento",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Modifica otras normas, delega poderes o cierra el texto. No crea ninguna conducta exigible a un operador.",
+    "en": "It amends other instruments, delegates powers or closes the text. It creates no conduct required of an operator."
+   }
+  },
+  {
+   "articulo": "108",
+   "titulo": {
+    "es": "Modificación del Reglamento (UE) 2018/1139",
+    "en": "Amendment to Regulation (EU) 2018/1139"
+   },
+   "capitulo": "XIII",
+   "capitulo_titulo": {
+    "es": "Disposiciones finales",
+    "en": "Final provisions"
+   },
+   "seccion": null,
+   "vincula": "instrumento",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Modifica otras normas, delega poderes o cierra el texto. No crea ninguna conducta exigible a un operador.",
+    "en": "It amends other instruments, delegates powers or closes the text. It creates no conduct required of an operator."
+   }
+  },
+  {
+   "articulo": "109",
+   "titulo": {
+    "es": "Modificación del Reglamento (UE) 2019/2144",
+    "en": "Amendment to Regulation (EU) 2019/2144"
+   },
+   "capitulo": "XIII",
+   "capitulo_titulo": {
+    "es": "Disposiciones finales",
+    "en": "Final provisions"
+   },
+   "seccion": null,
+   "vincula": "instrumento",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Modifica otras normas, delega poderes o cierra el texto. No crea ninguna conducta exigible a un operador.",
+    "en": "It amends other instruments, delegates powers or closes the text. It creates no conduct required of an operator."
+   }
+  },
+  {
+   "articulo": "110",
+   "titulo": {
+    "es": "Modificación de la Directiva (UE) 2020/1828",
+    "en": "Amendment to Directive (EU) 2020/1828"
+   },
+   "capitulo": "XIII",
+   "capitulo_titulo": {
+    "es": "Disposiciones finales",
+    "en": "Final provisions"
+   },
+   "seccion": null,
+   "vincula": "instrumento",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Modifica otras normas, delega poderes o cierra el texto. No crea ninguna conducta exigible a un operador.",
+    "en": "It amends other instruments, delegates powers or closes the text. It creates no conduct required of an operator."
+   }
+  },
+  {
+   "articulo": "111",
+   "titulo": {
+    "es": "Sistemas de IA ya introducidos en el mercado o puestos en servicio y modelos de IA de uso general ya introducidos en el mercado",
+    "en": "AI systems already placed on the market or put into service and general-purpose AI models already placed on the market"
+   },
+   "capitulo": "XIII",
+   "capitulo_titulo": {
+    "es": "Disposiciones finales",
+    "en": "Final provisions"
+   },
+   "seccion": null,
+   "vincula": "clasificacion",
+   "actores": [
+    "proveedor",
+    "proveedor_modelo"
+   ],
+   "en_alcance_del_producto": true
+  },
+  {
+   "articulo": "112",
+   "titulo": {
+    "es": "Evaluación y revisión",
+    "en": "Evaluation and review"
+   },
+   "capitulo": "XIII",
+   "capitulo_titulo": {
+    "es": "Disposiciones finales",
+    "en": "Final provisions"
+   },
+   "seccion": null,
+   "vincula": "autoridad",
+   "actores": [],
+   "en_alcance_del_producto": false,
+   "por_que_no_ata_a_un_cliente": {
+    "es": "Obliga a la Comisión, a la Oficina de IA o a un Estado miembro, no a quien usa este producto. Se cataloga para que el mapa esté completo y para poder decir, cuando alguien pregunte por este artículo, que se miró y por qué no le ata.",
+    "en": "It binds the Commission, the AI Office or a Member State, not the user of this product. It is catalogued so the map is complete and so that, when somebody asks about this article, the answer is that it was looked at and why it does not bind them."
+   }
+  },
+  {
+   "articulo": "113",
+   "titulo": {
+    "es": "Entrada en vigor y aplicación",
+    "en": "Entry into force and application"
+   },
+   "capitulo": "XIII",
+   "capitulo_titulo": {
+    "es": "Disposiciones finales",
+    "en": "Final provisions"
+   },
+   "seccion": null,
+   "vincula": "clasificacion",
+   "actores": [
+    "todos"
+   ],
+   "en_alcance_del_producto": true
+  }
+ ],
+ "por_que_estan_todos": {
+  "es": "Un catálogo que solo lista los artículos que sabe comprobar no permite contestar «¿y el artículo 46?». Están los 115, cada uno dice a quién ata y, si no ata a un cliente, por qué. La cobertura deja de ser una afirmación comercial y pasa a ser una lista que se puede recorrer.\n\nSon 115 y no 113: 113 del acto base y 2 insertados por el Reglamento (UE) 2026/1744 (los artículos 4 bis y 60 bis). Este campo se llamaba `por_que_estan_los_113` y seguía diciendo 113 con 115 dentro: una cifra metida en el NOMBRE de un campo no se puede actualizar sin renombrarlo, así que nadie lo hace. El nombre ya no lleva número y la puerta `test_la_cifra_de_articulos_no_se_queda_vieja` compara lo que dice la prosa con lo que hay.",
+  "en": "A catalogue that only lists the articles it knows how to check cannot answer 'what about Article 46?'. All 115 are here, each says whom it binds and, if it does not bind a client, why. Coverage stops being a marketing claim and becomes a list you can walk.\n\nThere are 115 and not 113: 113 from the base act and 2 inserted by Regulation (EU) 2026/1744. This field used to be called `por_que_estan_los_113` and still said 113 with 115 inside: a number put in the NAME of a field cannot be updated without renaming it, so nobody does. The name no longer carries a number and a gate compares what the prose says with what is there."
+ },
+ "recuento": {
+  "total": 115,
+  "del_acto_base": 113,
+  "insertados_por_actos_modificativos": 2,
+  "articulos_insertados": [
+   "4a",
+   "60a"
+  ],
+  "nota": {
+   "es": "La cifra vive AQUI y en ningún otro sitio. Estaba dentro del nombre de un campo -- `por_que_estan_los_113` -- que seguía diciendo 113 con 115 artículos dentro, y una cifra metida en un nombre no se puede actualizar sin renombrar el campo, así que no se actualiza. La prosa la cita; la puerta compara esta estructura con la lista de verdad.",
+   "en": "The number lives HERE and nowhere else. It used to be inside a field NAME -- `por_que_estan_los_113` -- which still said 113 with 115 articles inside, and a number placed in a name cannot be updated without renaming the field, so it is not updated. The prose quotes it; the gate compares this structure against the real list."
+  }
+ }
+}

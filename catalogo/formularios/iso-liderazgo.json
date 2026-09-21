@@ -1,0 +1,141 @@
+{
+  "$schema": "../esquema/formulario.schema.json",
+  "paquete": "iso-liderazgo",
+  "version": "1.0.0",
+  "autor": "Actaira",
+  "titulo": {
+    "es": "Liderazgo, política y objetivos",
+    "en": "Leadership, policy and objectives"
+  },
+  "destinatario_principal": "direccion",
+  "preguntas": [
+    {
+      "id": "F-LID-1",
+      "sirve_a": [
+        "ISO-5.2",
+        "A.2.2"
+      ],
+      "destinatario": "direccion",
+      "texto": {
+        "es": "Aporte la política de IA aprobada por la alta dirección.",
+        "en": "Provide the AI policy approved by top management."
+      },
+      "ayuda": {
+        "es": "La cláusula 5.2 exige cuatro cosas de ella: que sea apropiada al propósito de la organización, que sirva de marco para fijar los objetivos de IA, que incluya el compromiso de cumplir los requisitos aplicables y que incluya el compromiso de mejora continua. Además tiene que estar como información documentada, comunicada dentro y disponible fuera cuando proceda. Si no la tiene, Actaira le genera el borrador desde sus respuestas y usted lo aprueba.",
+        "en": "Clause 5.2 requires four things of it: that it be appropriate to the organization's purpose, that it frame the setting of AI objectives, that it include a commitment to meet applicable requirements, and that it include a commitment to continual improvement. It must also exist as documented information, be communicated internally and be available externally as appropriate. If you do not have one, Actaira drafts it from your answers and you approve it."
+      },
+      "formato": "artefacto",
+      "vigencia_dias": 365,
+      "produce": "politica-de-ia"
+    },
+    {
+      "id": "F-LID-2",
+      "sirve_a": [
+        "A.2.4",
+        "A.2.4"
+      ],
+      "destinatario": "direccion",
+      "texto": {
+        "es": "¿Cada cuánto se revisa la política de IA y cuándo se revisó por última vez?",
+        "en": "How often is the AI policy reviewed and when was it last reviewed?"
+      },
+      "ayuda": {
+        "es": "Una política de IA firmada hace tres años y no tocada desde entonces es un hallazgo, no una evidencia. La fecha que ponga aquí arranca el reloj: Actaira la marcará RANCIA cuando pase el intervalo que usted mismo declare.",
+        "en": "An AI policy signed three years ago and untouched since is a finding, not evidence. The date you enter here starts the clock: Actaira will mark it STALE once the interval you declare has passed."
+      },
+      "formato": "fecha",
+      "vigencia_dias": 365,
+      "exige": {
+        "exige_intervalo": true
+      }
+    },
+    {
+      "id": "F-LID-3",
+      "sirve_a": [
+        "ISO-5.3",
+        "A.3.2",
+        "AIA-016",
+        "AIA-017"
+      ],
+      "destinatario": "direccion",
+      "texto": {
+        "es": "¿Quién tiene asignada la responsabilidad de qué el sistema de gestión de la IA cumpla, y quién informa de su desempeño a la alta dirección?",
+        "en": "Who is assigned responsibility for the AI management system's conformity, and who reports its performance to top management?"
+      },
+      "ayuda": {
+        "es": "La cláusula 5.3 pide esas dos asignaciones con nombre y autoridad, no un departamento. Pueden recaer en la misma persona. Si nadie tiene la segunda, la revisión por la dirección de la cláusula 9.3 no tiene de dónde salir.",
+        "en": "Clause 5.3 requires those two assignments by name and authority, not a department. They may be the same person. If nobody holds the second, the management review of clause 9.3 has nothing to feed on."
+      },
+      "formato": "persona",
+      "vigencia_dias": 180,
+      "exige": {
+        "minimo_elementos": 1
+      }
+    },
+    {
+      "id": "F-LID-4",
+      "sirve_a": [
+        "ISO-5.1",
+        "ISO-7.1"
+      ],
+      "destinatario": "direccion",
+      "texto": {
+        "es": "¿Cómo demuestra la alta dirección su compromiso: qué recursos ha aprobado, en qué procesos de negocio se ha integrado el sistema de gestión, y dónde consta?",
+        "en": "How does top management demonstrate commitment: which resources has it approved, into which business processes is the management system integrated, and where is it recorded?"
+      },
+      "ayuda": {
+        "es": "Esta es la cláusula que más actas de reunión consume. Lo que convence a un auditor es una decisión con fecha: un presupuesto aprobado, una contratación, un punto del orden del día de un comite.",
+        "en": "This is the clause that consumes the most meeting minutes. What convinces an auditor is a dated decision: an approved budget, a hire, an item on a committee agenda."
+      },
+      "formato": "texto_largo",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_caracteres": 150
+      }
+    },
+    {
+      "id": "F-LID-5",
+      "sirve_a": [
+        "ISO-6.2",
+        "A.6.1.2",
+        "A.9.3"
+      ],
+      "destinatario": "direccion",
+      "texto": {
+        "es": "¿Cuáles son sus objetivos de IA, cómo se miden y quién responde de cada uno?",
+        "en": "What are your AI objectives, how are they measured and who is accountable for each?"
+      },
+      "ayuda": {
+        "es": "La cláusula 6.2 pide que sean coherentes con la política, medibles si es practicable, que tengan en cuenta los requisitos aplicables, que se sigan, se comuniquen, se actualicen y estén documentados. Por cada objetivo: qué se hará, con qué recursos, quién responde, cuándo estará y cómo se evaluará el resultado.",
+        "en": "Clause 6.2 requires them to be consistent with the policy, measurable where practicable, to take applicable requirements into account, and to be monitored, communicated, updated and documented. For each objective: what will be done, with which resources, who is accountable, when it will be complete and how the result will be evaluated."
+      },
+      "formato": "lista",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_elementos": 2
+      },
+      "produce": "objetivos-de-ia"
+    },
+    {
+      "id": "F-LID-6",
+      "sirve_a": [
+        "A.3.3",
+        "A.3.3"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Por qué canal puede una persona de la organización plantear una preocupación sobre un sistema de IA, y qué pasa después?",
+        "en": "Through which channel can someone in the organization raise a concern about an AI system, and what happens next?"
+      },
+      "ayuda": {
+        "es": "El control A.3.3 existe porque quien primero ve que un modelo se está portando mal suele ser quien lo opera, no quien lo gobierna. Diga el canal, si admite anonimato, quién lo recibe y en cuánto tiempo se responde.",
+        "en": "Control A.3.3 exists because the first person to see a model misbehaving is usually the one operating it, not the one governing it. State the channel, whether it allows anonymity, who receives it and within what time it is answered."
+      },
+      "formato": "texto_largo",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_caracteres": 120
+      }
+    }
+  ]
+}

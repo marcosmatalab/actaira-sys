@@ -1,0 +1,602 @@
+/* El panel conectado. NO calcula nada: pinta lo que el motor devolvio.
+ *
+ * LA REGLA DE ESTE FICHERO ES LA MISMA QUE LA DE LA API
+ * ------------------------------------------------------
+ * Traduce presentacion, nunca significado. Cada numero que sale en pantalla
+ * es un campo del documento; cada frase que lo explica viaja dentro del
+ * documento, en los dos idiomas, escrita por una persona. Aqui no se suma, no
+ * se promedia, no se ordena por gravedad y no se pinta ningun semaforo que el
+ * motor no haya dicho.
+ *
+ * El dia que esta pagina calcule algo, habra tres motores en vez de dos, y el
+ * tercero sera el mas facil de no auditar porque vive en el navegador de otro.
+ *
+ * LA CREDENCIAL NO SE GUARDA
+ * ---------------------------
+ * Ni en localStorage, ni en sessionStorage, ni en una cookie. Vive en una
+ * variable y se pierde al recargar. Es incomodo a proposito: un token en el
+ * almacenamiento del navegador lo lee cualquier script que acabe en la pagina,
+ * y este token vale para leer el expediente entero de un cliente.
+ */
+"use strict";
+
+const TEXTOS = __TEXTOS__;
+// Los roles NO se escriben aqui. Vienen de `panel/roles.json`, que genera
+// `herramientas/generar_roles.py` desde el vocabulario del motor. Esta lista
+// estaba escrita a mano en este fichero y decia `responsable_del_despliegue`
+// y `fabricante_de_productos`, que el motor no conoce: un responsable del
+// despliegue de verdad recibia cero obligaciones aplicables. Y le faltaba
+// `proveedor_modelo`, asi que un proveedor de modelo de uso general no podia
+// decirlo aunque cinco obligaciones del catalogo lo nombren.
+const ROLES = __ROLES__;
+const T = () => TEXTOS[estado.idioma];
+
+/* Lo que cada categoria de producto ensena. NO cambia lo que el motor dice:
+ * cambia que le pides y que ves primero, que es lo unico que una categoria
+ * comercial tiene derecho a cambiar. */
+const CATEGORIAS = {
+  dev:     { pasos: ["p2", "p3", "p5"],             verbos: ["plan", "nc"] },
+  pyme:    { pasos: ["p1", "p2", "p3"],             verbos: ["plan", "venc"] },
+  empresa: { pasos: ["p1", "p2", "p3", "p4", "p5"], verbos: ["plan", "vig", "venc", "nc"] },
+};
+
+/* Los campos de DOCUMENTO que esta pagina lee, en un solo sitio y con nombre.
+ *
+ * Existe para poder comprobarlos contra el contrato publicado: si el motor
+ * renombra un campo, esta lista y `contrato/*.json` dejan de casar y la puerta
+ * lo dice. Sin ella, la pantalla se quedaria en blanco sin que fallara nada,
+ * que es el modo de fallo que el contrato existe para evitar y que hasta ahora
+ * solo cubria el lado Go.
+ *
+ * Lo que esta lista NO demuestra, y se dice en vez de disimularlo: que el
+ * codigo no lea ademas algun campo que no este aqui. Comprobarlo de verdad
+ * pedia analizar JavaScript, y un analizador a medias se relaja hasta que deja
+ * de mirar. Lo que si se comprueba es que todo lo de aqui existe en el
+ * contrato Y aparece en el codigo, asi que la lista no envejece por los dos
+ * lados a la vez.
+ */
+const CAMPOS_DEL_DOCUMENTO = [
+  "esquema", "recuento", "lineas", "veredictos", "no_conformidades",
+  "total_preguntas", "a_reobservar", "nota_de_recuento", "nota_del_cierre",
+  "articulo", "obligacion_id", "titulo", "estado", "hallazgos", "preguntas",
+  "motivo", "por_que", "remediacion", "localizacion", "regla_id", "texto",
+  "situacion", "regla", "id", "descripcion", "origen", "dias_abierta",
+  "incoherencias", "vencida", "estancada", "nombres_de_estado",
+];
+
+/* Como se lee un estado. El nombre lo publica el MOTOR dentro del documento,
+ * porque el vocabulario del producto es suyo: si lo tuviera esta pagina, el
+ * dia que el motor anada un estado un cliente ingles veria `sin_cubrir` en
+ * crudo, que es el defecto que la fase 20 encontro mirando la pantalla en
+ * ingles. Si falta, se ensena el identificador: feo y verdad. */
+function nombreDe(clave) {
+  const r = estado.documentos[estado.vista];
+  const tabla = r && r.documento ? r.documento.nombres_de_estado : null;
+  const n = tabla && tabla[clave] ? bil(tabla[clave]) : "";
+  return n || String(clave || "").replace(/_/g, " ");
+}
+
+const estado = {
+  idioma: "es",
+  tema: "",
+  categoria: "pyme",
+  conectado: false,
+  servidor: "",
+  cliente: "",
+  credencial: "",          // en memoria y en ningun otro sitio
+  documentos: {},          // verbo -> {codigo, documento, esquema}
+  vista: "plan",
+  filtro: "todas",
+};
+
+/* --- utilidades sin ninguna doctrina dentro ------------------------------ */
+
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => Array.from(document.querySelectorAll(s));
+
+function vaciar(n) { while (n.firstChild) n.removeChild(n.firstChild); return n; }
+
+function el(etiqueta, clase, texto) {
+  const n = document.createElement(etiqueta);
+  if (clase) n.className = clase;
+  if (texto !== undefined && texto !== null) n.textContent = String(texto);
+  return n;
+}
+
+/* Un texto bilingue del documento, en el idioma elegido. Si falta el idioma
+ * pedido NO se cae al otro en silencio: un expediente en ingles con una frase
+ * en castellano dentro es el defecto que el motor lleva doce fases evitando, y
+ * disimularlo aqui lo devolveria por la ventana. */
+function bil(x) {
+  if (!x || typeof x !== "object") return "";
+  const v = x[estado.idioma];
+  return typeof v === "string" ? v : "";
+}
+
+/* --- el transporte ------------------------------------------------------- */
+
+async function pedir(metodo, camino, cuerpo) {
+  const url = estado.servidor.replace(/\/+$/, "") + camino;
+  const r = await fetch(url, {
+    method: metodo,
+    headers: {
+      "Authorization": "Bearer " + estado.credencial,
+      "Accept-Language": estado.idioma,
+      ...(cuerpo ? { "Content-Type": "application/json" } : {}),
+    },
+    body: cuerpo ? JSON.stringify(cuerpo) : undefined,
+  });
+  const texto = await r.text();
+  let doc = null;
+  try { doc = JSON.parse(texto); } catch (e) { doc = null; }
+  return { estado: r.status, doc };
+}
+
+function perfilDelFormulario() {
+  // VARIOS roles, no uno. Una organizacion es a la vez proveedor de un sistema
+  // y responsable del despliegue de otro, y con un solo valor habia que elegir
+  // cual declarar y perder las obligaciones del otro. El motor siempre acepto
+  // un conjunto; era la pantalla la que obligaba a quedarse con uno.
+  const p = { roles: [...$("#rol").selectedOptions].map((o) => o.value) };
+  for (const k of ["alto_riesgo", "sector_publico", "modelo_uso_general", "riesgo_sistemico"]) {
+    p[k] = $("#" + k).value;
+  }
+  p.via_anexo = $("#via_anexo").value;
+  p.fecha = $("#fecha").value;
+  return p;
+}
+
+const RUTAS = {
+  plan: (c) => ["POST", `/v1/clientes/${c}/plan`, perfilDelFormulario()],
+  vig:  (c) => ["POST", `/v1/clientes/${c}/vigilar`, perfilDelFormulario()],
+  venc: (c) => ["GET", `/v1/clientes/${c}/vencimientos`, null],
+  nc:   (c) => ["GET", `/v1/clientes/${c}/noconformidades`, null],
+  // Las cinco vistas que faltaban. No son pantallas nuevas que inventen nada:
+  // son verbos que el motor ya tenia y que la API no traducia, asi que el panel
+  // no podia ensenarlos. Una auditoria externa lo leyo como «no hay explorador
+  // de evidencia, no hay vista de procedencia, no hay tablero», y la causa
+  // estaba una capa mas abajo de donde se veia.
+  ev:   (c) => ["GET", `/v1/clientes/${c}/almacen`, null],
+  preg: (c) => ["POST", `/v1/clientes/${c}/preguntar`, perfilDelFormulario()],
+  soa:  (c) => ["POST", `/v1/clientes/${c}/soa`, perfilDelFormulario()],
+  anx:  (c) => ["POST", `/v1/clientes/${c}/anexo?cual=iv`, perfilDelFormulario()],
+  rev:  (c) => ["GET", `/v1/clientes/${c}/revision`, null],
+};
+
+async function traer(verbo) {
+  const [metodo, camino, cuerpo] = RUTAS[verbo](estado.cliente);
+  // El boton se llama igual que la vista. Habia un mapa que traducia cada
+  // nombre al suyo y era la identidad: cuatro entradas que decian `plan: plan`.
+  // Con las vistas nuevas habria hecho falta acordarse de anadir cinco mas, y
+  // el dia que alguien no lo hiciera el boton no se desactivaria mientras corre
+  // -- que es lo unico que ese mapa hacia.
+  const boton = $("#pedir-" + verbo);
+  if (boton) boton.disabled = true;
+  try {
+    const r = await pedir(metodo, camino, cuerpo);
+    if (r.estado === 401) { fallo(T().credencial_mala); return; }
+    if (!r.doc || typeof r.doc !== "object") { fallo(T().error_motor); return; }
+    if (r.doc.documento === undefined) { fallo(bil(r.doc.que) || T().error_motor); return; }
+    estado.documentos[verbo] = r.doc;
+    estado.vista = verbo;
+    fallo("");
+  } catch (e) {
+    fallo(T().no_llega);
+  } finally {
+    if (boton) boton.disabled = !estado.conectado;
+    pintar();
+  }
+}
+
+function fallo(texto) {
+  const n = $("#conexion-mal");
+  n.textContent = texto || "";
+  n.classList.toggle("oculto", !texto);
+}
+
+/* --- conexion ------------------------------------------------------------ */
+
+async function conectar() {
+  estado.servidor = $("#servidor").value.trim();
+  estado.cliente = $("#cliente").value.trim();
+  estado.credencial = $("#credencial").value;
+  $("#conectar").disabled = true;
+  $("#conectar").textContent = T().probando;
+  try {
+    const r = await pedir("GET", "/salud", null);
+    if (!r.doc || r.doc.vivo !== true) { fallo(T().no_llega); return; }
+    // La salud no pide credencial, asi que no demuestra que la credencial
+    // valga. Se prueba con una ruta que SI la pide: decir «conectado» porque
+    // el servidor respira seria prometer algo que no se ha comprobado.
+    const p = await pedir("GET", `/v1/clientes/${estado.cliente}/noconformidades`, null);
+    if (p.estado === 401) { fallo(T().credencial_mala); return; }
+    estado.conectado = true;
+    estado.documentos.nc = p.doc && p.doc.documento !== undefined ? p.doc : undefined;
+    fallo("");
+  } catch (e) {
+    fallo(T().no_llega);
+  } finally {
+    $("#conectar").disabled = false;
+    pintar();
+  }
+}
+
+function desconectar() {
+  estado.conectado = false;
+  estado.credencial = "";
+  estado.documentos = {};
+  $("#credencial").value = "";
+  pintar();
+}
+
+/* --- pintar -------------------------------------------------------------- */
+
+const CLASE_SITUACION = {
+  ata: "ata", con_hallazgos: "mal", comprobada: "ata", futura: "futura",
+  no_ata: "", a_preguntar: "indet", indeterminada: "indet", sin_resolver: "indet",
+  solo_formulario: "", abierta: "indet", en_analisis: "indet", con_accion: "indet",
+  ejecutada: "futura", verificada: "ata", vencidas: "mal", estancadas: "mal",
+  incoherentes: "mal",
+};
+
+function pintarTextos() {
+  const t = T();
+  document.documentElement.lang = estado.idioma;
+  document.title = t.titulo;
+  const mapa = {
+    "#eyebrow": "eyebrow", "#titular": "titular", "#entradilla": "entradilla",
+    "#sin-porcentaje": "sin_porcentaje", "#t-categoria": "categoria",
+    "#t-ciclo": "estado_del_ciclo", "#t-conexion": "conexion", "#t-servidor": "servidor",
+    "#t-cliente": "cliente", "#t-credencial": "credencial",
+    "#credencial-nota": "credencial_nota", "#conectar": "conectar",
+    "#desconectar": "desconectar", "#t-perfil": "perfil", "#t-roles": "roles",
+    "#origen-nota": "origen_nota",
+    "#t-roles-ayuda": "roles_ayuda",
+    "#t-alto": "alto_riesgo", "#t-via": "via", "#t-sector": "sector",
+    "#t-general": "uso_general", "#t-sistemico": "sistemico", "#t-fecha": "fecha",
+    "#pedir-plan": "pedir_plan", "#pedir-vig": "pedir_vigilancia",
+    "#pedir-venc": "pedir_venc", "#pedir-nc": "pedir_nc",
+    "#pedir-ev": "pedir_ev", "#pedir-preg": "pedir_preg",
+    "#pedir-soa": "pedir_soa", "#pedir-anx": "pedir_anx",
+    "#pedir-rev": "pedir_rev",
+    "#t-vistas": "vistas", "#t-buscar": "buscar",
+    "#t-recuento": "recuento", "#t-lineas": "lineas", "#t-documento": "documento",
+    "#doc-nota": "doc_nota",
+  };
+  for (const [sel, clave] of Object.entries(mapa)) {
+    const n = $(sel);
+    if (n) n.textContent = t[clave];
+  }
+  $("#enchufe-txt").textContent = estado.conectado ? t.conectado : t.sin_conexion;
+  $("#punto").classList.toggle("vivo", estado.conectado);
+  $$("#tema button")[0].title = t.tema_claro;
+  $$("#tema button")[1].title = t.tema_oscuro;
+  // Los roles son valores del motor y sus nombres son de la pantalla: quien
+  // elige "deployer" en ingles manda el identificador que el motor entiende.
+  // Traducir el valor lo habria roto; no traducir la etiqueta habria dejado
+  // media pantalla en castellano. Las dos cosas salen ahora del MISMO sitio.
+  const rol = $("#rol");
+  const antesRol = [...rol.selectedOptions].map((o) => o.value);
+  vaciar(rol);
+  for (const r of ROLES.roles) {
+    const o = el("option", null, r.nombre[estado.idioma] || r.nombre.es);
+    o.value = r.id;
+    o.title = r.definicion[estado.idioma] || r.definicion.es;
+    rol.appendChild(o);
+  }
+  const elegidos = antesRol.length ? antesRol : ["proveedor"];
+  for (const o of rol.options) o.selected = elegidos.includes(o.value);
+  for (const s of $$("select[data-tri]")) {
+    const antes = s.value;
+    vaciar(s);
+    for (const [v, k] of [["", "nulo"], ["si", "si"], ["no", "no"]]) {
+      const o = el("option", null, t[k]);
+      o.value = v;
+      s.appendChild(o);
+    }
+    s.value = antes;
+  }
+}
+
+function pintarCategorias() {
+  const t = T(), caja = vaciar($("#cats"));
+  let i = 1;
+  for (const clave of ["dev", "pyme", "empresa"]) {
+    const b = el("button", "cat");
+    b.setAttribute("aria-pressed", String(estado.categoria === clave));
+    b.appendChild(el("p", "n", "0" + i++));
+    b.appendChild(el("h3", null, t["cat_" + clave]));
+    b.appendChild(el("p", null, t["cat_" + clave + "_pie"]));
+    b.onclick = () => { estado.categoria = clave; pintar(); };
+    caja.appendChild(b);
+  }
+}
+
+/* El ciclo lee de los documentos que HAY. Un paso sin documento dice que no se
+ * ha pedido, y no un cero: un cero es una afirmacion sobre el mundo y «no lo he
+ * mirado» no lo es. Es la misma distincion que el motor hace entre
+ * NO_APLICABLE e INDETERMINADA, y fundirla aqui la desharia en la pantalla,
+ * que es donde la gente la lee. */
+const PASOS = {
+  p1: () => sacar("plan", (d) => sumaDe(d.recuento, ["comprobada", "con_hallazgos",
+        "a_preguntar", "solo_formulario", "sin_resolver"])),
+  p2: () => sacar("plan", (d) => valor(d.recuento, "con_hallazgos")),
+  p3: () => sacar("plan", (d) => d.total_preguntas),
+  p4: () => sacar("venc", (d) => (d.a_reobservar || []).length),
+  p5: () => sacar("nc", (d) => (d.no_conformidades || []).filter((n) => n.estado !== "verificada").length),
+};
+
+function valor(o, k) { return o && typeof o[k] === "number" ? o[k] : null; }
+
+/* La UNICA aritmetica de este fichero, y es un recuento de los recuentos que
+ * el documento ya trae, no una proporcion. Se escribe aqui, con nombre, para
+ * que se vea: si algun dia aparece una division en este fichero, sera facil
+ * encontrarla. */
+function sumaDe(recuento, claves) {
+  if (!recuento) return null;
+  let n = 0, hubo = false;
+  for (const k of claves) {
+    if (typeof recuento[k] === "number") { n += recuento[k]; hubo = true; }
+  }
+  return hubo ? n : null;
+}
+
+function sacar(verbo, fn) {
+  const r = estado.documentos[verbo];
+  if (!r || !r.documento) return null;
+  try { return fn(r.documento); } catch (e) { return null; }
+}
+
+function pintarCiclo() {
+  const t = T(), caja = vaciar($("#ciclo"));
+  let i = 1;
+  for (const clave of CATEGORIAS[estado.categoria].pasos) {
+    const paso = el("div", "paso");
+    paso.appendChild(el("p", "n", "0" + i++));
+    paso.appendChild(el("p", "t", t[clave]));
+    const v = PASOS[clave]();
+    paso.appendChild(v === null || v === undefined
+      ? el("p", "v gris", t.sin_recuento)
+      : el("p", "v", v));
+    caja.appendChild(paso);
+  }
+}
+
+function pintarBotones() {
+  const permitidos = new Set(CATEGORIAS[estado.categoria].verbos);
+  for (const [verbo, sel] of [["plan", "#pedir-plan"], ["vig", "#pedir-vig"],
+                              ["venc", "#pedir-venc"], ["nc", "#pedir-nc"]]) {
+    const b = $(sel);
+    b.classList.toggle("oculto", !permitidos.has(verbo));
+    b.disabled = !estado.conectado;
+  }
+  $("#desconectar").classList.toggle("oculto", !estado.conectado);
+  $("#conectar").textContent = T().conectar;
+}
+
+function pintarRecuento() {
+  const caja = vaciar($("#recuento"));
+  const r = estado.documentos[estado.vista];
+  const sello = $("#sello");
+  if (!r || !r.documento) {
+    sello.textContent = "";
+    caja.appendChild(el("p", "vacio", T().sin_datos));
+    return;
+  }
+  const t = T();
+  sello.textContent = `${r.documento.esquema} · ${t.codigo} ${r.codigo}` +
+    (t["codigo_" + r.codigo] ? ` — ${t["codigo_" + r.codigo]}` : "");
+  const rec = r.documento.recuento || {};
+  for (const [clave, n] of Object.entries(rec)) {
+    if (typeof n !== "number") continue;
+    const p = el("span", "pastilla " + (CLASE_SITUACION[clave] || ""));
+    p.appendChild(el("b", null, n));
+    p.appendChild(el("span", null, nombreDe(clave)));
+    caja.appendChild(p);
+  }
+  if (r.documento.nota_de_recuento) {
+    caja.appendChild(el("p", "sub", bil(r.documento.nota_de_recuento)));
+  }
+  if (r.documento.nota_del_cierre) {
+    caja.appendChild(el("p", "sub", bil(r.documento.nota_del_cierre)));
+  }
+  // La nota del cierre la escribe el motor; esta la escribe la pagina y dice
+  // lo mismo, porque es la frase que alguien va a buscar en la pantalla
+  // cuando vea un ticket cerrado y la no conformidad abierta.
+  if (estado.vista === "nc") caja.appendChild(el("p", "sub", t.ejecutada_no_es_cerrada));
+  if (estado.vista === "venc" && !(r.documento.a_reobservar || []).length) {
+    caja.appendChild(el("p", "sub", t.nada_que_avisar));
+  }
+}
+
+const FILTROS = ["todas", "hallazgos", "preguntas"];
+
+function pintarFiltro() {
+  const t = T(), caja = vaciar($("#filtro"));
+  for (const f of FILTROS) {
+    const b = el("button", null, t[f]);
+    b.setAttribute("aria-pressed", String(estado.filtro === f));
+    b.onclick = () => { estado.filtro = f; pintar(); };
+    caja.appendChild(b);
+  }
+}
+
+function lineasDe(doc) {
+  if (Array.isArray(doc.lineas)) return doc.lineas.map(deLineaDePlan);
+  if (Array.isArray(doc.no_conformidades)) return doc.no_conformidades.map(deNoConformidad);
+  if (Array.isArray(doc.veredictos)) return doc.veredictos.map(deVeredicto);
+  return [];
+}
+
+function deLineaDePlan(l) {
+  return {
+    clave: l.articulo ? "art. " + l.articulo : l.obligacion_id,
+    titulo: bil(l.titulo) || l.obligacion_id,
+    marca: l.estado,
+    hallazgos: (l.hallazgos || []).map((h) => ({
+      texto: bil(h.remediacion), donde: h.localizacion, regla: h.regla_id })),
+    preguntas: (l.preguntas || []).map((p) => ({ texto: bil(p.texto) || bil(p) })),
+    motivo: bil(l.motivo) || bil(l.por_que) || "",
+  };
+}
+
+function deVeredicto(v) {
+  return { clave: v.obligacion_id, titulo: v.regla || v.obligacion_id,
+           marca: v.situacion, hallazgos: [], preguntas: [], motivo: "" };
+}
+
+function deNoConformidad(n) {
+  const t = T(), avisos = [];
+  if (n.vencida) avisos.push(t.nc_vencida);
+  if (n.estancada) avisos.push(t.nc_estancada);
+  if ((n.incoherencias || []).length) avisos.push(t.nc_incoherente);
+  return {
+    clave: n.id,
+    titulo: n.descripcion,
+    marca: n.estado,
+    hallazgos: (n.incoherencias || []).map((x) => ({ texto: x })),
+    preguntas: [],
+    motivo: [n.origen, `${n.dias_abierta} ${t.dias}`, ...avisos].filter(Boolean).join(" · "),
+  };
+}
+
+function filtrarPorTexto() {
+  // Filtra lo YA PINTADO y no vuelve a pedir nada.
+  //
+  // Es deliberado: el documento que se esta mirando es el que emitio el motor,
+  // y buscar dentro de el no puede cambiar lo que dice. Si el buscador pidiera
+  // otra vez con un criterio, la pantalla estaria componiendo una pregunta que
+  // el motor no hizo, y lo que se vería dejaría de ser el documento que hay.
+  const q = ($("#buscar").value || "").trim().toLowerCase();
+  const filas = [...$("#lineas").children];
+  let visibles = 0;
+  for (const fila of filas) {
+    const casa = !q || (fila.textContent || "").toLowerCase().includes(q);
+    fila.hidden = !casa;
+    if (casa) visibles++;
+  }
+  const t = T();
+  const cuenta = $("#buscar-cuenta");
+  if (!filas.length) { cuenta.textContent = ""; return; }
+  const plantilla = !q ? t.buscar_todas
+    : visibles ? t.buscar_algunas : t.buscar_nada;
+  cuenta.textContent = plantilla
+    .replace("{n}", String(visibles))
+    .replace("{total}", String(filas.length))
+    .replace("{q}", q);
+}
+
+function pintarLineas() {
+  const t = T(), caja = vaciar($("#lineas"));
+  const r = estado.documentos[estado.vista];
+  if (!r || !r.documento) { caja.appendChild(el("p", "vacio", t.sin_datos)); return; }
+  let lineas = lineasDe(r.documento);
+  if (estado.filtro === "hallazgos") lineas = lineas.filter((l) => l.hallazgos.length);
+  if (estado.filtro === "preguntas") lineas = lineas.filter((l) => l.preguntas.length);
+  if (!lineas.length) { caja.appendChild(el("p", "vacio", t.sin_lineas)); return; }
+  for (const l of lineas) {
+    const fila = el("div", "linea");
+    fila.appendChild(el("p", "art", l.clave));
+    const medio = el("div");
+    medio.appendChild(el("h3", null, l.titulo));
+    if (l.motivo) medio.appendChild(el("p", "sub", l.motivo));
+    for (const [cual, etiqueta] of [["hallazgos", t.remediacion], ["preguntas", t.preguntas]]) {
+      if (!l[cual].length) continue;
+      const d = el("details", "detalle");
+      d.appendChild(el("summary", null, `${etiqueta} (${l[cual].length})`));
+      const ul = el("ul");
+      for (const x of l[cual]) {
+        const li = el("li", null, x.texto);
+        if (x.donde) li.appendChild(el("span", "mono", `  ${t.donde}: ${x.donde}`));
+        if (x.regla) li.appendChild(el("span", "mono", `  ${t.regla}: ${x.regla}`));
+        ul.appendChild(li);
+      }
+      d.appendChild(ul);
+      medio.appendChild(d);
+    }
+    fila.appendChild(medio);
+    fila.appendChild(el("span", "marca " + (CLASE_SITUACION[l.marca] || ""),
+                        nombreDe(l.marca)));
+    caja.appendChild(fila);
+  }
+}
+
+function pintarCrudo() {
+  const r = estado.documentos[estado.vista];
+  $("#crudo").textContent = r ? JSON.stringify(r, null, 2) : "";
+  $("#pie-esquema").textContent =
+    r && r.documento ? `${T().esquema}: ${r.documento.esquema}` : "";
+}
+
+function pintar() {
+  pintarTextos();
+  pintarCategorias();
+  pintarCiclo();
+  pintarBotones();
+  pintarRecuento();
+  pintarFiltro();
+  pintarLineas();
+  // El filtro se vuelve a aplicar despues de pintar: si no, cambiar de vista
+  // con texto en el buscador ensena la lista entera y la cuenta dice otra cosa.
+  filtrarPorTexto();
+  pintarCrudo();
+}
+
+/* --- arranque ------------------------------------------------------------ */
+
+function arrancar() {
+  for (const b of $$("#idioma button")) {
+    b.onclick = () => {
+      estado.idioma = b.dataset.l;
+      for (const o of $$("#idioma button")) o.setAttribute("aria-pressed", String(o === b));
+      pintar();
+    };
+  }
+  for (const b of $$("#tema button")) {
+    b.onclick = () => {
+      estado.tema = estado.tema === b.dataset.t ? "" : b.dataset.t;
+      document.documentElement.dataset.tema = estado.tema;
+      for (const o of $$("#tema button")) {
+        o.setAttribute("aria-pressed", String(o.dataset.t === estado.tema));
+      }
+    };
+  }
+  $("#conectar").onclick = conectar;
+  $("#desconectar").onclick = desconectar;
+  $("#enchufe").onclick = () => $("#servidor").focus();
+  // Un enganche por cada vista de `RUTAS`, y no una linea por vista escrita a
+  // mano. Eran cuatro lineas identicas; con nueve vistas, la novena es la que
+  // alguien olvida y el boton no hace nada sin que falle nada.
+  for (const vista of Object.keys(RUTAS)) {
+    const b = $("#pedir-" + vista);
+    if (b) b.onclick = () => traer(vista);
+  }
+  $("#buscar").oninput = filtrarPorTexto;
+  // El servidor se rellena con el ORIGEN DE ESTA PAGINA cuando la sirve uno.
+  //
+  // La politica de seguridad de contenido que manda el servidor lleva
+  // `connect-src 'self'`, que es lo que impide que un script colado en la
+  // pagina se mande el expediente del cliente a otro sitio. Es el control
+  // correcto y se queda. Lo que estaba mal era la pantalla: ofrecia un campo
+  // de texto libre para escribir cualquier servidor mientras el navegador solo
+  // dejaba hablar con este, asi que escribir otro daba un error de red sin
+  // explicacion y el usuario concluia que el producto no funciona.
+  //
+  // Abierta como fichero local no hay politica ninguna, y ahi el campo si vale
+  // para cualquier servidor. Por eso se rellena solo cuando hay origen.
+  if (location.protocol === "http:" || location.protocol === "https:") {
+    if (!$("#servidor").value) $("#servidor").value = location.origin;
+    $("#servidor-nota").textContent = T().servidor_fijado;
+  } else {
+    $("#servidor-nota").textContent = T().servidor_libre;
+  }
+  $("#fecha").value = new Date().toISOString().slice(0, 10);
+  $("#alto_riesgo").value = "";
+  pintar();
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", arrancar);
+} else {
+  arrancar();
+}

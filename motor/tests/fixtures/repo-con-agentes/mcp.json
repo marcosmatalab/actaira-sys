@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "ficheros": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/datos"],
+      "tools": [
+        {"name": "leer_fichero", "annotations": {"readOnlyHint": true}},
+        {"name": "escribir_fichero"},
+        {"name": "borrar_fichero"}
+      ]
+    },
+    "facturacion": {
+      "command": "node",
+      "args": ["servidor-facturacion.js"]
+    }
+  }
+}

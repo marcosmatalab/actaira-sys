@@ -1,0 +1,101 @@
+{
+  "paquete": "actaira/art10",
+  "version": "1.0.0",
+  "autor": "Actaira",
+  "licencia": "Apache-2.0",
+  "obligacion": "AIA-010",
+  "nota_de_autoria": {
+    "es": "Cada regla y cada remediación de este fichero las escribió una persona. Un modelo puede proponer el borrador de una regla fuera de línea; nunca redacta reglas ni remediaciones en ejecución. Segunda negativa.",
+    "en": "Every rule and every remediation in this file was written by a person. A model may draft a candidate rule offline; it never writes rules or remediations at runtime. Second negative."
+  },
+  "reglas": [
+    {
+      "id": "ACT-10-FICHA",
+      "version": "1.0.0",
+      "tipo": "fichero",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "una ficha del conjunto de datos",
+        "en": "a dataset card"
+      },
+      "titulo": {
+        "es": "El conjunto de datos no tiene ficha",
+        "en": "The dataset has no datasheet"
+      },
+      "remediacion": {
+        "es": "Escribe una ficha por conjunto: origen, período, criterio de recogida, transformaciones y digest. Sin ella el Anexo IV no se puede generar y el linaje no existe.",
+        "en": "Write one datasheet per dataset: origin, period, collection criteria, transformations and digest. Without it Annex IV cannot be generated and lineage does not exist."
+      },
+      "patrones": [
+        "(?i)(datasheet|data.?card|ficha.?datos|dataset).*\\.(md|ya?ml|json)$"
+      ]
+    },
+    {
+      "id": "ACT-10-PARTICIONES",
+      "version": "1.0.0",
+      "tipo": "contenido",
+      "severidad": "media",
+      "que_busca": {
+        "es": "que las particiones de entrenamiento, validación y prueba estén declaradas",
+        "en": "that the training, validation and test splits are declared"
+      },
+      "titulo": {
+        "es": "Las particiones no están declaradas",
+        "en": "Data splits are not declared"
+      },
+      "remediacion": {
+        "es": "Declara las tres particiones y su digest. Esta regla comprueba que estén ESCRITAS, en código o en documentación, no que existan: de eso responde la ficha de datos. Sin digest por partición no se puede demostrar que no hubo fuga entre entrenamiento y prueba, y una métrica con fuga no mide nada.",
+        "en": "Declare the three splits and their digest. This rule checks they are WRITTEN DOWN, in code or in documentation, not that they exist: the datasheet answers for that. Without a per-split digest you cannot show there was no train/test leakage, and a leaked metric measures nothing."
+      },
+      "patrones": [
+        "(?i)\\b(train|entrenamiento)\\b.*\\b(test|prueba)\\b",
+        "(?i)(validation|validacion)_split"
+      ],
+      "ambito": "documentacion"
+    },
+    {
+      "id": "ACT-10-SESGO",
+      "version": "1.0.0",
+      "tipo": "fichero",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "pruebas separadas por colectivo potencialmente afectado",
+        "en": "tests broken down by potentially affected group"
+      },
+      "titulo": {
+        "es": "No hay pruebas por colectivo",
+        "en": "There are no per-group tests"
+      },
+      "remediacion": {
+        "es": "El artículo 10 pide examinar sesgos. En código eso son métricas calculadas por separado para cada colectivo potencialmente afectado, no una métrica global. Una sola cifra agregada esconde exactamente lo que el artículo busca.",
+        "en": "Article 10 requires examining bias. In code that means metrics computed separately for each potentially affected group, not one global metric. A single aggregate figure hides exactly what the article looks for."
+      },
+      "patrones": [
+        "(?i)(bias|sesgo|fairness|subgroup|colectivo|disparate)"
+      ]
+    },
+    {
+      "id": "ACT-10-SENSIBLES",
+      "version": "1.0.0",
+      "tipo": "aportado",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "si se tratan categorías especiales para detectar sesgos",
+        "en": "whether special categories are processed to detect bias"
+      },
+      "titulo": {
+        "es": "Categorías especiales sin base declarada",
+        "en": "Special categories with no declared basis"
+      },
+      "remediacion": {
+        "es": "El artículo 10(5) permite tratar categorías especiales SOLO para detectar y corregir sesgos, y con garantías. Si se tratan, hace falta declarar cuáles, por qué y con qué garantías.",
+        "en": "Article 10(5) allows processing special categories ONLY to detect and correct bias, and with safeguards. If they are processed, which ones, why and under what safeguards must be declared."
+      },
+      "pregunta": {
+        "es": "¿Trata el sistema categorías especiales de datos personales para detectar sesgos? ¿Cuáles, con qué base y con qué garantías?",
+        "en": "Does the system process special categories of personal data to detect bias? Which ones, on what basis and with what safeguards?"
+      },
+      "formato": "texto"
+    }
+  ]
+}

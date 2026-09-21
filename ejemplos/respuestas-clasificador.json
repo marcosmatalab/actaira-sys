@@ -1,0 +1,85 @@
+{
+  "_nota": {
+    "es": "Respuestas de ejemplo del clasificador de candidatos. Tres cosas estan puestas a proposito para que se vea el comportamiento: F-CLS-5 abre la condicional del articulo 50, F-RSK-1 esta contestada de forma insuficiente y sale NO ADMITE con el motivo, y F-SIS-5 esta fechada hace mas de su vigencia y sale RANCIA.",
+    "en": "Example answers for the candidate classifier. Three things are deliberate so the behaviour shows: F-CLS-5 opens the Article 50 conditional, F-RSK-1 is answered insufficiently and comes back NOT ADMISSIBLE with the reason, and F-SIS-5 is dated beyond its validity and comes back STALE."
+  },
+  "respuestas": [
+    {
+      "pregunta": "F-CLS-1",
+      "valor": ["ninguna"],
+      "quien": "Marta Iglesias",
+      "cargo": "Directora de Cumplimiento",
+      "cuando": "2027-11-02T09:30:00+00:00"
+    },
+    {
+      "pregunta": "F-CLS-2",
+      "valor": false,
+      "quien": "Marta Iglesias",
+      "cargo": "Directora de Cumplimiento",
+      "cuando": "2027-11-02T09:31:00+00:00"
+    },
+    {
+      "pregunta": "F-CLS-3",
+      "valor": ["empleo"],
+      "quien": "Marta Iglesias",
+      "cargo": "Directora de Cumplimiento",
+      "cuando": "2027-11-02T09:32:00+00:00"
+    },
+    {
+      "pregunta": "F-CLS-4",
+      "valor": "No nos acogemos a la excepcion del articulo 6, apartado 3. El sistema criba candidaturas para puestos de atencion al cliente y por tanto realiza perfilado de personas fisicas, supuesto en el que el Reglamento excluye expresamente la excepcion. Se trata como sistema de alto riesgo del Anexo III, punto 4, desde el primer dia y sin evaluacion de riesgo importante de perjuicio, porque no cabria.",
+      "quien": "Marta Iglesias",
+      "cargo": "Directora de Cumplimiento",
+      "cuando": "2027-11-02T09:40:00+00:00"
+    },
+    {
+      "pregunta": "F-CLS-5",
+      "valor": ["interaccion"],
+      "quien": "Javier Soto",
+      "cargo": "Tech Lead",
+      "cuando": "2027-11-02T10:05:00+00:00"
+    },
+    {
+      "pregunta": "F-RSK-1",
+      "valor": "Usamos una matriz de riesgo de cinco por cinco.",
+      "quien": "Javier Soto",
+      "cargo": "Tech Lead",
+      "cuando": "2027-11-02T10:10:00+00:00"
+    },
+    {
+      "pregunta": "F-SIS-1",
+      "valor": "La supervision la ejercen las tres personas del equipo de seleccion, que reciben cada semestre una formacion de cuatro horas sobre las limitaciones del modelo, con un apartado dedicado a la propension a aceptar la recomendacion automatica sin contrastarla. Pueden revisar cualquier candidatura, cambiar la decision del sistema dejando constancia del motivo, y retirar el sistema del proceso para una convocatoria concreta sin pedir permiso. La ultima sesion fue el 14 de septiembre de 2027 y asistieron las tres.",
+      "quien": "Lucia Benitez",
+      "cargo": "Responsable de Seleccion",
+      "cuando": "2027-11-02T11:00:00+00:00"
+    },
+    {
+      "pregunta": "F-SIS-4",
+      "valor": "Dieciocho meses en el almacen de auditoria, con borrado automatico al cumplirse.",
+      "quien": "Javier Soto",
+      "cargo": "Tech Lead",
+      "cuando": "2027-11-02T11:10:00+00:00"
+    },
+    {
+      "pregunta": "F-SIS-5",
+      "valor": "La alerta va al canal de guardia del equipo de datos y el turno de guardia responde en menos de dos horas habiles.",
+      "quien": "Javier Soto",
+      "cargo": "Tech Lead",
+      "cuando": "2027-06-01T08:00:00+00:00"
+    },
+    {
+      "pregunta": "F-SIS-8",
+      "valor": "El formulario de candidatura abre con un aviso fijo sobre el campo de texto que dice que la primera criba la hace un sistema automatico y que puede pedir revision humana en cualquier momento. El aviso esta en la plantilla, no en el contenido editable.",
+      "quien": "Lucia Benitez",
+      "cargo": "Responsable de Seleccion",
+      "cuando": "2027-11-02T11:20:00+00:00"
+    },
+    {
+      "pregunta": "F-LID-3",
+      "valor": ["Marta Iglesias, Directora de Cumplimiento: responde de la conformidad del sistema de gestion", "Javier Soto, Tech Lead: informa del desempeno del sistema de gestion al comite de direccion cada trimestre"],
+      "quien": "Marta Iglesias",
+      "cargo": "Directora de Cumplimiento",
+      "cuando": "2027-11-02T12:00:00+00:00"
+    }
+  ]
+}

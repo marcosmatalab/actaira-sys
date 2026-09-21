@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="es" data-tema="">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Actaira</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+__ESTILO__
+</style>
+
+<header>
+  <div class="wrap bar">
+    <div class="logo" role="img" aria-label="Actaira"></div>
+    <div class="crece"></div>
+    <button class="enchufe" id="enchufe" aria-expanded="false">
+      <span class="punto" id="punto"></span><span id="enchufe-txt"></span>
+    </button>
+    <div class="seg" id="idioma" role="group" aria-label="Idioma / Language">
+      <button data-l="es" aria-pressed="true">ES</button><button data-l="en" aria-pressed="false">EN</button>
+    </div>
+    <div class="seg" id="tema" role="group" aria-label="Tema / Theme">
+      <button data-t="light" aria-pressed="false" title="">☼</button><button data-t="dark" aria-pressed="false" title="">☾</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap hero">
+  <p class="eyebrow" id="eyebrow"></p>
+  <h1 id="titular"></h1>
+  <p class="lede" id="entradilla"></p>
+  <p class="sub" id="origen-nota"
+     style="font-size:12px;color:var(--muted);max-width:62ch"></p>
+  <p class="aviso" id="sin-porcentaje"></p>
+</div>
+
+<div class="wrap">
+  <p class="eyebrow" id="t-categoria"></p>
+  <div class="cats" id="cats" role="group"></div>
+</div>
+
+<div class="wrap">
+  <p class="eyebrow" id="t-ciclo"></p>
+  <div class="ciclo" id="ciclo"></div>
+</div>
+
+<div class="wrap rejilla">
+  <div class="columna-izquierda">
+    <section class="tarjeta" id="tarjeta-conexion">
+      <header><h2 id="t-conexion"></h2></header>
+      <div class="cuerpo">
+        <label class="campo"><span id="t-servidor"></span>
+          <input id="servidor" type="url" placeholder="http://127.0.0.1:8787" autocomplete="off"></label>
+        <p class="sub" id="servidor-nota"
+           style="font-size:11.5px;color:var(--muted);margin:-4px 0 11px"></p>
+        <label class="campo"><span id="t-cliente"></span>
+          <input id="cliente" type="text" placeholder="acme" autocomplete="off" spellcheck="false"></label>
+        <label class="campo"><span id="t-credencial"></span>
+          <input id="credencial" type="password" autocomplete="off" spellcheck="false"></label>
+        <p class="sub" id="credencial-nota" style="font-size:11.5px;color:var(--muted);margin:-4px 0 11px"></p>
+        <div class="acciones">
+          <button class="boton" id="conectar"></button>
+          <button class="boton plano oculto" id="desconectar"></button>
+        </div>
+        <p id="conexion-mal" class="sub grave oculto" style="font-size:12px;margin-top:10px"></p>
+      </div>
+    </section>
+
+    <section class="tarjeta" id="tarjeta-perfil" style="margin-top:18px">
+      <header><h2 id="t-perfil"></h2></header>
+      <div class="cuerpo">
+        <label class="campo"><span id="t-roles"></span>
+          <select id="rol" multiple size="4"
+                  aria-describedby="t-roles-ayuda"></select>
+          <small id="t-roles-ayuda"></small></label>
+        <label class="campo"><span id="t-alto"></span><select id="alto_riesgo" data-tri></select></label>
+        <label class="campo"><span id="t-via"></span>
+          <select id="via_anexo">
+            <option value=""></option><option value="anexo_iii">Anexo III</option><option value="anexo_i">Anexo I</option>
+          </select></label>
+        <label class="campo"><span id="t-sector"></span><select id="sector_publico" data-tri></select></label>
+        <label class="campo"><span id="t-general"></span><select id="modelo_uso_general" data-tri></select></label>
+        <label class="campo"><span id="t-sistemico"></span><select id="riesgo_sistemico" data-tri></select></label>
+        <label class="campo"><span id="t-fecha"></span><input id="fecha" type="date"></label>
+        <!-- Las vistas, como un grupo de navegacion y no como botones sueltos.
+             `role="group"` con nombre accesible para que un lector de pantalla
+             anuncie que son nueve opciones del mismo conjunto, y no nueve
+             botones sin relacion repartidos por la pagina. -->
+        <div class="acciones" role="group" aria-labelledby="t-vistas">
+          <span id="t-vistas" class="sub"
+                style="width:100%;font-size:11.5px;color:var(--muted);margin:0 0 4px"></span>
+          <button class="boton" id="pedir-plan" disabled></button>
+          <button class="boton plano" id="pedir-vig" disabled></button>
+          <button class="boton plano" id="pedir-venc" disabled></button>
+          <button class="boton plano" id="pedir-nc" disabled></button>
+          <button class="boton plano" id="pedir-ev" disabled></button>
+          <button class="boton plano" id="pedir-preg" disabled></button>
+          <button class="boton plano" id="pedir-soa" disabled></button>
+          <button class="boton plano" id="pedir-anx" disabled></button>
+          <button class="boton plano" id="pedir-rev" disabled></button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div>
+    <section class="tarjeta">
+      <header>
+        <h2 id="t-recuento"></h2>
+        <div class="crece"></div>
+        <span class="mono" id="sello" style="font-size:11px;color:var(--muted)"></span>
+      </header>
+      <div class="recuento" id="recuento"></div>
+    </section>
+
+    <section class="tarjeta" style="margin-top:18px">
+      <header>
+        <h2 id="t-lineas"></h2>
+        <div class="crece"></div>
+        <label class="campo" style="margin:0">
+          <span class="visualmente-oculto" id="t-buscar"></span>
+          <input id="buscar" type="search" autocomplete="off"
+                 style="min-width:190px" aria-describedby="buscar-cuenta">
+        </label>
+        <div class="seg" id="filtro" role="group" aria-labelledby="t-lineas"></div>
+      </header>
+      <!-- `aria-live="polite"` para que un lector de pantalla anuncie cuantas
+           quedan al filtrar. Sin esto, quien no ve la lista teclea en el
+           buscador y no se entera de si encontro algo. -->
+      <p id="buscar-cuenta" class="sub" aria-live="polite"
+         style="font-size:11.5px;color:var(--muted);margin:0 0 8px"></p>
+      <div id="lineas"></div>
+    </section>
+
+    <section class="tarjeta" style="margin-top:18px">
+      <header><h2 id="t-documento"></h2></header>
+      <div class="cuerpo" style="padding-bottom:0"><p class="sub" id="doc-nota" style="font-size:12px;color:var(--muted);margin:0 0 10px"></p></div>
+      <pre class="crudo" id="crudo"></pre>
+    </section>
+  </div>
+</div>
+
+<footer class="pie"><div class="wrap">
+  <span id="pie-esquema" class="mono"></span>
+</div></footer>
+
+<script>
+__LOGICA__
+</script>
+</html>

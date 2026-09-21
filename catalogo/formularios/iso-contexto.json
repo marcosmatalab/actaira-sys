@@ -1,0 +1,136 @@
+{
+  "$schema": "../esquema/formulario.schema.json",
+  "paquete": "iso-contexto",
+  "version": "1.0.0",
+  "autor": "Actaira",
+  "titulo": {
+    "es": "Contexto de la organización",
+    "en": "Context of the organization"
+  },
+  "destinatario_principal": "direccion",
+  "preguntas": [
+    {
+      "id": "F-CTX-1",
+      "sirve_a": [
+        "ISO-4.1"
+      ],
+      "destinatario": "direccion",
+      "texto": {
+        "es": "¿Qué cuestiones externas e internas afectan a la capacidad de su organización de conseguir lo que espera de su sistema de gestión de la IA?",
+        "en": "Which external and internal issues affect your organization's ability to achieve the intended results of its AI management system?"
+      },
+      "ayuda": {
+        "es": "Nombre las concretas, no las genericas. Externas: que normas le obligan (el propio Reglamento, el RGPD, la normativa sectorial), que hace la competencia, que espera su mercado. Internas: su estructura, sus contratos, su capacidad técnica. La cláusula 4.1 pide además que diga si el cambio climático es una cuestión relevante para usted, y responder que no también es responder.",
+        "en": "Name the specific ones, not the generic ones. External: which rules bind you (the Regulation itself, the GDPR, sector rules), what competitors do, what your market expects. Internal: your structure, your contracts, your technical capacity. Clause 4.1 also asks whether climate change is a relevant issue for you, and answering no is also an answer."
+      },
+      "formato": "texto_largo",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_caracteres": 200
+      }
+    },
+    {
+      "id": "F-CTX-2",
+      "sirve_a": [
+        "ISO-4.1"
+      ],
+      "destinatario": "direccion",
+      "texto": {
+        "es": "¿Es el cambio climático una cuestión relevante para su sistema de gestión de la IA?",
+        "en": "Is climate change a relevant issue for your AI management system?"
+      },
+      "ayuda": {
+        "es": "La cláusula 4.1 lo pregunta expresamente y un auditor lo buscara. Si entrena modelos grandes o contrata cómputo intensivo, probablemente si. Si responde que no, diga por que en la justificación.",
+        "en": "Clause 4.1 asks this expressly and an auditor will look for it. If you train large models or buy intensive compute, probably yes. If you answer no, say why in the justification."
+      },
+      "formato": "si_no",
+      "vigencia_dias": 365,
+      "exige": {
+        "exige_justificacion": true
+      }
+    },
+    {
+      "id": "F-CTX-3",
+      "sirve_a": [
+        "ISO-4.1",
+        "AIA-016",
+        "AIA-025"
+      ],
+      "destinatario": "direccion",
+      "texto": {
+        "es": "¿Qué papel desempeña su organización respecto de cada sistema de IA: proveedor, responsable del despliegue, importador, distribuidor, o varios a la vez?",
+        "en": "What role does your organization play for each AI system: provider, deployer, importer, distributor, or several at once?"
+      },
+      "ayuda": {
+        "es": "Esta respuesta decide la mitad del expediente. El Reglamento ata cosas distintas al proveedor (artículo 16) y al responsable del despliegue (artículo 26), y el artículo 25 convierte al segundo en el primero si pone su marca en el sistema, lo modifica sustancialmente o le cambia la finalidad prevista. Una línea por sistema.",
+        "en": "This answer decides half the file. The Regulation binds different things to the provider (Article 16) and to the deployer (Article 26), and Article 25 turns the second into the first if they put their name on the system, substantially modify it, or change its intended purpose. One line per system."
+      },
+      "formato": "lista",
+      "vigencia_dias": 180,
+      "exige": {
+        "minimo_elementos": 1
+      }
+    },
+    {
+      "id": "F-CTX-4",
+      "sirve_a": [
+        "ISO-4.2"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Quiénes son las partes interesadas de su sistema de gestión de la IA y qué exige cada una?",
+        "en": "Who are the interested parties of your AI management system and what does each of them require?"
+      },
+      "ayuda": {
+        "es": "Clientes, personas afectadas por las decisiones del sistema, empleados, el regulador, sus proveedores de modelos. Por cada una, el requisito concreto: no vale 'cumplir la ley'. La cláusula 4.2 pide además decir cuáles de esos requisitos va a atender el sistema de gestión y cuáles no.",
+        "en": "Customers, people affected by the system's decisions, employees, the regulator, your model suppliers. For each one, the concrete requirement: 'comply with the law' does not count. Clause 4.2 also asks which of those requirements the management system will address and which it will not."
+      },
+      "formato": "lista",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_elementos": 3
+      }
+    },
+    {
+      "id": "F-CTX-5",
+      "sirve_a": [
+        "ISO-4.3"
+      ],
+      "destinatario": "direccion",
+      "texto": {
+        "es": "¿Cuál es el alcance de su sistema de gestión de la IA: qué sistemas, qué unidades, qué ubicaciones, y qué queda fuera?",
+        "en": "What is the scope of your AI management system: which systems, which units, which locations, and what is left out?"
+      },
+      "ayuda": {
+        "es": "Es información documentada obligatoria y el primer folio que pide un auditor. Lo que más se juega aquí es lo que queda FUERA: un alcance que excluye algo tiene que decir por que, y esa exclusión tiene que aguantar la pregunta de por que ese sistema no estaba dentro.",
+        "en": "This is mandatory documented information and the first page an auditor asks for. What matters most is what is left OUT: a scope that excludes something must say why, and that exclusion must survive the question of why that system was not inside."
+      },
+      "formato": "texto_largo",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_caracteres": 200
+      },
+      "produce": "alcance-sgia"
+    },
+    {
+      "id": "F-CTX-6",
+      "sirve_a": [
+        "ISO-4.4"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Qué procesos componen su sistema de gestión de la IA y cómo se relacionan entre si?",
+        "en": "Which processes make up your AI management system and how do they interact?"
+      },
+      "ayuda": {
+        "es": "Un diagrama en prosa vale. Lo que se comprueba es que el riesgo entra por algún sitio, se trata en otro, se mide en un tercero y se revisa en un cuarto, y que cada paso tiene dueno.",
+        "en": "A diagram in prose is fine. What gets checked is that risk enters somewhere, is treated somewhere else, is measured in a third place and reviewed in a fourth, and that each step has an owner."
+      },
+      "formato": "texto_largo",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_caracteres": 150
+      }
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+ "$schema": "../esquema/formulario.schema.json",
+ "paquete": "iso-desempeno",
+ "version": "1.0.0",
+ "autor": "Actaira",
+ "titulo": {
+  "es": "Evaluación del desempeño",
+  "en": "Performance evaluation"
+ },
+ "destinatario_principal": "direccion",
+ "preguntas": [
+  {
+   "id": "F-DES-1",
+   "sirve_a": [
+    "ISO-9.1",
+    "A.6.2.6"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "¿Qué se mide de sus sistemas de IA, con qué método, cada cuánto, y quién analiza el resultado?",
+    "en": "What is measured on your AI systems, with which method, how often, and who analyses the result?"
+   },
+   "ayuda": {
+    "es": "La cláusula 9.1 pide las cuatro cosas por separado y además que haya evidencia documentada de los resultados. Si tiene métricas de exactitud o de deriva calculadas en su repositorio, Actaira las encuentra y no le pregunta por ellas; lo que si le va a pedir siempre es quién mira el número cuando salta, porque eso no está en el código.",
+    "en": "Clause 9.1 asks for all four separately and additionally requires documented evidence of the results. If you have accuracy or drift metrics computed in your repository, Actaira finds them and does not ask; what it will always ask is who looks at the number when it fires, because that is not in the code."
+   },
+   "formato": "texto_largo",
+   "vigencia_dias": 180,
+   "exige": {
+    "minimo_caracteres": 150
+   },
+   "salta_si_cubre": [
+    "ACT-15-EVALS",
+    "ACT-72-DRIFT"
+   ]
+  },
+  {
+   "id": "F-DES-2",
+   "sirve_a": [
+    "ISO-9.2.1",
+    "ISO-9.2.2"
+   ],
+   "destinatario": "direccion",
+   "texto": {
+    "es": "Aporte su programa de auditoría interna: frecuencia, métodos, responsables y cómo se garantiza la imparcialidad del auditor.",
+    "en": "Provide your internal audit programme: frequency, methods, responsibilities and how the auditor's impartiality is ensured."
+   },
+   "ayuda": {
+    "es": "La imparcialidad es la parte que más se suspende: quien audita no puede auditar su propio trabajo. En una organización pequeña eso suele significar auditoría cruzada entre áreas o un externo. La cláusula 9.2.2 exige además que los resultados se comuniquen a los directivos pertinentes y que haya evidencia documentada de la ejecución del programa.",
+    "en": "Impartiality is the part most often failed: an auditor cannot audit their own work. In a small organization that usually means cross-area audits or an external auditor. Clause 9.2.2 further requires results to be reported to relevant managers and documented evidence of the programme's implementation."
+   },
+   "formato": "artefacto",
+   "vigencia_dias": 365,
+   "produce": "programa-de-auditoria"
+  },
+  {
+   "id": "F-DES-3",
+   "sirve_a": [
+    "ISO-9.3.1",
+    "ISO-9.3.2",
+    "ISO-9.3.3"
+   ],
+   "destinatario": "direccion",
+   "texto": {
+    "es": "¿Cuándo fue la última revisión por la dirección y qué se decidió en ella?",
+    "en": "When was the last management review and what was decided in it?"
+   },
+   "ayuda": {
+    "es": "La cláusula 9.3.2 fija las entradas obligatorias: estado de las acciones de la revisión anterior, cambios en el contexto y en las partes interesadas, desempeño del sistema con tendencias en no conformidades, resultados de seguimiento y de auditoría, y oportunidades de mejora. La 9.3.3 exige que los resultados incluyan decisiones. Un acta sin decisiones no cierra esta cláusula.",
+    "en": "Clause 9.3.2 fixes the mandatory inputs: status of actions from the previous review, changes in context and interested parties, system performance with trends in nonconformities, monitoring and audit results, and improvement opportunities. Clause 9.3.3 requires the results to include decisions. Minutes without decisions do not close this clause."
+   },
+   "formato": "fecha",
+   "vigencia_dias": 365,
+   "exige": {
+    "exige_intervalo": true
+   },
+   "produce": "revision-por-la-direccion"
+  },
+  {
+   "id": "F-DES-L1",
+   "sirve_a": [
+    "A.6.2.8"
+   ],
+   "destinatario": "tecnico",
+   "texto": {
+    "es": "¿Qué registra el sistema de cada decisión que toma, cuánto tiempo se conserva, y quién puede consultarlo?",
+    "en": "What does the system record of each decision it makes, how long is it kept, and who can consult it?"
+   },
+   "ayuda": {
+    "es": "Control A.6.2.8, y es hermano del artículo 12 del Reglamento. Actaira puede ver en el código si hay una llamada de registro junto a la llamada al modelo; lo que no puede ver es si lo que se registra basta para reconstruir una decisión seis meses después, que es para lo que sirve.\n\nDiga qué campos se guardan (entrada, versión del modelo, salida, umbral aplicado, identificador de la persona afectada si procede), cuánto se conservan y quién los puede leer. El período de conservación importa en las dos direcciones: demasiado corto y no se puede investigar un incidente, demasiado largo y se está guardando de más sobre personas.",
+    "en": "Control A.6.2.8, sibling of Article 12 of the Regulation. Actaira can see in the code whether there is a logging call next to the model call; what it cannot see is whether what is logged suffices to reconstruct a decision six months later, which is what it is for.\n\nSay which fields are stored (input, model version, output, threshold applied, identifier of the affected person where relevant), how long they are kept and who can read them. The retention period matters in both directions: too short and an incident cannot be investigated, too long and you are keeping too much about people."
+   },
+   "formato": "texto_largo",
+   "vigencia_dias": 365,
+   "exige": {
+    "minimo_caracteres": 200
+   }
+  }
+ ]
+}

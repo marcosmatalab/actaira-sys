@@ -1,0 +1,714 @@
+{
+  "$schema": "../esquema/clausula.schema.json",
+  "norma": {
+    "referencia": "ISO/IEC 42001:2023",
+    "parte": {
+      "es": "Cláusulas 4 a 10, requisitos del sistema de gestión",
+      "en": "Clauses 4 to 10, management system requirements"
+    },
+    "version_catalogo": "2026-09-20",
+    "por_que_estan_aqui": {
+      "es": "El Anexo A no certifica a nadie. Lo que se audita en una certificación de la ISO/IEC 42001 son las cláusulas 4 a 10, y el Anexo A entra por la puerta de la 6.1.3, que obliga a compararse con el y a justificar en una declaración de aplicabilidad que se incluye y que se excluye. Un producto que solo listara los 38 controles dejaría fuera la mitad que de verdad se audita.",
+      "en": "Annex A certifies nobody. What a certification audit examines are clauses 4 to 10, and Annex A enters through 6.1.3, which requires comparing against it and justifying inclusions and exclusions in a statement of applicability. A product listing only the 38 controls would leave out the half that is actually audited."
+    },
+    "aviso_de_fuente": {
+      "es": "La norma es de pago y su texto no se reproduce. Este fichero lista números de cláusula, títulos y una descripción propia de que información documentada exige cada una. La atribución de nivel, el formulario que la sirve y el artefacto que produce son trabajo propio.",
+      "en": "The standard is paywalled and its text is not reproduced. This file lists clause numbers, titles and our own description of the documented information each one requires. The tier, the form that serves it and the artefact it produces are our own work."
+    },
+    "nota_de_recuento": {
+      "es": "No se escribe aquí cuantas cláusulas hay. `make catálogo` las cuenta.",
+      "en": "The clause count is not typed here. `make catalogo` counts them."
+    }
+  },
+  "clausulas": [
+    {
+      "id": "ISO-4.1",
+      "clausula": "4.1",
+      "titulo": {
+        "es": "Comprensión de la organización y de su contexto",
+        "en": "Understanding the organization and its context"
+      },
+      "nivel": "organizativa",
+      "exige_informacion_documentada": false,
+      "formulario": "iso-contexto",
+      "alimenta": [
+        "ISO-4.3",
+        "ISO-6.1.1"
+      ],
+      "periodicidad": "por_cambio",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-4.2",
+      "clausula": "4.2",
+      "titulo": {
+        "es": "Comprensión de las necesidades y expectativas de las partes interesadas",
+        "en": "Understanding the needs and expectations of interested parties"
+      },
+      "nivel": "organizativa",
+      "exige_informacion_documentada": false,
+      "formulario": "iso-contexto",
+      "alimenta": [
+        "ISO-4.3",
+        "ISO-7.4"
+      ],
+      "periodicidad": "por_cambio",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-4.3",
+      "clausula": "4.3",
+      "titulo": {
+        "es": "Determinación del alcance del sistema de gestión de la IA",
+        "en": "Determining the scope of the AI management system"
+      },
+      "nivel": "generable",
+      "exige_informacion_documentada": true,
+      "que_se_documenta": {
+        "es": "el alcance del sistema de gestión, sus límites y su aplicabilidad",
+        "en": "the scope of the management system, its boundaries and applicability"
+      },
+      "produce": "alcance-sgia",
+      "depende_de": [
+        "ISO-4.1",
+        "ISO-4.2"
+      ],
+      "formulario": "iso-contexto",
+      "alimenta": [
+        "ISO-5.2",
+        "ISO-8.1"
+      ],
+      "periodicidad": "anual",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-4.4",
+      "clausula": "4.4",
+      "titulo": {
+        "es": "Sistema de gestión de la IA",
+        "en": "AI management system"
+      },
+      "nivel": "organizativa",
+      "exige_informacion_documentada": true,
+      "que_se_documenta": {
+        "es": "el propio sistema de gestión, con sus procesos y sus interacciones",
+        "en": "the management system itself, with its processes and their interactions"
+      },
+      "formulario": "iso-contexto",
+      "produce": "mapa-de-procesos-sgia",
+      "alimenta": [
+        "ISO-8.1",
+        "ISO-9.1"
+      ],
+      "periodicidad": "anual",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-5.1",
+      "clausula": "5.1",
+      "titulo": {
+        "es": "Liderazgo y compromiso",
+        "en": "Leadership and commitment"
+      },
+      "nivel": "organizativa",
+      "exige_informacion_documentada": false,
+      "formulario": "iso-liderazgo",
+      "alimenta": [
+        "ISO-5.2",
+        "ISO-9.3.1"
+      ],
+      "periodicidad": "continua",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-5.2",
+      "clausula": "5.2",
+      "titulo": {
+        "es": "Política de IA",
+        "en": "AI policy"
+      },
+      "nivel": "generable",
+      "exige_informacion_documentada": true,
+      "que_se_documenta": {
+        "es": "la política de IA aprobada por la alta dirección",
+        "en": "the AI policy approved by top management"
+      },
+      "produce": "politica-de-ia",
+      "depende_de": [
+        "ISO-4.3"
+      ],
+      "formulario": "iso-liderazgo",
+      "alimenta": [
+        "ISO-6.2",
+        "ISO-7.4",
+        "ISO-9.3.2"
+      ],
+      "periodicidad": "anual",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-5.3",
+      "clausula": "5.3",
+      "titulo": {
+        "es": "Funciones, responsabilidades y autoridades",
+        "en": "Roles, responsibilities and authorities"
+      },
+      "nivel": "organizativa",
+      "exige_informacion_documentada": false,
+      "formulario": "iso-liderazgo",
+      "produce": "matriz-de-responsabilidades",
+      "alimenta": [
+        "ISO-7.2",
+        "ISO-10.2"
+      ],
+      "periodicidad": "por_cambio",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-6.1.1",
+      "clausula": "6.1.1",
+      "titulo": {
+        "es": "Acciones para abordar riesgos y oportunidades. Generalidades",
+        "en": "Actions to address risks and opportunities. General"
+      },
+      "nivel": "organizativa",
+      "exige_informacion_documentada": true,
+      "que_se_documenta": {
+        "es": "los criterios de riesgo y las acciones tomadas para identificar y abordar riesgos y oportunidades",
+        "en": "the risk criteria and the actions taken to identify and address risks and opportunities"
+      },
+      "formulario": "iso-riesgo",
+      "produce": "criterios-de-riesgo",
+      "alimenta": [
+        "ISO-6.1.2",
+        "ISO-6.1.4"
+      ],
+      "periodicidad": "anual",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-6.1.2",
+      "clausula": "6.1.2",
+      "titulo": {
+        "es": "Evaluación de riesgos de la IA",
+        "en": "AI risk assessment"
+      },
+      "nivel": "generable",
+      "exige_informacion_documentada": true,
+      "que_se_documenta": {
+        "es": "el proceso de evaluación de riesgos",
+        "en": "the risk assessment process"
+      },
+      "produce": "proceso-de-riesgo",
+      "depende_de": [
+        "ISO-6.1.1"
+      ],
+      "formulario": "iso-riesgo",
+      "alimenta": [
+        "ISO-6.1.3",
+        "ISO-8.2"
+      ],
+      "periodicidad": "continua",
+      "vigencia_dias": 180
+    },
+    {
+      "id": "ISO-6.1.3",
+      "clausula": "6.1.3",
+      "titulo": {
+        "es": "Tratamiento de riesgos de la IA",
+        "en": "AI risk treatment"
+      },
+      "nivel": "generable",
+      "exige_informacion_documentada": true,
+      "que_se_documenta": {
+        "es": "el proceso de tratamiento, la declaración de aplicabilidad y el plan de tratamiento aprobado",
+        "en": "the treatment process, the statement of applicability and the approved treatment plan"
+      },
+      "produce": "declaracion-de-aplicabilidad",
+      "depende_de": [
+        "ISO-6.1.2"
+      ],
+      "formulario": "iso-riesgo",
+      "alimenta": [
+        "ISO-8.1",
+        "ISO-8.3",
+        "ISO-9.2.2"
+      ],
+      "periodicidad": "anual",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-6.1.4",
+      "clausula": "6.1.4",
+      "titulo": {
+        "es": "Evaluación del impacto del sistema de IA",
+        "en": "AI system impact assessment"
+      },
+      "nivel": "generable",
+      "exige_informacion_documentada": true,
+      "que_se_documenta": {
+        "es": "el resultado de la evaluación de impacto",
+        "en": "the result of the impact assessment"
+      },
+      "produce": "evaluacion-de-impacto",
+      "depende_de": [
+        "ISO-6.1.1"
+      ],
+      "formulario": "iso-riesgo",
+      "alimenta": [
+        "ISO-8.4",
+        "ISO-9.3.2"
+      ],
+      "periodicidad": "por_cambio",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-6.2",
+      "clausula": "6.2",
+      "titulo": {
+        "es": "Objetivos de IA y planificación para lograrlos",
+        "en": "AI objectives and planning to achieve them"
+      },
+      "nivel": "generable",
+      "exige_informacion_documentada": true,
+      "que_se_documenta": {
+        "es": "los objetivos de IA y el plan para alcanzarlos",
+        "en": "the AI objectives and the plan to achieve them"
+      },
+      "produce": "objetivos-de-ia",
+      "depende_de": [
+        "ISO-5.2"
+      ],
+      "formulario": "iso-liderazgo",
+      "alimenta": [
+        "ISO-9.1",
+        "ISO-9.3.2"
+      ],
+      "periodicidad": "anual",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-6.3",
+      "clausula": "6.3",
+      "titulo": {
+        "es": "Planificación de los cambios",
+        "en": "Planning of changes"
+      },
+      "nivel": "organizativa",
+      "exige_informacion_documentada": false,
+      "formulario": "iso-riesgo",
+      "produce": "plan-de-cambios-sgia",
+      "alimenta": [
+        "ISO-8.1"
+      ],
+      "periodicidad": "por_cambio",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-7.1",
+      "clausula": "7.1",
+      "titulo": {
+        "es": "Recursos",
+        "en": "Resources"
+      },
+      "nivel": "organizativa",
+      "exige_informacion_documentada": false,
+      "formulario": "iso-soporte",
+      "produce": "inventario-de-recursos",
+      "alimenta": [
+        "ISO-8.1"
+      ],
+      "periodicidad": "anual",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-7.2",
+      "clausula": "7.2",
+      "titulo": {
+        "es": "Competencia",
+        "en": "Competence"
+      },
+      "nivel": "organizativa",
+      "exige_informacion_documentada": true,
+      "que_se_documenta": {
+        "es": "la evidencia de la competencia de las personas",
+        "en": "evidence of persons' competence"
+      },
+      "formulario": "iso-soporte",
+      "produce": "registro-de-competencias",
+      "alimenta": [
+        "ISO-9.2.2",
+        "ISO-9.3.2"
+      ],
+      "periodicidad": "anual",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-7.3",
+      "clausula": "7.3",
+      "titulo": {
+        "es": "Toma de conciencia",
+        "en": "Awareness"
+      },
+      "nivel": "organizativa",
+      "exige_informacion_documentada": false,
+      "formulario": "iso-soporte",
+      "alimenta": [
+        "ISO-7.2"
+      ],
+      "periodicidad": "continua",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-7.4",
+      "clausula": "7.4",
+      "titulo": {
+        "es": "Comunicación",
+        "en": "Communication"
+      },
+      "nivel": "organizativa",
+      "exige_informacion_documentada": false,
+      "formulario": "iso-soporte",
+      "produce": "plan-de-comunicacion",
+      "alimenta": [
+        "ISO-8.1",
+        "ISO-9.3.2"
+      ],
+      "periodicidad": "anual",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-7.5.1",
+      "clausula": "7.5.1",
+      "titulo": {
+        "es": "Información documentada. Generalidades",
+        "en": "Documented information. General"
+      },
+      "nivel": "organizativa",
+      "exige_informacion_documentada": true,
+      "que_se_documenta": {
+        "es": "el inventario de la información documentada del sistema",
+        "en": "the inventory of the system's documented information"
+      },
+      "formulario": "iso-soporte",
+      "produce": "indice-de-informacion-documentada",
+      "alimenta": [
+        "ISO-7.5.2",
+        "ISO-9.2.2"
+      ],
+      "periodicidad": "anual",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-7.5.2",
+      "clausula": "7.5.2",
+      "titulo": {
+        "es": "Creación y actualización de la información documentada",
+        "en": "Creating and updating documented information"
+      },
+      "nivel": "maquina",
+      "exige_informacion_documentada": false,
+      "formulario": "iso-soporte",
+      "alimenta": [
+        "ISO-7.5.3"
+      ],
+      "periodicidad": "continua",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-7.5.3",
+      "clausula": "7.5.3",
+      "titulo": {
+        "es": "Control de la información documentada",
+        "en": "Control of documented information"
+      },
+      "nivel": "maquina",
+      "exige_informacion_documentada": false,
+      "formulario": "iso-soporte",
+      "alimenta": [
+        "ISO-9.2.2"
+      ],
+      "periodicidad": "continua",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-8.1",
+      "clausula": "8.1",
+      "titulo": {
+        "es": "Planificación y control operacional",
+        "en": "Operational planning and control"
+      },
+      "nivel": "organizativa",
+      "exige_informacion_documentada": true,
+      "que_se_documenta": {
+        "es": "la evidencia de que los procesos se ejecutaron como estaban planificados",
+        "en": "evidence that the processes were carried out as planned"
+      },
+      "depende_de": [
+        "ISO-6.1.3"
+      ],
+      "formulario": "iso-operacion",
+      "produce": "controles-operacionales",
+      "alimenta": [
+        "ISO-9.1",
+        "ISO-9.2.2"
+      ],
+      "periodicidad": "continua",
+      "vigencia_dias": 180
+    },
+    {
+      "id": "ISO-8.2",
+      "clausula": "8.2",
+      "titulo": {
+        "es": "Evaluación de riesgos de la IA (operación)",
+        "en": "AI risk assessment (operation)"
+      },
+      "nivel": "organizativa",
+      "exige_informacion_documentada": true,
+      "que_se_documenta": {
+        "es": "los resultados de todas las evaluaciones de riesgo realizadas",
+        "en": "the results of all risk assessments performed"
+      },
+      "depende_de": [
+        "ISO-6.1.2"
+      ],
+      "formulario": "iso-operacion",
+      "produce": "resultados-de-la-evaluacion-de-riesgos",
+      "alimenta": [
+        "ISO-6.1.3",
+        "ISO-9.3.2"
+      ],
+      "periodicidad": "continua",
+      "vigencia_dias": 180
+    },
+    {
+      "id": "ISO-8.3",
+      "clausula": "8.3",
+      "titulo": {
+        "es": "Tratamiento de riesgos de la IA (operación)",
+        "en": "AI risk treatment (operation)"
+      },
+      "nivel": "organizativa",
+      "exige_informacion_documentada": true,
+      "que_se_documenta": {
+        "es": "los resultados de todos los tratamientos de riesgo",
+        "en": "the results of all risk treatments"
+      },
+      "depende_de": [
+        "ISO-6.1.3"
+      ],
+      "formulario": "iso-operacion",
+      "produce": "resultados-del-tratamiento-de-riesgos",
+      "alimenta": [
+        "ISO-9.1",
+        "ISO-9.3.2"
+      ],
+      "periodicidad": "continua",
+      "vigencia_dias": 180
+    },
+    {
+      "id": "ISO-8.4",
+      "clausula": "8.4",
+      "titulo": {
+        "es": "Evaluación del impacto del sistema de IA (operación)",
+        "en": "AI system impact assessment (operation)"
+      },
+      "nivel": "organizativa",
+      "exige_informacion_documentada": true,
+      "que_se_documenta": {
+        "es": "los resultados de todas las evaluaciones de impacto",
+        "en": "the results of all impact assessments"
+      },
+      "depende_de": [
+        "ISO-6.1.4"
+      ],
+      "formulario": "iso-operacion",
+      "produce": "resultados-de-la-evaluacion-de-impacto",
+      "alimenta": [
+        "ISO-9.3.2"
+      ],
+      "periodicidad": "por_cambio",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-9.1",
+      "clausula": "9.1",
+      "titulo": {
+        "es": "Seguimiento, medición, análisis y evaluación",
+        "en": "Monitoring, measurement, analysis and evaluation"
+      },
+      "nivel": "maquina",
+      "exige_informacion_documentada": true,
+      "que_se_documenta": {
+        "es": "la evidencia de los resultados del seguimiento y la medición",
+        "en": "evidence of the monitoring and measurement results"
+      },
+      "formulario": "iso-desempeno",
+      "produce": "resultados-de-seguimiento-y-medicion",
+      "alimenta": [
+        "ISO-9.3.2",
+        "ISO-10.2"
+      ],
+      "periodicidad": "continua",
+      "vigencia_dias": 90
+    },
+    {
+      "id": "ISO-9.2.1",
+      "clausula": "9.2.1",
+      "titulo": {
+        "es": "Auditoría interna. Generalidades",
+        "en": "Internal audit. General"
+      },
+      "nivel": "organizativa",
+      "exige_informacion_documentada": false,
+      "formulario": "iso-desempeno",
+      "alimenta": [
+        "ISO-9.2.2"
+      ],
+      "periodicidad": "anual",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-9.2.2",
+      "clausula": "9.2.2",
+      "titulo": {
+        "es": "Programa de auditoría interna",
+        "en": "Internal audit programme"
+      },
+      "nivel": "generable",
+      "exige_informacion_documentada": true,
+      "que_se_documenta": {
+        "es": "la evidencia de la ejecución del programa de auditoría y sus resultados",
+        "en": "evidence of the audit programme's implementation and its results"
+      },
+      "produce": "programa-de-auditoria",
+      "depende_de": [
+        "ISO-9.2.1"
+      ],
+      "formulario": "iso-desempeno",
+      "alimenta": [
+        "ISO-9.3.2",
+        "ISO-10.2"
+      ],
+      "periodicidad": "anual",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-9.3.1",
+      "clausula": "9.3.1",
+      "titulo": {
+        "es": "Revisión por la dirección. Generalidades",
+        "en": "Management review. General"
+      },
+      "nivel": "organizativa",
+      "exige_informacion_documentada": false,
+      "formulario": "iso-desempeno",
+      "alimenta": [
+        "ISO-9.3.2"
+      ],
+      "periodicidad": "anual",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-9.3.2",
+      "clausula": "9.3.2",
+      "titulo": {
+        "es": "Entradas de la revisión por la dirección",
+        "en": "Management review inputs"
+      },
+      "nivel": "organizativa",
+      "exige_informacion_documentada": false,
+      "formulario": "iso-desempeno",
+      "alimenta": [
+        "ISO-9.3.3"
+      ],
+      "periodicidad": "anual",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-9.3.3",
+      "clausula": "9.3.3",
+      "titulo": {
+        "es": "Resultados de la revisión por la dirección",
+        "en": "Management review results"
+      },
+      "nivel": "generable",
+      "exige_informacion_documentada": true,
+      "que_se_documenta": {
+        "es": "la evidencia de los resultados de las revisiones por la dirección",
+        "en": "evidence of the management review results"
+      },
+      "produce": "revision-por-la-direccion",
+      "depende_de": [
+        "ISO-9.3.2"
+      ],
+      "formulario": "iso-desempeno",
+      "alimenta": [
+        "ISO-6.2",
+        "ISO-10.1",
+        "ISO-10.2"
+      ],
+      "periodicidad": "anual",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-10.1",
+      "clausula": "10.1",
+      "titulo": {
+        "es": "Mejora continua",
+        "en": "Continual improvement"
+      },
+      "nivel": "organizativa",
+      "exige_informacion_documentada": false,
+      "formulario": "iso-mejora",
+      "produce": "plan-de-mejora-continua",
+      "alimenta": [
+        "ISO-6.2",
+        "ISO-8.1"
+      ],
+      "periodicidad": "continua",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "ISO-10.2",
+      "clausula": "10.2",
+      "titulo": {
+        "es": "No conformidad y acción correctiva",
+        "en": "Nonconformity and corrective action"
+      },
+      "nivel": "generable",
+      "exige_informacion_documentada": true,
+      "que_se_documenta": {
+        "es": "la naturaleza de las no conformidades, las acciones tomadas y sus resultados",
+        "en": "the nature of the nonconformities, the actions taken and their results"
+      },
+      "produce": "registro-de-no-conformidades",
+      "formulario": "iso-mejora",
+      "alimenta": [
+        "ISO-6.1.2",
+        "ISO-9.3.2",
+        "ISO-10.1"
+      ],
+      "periodicidad": "continua",
+      "vigencia_dias": 90
+    }
+  ],
+  "por_que_esto_es_un_sistema_y_no_una_lista": {
+    "es": "Un sistema de gestión es un CICLO: lo que produce una cláusula lo consume otra, y lo que sale del final vuelve a entrar por el principio. Sin eso, las 32 cláusulas son 32 casillas que se pueden marcar en cualquier orden y ninguna obliga a la siguiente. `alimenta` cierra el ciclo y hay una puerta que comprueba que se cierra de verdad: la 10.2 vuelve a la 6.1.2, la revisión por la dirección vuelve a los objetivos, y el seguimiento vuelve a la no conformidad. Y `periodicidad` es la otra mitad: una auditoría interna de hace tres años no es una auditoría interna. Las cláusulas que recurren llevan su vigencia, y la maquinaria de caducidad que ya existe para la evidencia técnica vale igual para los registros de gestión. Eso es lo que separa un sistema de gestión certificable de una carpeta con documentos correctos y viejos.",
+    "en": "A management system is a CYCLE: what one clause produces another consumes, and what comes out of the end goes back in at the start. Without that, the 32 clauses are 32 boxes tickable in any order, none forcing the next. `alimenta` closes the cycle and a gate checks it really closes: 10.2 goes back to 6.1.2, the management review goes back to the objectives, and monitoring goes back to nonconformity.\n\nAnd `periodicidad` is the other half: an internal audit from three years ago is not an internal audit. Recurring clauses carry their validity period, and the expiry machinery that already exists for technical evidence works just as well for management records. That is what separates a certifiable management system from a folder of correct, old documents."
+  },
+  "periodicidades": {
+    "continua": {
+      "es": "ocurre todo el tiempo y se comprueba por muestreo de lo reciente",
+      "en": "happens all the time and is checked by sampling what is recent"
+    },
+    "anual": {
+      "es": "tiene que repetirse al menos una vez al año",
+      "en": "must recur at least once a year"
+    },
+    "por_cambio": {
+      "es": "se rehace cuando cambia lo que la sostiene, no en una fecha fija",
+      "en": "is redone when what underpins it changes, not on a fixed date"
+    }
+  }
+}

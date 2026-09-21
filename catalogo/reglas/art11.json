@@ -1,0 +1,133 @@
+{
+  "paquete": "actaira/art11",
+  "version": "1.0.0",
+  "autor": "Actaira",
+  "licencia": "Apache-2.0",
+  "obligacion": "AIA-011",
+  "nota_de_autoria": {
+    "es": "Cada regla y cada remediación de este fichero las escribió una persona. Un modelo puede proponer el borrador de una regla fuera de línea; nunca redacta reglas ni remediaciones en ejecución. Segunda negativa.",
+    "en": "Every rule and every remediation in this file was written by a person. A model may draft a candidate rule offline; it never writes rules or remediations at runtime. Second negative."
+  },
+  "reglas": [
+    {
+      "id": "ACT-11-EXPEDIENTE",
+      "version": "1.0.0",
+      "tipo": "fichero",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "el expediente técnico del Anexo IV, versionado con el código",
+        "en": "the Annex IV technical documentation, versioned with the code"
+      },
+      "titulo": {
+        "es": "No hay documentación técnica en el repositorio",
+        "en": "There is no technical documentation in the repository"
+      },
+      "remediacion": {
+        "es": "El artículo 11 exige que la documentación técnica del Anexo IV se redacte ANTES de introducir el sistema en el mercado y se mantenga actualizada. Un expediente que vive en la unidad compartida de alguien envejece en cuanto cambia el código, y nadie se entera. Ponlo en el repositorio, junto a lo que describe, y regenéralo en la misma tubería que despliega. `actaira anexo` lo produce con procedencia por sección.",
+        "en": "Article 11 requires the Annex IV technical documentation to be drawn up BEFORE placing the system on the market and kept up to date. A file living on somebody's shared drive goes stale the moment the code changes, and nobody notices. Put it in the repository, next to what it describes, and regenerate it in the same pipeline that deploys. `actaira anexo` produces it with per-section provenance."
+      },
+      "patrones": [
+        "(?i)anexo[-_ ]?iv",
+        "(?i)annex[-_ ]?iv",
+        "(?i)documentacion[-_]tecnica",
+        "(?i)technical[-_]documentation"
+      ]
+    },
+    {
+      "id": "ACT-11-VERSION-DEL-SISTEMA",
+      "version": "1.0.0",
+      "tipo": "contenido",
+      "severidad": "media",
+      "que_busca": {
+        "es": "que el expediente nombre la versión del sistema que describe",
+        "en": "that the documentation names the system version it describes"
+      },
+      "titulo": {
+        "es": "El expediente no dice de qué versión habla",
+        "en": "The file does not say which version it describes"
+      },
+      "remediacion": {
+        "es": "Un expediente técnico sin versión no se puede atar a nada: ante un incidente, la pregunta es si la documentación describe la versión que estaba desplegada ese día. Nombra la versión y el digest del modelo en la primera sección, que es lo que pide el punto 1.a del Anexo IV.",
+        "en": "A technical file without a version cannot be tied to anything: after an incident the question is whether the documentation describes the version that was deployed that day. Name the version and the model digest in the first section, which is what Annex IV point 1(a) asks for."
+      },
+      "ambito": "documentacion",
+      "solo_en": "(?i)(anexo[-_ ]?iv|annex[-_ ]?iv|documentacion[-_]tecnica|technical[-_]documentation)",
+      "patrones": [
+        "(?i)\\bversi[oó]n\\b|\\bversion\\b",
+        "(?i)sha256:|digest"
+      ],
+      "solo_si_hay_fichero": true
+    },
+    {
+      "id": "ACT-11-SUPERVISION-EN-EL-EXPEDIENTE",
+      "version": "1.0.0",
+      "tipo": "contenido",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "la evaluación de las medidas de supervisión humana dentro del expediente",
+        "en": "the assessment of the human oversight measures inside the documentation"
+      },
+      "titulo": {
+        "es": "El expediente no evalúa la supervisión humana",
+        "en": "The file does not assess human oversight"
+      },
+      "remediacion": {
+        "es": "El punto 2.e del Anexo IV pide una evaluación de las medidas de supervisión humana del artículo 14, incluida una valoración de las medidas técnicas necesarias para que el responsable del despliegue interprete los resultados. Que el código tenga una ruta de anulación no es esa evaluación: la evaluación dice si esa ruta sirve, y eso se escribe.",
+        "en": "Annex IV point 2(e) asks for an assessment of the Article 14 human oversight measures, including an assessment of the technical measures needed to help the deployer interpret the outputs. Having an override path in the code is not that assessment: the assessment says whether that path works, and that is written down."
+      },
+      "ambito": "documentacion",
+      "solo_en": "(?i)(anexo[-_ ]?iv|annex[-_ ]?iv|documentacion[-_]tecnica|technical[-_]documentation)",
+      "patrones": [
+        "(?i)supervisi[oó]n humana|human oversight|art[ií]culo 14|article 14"
+      ],
+      "solo_si_hay_fichero": true
+    },
+    {
+      "id": "ACT-11-VIGILANCIA-EN-EL-EXPEDIENTE",
+      "version": "1.0.0",
+      "tipo": "contenido",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "el sistema de vigilancia poscomercialización dentro del expediente",
+        "en": "the post-market monitoring system inside the documentation"
+      },
+      "titulo": {
+        "es": "El expediente no describe la vigilancia poscomercialización",
+        "en": "The file does not describe post-market monitoring"
+      },
+      "remediacion": {
+        "es": "El punto 9 del Anexo IV pide una descripción del sistema de vigilancia poscomercialización del artículo 72, con el plan. Es el punto que más expedientes dejan fuera, porque describe lo que pasará y no lo que pasó, y es justamente el que demuestra que el sistema se sigue mirando después de venderlo.",
+        "en": "Annex IV point 9 asks for a description of the Article 72 post-market monitoring system, with its plan. It is the point most files leave out, because it describes what will happen rather than what happened, and it is precisely the one that shows the system is still watched after it is sold."
+      },
+      "ambito": "documentacion",
+      "solo_en": "(?i)(anexo[-_ ]?iv|annex[-_ ]?iv|documentacion[-_]tecnica|technical[-_]documentation)",
+      "patrones": [
+        "(?i)poscomercializaci[oó]n|post[- ]?market|art[ií]culo 72|article 72"
+      ],
+      "solo_si_hay_fichero": true
+    },
+    {
+      "id": "ACT-11-FECHA",
+      "version": "1.0.0",
+      "tipo": "aportado",
+      "severidad": "media",
+      "que_busca": {
+        "es": "la fecha en que se redacto el expediente y quien lo mantiene",
+        "en": "the date the documentation was drawn up and who maintains it"
+      },
+      "titulo": {
+        "es": "Nadie responde del expediente",
+        "en": "Nobody owns the file"
+      },
+      "remediacion": {
+        "es": "El artículo 11 obliga a mantener la documentación ACTUALIZADA, y mantener es un verbo que necesita sujeto. Un expediente sin dueño se actualiza el día de la auditoría, que es el único día en que no vale.",
+        "en": "Article 11 requires the documentation to be kept UP TO DATE, and keeping is a verb that needs a subject. A file with no owner gets updated on audit day, which is the one day it is worth nothing."
+      },
+      "pregunta": {
+        "es": "¿Quién mantiene la documentación técnica, cada cuánto la revisa y cuándo se revisó por última vez?",
+        "en": "Who maintains the technical documentation, how often do they review it, and when was it last reviewed?"
+      },
+      "formato": "texto"
+    }
+  ]
+}

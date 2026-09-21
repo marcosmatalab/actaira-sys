@@ -1,0 +1,29 @@
+{
+  "sistema": "github",
+  "nota": "Incidencias de GitHub. El destino es https://api.github.com/repos/DUENO/REPO.",
+  "credencial": {
+    "variable": "ACTAIRA_GITHUB_TOKEN",
+    "cabeceras": {"Authorization": "Bearer {credencial}", "Accept": "application/vnd.github+json"}
+  },
+  "abrir": {
+    "metodo": "POST",
+    "url": "{destino}/issues",
+    "cuerpo": {"title": "{titulo}", "body": "{cuerpo}", "labels": ["actaira"]},
+    "ruta_referencia": "number",
+    "ruta_url": "html_url",
+    "ruta_estado": "state"
+  },
+  "consultar": {
+    "metodo": "GET",
+    "url": "{destino}/issues/{referencia}",
+    "ruta_estado": "state",
+    "ruta_actor": "assignee.login",
+    "ruta_cuando": "updated_at",
+    "ruta_url": "html_url"
+  },
+  "limites": [
+    {"que": {"es": "una incidencia cerrada no distingue «arreglado» de «no lo vamos a hacer»: GitHub tiene el motivo del cierre en otro campo que este perfil no lee todavia",
+             "en": "a closed issue does not distinguish «fixed» from «will not do»: GitHub keeps the close reason in another field this profile does not read yet"},
+     "por_que": "falta_aporte"}
+  ]
+}

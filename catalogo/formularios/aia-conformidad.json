@@ -1,0 +1,101 @@
+{
+  "$schema": "../esquema/formulario.schema.json",
+  "paquete": "aia-conformidad",
+  "version": "1.0.0",
+  "autor": "Actaira",
+  "titulo": {
+    "es": "La declaración UE de conformidad",
+    "en": "The EU declaration of conformity"
+  },
+  "destinatario_principal": "direccion",
+  "nota": {
+    "es": "Estas cuatro preguntas completan los puntos del Anexo V que no salen del repositorio. El punto 8 es la firma, y por eso se pide al final y aparte: mientras no esté, el documento se emite marcado como borrador.",
+    "en": "These four questions complete the Annex V points that do not come from the repository. Point 8 is the signature, which is why it is asked last and separately: until it is there, the document is emitted marked as a draft."
+  },
+  "preguntas": [
+    {
+      "id": "F-CNF-1",
+      "sirve_a": [
+        "AIA-047"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Trata el sistema datos personales?",
+        "en": "Does the system process personal data?"
+      },
+      "ayuda": {
+        "es": "El punto 5 del Anexo V solo entra si la respuesta es si, y entonces obliga a declarar la conformidad con el RGPD, con el Reglamento 2018/1725 y con la Directiva 2016/680. Si contesta que si, esa declaración la está haciendo usted, no Actaira: aquí solo se comprueba que el texto esté y que alguien lo firme.",
+        "en": "Point 5 of Annex V only applies if the answer is yes, and it then requires declaring conformity with the GDPR, with Regulation 2018/1725 and with Directive 2016/680. If you answer yes, that declaration is yours, not Actaira's: here we only check that the text is there and that someone signs it."
+      },
+      "formato": "si_no",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "F-CNF-2",
+      "sirve_a": [
+        "AIA-047",
+        "AIA-043"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Qué normas armonizadas u otras especificaciones comunes ha aplicado, total o parcialmente?",
+        "en": "Which harmonised standards or other common specifications have you applied, in full or in part?"
+      },
+      "ayuda": {
+        "es": "El punto 6 del Anexo V las pide con referencia. Aplicar una norma armonizada por completo da presunción de conformidad con el requisito que cubre, que es la vía más corta por el artículo 43, así que conviene decir cuál y hasta dónde. Si no ha aplicado ninguna, escríbalo: 'ninguna' es una respuesta válida y no impide la declaración.",
+        "en": "Point 6 of Annex V asks for them with a reference. Applying a harmonised standard in full gives presumption of conformity with the requirement it covers, which is the shortest route under Article 43, so it pays to say which and how far. If you have applied none, write that: 'none' is a valid answer and does not prevent the declaration."
+      },
+      "formato": "lista",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_elementos": 1
+      }
+    },
+    {
+      "id": "F-CNF-3",
+      "sirve_a": [
+        "AIA-043",
+        "AIA-047"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "Nombre y número de identificación del organismo notificado, procedimiento seguido y certificado expedido.",
+        "en": "Name and identification number of the notified body, procedure followed and certificate issued."
+      },
+      "ayuda": {
+        "es": "Solo se pregunta si antes ha dicho que su vía de evaluación pasa por un organismo notificado. El número de identificación es el de cuatro dígitos que figura en la base de datos NANDO, no el nombre comercial.",
+        "en": "Only asked if you have said your assessment route goes through a notified body. The identification number is the four-digit one in the NANDO database, not the trade name."
+      },
+      "formato": "texto_largo",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_caracteres": 60
+      },
+      "si": {
+        "pregunta": "F-PRV-3",
+        "contiene": "notificado"
+      }
+    },
+    {
+      "id": "F-CNF-4",
+      "sirve_a": [
+        "AIA-047"
+      ],
+      "destinatario": "direccion",
+      "texto": {
+        "es": "Lugar y fecha de expedición, nombre y cargo de quien firma, y persona en cuyo nombre firma.",
+        "en": "Place and date of issue, name and position of the signatory, and the person on whose behalf they sign."
+      },
+      "ayuda": {
+        "es": "Este es el punto 8 y es la firma. Mientras esta respuesta no exista, Actaira emite el documento con la palabra BORRADOR en el encabezado y no la quita por ninguna otra vía. Los puntos 3 y 4 del Anexo V son afirmaciones que hace usted bajo su exclusiva responsabilidad; firmar aquí es asumirlas.",
+        "en": "This is point 8 and it is the signature. While this answer does not exist, Actaira emits the document with the word DRAFT in its header and removes it by no other means. Points 3 and 4 of Annex V are affirmations you make under your sole responsibility; signing here is assuming them."
+      },
+      "formato": "texto_largo",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_caracteres": 80
+      },
+      "produce": "declaracion-ue-conformidad"
+    }
+  ]
+}

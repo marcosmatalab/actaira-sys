@@ -1,0 +1,132 @@
+{
+  "$schema": "actaira/catalogo/reglas/v1",
+  "paquete": "actaira/art05",
+  "version": "1.0.0",
+  "autor": "Actaira",
+  "licencia": "Apache-2.0",
+  "obligacion": "AIA-005",
+  "nota_de_autoria": {
+    "es": "Cada regla y cada remediación de este fichero las escribió una persona. Un modelo puede proponer el borrador de una regla fuera de línea; nunca redacta reglas ni remediaciones en ejecución. Segunda negativa.",
+    "en": "Every rule and every remediation in this file was written by a person. A model may draft a candidate rule offline; it never writes rules or remediations at runtime. Second negative."
+  },
+  "por_que_este_paquete_existe": {
+    "es": "El Reglamento (UE) 2026/1744 añadió dos prohibiciones al artículo 5(1): generar o manipular imágenes, vídeo o audio realistas de las partes íntimas o de actividades sexuales de una persona identificable sin su consentimiento explícito, y generar material del artículo 2 de la Directiva 2011/93/UE. La misma modificación separa lo que se le exige a cada uno: al proveedor, salvaguardas razonables y adecuadas; al responsable del despliegue, no usarlo con esa intención. Las dos entran en vigor tras su período transitorio, el 2 de diciembre de 2026. La intención no se lee en el código. Las salvaguardas SÍ: un punto de generación de imagen o vídeo que no pasa por ningún filtro antes de devolver la salida es una ausencia observable, y es exactamente lo que la modificación le pide al proveedor. Lo que este paquete NO hace es decidir si esas salvaguardas son suficientes: eso es una política, y vive en la capa de suficiencia.",
+    "en": "Regulation (EU) 2026/1744 added two prohibitions to Article 5(1): generating or manipulating realistic images, video or audio of an identifiable person's intimate parts or sexual activities without their explicit consent, and generating material within the meaning of Article 2 of Directive 2011/93/EU. The same amendment separates what is required of each party: of the provider, reasonable and adequate safeguards; of the deployer, not using it with that intent. Both apply after their transitional period, on 2 December 2026.\n\nIntent is not readable in code. Safeguards ARE: an image or video generation point that passes through no filter before returning its output is an observable absence, and it is exactly what the amendment asks of the provider. What this pack does NOT do is decide whether those safeguards are sufficient: that is a policy, and it lives in the sufficiency layer."
+  },
+  "lo_que_este_paquete_no_puede_ver": {
+    "es": "Si la persona representada es identificable, si prestó consentimiento explícito, si el filtro que existe detecta de verdad lo que dice detectar, y la intención de quien despliega. Los cuatro se preguntan; ninguno se deduce.",
+    "en": "Whether the depicted person is identifiable, whether they gave explicit consent, whether the filter that exists really detects what it claims to, and the intent of whoever deploys it. All four are asked; none is inferred."
+  },
+  "reglas": [
+    {
+      "id": "ACT-05-GEN-SIN-FILTRO",
+      "version": "1.0.0",
+      "tipo": "llamada_sin_pareja",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "una generación de imagen o vídeo sin ninguna llamada de filtrado en el mismo fichero",
+        "en": "an image or video generation with no filtering call in the same file"
+      },
+      "firmas": [
+        "client.images.generate",
+        "openai.Image.create",
+        "images.edit",
+        "images.generate",
+        "StableDiffusionPipeline",
+        "DiffusionPipeline",
+        "replicate.run",
+        "genai.GenerativeModel.generate_content",
+        "video.generate"
+      ],
+      "pareja": [
+        "moderations.create",
+        "client.moderations.create",
+        "safety_checker",
+        "nsfw_check",
+        "content_filter",
+        "moderar",
+        "filtro_de_contenido",
+        "safety_settings",
+        "detect_explicit",
+        "SafetyChecker"
+      ],
+      "titulo": {
+        "es": "Se genera imagen o vídeo y no pasa por ningún filtro",
+        "en": "Image or video is generated and passes through no filter"
+      },
+      "remediacion": {
+        "es": "En este fichero se genera contenido visual y no hay ninguna llamada de filtrado ni de moderación antes de devolverlo. Desde el Reglamento (UE) 2026/1744, el artículo 5(1) prohíbe generar imágenes o vídeo realistas de las partes íntimas o de actividades sexuales de una persona identificable sin su consentimiento explícito, y le exige al proveedor salvaguardas razonables y adecuadas. Un punto de generación sin filtro no demuestra que se esté incumpliendo: demuestra que no hay salvaguarda que enseñar. Pon el filtro donde se devuelve la salida, no donde se construye la petición, y escribe en el expediente qué detecta y qué no.",
+        "en": "This file generates visual content and there is no filtering or moderation call before returning it. Since Regulation (EU) 2026/1744, Article 5(1) prohibits generating realistic images or video of an identifiable person's intimate parts or sexual activities without their explicit consent, and requires the provider to have reasonable and adequate safeguards. A generation point with no filter does not prove an infringement: it proves there is no safeguard to show. Put the filter where the output is returned, not where the request is built, and write in the file what it detects and what it does not."
+      }
+    },
+    {
+      "id": "ACT-05-FILTRO-SIN-DESCRIBIR",
+      "version": "1.0.0",
+      "tipo": "aportado",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "qué detecta el filtro de contenido y qué se le escapa",
+        "en": "what the content filter detects and what it misses"
+      },
+      "pregunta": {
+        "es": "¿Qué detecta exactamente el filtro que hay antes de devolver una imagen o un vídeo generado, con qué umbral, y qué se le escapa?",
+        "en": "What exactly does the filter before returning a generated image or video detect, at which threshold, and what does it miss?"
+      },
+      "formato": "texto_largo",
+      "titulo": {
+        "es": "Hay filtro y no se sabe qué detecta",
+        "en": "There is a filter and what it detects is unknown"
+      },
+      "remediacion": {
+        "es": "Que exista una llamada a un filtro es lo único que este motor puede leer; si ese filtro detecta lo que el artículo 5 prohíbe es una afirmación sobre su eficacia que ningún analizador estático puede hacer. Declara qué modelo o servicio hace de filtro, qué categorías cubre, con qué umbral, y qué casos conocidos se le escapan. Una salvaguarda cuya eficacia nadie ha medido es una salvaguarda de la que no se puede hablar delante de una autoridad.",
+        "en": "That a filter call exists is all this engine can read; whether that filter detects what Article 5 prohibits is a claim about its effectiveness that no static analyser can make. Declare which model or service acts as the filter, which categories it covers, at which threshold, and which known cases it misses. A safeguard whose effectiveness nobody has measured is a safeguard you cannot talk about in front of an authority."
+      }
+    },
+    {
+      "id": "ACT-05-CONSENTIMIENTO",
+      "version": "1.0.0",
+      "tipo": "aportado",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "cómo se obtiene y se conserva el consentimiento explícito de la persona representada",
+        "en": "how the depicted person's explicit consent is obtained and kept"
+      },
+      "pregunta": {
+        "es": "¿Si el sistema puede generar o manipular imágenes de personas identificables, ¿cómo se obtiene el consentimiento explícito de esa persona y dónde se conserva?",
+        "en": "If the system can generate or manipulate images of identifiable people, how is that person's explicit consent obtained and where is it kept?"
+      },
+      "formato": "texto_largo",
+      "titulo": {
+        "es": "Sin constancia del consentimiento de la persona representada",
+        "en": "No record of the depicted person's consent"
+      },
+      "remediacion": {
+        "es": "La prohibición del artículo 5(1) se levanta con el consentimiento libremente dado, específico, informado, inequívoco y explícito de la persona representada. «Explícito» descarta el consentimiento por defecto y el enterrado en unos términos de uso. Si el sistema no puede generar imágenes de personas identificables, dilo y esta pregunta se cierra; si puede, la constancia del consentimiento es lo único que separa un producto legal de uno prohibido.",
+        "en": "The Article 5(1) prohibition lifts with the freely given, specific, informed, unambiguous and explicit consent of the depicted person. 'Explicit' rules out default consent and consent buried in terms of use. If the system cannot generate images of identifiable people, say so and this question closes; if it can, the record of consent is the only thing separating a lawful product from a prohibited one."
+      }
+    },
+    {
+      "id": "ACT-05-INTENCION-DEL-DESPLIEGUE",
+      "version": "1.0.0",
+      "tipo": "aportado",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "qué prohíbe expresamente al usuario la política de uso aceptable",
+        "en": "what the acceptable use policy expressly forbids the user"
+      },
+      "pregunta": {
+        "es": "¿Qué prohíbe expresamente su política de uso aceptable, y cómo se detecta y se corta un uso que la incumpla?",
+        "en": "What does your acceptable use policy expressly forbid, and how is a use that breaches it detected and cut off?"
+      },
+      "formato": "texto_largo",
+      "titulo": {
+        "es": "Sin política de uso aceptable que nombre lo prohibido",
+        "en": "No acceptable use policy naming what is forbidden"
+      },
+      "remediacion": {
+        "es": "La modificación de 2026 separa dos deberes: el proveedor pone salvaguardas, y el responsable del despliegue no usa el sistema con esa intención. La intención no se lee en el código, pero sí se lee lo que usted prohíbe por escrito y lo que hace cuando alguien lo incumple. Una política que dice «uso responsable» y no nombra la conducta prohibida no sirve para nada: nombra la conducta, di cómo se detecta y di qué pasa después.",
+        "en": "The 2026 amendment separates two duties: the provider puts safeguards in place, and the deployer does not use the system with that intent. Intent is not readable in code, but what you forbid in writing and what you do when someone breaches it are. A policy that says 'responsible use' and does not name the forbidden conduct is worth nothing: name the conduct, say how it is detected, and say what happens next."
+      }
+    }
+  ]
+}

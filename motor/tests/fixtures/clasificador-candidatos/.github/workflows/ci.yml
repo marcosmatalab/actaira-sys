@@ -1,0 +1,8 @@
+name: ci
+on: [push]
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pytest evals/ -q

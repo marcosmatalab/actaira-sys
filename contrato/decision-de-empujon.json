@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://actaira.com/contrato/decision-de-empujon.json",
+  "title": "Que hacer con un empujon, y por que",
+  "por_que_existe": {
+    "es": "Es la decision que corre en el borde y la unica que se toma sin mirar el codigo del cliente. Que viaje con su version importa mas aqui que en ningun otro sitio: quien la recibe es una funcion de webhook que a lo mejor lleva meses sin actualizarse.",
+    "en": "It is the decision that runs at the edge and the only one taken without looking at the client's code. Carrying its version matters more here than anywhere else: whoever receives it is a webhook function that may not have been updated in months."
+  },
+  "type": "object",
+  "properties": {
+    "esquema": {
+      "const": "actaira/decision-de-empujon/v1"
+    },
+    "decision": {
+      "enum": [
+        "reobservar",
+        "revalidar",
+        "ignorar",
+        "no_traducible"
+      ]
+    },
+    "motivo": {
+      "type": "object",
+      "properties": {
+        "es": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "es",
+        "en"
+      ],
+      "additionalProperties": false
+    },
+    "cuesta_computo": {
+      "type": "boolean"
+    },
+    "ultimo_observado": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "cadena_inerte": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "empujon": {
+      "type": "object",
+      "properties": {
+        "esquema": {
+          "const": "actaira/empujon/v1"
+        },
+        "proveedor": {
+          "enum": [
+            "github",
+            "gitlab",
+            "bitbucket",
+            "azure"
+          ]
+        },
+        "referencia_inmutable": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "antes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lista_completa": {
+          "type": "boolean"
+        },
+        "por_que_no_completa": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "esquema",
+        "proveedor",
+        "referencia_inmutable",
+        "lista_completa"
+      ]
+    },
+    "si_no_se_registra": {
+      "type": "object",
+      "properties": {
+        "es": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "es",
+        "en"
+      ],
+      "additionalProperties": false
+    },
+    "registrado": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "esquema",
+    "decision",
+    "motivo",
+    "cuesta_computo"
+  ]
+}

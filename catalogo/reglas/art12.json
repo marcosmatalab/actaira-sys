@@ -1,0 +1,102 @@
+{
+  "paquete": "actaira/art12",
+  "version": "1.0.0",
+  "autor": "Actaira",
+  "licencia": "Apache-2.0",
+  "obligacion": "AIA-012",
+  "nota_de_autoria": {
+    "es": "Cada regla y cada remediación de este fichero las escribió una persona. Un modelo puede proponer el borrador de una regla fuera de línea; nunca redacta reglas ni remediaciones en ejecución. Segunda negativa.",
+    "en": "Every rule and every remediation in this file was written by a person. A model may draft a candidate rule offline; it never writes rules or remediations at runtime. Second negative."
+  },
+  "reglas": [
+    {
+      "id": "ACT-12-SIN-REGISTRO",
+      "version": "1.0.0",
+      "tipo": "llamada_sin_pareja",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "una invocación del modelo sin registro en el mismo fichero",
+        "en": "a model invocation with no logging in the same file"
+      },
+      "titulo": {
+        "es": "Se invoca el modelo y no queda constancia",
+        "en": "The model is invoked and nothing is recorded"
+      },
+      "remediacion": {
+        "es": "En este fichero se llama al modelo y no hay ninguna escritura de registro. El artículo 12 exige que el sistema PERMITA técnicamente el registro automático durante todo el ciclo de vida. Emite un registro en el mismo camino de ejecución, con instante, referencia de entrada, referencia de salida, identificador y versión del modelo, y quién invocó.",
+        "en": "This file calls the model and writes no log. Article 12 requires the system to technically ALLOW automatic recording over its whole lifetime. Emit a record on the same execution path, with timestamp, input reference, output reference, model id and version, and who invoked."
+      },
+      "firmas": [
+        "chat.completions.create",
+        "messages.create",
+        "images.generate",
+        "generate_content",
+        "invoke_model",
+        "pipeline.__call__"
+      ],
+      "requiere_import": [
+        "openai",
+        "anthropic",
+        "google.generativeai",
+        "boto3",
+        "transformers",
+        "ollama"
+      ],
+      "pareja": [
+        "logger.info",
+        "logger.debug",
+        "log.info",
+        "logging.info",
+        "structlog.get_logger",
+        "span.set_attribute",
+        "tracer.start_as_current_span",
+        "registrar",
+        "audit.write"
+      ]
+    },
+    {
+      "id": "ACT-12-VERSION",
+      "version": "1.0.0",
+      "tipo": "contenido",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "que el registro lleve la versión del modelo",
+        "en": "that the log carries the model version"
+      },
+      "titulo": {
+        "es": "El registro no ata la salida a una versión",
+        "en": "The log does not bind the output to a version"
+      },
+      "remediacion": {
+        "es": "Un registro que no dice QUE versión produjo la recomendación no sirve para el análisis posterior del artículo 72: cuando cambies de modelo no podrás separar lo que fallo antes de lo que falla ahora.",
+        "en": "A log that does not say WHICH version produced the recommendation is useless for the Article 72 post-market analysis: when you change model you will not be able to separate what failed before from what fails now."
+      },
+      "patrones": [
+        "(?i)(model_version|version_modelo|modelo_version|\\\"model\\\"\\s*:|model_id)"
+      ]
+    },
+    {
+      "id": "ACT-12-RETENCION",
+      "version": "1.0.0",
+      "tipo": "aportado",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "el período de conservación de los registros",
+        "en": "the retention period of the logs"
+      },
+      "titulo": {
+        "es": "Período de conservación sin declarar",
+        "en": "Retention period undeclared"
+      },
+      "remediacion": {
+        "es": "El artículo 19 fija un mínimo de seis meses salvo que otra norma diga más. El período es una decisión de la organización con implicaciones de protección de datos, así que se declara, no se deduce.",
+        "en": "Article 19 sets a six-month minimum unless other law requires more. The period is an organisational decision with data-protection implications, so it is declared, not inferred."
+      },
+      "pregunta": {
+        "es": "¿Cuánto tiempo conserváis los registros automáticos, dónde y quién puede leerlos?",
+        "en": "How long do you keep the automatic logs, where, and who can read them?"
+      },
+      "formato": "texto"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "sistema": "linear",
+  "nota": "Linear habla GraphQL, que es una peticion POST con un cuerpo JSON y una respuesta JSON: exactamente lo que este perfil describe. El identificador del equipo va en el destino.",
+  "credencial": {
+    "variable": "ACTAIRA_LINEAR_TOKEN",
+    "cabeceras": {"Authorization": "{credencial}"}
+  },
+  "abrir": {
+    "metodo": "POST",
+    "url": "https://api.linear.app/graphql",
+    "cuerpo": {
+      "query": "mutation($t:String!,$d:String!,$e:String!){issueCreate(input:{title:$t,description:$d,teamId:$e}){issue{identifier url state{name}}}}",
+      "variables": {"t": "{titulo}", "d": "{cuerpo}", "e": "{destino}"}
+    },
+    "ruta_referencia": "data.issueCreate.issue.identifier",
+    "ruta_url": "data.issueCreate.issue.url",
+    "ruta_estado": "data.issueCreate.issue.state.name"
+  },
+  "consultar": {
+    "metodo": "POST",
+    "url": "https://api.linear.app/graphql",
+    "cuerpo": {
+      "query": "query($i:String!){issue(id:$i){identifier url updatedAt state{type} assignee{name}}}",
+      "variables": {"i": "{referencia}"}
+    },
+    "ruta_estado": "data.issue.state.type",
+    "ruta_actor": "data.issue.assignee.name",
+    "ruta_cuando": "data.issue.updatedAt",
+    "ruta_url": "data.issue.url"
+  },
+  "limites": [
+    {"que": {"es": "se lee el TIPO de estado y no el nombre de la columna: un equipo que renombra «Done» a «Enviado» sigue funcionando, pero una columna propia a medio camino se lee por su tipo",
+             "en": "the state TYPE is read, not the column name: a team renaming «Done» keeps working, but a custom column is read by its type"},
+     "por_que": "fuera_del_alcance_de_la_regla"}
+  ]
+}

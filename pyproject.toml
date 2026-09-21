@@ -1,0 +1,88 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "motor/src/actaira_motor/__init__.py"
+
+[project]
+name = "actaira-motor"
+# La version vive en el paquete y aqui se lee de ahi. Habia dos numeros --
+# 0.9.0 aqui y 0.1.0 en el modulo -- y la plantilla de integracion continua
+# clavaba el del modulo, asi que un cliente que la copiara habria instalado una
+# version que este fichero decia no ser la suya. Regla 10 aplicada al empaquetado.
+dynamic = ["version"]
+description = "El Reglamento (UE) 2024/1689 y la ISO/IEC 42001 comprobados leyendo tu repositorio, con procedencia por afirmación."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+authors = [{ name = "Marcos Mata García" }]
+keywords = ["ai-act", "iso-42001", "compliance", "sarif", "governance"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Legal Industry",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Software Development :: Quality Assurance",
+  "Natural Language :: Spanish",
+  "Natural Language :: English",
+]
+dependencies = [
+  "cryptography>=42",     # Ed25519 para el sello; sin red al verificar
+]
+
+[project.optional-dependencies]
+# El marcado de imagenes del articulo 50 necesita Pillow. Se deja fuera del
+# nucleo a proposito: la mayoria de los clientes no generan imagenes, y una
+# dependencia binaria que no se usa es una superficie de ataque que no se usa.
+marcado = ["pillow>=10"]
+
+# Lo que hace falta para CORRER LA SUITE, y por eso existe.
+#
+# Un criterio de aceptacion de este producto es que todas sus pruebas salgan
+# verdes desde una instalacion limpia. Eso no se podia cumplir: no habia
+# ninguna forma declarada de instalar `pytest`, `jsonschema` ni `pillow`, asi
+# que quien clonaba el arbol y corria la suite recogia MENOS pruebas de las que
+# hay -- las que dependen de `jsonschema` se saltan solas -- y se llevaba un
+# verde que no cubria lo que creia. Una suite que mide menos segun lo que
+# tengas instalado es una suite que miente por omision.
+#
+#   pip install -e ".[dev]"
+#
+# `pillow` esta tambien aqui, y no solo en `marcado`, porque `consola/marca/
+# incrustar.py` lo necesita para regenerar los logos. Construir las paginas NO
+# lo necesita: ese es justo el punto del artefacto precalculado.
+dev = [
+  "pytest>=8",
+  "jsonschema>=4",
+  "pillow>=10",
+  # `test_no_falta_ninguna_dependencia_de_desarrollo` exige `yaml` para leer la
+  # plantilla de integracion continua como estructura y no como texto, y su
+  # mensaje de fallo manda instalar precisamente `.[dev]` para conseguirlo. No
+  # estaba aqui: la prueba salia verde solo si el interprete traia PyYAML por
+  # otra via, que es el mismo defecto que este bloque documenta mas arriba.
+  "pyyaml>=6",
+]
+
+[project.urls]
+Homepage = "https://actaira.com"
+Source = "https://github.com/marcosmata/actaira-sys"
+
+[project.scripts]
+actaira = "actaira_motor.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["motor/src/actaira_motor"]
+
+# El catalogo vive en la raiz del repositorio, que es donde lo revisa un
+# jurista, y se copia DENTRO del paquete al construir la rueda. La alternativa
+# -- duplicarlo bajo src/ -- daria dos copias del contenido normativo, que es
+# la regla 10 aplicada a ficheros: dos copias no se suman, se anulan.
+[tool.hatch.build.targets.wheel.force-include]
+"catalogo" = "actaira_motor/_catalogo"
+
+[tool.hatch.build.targets.sdist]
+include = ["motor", "catalogo", "consola", "docs", "integraciones", "ejemplos",
+           "Makefile", "README.md", "LICENSE", "NOTICE"]

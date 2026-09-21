@@ -1,0 +1,135 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://actaira.com/contrato/capas.json",
+ "title": "Las cinco capas: ejecucion, observacion, suficiencia y decision",
+ "por_que_existe": {
+  "es": "Hasta la fase 14 las cuatro vivian dentro de un solo enumerado de cinco valores, y ese enumerado contenia un hecho de ejecucion (ERROR), uno de aplicabilidad (NO_APLICA), dos observaciones y un juicio de suficiencia (INDETERMINADO). Cualquier codigo al otro lado de la frontera podia tratarlos como grados de lo mismo. Estos esquemas son la separacion escrita, para que la plataforma en Go no la pueda deshacer sin que el contrato falle.",
+  "en": "Until phase 14 all four lived inside a single five-valued enum, and that enum held an execution fact (ERROR), an applicability fact (NO_APLICA), two observations and a sufficiency judgement (INDETERMINADO). Any code across the boundary could treat them as degrees of the same thing. These schemas are the separation written down, so the Go platform cannot undo it without the contract failing."
+ },
+ "la_frontera_que_sostienen": {
+  "es": "Un control puede decir que en tres ficheros no aparece ningun marcado. Solo una politica de suficiencia, citada por su identificador y su version, puede decir que para el articulo 50 eso no alcanza. Y ninguna de las dos puede decir que una organizacion incumple: eso lo firma una persona, en la capa 5, y aqui solo se guarda quien lo firmo y sobre que estado del expediente.",
+  "en": "A control can say that no marking appears in three files. Only a sufficiency policy, cited by id and version, can say that for Article 50 this is not enough. And neither can say that an organisation is non-compliant: a person signs that, in layer 5, and all that is kept here is who signed it and over which state of the file."
+ },
+ "$defs": {
+  "bilingue": {
+   "type": "object",
+   "properties": {"es": {"type": "string"}, "en": {"type": "string"}},
+   "required": ["es", "en"],
+   "description": "Los dos idiomas o ninguno. Un expediente pedido en ingles no puede traer una frase en castellano dentro del campo `en`."
+  },
+  "ejecucion": {
+   "type": "object",
+   "properties": {
+    "esquema": {"const": "actaira/ejecucion/v1"},
+    "id": {"type": "string"},
+    "analizador": {"type": "string"},
+    "analizador_version": {"type": "string"},
+    "paquete": {"type": "string"},
+    "paquete_version": {"type": "string"},
+    "sujeto": {
+     "type": "object",
+     "properties": {"tipo": {"type": "string"}, "nombre": {"type": "string"},
+                    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}},
+     "required": ["tipo", "nombre", "digest"],
+     "description": "A la evidencia la supera el DIGEST sobre el que se tomo, nunca el nombre de su sujeto."
+    },
+    "empezo": {"type": "string"},
+    "termino": {"type": "string"},
+    "estado": {"enum": ["completada", "fallida", "no_aplicable"]},
+    "motivo": {"oneOf": [{"$ref": "#/$defs/bilingue"}, {"type": "null"}]},
+    "leidos": {"type": "array", "items": {"type": "string"}},
+    "ilegibles": {"type": "array", "items": {"type": "array", "items": {"type": "string"},
+                                             "minItems": 2, "maxItems": 2}}
+   },
+   "required": ["esquema", "id", "analizador", "analizador_version", "paquete",
+                "paquete_version", "sujeto", "empezo", "termino", "estado"],
+   "description": "Que corrio y sobre que. `fallida` NO es lo mismo que `completada` sin hallazgos: la primera es la AUSENCIA de observacion y la segunda es una observacion."
+  },
+  "observacion": {
+   "type": "object",
+   "properties": {
+    "esquema": {"const": "actaira/observacion/v1"},
+    "id": {"type": "string"},
+    "ejecucion_id": {"type": "string"},
+    "control_id": {"type": "string"},
+    "hallazgos": {"type": "array"},
+    "senales": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {"regla_id": {"type": "string"}, "regla_version": {"type": "string"},
+                     "paquete": {"type": "string"},
+                     "que_se_buscaba": {"$ref": "#/$defs/bilingue"},
+                     "localizacion": {"type": "string"}},
+      "required": ["regla_id", "regla_version", "paquete", "que_se_buscaba", "localizacion"]},
+     "description": "Lo que SI se encontro, como dato y no como prosa. El gemelo del hallazgo: un control que solo registra ausencias produce el mismo informe vacio para un repositorio impecable y para uno que no se miro."
+    },
+    "limites": {
+     "type": "array", "minItems": 1,
+     "items": {
+      "type": "object",
+      "properties": {"que": {"$ref": "#/$defs/bilingue"},
+                     "por_que": {"enum": ["fuera_del_alcance_de_la_regla", "no_legible",
+                                          "falta_aporte", "otro_instrumento"]}},
+      "required": ["que", "por_que"]},
+     "description": "Una observacion sin limites afirma haberlo mirado todo. `minItems: 1` es esa afirmacion prohibida en el contrato."
+    }
+   },
+   "required": ["esquema", "id", "ejecucion_id", "control_id", "limites"],
+   "no_tiene": {
+    "es": "No hay campo `resultado` ni `estado`, y la ausencia es el contrato. Una observacion son hechos: si aqui cupiera un veredicto, volveria a caber el falso «cumple».",
+    "en": "There is no `resultado` or `estado` field, and that absence is the contract. An observation is facts: if a verdict fitted here, the false 'compliant' would fit again."
+   }
+  },
+  "suficiencia": {
+   "type": "object",
+   "properties": {
+    "esquema": {"const": "actaira/suficiencia/v1"},
+    "id": {"type": "string"},
+    "requisito_id": {"type": "string"},
+    "estado": {"enum": ["suficiente", "insuficiente", "indeterminada", "no_exigible"]},
+    "politica": {"type": "string"},
+    "politica_version": {"type": "string"},
+    "se_apoya_en": {"type": "array", "items": {"type": "string"}},
+    "falta": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {"que": {"$ref": "#/$defs/bilingue"},
+                     "que_hacer": {"$ref": "#/$defs/bilingue"},
+                     "quien": {"type": "string"}},
+      "required": ["que", "que_hacer", "quien"]},
+     "description": "Una falta sin `que_hacer` es una queja, y una lista de quejas es lo que hace que un informe acabe en un cajon."
+    },
+    "motivo": {"oneOf": [{"$ref": "#/$defs/bilingue"}, {"type": "null"}]}
+   },
+   "required": ["esquema", "id", "requisito_id", "estado", "politica", "politica_version"],
+   "description": "`suficiente` NO es `cumple`. Dice que la evidencia que el requisito pide esta, esta fresca y es valida: una afirmacion sobre el expediente. Un expediente completo de una practica mal hecha sigue siendo un expediente completo."
+  },
+  "decision": {
+   "type": "object",
+   "properties": {
+    "esquema": {"const": "actaira/decision/v1"},
+    "id": {"type": "string"},
+    "sobre": {"type": "string",
+              "description": "Digest del conjunto de suficiencias sobre el que se decidio. Si manana cambia una, el digest cambia y la decision queda visiblemente atada a un estado que ya no es el actual. Una decision atada a una FECHA no tiene esa propiedad."},
+    "requisitos": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "quien": {"type": "string", "minLength": 1},
+    "cargo": {"type": "string", "minLength": 1},
+    "cuando": {"type": "string"},
+    "conclusion": {"type": "string", "minLength": 1,
+                   "description": "Las palabras de quien firma, no las de Actaira."},
+    "firma": {"type": ["string", "null"]},
+    "clave_publica": {"type": ["string", "null"]}
+   },
+   "required": ["esquema", "id", "sobre", "requisitos", "quien", "cargo", "cuando", "conclusion"],
+   "description": "Actaira REGISTRA conclusiones juridicas y no las emite. `quien`, `cargo` y `conclusion` son obligatorios y no vacios en el contrato porque lo son tambien en el constructor: un producto que puede emitir una conclusion juridica por su cuenta acabara emitiendola."
+  }
+ },
+ "oneOf": [
+  {"$ref": "#/$defs/ejecucion"},
+  {"$ref": "#/$defs/observacion"},
+  {"$ref": "#/$defs/suficiencia"},
+  {"$ref": "#/$defs/decision"}
+ ]
+}

@@ -1,0 +1,526 @@
+{
+  "$schema": "actaira/catalogo/formulario/v1",
+  "paquete": "aia-cadena-derechos-modelos",
+  "version": "1.0.0",
+  "autor": "Actaira",
+  "titulo": {
+    "es": "Cadena de valor, derechos de las personas y modelos de uso general",
+    "en": "Value chain, people's rights and general-purpose models"
+  },
+  "destinatario_principal": "responsable",
+  "por_que_este_paquete": {
+    "es": "Son los artículos que atan a un operador y que el catálogo no preguntaba: los de la cadena de valor (importador, distribuidor, representante autorizado, conservación y medidas correctoras), los derechos de las personas afectadas, las pruebas en condiciones reales y lo que la Comisión puede exigirle al proveedor de un modelo. Sin estas preguntas, el plan los listaba y el formulario no los pedía, así que nadie los contestaba nunca y nadie se enteraba.",
+    "en": "These are the articles that bind an operator and that the catalogue did not ask about: the value chain ones (importer, distributor, authorised representative, documentation keeping and corrective actions), the rights of affected persons, real world testing, and what the Commission may require from a model provider. Without these questions the plan listed them and the form did not ask for them, so nobody ever answered them and nobody noticed."
+  },
+  "preguntas": [
+    {
+      "id": "F-CAD-1",
+      "sirve_a": [
+        "AIA-008",
+        "A.6.2.2"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Qué versión del estado de la técnica y qué normas armonizadas ha tomado como referencia para cumplir los requisitos de los artículos 9 a 15?",
+        "en": "Which state of the art and which harmonised standards have you taken as a reference to meet the Articles 9 to 15 requirements?"
+      },
+      "ayuda": {
+        "es": "El artículo 8 no añade requisitos nuevos: dice que los de la sección se cumplen teniendo en cuenta el estado de la técnica y la finalidad prevista del sistema. En la práctica eso significa nombrar contra qué se comparó. Una respuesta que no nombre ninguna referencia deja los artículos 9 a 15 sin criterio, y entonces «cumplido» quiere decir lo que cada uno quiera.",
+        "en": "Article 8 adds no new requirements: it says the section's requirements are met taking into account the state of the art and the system's intended purpose. In practice that means naming what you compared against. An answer naming no reference leaves Articles 9 to 15 without a yardstick, and then 'met' means whatever each person wants."
+      },
+      "formato": "texto_largo",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_caracteres": 120
+      }
+    },
+    {
+      "id": "F-CAD-2",
+      "sirve_a": [
+        "AIA-018",
+        "A.6.2.7",
+        "A.4.2"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Dónde se conserva la documentación técnica y la declaración de conformidad, y durante cuántos años?",
+        "en": "Where are the technical documentation and the declaration of conformity kept, and for how many years?"
+      },
+      "ayuda": {
+        "es": "El artículo 18 pide diez años a disposición de las autoridades nacionales, contados desde la introducción en el mercado o la puesta en servicio. Diez años es más de lo que dura la mayoría de las herramientas en las que se guarda: si la respuesta es «en el wiki del equipo», conviene decirlo ahora y no dentro de siete años.",
+        "en": "Article 18 asks for ten years at the disposal of national authorities, counted from placing on the market or putting into service. Ten years is longer than most of the tools it gets stored in last: if the answer is 'in the team wiki', it is better said now than in seven years' time."
+      },
+      "formato": "texto_largo",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_caracteres": 80
+      }
+    },
+    {
+      "id": "F-CAD-3",
+      "sirve_a": [
+        "AIA-020",
+        "A.8.4",
+        "A.10.2"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Si detecta que un sistema ya en el mercado no es conforme, ¿qué hace, en qué orden, y a quién avisa?",
+        "en": "If you find that a system already on the market is not conforming, what do you do, in what order, and whom do you notify?"
+      },
+      "ayuda": {
+        "es": "El artículo 20 obliga a adoptar de inmediato las medidas correctoras necesarias -poner en conformidad, retirar, desactivar o recuperar- y a informar a los distribuidores y, cuando proceda, a los responsables del despliegue, al representante autorizado y a los importadores. Además, si el sistema presenta un riesgo y el proveedor lo sabe, hay que informar a las autoridades. Lo que aquí importa no es que exista un procedimiento bonito, sino que la secuencia esté escrita y nombre destinatarios concretos.",
+        "en": "Article 20 requires immediately taking the necessary corrective actions - bringing into conformity, withdrawing, disabling or recalling - and informing distributors and, where applicable, deployers, the authorised representative and importers. In addition, if the system presents a risk and the provider knows it, authorities must be informed. What matters here is not that a tidy procedure exists, but that the sequence is written down and names actual recipients."
+      },
+      "formato": "texto_largo",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_caracteres": 150
+      }
+    },
+    {
+      "id": "F-CAD-4",
+      "sirve_a": [
+        "AIA-021",
+        "A.10.2",
+        "A.8.3"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Quién responde, con nombre y cargo, cuándo una autoridad competente pide la documentación del sistema, y en qué lenguas puede entregarla?",
+        "en": "Who responds, by name and role, when a competent authority requests the system's documentation, and in which languages can you provide it?"
+      },
+      "ayuda": {
+        "es": "El artículo 21 obliga a facilitar a la autoridad, cuando lo pida y de forma motivada, toda la información y documentación necesarias para demostrar la conformidad, en una lengua que la autoridad entienda fácilmente. Sin una persona designada, la petición llega a un buzón genérico y el plazo corre igual.",
+        "en": "Article 21 requires providing the authority, on reasoned request, all information and documentation necessary to demonstrate conformity, in a language the authority easily understands. Without a designated person the request lands in a generic inbox and the clock runs all the same."
+      },
+      "formato": "persona",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "F-CAD-5",
+      "sirve_a": [
+        "AIA-022",
+        "A.10.2",
+        "A.10.3"
+      ],
+      "destinatario": "direccion",
+      "texto": {
+        "es": "¿Si está establecido fuera de la Unión, ¿quién es su representante autorizado en la Unión y dónde está su mandato escrito?",
+        "en": "If you are established outside the Union, who is your authorised representative in the Union and where is their written mandate?"
+      },
+      "ayuda": {
+        "es": "El artículo 22 obliga a los proveedores de terceros países a designar, por mandato escrito, un representante autorizado en la Unión ANTES de comercializar. El mandato tiene que facultarle para, entre otras cosas, conservar la documentación diez años y cooperar con las autoridades. Si está usted establecido en la Unión, conteste que no procede y se cierra.",
+        "en": "Article 22 requires third-country providers to appoint, by written mandate, an authorised representative in the Union BEFORE placing the system on the market. The mandate must empower them, among other things, to keep the documentation for ten years and cooperate with authorities. If you are established in the Union, answer not applicable and it closes."
+      },
+      "formato": "texto_corto",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_caracteres": 20
+      }
+    },
+    {
+      "id": "F-CAD-6",
+      "sirve_a": [
+        "AIA-023",
+        "A.10.3"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Cómo importador, ¿qué comprueba antes de introducir un sistema en el mercado, y dónde guarda constancia de esa comprobación?",
+        "en": "As an importer, what do you verify before placing a system on the market, and where do you keep a record of that check?"
+      },
+      "ayuda": {
+        "es": "El artículo 23 obliga al importador a verificar que el proveedor ha hecho la evaluación de la conformidad, que existe la documentación técnica, que el sistema lleva el marcado CE y va acompañado de la declaración UE de conformidad y de las instrucciones de uso, y que hay representante autorizado si procede. Verificar no es confiar: la constancia de esa verificación es lo que después le protege a usted.",
+        "en": "Article 23 requires the importer to verify that the provider has carried out the conformity assessment, that the technical documentation exists, that the system bears the CE marking and comes with the EU declaration of conformity and the instructions for use, and that there is an authorised representative where applicable. Verifying is not trusting: the record of that verification is what later protects you."
+      },
+      "formato": "texto_largo",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_caracteres": 120
+      }
+    },
+    {
+      "id": "F-CAD-7",
+      "sirve_a": [
+        "AIA-024",
+        "A.10.3",
+        "A.10.4"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Cómo distribuidor, ¿cómo comprueba el marcado CE y las instrucciones antes de comercializar, y qué hace si sospecha que el sistema no es conforme?",
+        "en": "As a distributor, how do you check the CE marking and the instructions before making the system available, and what do you do if you suspect it does not conform?"
+      },
+      "ayuda": {
+        "es": "El artículo 24 pide dos cosas distintas: una comprobación previa (marcado, declaración, instrucciones, obligaciones del proveedor y del importador cumplidas) y una conducta posterior (no comercializar mientras sospeche, e informar al proveedor o al importador). La segunda es la que suele faltar por escrito.",
+        "en": "Article 24 asks two different things: a prior check (marking, declaration, instructions, provider's and importer's obligations met) and subsequent conduct (not making it available while you suspect, and informing the provider or importer). The second is the one usually missing in writing."
+      },
+      "formato": "texto_largo",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_caracteres": 120
+      }
+    },
+    {
+      "id": "F-CNF-A",
+      "sirve_a": [
+        "AIA-046",
+        "A.6.2.4"
+      ],
+      "destinatario": "direccion",
+      "texto": {
+        "es": "¿Ha solicitado alguna autorización excepcional para poner en servicio un sistema sin evaluación previa de la conformidad?",
+        "en": "Have you applied for any exceptional authorisation to put a system into service without prior conformity assessment?"
+      },
+      "ayuda": {
+        "es": "El artículo 46 permite a una autoridad de vigilancia del mercado autorizar, por razones excepcionales de seguridad pública o de protección de la vida y la salud, la introducción de un sistema concreto por un período limitado. Es una excepción estrecha y temporal: si la ha pedido, el expediente tiene que llevar la autorización y su plazo.",
+        "en": "Article 46 allows a market surveillance authority to authorise, for exceptional reasons of public security or protection of life and health, the placing of a specific system for a limited period. It is a narrow and temporary exception: if you have requested it, the file must carry the authorisation and its time limit."
+      },
+      "formato": "si_no",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "F-CNF-B",
+      "sirve_a": [
+        "AIA-048",
+        "A.8.2"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Dónde se coloca el marcado CE del sistema, y con qué número de organismo notificado cuando procede?",
+        "en": "Where is the system's CE marking affixed, and with which notified body number where applicable?"
+      },
+      "ayuda": {
+        "es": "El artículo 48 pide que el marcado sea visible, legible e indeleble; cuando no sea posible por la naturaleza del sistema, va en el embalaje o en la documentación que lo acompaña. En un sistema que se entrega como software, «dónde» suele ser la pantalla de información o el fichero de documentación que acompaña a la entrega, y conviene decidirlo antes de la auditoría.",
+        "en": "Article 48 requires the marking to be visible, legible and indelible; where that is not possible given the nature of the system, it goes on the packaging or the accompanying documentation. In a system delivered as software, 'where' is usually the about screen or the documentation file shipped with the release, and it is better decided before the audit."
+      },
+      "formato": "texto_corto",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_caracteres": 20
+      }
+    },
+    {
+      "id": "F-MOD-A",
+      "sirve_a": [
+        "AIA-052",
+        "A.8.3",
+        "A.10.2"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Qué cantidad acumulada de cómputo se usó para entrenar el modelo, y lo ha notificado a la Comisión?",
+        "en": "What cumulative amount of compute was used to train the model, and have you notified the Commission?"
+      },
+      "ayuda": {
+        "es": "El artículo 51 presume riesgo sistémico a partir de un umbral de cómputo acumulado de entrenamiento, y el artículo 52 obliga a notificarlo a la Comisión sin demora y en un plazo de dos semanas desde que se cumple el requisito o desde que se sabe que se cumplirá. Se puede alegar que, pese a superar el umbral, el modelo no presenta riesgos sistémicos; alegarlo es un escrito, no un silencio.",
+        "en": "Article 51 presumes systemic risk above a cumulative training compute threshold, and Article 52 requires notifying the Commission without delay and within two weeks of the requirement being met or of knowing it will be. You may argue that, despite exceeding the threshold, the model does not present systemic risks; arguing it is a written submission, not silence."
+      },
+      "formato": "texto_corto",
+      "vigencia_dias": 180,
+      "exige": {
+        "minimo_caracteres": 10
+      }
+    },
+    {
+      "id": "F-MOD-B",
+      "sirve_a": [
+        "AIA-054",
+        "A.10.2",
+        "A.10.3"
+      ],
+      "destinatario": "direccion",
+      "texto": {
+        "es": "¿Si el proveedor del modelo está fuera de la Unión, ¿quién es su representante autorizado y dónde está el mandato?",
+        "en": "If the model provider is established outside the Union, who is the authorised representative and where is the mandate?"
+      },
+      "ayuda": {
+        "es": "El artículo 54 es el equivalente del artículo 22 para los modelos de uso general, y tiene una consecuencia que se pasa por alto: el representante puede poner fin al mandato si considera que el proveedor actúa en contra del Reglamento, y entonces debe informar a la Oficina de IA. El mandato no es un trámite, es una salida de emergencia.",
+        "en": "Article 54 is the Article 22 equivalent for general-purpose AI models, with a consequence that gets overlooked: the representative may terminate the mandate if it considers the provider acts contrary to the Regulation, and must then inform the AI Office. The mandate is not paperwork, it is an emergency exit."
+      },
+      "formato": "texto_corto",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_caracteres": 20
+      }
+    },
+    {
+      "id": "F-PRU-1",
+      "sirve_a": [
+        "AIA-059",
+        "A.7.3",
+        "A.7.5"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Si trata datos personales recogidos para otra finalidad dentro de un espacio controlado de pruebas, ¿cuál es el interés público que lo justifica y de dónde vienen esos datos?",
+        "en": "If you further process personal data collected for another purpose inside a regulatory sandbox, what is the public interest justifying it and where does that data come from?"
+      },
+      "ayuda": {
+        "es": "El artículo 59 abre una puerta estrecha y la rodea de condiciones: interés público sustancial en un ámbito tasado, datos necesarios, supervisión, aislamiento, no transmisión a terceros, no decisiones que afecten a los interesados, borrado al terminar y registro del tratamiento. Contestarla mal no es un defecto de forma: es tratar datos personales sin base.",
+        "en": "Article 59 opens a narrow door and surrounds it with conditions: substantial public interest in a listed area, necessary data, supervision, isolation, no transmission to third parties, no decisions affecting data subjects, deletion on completion and a record of the processing. Answering it badly is not a formal defect: it is processing personal data without a basis."
+      },
+      "formato": "texto_largo",
+      "vigencia_dias": 180,
+      "exige": {
+        "minimo_caracteres": 200
+      }
+    },
+    {
+      "id": "F-PRU-2",
+      "sirve_a": [
+        "AIA-060",
+        "A.6.2.4",
+        "A.6.2.5"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Va a probar el sistema en condiciones reales fuera de un espacio controlado, y dónde está el plan de pruebas registrado?",
+        "en": "Will you test the system in real world conditions outside a sandbox, and where is the registered testing plan?"
+      },
+      "ayuda": {
+        "es": "El artículo 60 permite probar en condiciones reales antes de la comercialización, con un plan registrado ante la autoridad, un máximo de seis meses prorrogable otros seis, supervisión por personas cualificadas, capacidad de revertir o descartar las predicciones y conservación de la documentación durante seis meses. El plan registrado es la pieza que hace legal todo lo demás.",
+        "en": "Article 60 allows testing in real world conditions before placing on the market, with a plan registered with the authority, a maximum of six months extendable by six more, supervision by qualified persons, the ability to reverse or disregard predictions, and documentation kept for six months. The registered plan is the piece that makes everything else lawful."
+      },
+      "formato": "texto_largo",
+      "vigencia_dias": 180,
+      "exige": {
+        "minimo_caracteres": 120
+      }
+    },
+    {
+      "id": "F-PRU-3",
+      "sirve_a": [
+        "AIA-061",
+        "A.8.5"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Cómo obtiene y dónde conserva el consentimiento informado de quiénes participan en pruebas en condiciones reales?",
+        "en": "How do you obtain and where do you keep the informed consent of those taking part in real world testing?"
+      },
+      "ayuda": {
+        "es": "El artículo 61 pide consentimiento libremente dado, previo y documentado, con información concisa sobre la naturaleza y los objetivos de la prueba, los inconvenientes posibles, las condiciones de participación, el derecho a retirarse sin perjuicio y los datos de contacto. El participante se queda con una copia. Un consentimiento que no se puede enseñar no existe.",
+        "en": "Article 61 requires freely given, prior and documented consent, with concise information on the nature and objectives of the test, the possible inconveniences, the conditions of participation, the right to withdraw without detriment and contact details. The participant keeps a copy. A consent you cannot show does not exist."
+      },
+      "formato": "texto_largo",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_caracteres": 100
+      }
+    },
+    {
+      "id": "F-PYM-1",
+      "sirve_a": [
+        "AIA-063",
+        "A.4.2"
+      ],
+      "destinatario": "direccion",
+      "texto": {
+        "es": "¿Es su organización una microempresa, y se acoge al cumplimiento simplificado del sistema de gestión de la calidad?",
+        "en": "Is your organisation a microenterprise, and are you relying on the simplified quality management system compliance?"
+      },
+      "ayuda": {
+        "es": "El artículo 63 permite a las microempresas cumplir de forma simplificada determinados elementos del sistema de gestión de la calidad del artículo 17. Simplificado no es exento: el resto del Reglamento se aplica igual, y acogerse a esto conviene que conste por escrito con la fecha en que se comprobó el tamaño.",
+        "en": "Article 63 allows microenterprises to comply in a simplified manner with certain elements of the Article 17 quality management system. Simplified is not exempt: the rest of the Regulation applies all the same, and relying on this is better recorded in writing with the date the size was checked."
+      },
+      "formato": "si_no",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "F-DER-1",
+      "sirve_a": [
+        "AIA-085",
+        "A.3.3",
+        "A.8.4"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Por dónde recibe una reclamación de una persona afectada por el sistema, y a quién se escala?",
+        "en": "Where do you receive a complaint from a person affected by the system, and to whom is it escalated?"
+      },
+      "ayuda": {
+        "es": "El artículo 85 da a cualquier persona el derecho de presentar una reclamación ante la autoridad de vigilancia del mercado. No obliga a la empresa a tener canal propio, pero la reclamación llega igual y llega antes si hay por dónde: el canal propio es lo que convierte una reclamación en un incidente que se puede resolver, en vez de en una notificación de la autoridad.",
+        "en": "Article 85 gives any person the right to lodge a complaint with the market surveillance authority. It does not oblige the company to have its own channel, but the complaint arrives all the same, and earlier if there is somewhere for it: your own channel is what turns a complaint into an incident you can resolve rather than a notification from the authority."
+      },
+      "formato": "texto_corto",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_caracteres": 20
+      }
+    },
+    {
+      "id": "F-DER-2",
+      "sirve_a": [
+        "AIA-086",
+        "A.8.2",
+        "A.8.5"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Cuándo una persona pida una explicación de una decisión individual tomada con el sistema, ¿qué le entrega y quién la redacta?",
+        "en": "When a person asks for an explanation of an individual decision taken with the system, what do you give them and who writes it?"
+      },
+      "ayuda": {
+        "es": "El artículo 86 da derecho a obtener del responsable del despliegue explicaciones claras y significativas sobre el papel del sistema en el procedimiento y sobre los principales elementos de la decisión adoptada, cuando la decisión se basa en la salida de un sistema de alto riesgo del Anexo III y produce efectos jurídicos o afecta significativamente a la salud, la seguridad o los derechos fundamentales. Una captura del resultado del modelo no es una explicación.",
+        "en": "Article 86 gives the right to obtain from the deployer clear and meaningful explanations of the system's role in the decision-making procedure and of the main elements of the decision taken, where the decision is based on the output of an Annex III high-risk system and produces legal effects or significantly affects health, safety or fundamental rights. A screenshot of the model output is not an explanation."
+      },
+      "formato": "texto_largo",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_caracteres": 150
+      }
+    },
+    {
+      "id": "F-DER-3",
+      "sirve_a": [
+        "AIA-087",
+        "A.3.3"
+      ],
+      "destinatario": "direccion",
+      "texto": {
+        "es": "¿Tiene canal interno de denuncias conforme a la Directiva (UE) 2019/1937, y quién lo gestiona?",
+        "en": "Do you have an internal reporting channel under Directive (EU) 2019/1937, and who manages it?"
+      },
+      "ayuda": {
+        "es": "El artículo 87 remite a la Directiva de protección de denunciantes para las infracciones de este Reglamento. Lo que se comprueba aquí no es el canal en sí -que ya viene exigido por otra norma-, sino que cubra también las infracciones del Reglamento de IA, que es lo que casi nunca está escrito.",
+        "en": "Article 87 refers to the whistleblower protection Directive for infringements of this Regulation. What is checked here is not the channel itself - already required by another instrument - but that it also covers AI Act infringements, which is what is almost never written down."
+      },
+      "formato": "texto_corto",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_caracteres": 20
+      }
+    },
+    {
+      "id": "F-MOD-C",
+      "sirve_a": [
+        "AIA-091",
+        "A.6.2.7",
+        "A.8.3"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Quién atiende una solicitud de documentación o información de la Comisión sobre el modelo, y en cuánto tiempo puede reunirla?",
+        "en": "Who handles a Commission request for documentation or information about the model, and how quickly can you assemble it?"
+      },
+      "ayuda": {
+        "es": "El artículo 91 faculta a la Comisión para pedir al proveedor del modelo la documentación de los artículos 53 y 55 y cualquier información adicional necesaria para evaluar el cumplimiento. La petición indica la base jurídica, el plazo y las sanciones por no responder. El plazo no se negocia el día que llega.",
+        "en": "Article 91 empowers the Commission to request from the model provider the Articles 53 and 55 documentation and any additional information needed to assess compliance. The request states the legal basis, the deadline and the penalties for not responding. The deadline is not negotiated on the day it arrives."
+      },
+      "formato": "persona",
+      "vigencia_dias": 365
+    },
+    {
+      "id": "F-MOD-D",
+      "sirve_a": [
+        "AIA-092",
+        "A.6.2.4"
+      ],
+      "destinatario": "tecnico",
+      "texto": {
+        "es": "¿Por qué vía técnica podría la Comisión acceder al modelo para evaluarlo, incluida la API y los parámetros de acceso?",
+        "en": "By which technical route could the Commission access the model in order to evaluate it, including the API and access parameters?"
+      },
+      "ayuda": {
+        "es": "El artículo 92 permite a la Comisión realizar evaluaciones del modelo, entre otras cosas para comprobar el cumplimiento o para investigar un riesgo sistémico, y puede exigir acceso a través de una API o de otros medios técnicos apropiados, incluido el código fuente. Tener la vía prevista y documentada evita improvisar un acceso privilegiado bajo presión, que es como se abren agujeros.",
+        "en": "Article 92 allows the Commission to conduct evaluations of the model, among other things to check compliance or investigate a systemic risk, and it may require access through an API or other appropriate technical means, including source code. Having the route planned and documented avoids improvising privileged access under pressure, which is how holes get opened."
+      },
+      "formato": "texto_largo",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_caracteres": 100
+      }
+    },
+    {
+      "id": "F-MOD-E",
+      "sirve_a": [
+        "AIA-093",
+        "A.8.4",
+        "A.10.2"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Si la Comisión exigiera restringir, retirar del mercado o recuperar el modelo, ¿cuál es la ruta y cuánto tarda?",
+        "en": "If the Commission required restricting, withdrawing or recalling the model, what is the route and how long does it take?"
+      },
+      "ayuda": {
+        "es": "El artículo 93 permite a la Comisión exigir medidas adecuadas, incluida la restricción de la comercialización, la retirada o la recuperación del modelo. La pregunta no es si obedecería: es si puede, y en cuánto tiempo. Un modelo servido por doce clientes a través de una API tiene una ruta de retirada muy distinta de uno que se distribuye por descarga.",
+        "en": "Article 93 allows the Commission to require appropriate measures, including restricting the making available, withdrawing or recalling the model. The question is not whether you would obey: it is whether you can, and how fast. A model served to twelve customers through an API has a very different withdrawal route from one distributed by download."
+      },
+      "formato": "texto_largo",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_caracteres": 100
+      }
+    },
+    {
+      "id": "F-COD-1",
+      "sirve_a": [
+        "AIA-095",
+        "A.2.2",
+        "A.2.3"
+      ],
+      "destinatario": "direccion",
+      "texto": {
+        "es": "¿Se ha adherido a algún código de conducta del artículo 95, y qué compromisos asumió exactamente?",
+        "en": "Have you adhered to any Article 95 code of conduct, and what exactly did you commit to?"
+      },
+      "ayuda": {
+        "es": "Los códigos de conducta son voluntarios y extienden a sistemas que NO son de alto riesgo requisitos pensados para los que sí lo son, más compromisos sobre sostenibilidad, accesibilidad, participación de las partes interesadas o diversidad de los equipos. Adherirse es gratis; incumplir lo que uno mismo firmó, no: pasa a ser una afirmación pública falsa sobre el propio producto.",
+        "en": "Codes of conduct are voluntary and extend to systems that are NOT high-risk requirements designed for those that are, plus commitments on sustainability, accessibility, stakeholder participation or team diversity. Adhering is free; failing what you signed yourself is not: it becomes a false public claim about your own product."
+      },
+      "formato": "texto_largo",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_caracteres": 80
+      }
+    },
+    {
+      "id": "F-SES-1",
+      "sirve_a": [
+        "AIA-004A",
+        "A.7.4",
+        "A.7.6",
+        "A.5.4"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Trata categorías especiales de datos personales para detectar y corregir sesgos, y qué hace con esos datos cuando termina?",
+        "en": "Do you process special categories of personal data to detect and correct bias, and what do you do with that data when you are done?"
+      },
+      "ayuda": {
+        "es": "El artículo 4 bis, que añadió el Reglamento (UE) 2026/1744, es una puerta: autoriza tratar datos como el origen étnico o los datos de salud cuando hacen falta de verdad para medir un sesgo. La puerta viene con cerrojos: estrictamente necesario, limitaciones técnicas a la reutilización, seudonimización o cifrado cuando baste, acceso restringido a quien lo necesite, borrado en cuanto se corrige el sesgo y justificación documentada. Sin el borrado y sin el acceso restringido, lo que había era una excusa para guardar datos sensibles.",
+        "en": "Article 4a, added by Regulation (EU) 2026/1744, is a door: it authorises processing data such as ethnic origin or health data where it is genuinely needed to measure bias. The door comes with locks: strictly necessary, technical limits on reuse, pseudonymisation or encryption where enough, access restricted to those who need it, deletion as soon as the bias is corrected, and documented justification. Without the deletion and the restricted access, what you had was an excuse to keep sensitive data."
+      },
+      "formato": "texto_largo",
+      "vigencia_dias": 180,
+      "exige": {
+        "minimo_caracteres": 200
+      }
+    },
+    {
+      "id": "F-PRU-4",
+      "sirve_a": [
+        "AIA-060A",
+        "A.6.2.4",
+        "A.6.2.5"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Si su sistema es componente de seguridad de un producto de la sección B del Anexo I, ¿dónde está el plan de pruebas en condiciones reales?",
+        "en": "If your system is a safety component of an Annex I Section B product, where is the real world testing plan?"
+      },
+      "ayuda": {
+        "es": "El artículo 60 bis, que añadió el Reglamento (UE) 2026/1744, extiende a esos productos el régimen del artículo 60. La fecha en la que empieza a atar es la del Anexo I: 2 de agosto de 2028, ocho meses después que la del Anexo III. Si no sabe por cuál de las dos vías es de alto riesgo, Actaira no le inventa la fecha: se la pregunta.",
+        "en": "Article 60a, added by Regulation (EU) 2026/1744, extends the Article 60 regime to those products. The date it starts to bind is the Annex I one: 2 August 2028, eight months after the Annex III one. If you do not know which of the two routes makes you high-risk, Actaira does not invent the date: it asks."
+      },
+      "formato": "texto_largo",
+      "vigencia_dias": 180,
+      "exige": {
+        "minimo_caracteres": 80
+      }
+    }
+  ]
+}

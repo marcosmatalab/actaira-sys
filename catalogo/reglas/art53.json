@@ -1,0 +1,92 @@
+{
+ "$schema": "actaira/catalogo/reglas/v1",
+ "paquete": "actaira/art53",
+ "version": "1.0.0",
+ "autor": "Actaira",
+ "licencia": "Apache-2.0",
+ "obligacion": "AIA-053",
+ "nota_de_autoria": {
+  "es": "Cada regla y cada remediación de este fichero las escribió una persona. Un modelo puede proponer el borrador de una regla fuera de línea; nunca redacta reglas ni remediaciones en ejecución. Segunda negativa.",
+  "en": "Every rule and every remediation in this file was written by a person. A model may draft a candidate rule offline; it never writes rules or remediations at runtime. Second negative."
+ },
+ "por_que_este_paquete_existe": {
+  "es": "Los modelos de uso general son el único sitio del Reglamento donde el sujeto NO es un sistema desplegado sino un artefacto que otros integran, y sus tres obligaciones documentales -ficha, política de derechos de autor y resumen de entrenamiento- son ficheros: existen o no existen, y eso se lee.",
+  "en": "General-purpose models are the only place in the Regulation where the subject is NOT a deployed system but an artefact others integrate, and its three documentary obligations - model card, copyright policy and training summary - are files: they exist or they do not, and that is readable."
+ },
+ "lo_que_este_paquete_no_puede_ver": {
+  "es": "Si la ficha contiene lo que el Anexo XI pide, si la política se aplica de verdad al recoger datos, y si el resumen es suficientemente detallado. Los tres son juicios sobre el contenido y se preguntan.",
+  "en": "Whether the card contains what Annex XI asks for, whether the policy is actually applied when collecting data, and whether the summary is sufficiently detailed. All three are judgements about content and are asked."
+ },
+ "reglas": [
+  {
+   "id": "ACT-53-FICHA",
+   "version": "1.0.0",
+   "tipo": "fichero",
+   "severidad": "alta",
+   "que_busca": {
+    "es": "una ficha del modelo con su entrenamiento y sus pruebas",
+    "en": "a model card with its training and testing"
+   },
+   "patrones": [
+    "(?i)model[_-]?card",
+    "(?i)MODELO\\.md$",
+    "(?i)docs/modelo"
+   ],
+   "titulo": {
+    "es": "No hay ficha del modelo",
+    "en": "There is no model card"
+   },
+   "remediacion": {
+    "es": "El artículo 53(1)(a) obliga al proveedor de un modelo de uso general a elaborar y mantener la documentación técnica del modelo, incluidos su entrenamiento y sus pruebas, y a tenerla a disposición de la Oficina de IA. El Anexo XI dice qué tiene que llevar dentro. Un fichero llamado `MODEL_CARD.md` no cumple el artículo por llamarse así, pero sin ningún fichero no hay nada que enseñar.",
+    "en": "Article 53(1)(a) requires the provider of a general-purpose AI model to draw up and keep the model's technical documentation, including its training and testing, and to make it available to the AI Office. Annex XI says what it must contain. A file called `MODEL_CARD.md` does not satisfy the article by being named that, but with no file at all there is nothing to show."
+   }
+  },
+  {
+   "id": "ACT-53-COPYRIGHT",
+   "version": "1.0.0",
+   "tipo": "fichero",
+   "severidad": "alta",
+   "que_busca": {
+    "es": "una política de derechos de autor que respete la reserva de derechos",
+    "en": "a copyright policy respecting the rights reservation"
+   },
+   "patrones": [
+    "(?i)copyright.*(polic|politica)",
+    "(?i)(polic|politica).*copyright",
+    "(?i)derechos[_-]?de[_-]?autor",
+    "(?i)tdm[_-]?polic"
+   ],
+   "titulo": {
+    "es": "No hay política de derechos de autor",
+    "en": "There is no copyright policy"
+   },
+   "remediacion": {
+    "es": "El artículo 53(1)(c) obliga a aplicar una política que respete el Derecho de la Unión en materia de derechos de autor, y en particular a detectar y respetar la reserva de derechos del artículo 4(3) de la Directiva (UE) 2019/790. En la práctica eso significa decir por escrito cómo se lee el `robots.txt`, las cabeceras de reserva o los ficheros de opt-out de cada fuente, y qué se hace cuando una fuente reserva sus derechos.",
+    "en": "Article 53(1)(c) requires a policy to comply with Union copyright law, and in particular to identify and respect the rights reservation under Article 4(3) of Directive (EU) 2019/790. In practice that means stating in writing how `robots.txt`, reservation headers or each source's opt-out files are read, and what is done when a source reserves its rights."
+   }
+  },
+  {
+   "id": "ACT-53-RESUMEN",
+   "version": "1.0.0",
+   "tipo": "fichero",
+   "severidad": "alta",
+   "que_busca": {
+    "es": "el resumen público de los contenidos usados para entrenar",
+    "en": "the public summary of the content used for training"
+   },
+   "patrones": [
+    "(?i)training[_-]?data[_-]?summary",
+    "(?i)resumen[_-]?(de[_-]?)?entrenamiento",
+    "(?i)datos[_-]?de[_-]?entrenamiento"
+   ],
+   "titulo": {
+    "es": "No se publica el resumen de los datos de entrenamiento",
+    "en": "The training data summary is not published"
+   },
+   "remediacion": {
+    "es": "El artículo 53(1)(d) obliga a elaborar y poner a disposición del público un resumen suficientemente detallado de los contenidos usados para entrenar el modelo, según la plantilla de la Oficina de IA. «Suficientemente detallado» excluye una frase genérica sobre datos públicos de internet: la finalidad de la norma es que un titular de derechos pueda saber si su obra está dentro.",
+    "en": "Article 53(1)(d) requires drawing up and making publicly available a sufficiently detailed summary of the content used to train the model, according to the AI Office template. 'Sufficiently detailed' rules out a generic sentence about public internet data: the point of the rule is that a rightholder can find out whether their work is in there."
+   }
+  }
+ ]
+}

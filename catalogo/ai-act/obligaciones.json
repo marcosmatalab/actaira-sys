@@ -1,0 +1,1701 @@
+{
+ "$schema": "../esquema/obligacion.schema.json",
+ "instrumento": {
+  "celex": "32024R1689",
+  "tipo": "reglamento",
+  "titulo": {
+   "es": "Reglamento (UE) 2024/1689 por el que se establecen normas armonizadas en materia de inteligencia artificial",
+   "en": "Regulation (EU) 2024/1689 laying down harmonised rules on artificial intelligence"
+  },
+  "url": "https://eur-lex.europa.eu/legal-content/ES/TXT/?uri=CELEX:32024R1689",
+  "version_catalogo": "2026-09-21",
+  "version_consolidada": "32024R1689+32026R1744",
+  "nota_de_version": {
+   "es": "`version_consolidada` es lo que este catálogo afirma reflejar: el acto base MÁS los actos modificativos listados abajo, y nada más. No dice que sea un texto consolidado oficial -- ese lo publica la Oficina de Publicaciones y puede ir por detrás --, dice hasta dónde se ha leído. Es el campo que faltaba cuando este fichero borró el Anexo XIV: la comprobación se había hecho contra el texto original y nada en el fichero permitía notarlo.",
+   "en": "`version_consolidada` is what this catalogue claims to reflect: the base act PLUS the amending acts listed below, and nothing else. It does not claim to be an official consolidated text -- that one is published by the Publications Office and may lag -- it says how far the reading went. It is the field that was missing when this file deleted Annex XIV: the check had been made against the original text and nothing in the file made that noticeable."
+  },
+  "modificado_por": [
+   {
+    "celex": "32026R1744",
+    "titulo": {
+     "es": "Reglamento (UE) 2026/1744, de 8 de julio de 2026, por el que se modifican los Reglamentos (UE) 2024/1689, (UE) 2018/1139 y (UE) 2023/1230 en lo relativo a la simplificación de la aplicación de las normas armonizadas en materia de inteligencia artificial (Ómnibus Digital sobre IA)",
+     "en": "Regulation (EU) 2026/1744 of 8 July 2026 amending Regulations (EU) 2024/1689, (EU) 2018/1139 and (EU) 2023/1230 as regards the simplification of the implementation of harmonised rules on artificial intelligence (Digital Omnibus on AI)"
+    },
+    "url": "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+    "publicado": "2026-07-24",
+    "en_vigor": "2026-07-27",
+    "recogido_en_este_catalogo": [
+     "articulo 4 bis: tratamiento de datos personales para detección y corrección de sesgos, extendido a proveedores y responsables del despliegue",
+     "articulo 5: dos prohibiciones nuevas (material íntimo realista no consentido de persona identificable, y material de abuso sexual infantil incluido el sintético)",
+     "articulo 6: aplazamiento con DOS fechas, 2027-12-02 por Anexo III y 2028-08-02 por Anexo I Sección A",
+     "articulo 60 bis: pruebas en condiciones reales",
+     "Anexo VIII: registro simplificado",
+     "Anexo XIV: nuevo, códigos AIP/AIB/AIH del procedimiento de notificación del artículo 30"
+    ],
+    "no_recogido_todavia": [
+     "Anexo I: traslado de la Sección A a la Sección B de lo relativo al Reglamento (UE) 2023/1230 de máquinas",
+     "las modificaciones a los Reglamentos (UE) 2018/1139 y (UE) 2023/1230, que están fuera del alcance de este catálogo"
+    ],
+    "nota": {
+     "es": "`no_recogido_todavia` no es una nota al pie: es la lista de lo que este catálogo NO cubre del acto modificativo, escrita al lado de lo que sí. Sin ella, un catálogo que recoge seis de ocho cambios se lee igual que uno que los recoge todos.",
+     "en": "`no_recogido_todavia` is not a footnote: it is the list of what this catalogue does NOT cover from the amending act, written next to what it does. Without it, a catalogue covering six of eight changes reads exactly like one covering all of them."
+    }
+   }
+  ],
+  "nota_calendario": {
+   "es": "Las fechas de alto riesgo recogen el aplazamiento del Reglamento (UE) 2026/1744, de 8 de julio de 2026, publicado el 24 de julio. Este campo decía «el paquete ómnibus digital de mayo de 2026», que era una referencia sin CELEX y con el mes equivocado: un dato normativo al que no se puede llegar desde lo que está escrito no se puede comprobar. Toda fecha de este fichero es la de APLICACIÓN, no la de entrada en vigor.",
+   "en": "High-risk dates reflect the deferral in Regulation (EU) 2026/1744 of 8 July 2026, published on 24 July. This field used to say «the May 2026 digital omnibus package», a reference with no CELEX and the wrong month: a normative fact you cannot reach from what is written cannot be checked. Every date in this file is an APPLICATION date, not an entry into force date."
+  }
+ },
+ "niveles": {
+  "maquina": {
+   "es": "Un control determinista lee bytes y decide. Sin modelo, reproducible en cualquier máquina.",
+   "en": "A deterministic control reads bytes and decides. No model, reproducible anywhere.",
+   "puede_concluir": [
+    "CUMPLE",
+    "NO_CUMPLE",
+    "INDETERMINADO",
+    "NO_APLICA"
+   ]
+  },
+  "generable": {
+   "es": "El sistema redacta el artefacto que la obligación pide. El resultado nunca es CUMPLE: un borrador que nadie firmó no es evidencia.",
+   "en": "The system drafts the artefact the obligation asks for. The outcome is never SATISFIED: a draft nobody signed is not evidence.",
+   "puede_concluir": [
+    "BORRADOR",
+    "INDETERMINADO",
+    "NO_APLICA"
+   ]
+  },
+  "juzgada": {
+   "es": "Si un documento aportado responde a la obligación es un juicio. Un modelo lo emite, un verificador comprueba cada cita, y se abstiene si no puede.",
+   "en": "Whether a supplied document addresses the obligation is a judgement. A model issues it, a verifier checks every citation, and it abstains when it cannot.",
+   "puede_concluir": [
+    "INDICIO_A_FAVOR",
+    "INDICIO_EN_CONTRA",
+    "ABSTENCION",
+    "NO_APLICA"
+   ]
+  },
+  "organizativa": {
+   "es": "No hay bytes que leer. Se cubre con formulario, documento y firma de una persona responsable.",
+   "en": "There are no bytes to read. Covered by a form, a document and a responsible person's signature.",
+   "puede_concluir": [
+    "APORTADO",
+    "PENDIENTE",
+    "NO_APLICA"
+   ]
+  }
+ },
+ "roles": [
+  "proveedor",
+  "responsable_despliegue",
+  "representante_autorizado",
+  "importador",
+  "distribuidor",
+  "fabricante_producto",
+  "proveedor_modelo"
+ ],
+ "obligaciones": [
+  {
+   "id": "AIA-004",
+   "articulo": "4",
+   "titulo": {
+    "es": "Alfabetización en materia de IA",
+    "en": "AI literacy"
+   },
+   "roles": [
+    "proveedor",
+    "responsable_despliegue"
+   ],
+   "aplica_desde": "2025-02-02",
+   "alcance": "todo_sistema",
+   "nivel": "organizativa",
+   "por_que_no_mas": {
+    "es": "Que una persona haya entendido una formación no deja rastro en el código. Se puede comprobar que existe un registro de formación, no que sirviera.",
+    "en": "Whether a person understood training leaves no trace in code. That a training record exists is checkable; that it worked is not."
+   }
+  },
+  {
+   "id": "AIA-005",
+   "articulo": "5",
+   "titulo": {
+    "es": "Prácticas de IA prohibidas",
+    "en": "Prohibited AI practices"
+   },
+   "roles": [
+    "proveedor",
+    "responsable_despliegue",
+    "importador",
+    "distribuidor"
+   ],
+   "aplica_desde": "2025-02-02",
+   "alcance": "todo_sistema",
+   "nivel": "juzgada",
+   "por_que_no_mas": {
+    "es": "La prohibición depende del propósito y del contexto de uso, no de la implementación. El código puede levantar indicios (reconocimiento de emociones en el trabajo, categorización biométrica) pero no decidir.",
+    "en": "The prohibition turns on purpose and context of use, not on implementation. Code can raise indications (emotion recognition at work, biometric categorisation) but cannot decide."
+   },
+   "indicios_tecnicos": [
+    "reconocimiento_emociones",
+    "categorizacion_biometrica",
+    "identificacion_biometrica_remota",
+    "puntuacion_social",
+    "raspado_facial_masivo"
+   ]
+  },
+  {
+   "id": "AIA-006",
+   "articulo": "6",
+   "titulo": {
+    "es": "Reglas de clasificación de sistemas de alto riesgo",
+    "en": "Classification rules for high-risk AI systems"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2027-12-02",
+   "alcance": "todo_sistema",
+   "nivel": "juzgada",
+   "por_que_no_mas": {
+    "es": "Es la puerta de todo lo demás y es una calificación jurídica sobre el uso previsto. El motor la resuelve con reglas deterministas sobre las respuestas del responsable, y publica la regla que disparó.",
+    "en": "It is the gate to everything else and it is a legal characterisation of intended purpose. The engine resolves it with deterministic rules over the operator's answers, and publishes the rule that fired."
+   },
+   "aplica_desde_por_via": {
+    "anexo_iii": "2027-12-02",
+    "anexo_i": "2028-08-02"
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplazó las Secciones 1, 2 y 3 del Capítulo III con dos fechas: 2 de diciembre de 2027 para los sistemas del Anexo III (artículo 6.2) y 2 de agosto de 2028 para los que son componente de seguridad de un producto ya regulado (Anexo I, artículo 6.1). Publicar una sola fecha obliga a elegir, y las dos elecciones mienten a la mitad de los clientes.",
+    "en": "Regulation (EU) 2026/1744 deferred Chapter III Sections 1, 2 and 3 with two dates: 2 December 2027 for Annex III systems (Article 6(2)) and 2 August 2028 for those that are a safety component of an already regulated product (Annex I, Article 6(1)). Publishing a single date forces a choice, and either choice lies to half the customers."
+   }
+  },
+  {
+   "id": "AIA-008",
+   "articulo": "8",
+   "titulo": {
+    "es": "Cumplimiento de los requisitos",
+    "en": "Compliance with the requirements"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2027-12-02",
+   "alcance": "alto_riesgo",
+   "nivel": "organizativa",
+   "por_que_no_mas": {
+    "es": "Es la regla paraguas: dice que los requisitos de los artículos 9 a 15 se cumplen teniendo en cuenta el estado de la técnica y la finalidad prevista. No añade una conducta propia que leer en el código; lo que se comprueba son los artículos que agrupa.",
+    "en": "It is the umbrella rule: it says the Articles 9 to 15 requirements are met taking into account the state of the art and the intended purpose. It adds no conduct of its own to read in code; what is checked are the articles it groups."
+   },
+   "aplica_desde_por_via": {
+    "anexo_iii": "2027-12-02",
+    "anexo_i": "2028-08-02"
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplazó las Secciones 1, 2 y 3 del Capítulo III con dos fechas: 2 de diciembre de 2027 para los sistemas del Anexo III (artículo 6.2) y 2 de agosto de 2028 para los que son componente de seguridad de un producto ya regulado (Anexo I, artículo 6.1). Publicar una sola fecha obliga a elegir, y las dos elecciones mienten a la mitad de los clientes.",
+    "en": "Regulation (EU) 2026/1744 deferred Chapter III Sections 1, 2 and 3 with two dates: 2 December 2027 for Annex III systems (Article 6(2)) and 2 August 2028 for those that are a safety component of an already regulated product (Annex I, Article 6(1)). Publishing a single date forces a choice, and either choice lies to half the customers."
+   }
+  },
+  {
+   "id": "AIA-009",
+   "articulo": "9",
+   "titulo": {
+    "es": "Sistema de gestión de riesgos",
+    "en": "Risk management system"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2027-12-02",
+   "alcance": "alto_riesgo",
+   "nivel": "maquina",
+   "por_que_no_mas": {
+    "es": "Es un proceso continuo con decisiones humanas documentadas. Lo único comprobable en código es que las pruebas que el proceso dice ejecutar existan y corran.",
+    "en": "It is a continuous process with documented human decisions. The only code-checkable part is that the tests the process claims to run exist and run."
+   },
+   "parte_tecnica": [
+    "AIA-015"
+   ],
+   "comprueba": [
+    "umbral_aceptacion_declarado",
+    "umbral_comprobado_antes_de_desplegar",
+    "mitigacion_por_riesgo_identificado",
+    "suite_de_riesgo_corre_en_ci"
+   ],
+   "no_comprueba": {
+    "es": "Que los riesgos identificados sean los relevantes, y que el residual sea aceptable. Eso es juicio y va al nivel juzgado con su formulario.",
+    "en": "Whether the identified risks are the relevant ones, and whether residual risk is acceptable. That is judgement and goes to the judged tier with its form."
+   },
+   "aplica_desde_por_via": {
+    "anexo_iii": "2027-12-02",
+    "anexo_i": "2028-08-02"
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplazó las Secciones 1, 2 y 3 del Capítulo III con dos fechas: 2 de diciembre de 2027 para los sistemas del Anexo III (artículo 6.2) y 2 de agosto de 2028 para los que son componente de seguridad de un producto ya regulado (Anexo I, artículo 6.1). Publicar una sola fecha obliga a elegir, y las dos elecciones mienten a la mitad de los clientes.",
+    "en": "Regulation (EU) 2026/1744 deferred Chapter III Sections 1, 2 and 3 with two dates: 2 December 2027 for Annex III systems (Article 6(2)) and 2 August 2028 for those that are a safety component of an already regulated product (Annex I, Article 6(1)). Publishing a single date forces a choice, and either choice lies to half the customers."
+   }
+  },
+  {
+   "id": "AIA-010",
+   "articulo": "10",
+   "titulo": {
+    "es": "Datos y gobernanza de datos",
+    "en": "Data and data governance"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2027-12-02",
+   "alcance": "alto_riesgo",
+   "nivel": "maquina",
+   "comprueba": [
+    "linaje_conjunto_datos",
+    "digest_declarado_coincide",
+    "fuga_entre_particiones",
+    "ficha_de_datos_presente"
+   ],
+   "no_comprueba": {
+    "es": "La representatividad, la pertinencia y la ausencia de sesgo son juicios sobre el mundo, no sobre los bytes. Se marcan como juzgadas y se separan del veredicto técnico.",
+    "en": "Representativeness, relevance and freedom from bias are judgements about the world, not about bytes. They are marked as judged and kept out of the technical verdict."
+   },
+   "aplica_desde_por_via": {
+    "anexo_iii": "2027-12-02",
+    "anexo_i": "2028-08-02"
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplazó las Secciones 1, 2 y 3 del Capítulo III con dos fechas: 2 de diciembre de 2027 para los sistemas del Anexo III (artículo 6.2) y 2 de agosto de 2028 para los que son componente de seguridad de un producto ya regulado (Anexo I, artículo 6.1). Publicar una sola fecha obliga a elegir, y las dos elecciones mienten a la mitad de los clientes.",
+    "en": "Regulation (EU) 2026/1744 deferred Chapter III Sections 1, 2 and 3 with two dates: 2 December 2027 for Annex III systems (Article 6(2)) and 2 August 2028 for those that are a safety component of an already regulated product (Annex I, Article 6(1)). Publishing a single date forces a choice, and either choice lies to half the customers."
+   }
+  },
+  {
+   "id": "AIA-011",
+   "articulo": "11",
+   "titulo": {
+    "es": "Documentación técnica (Anexo IV)",
+    "en": "Technical documentation (Annex IV)"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2027-12-02",
+   "alcance": "alto_riesgo",
+   "nivel": "generable",
+   "genera": [
+    "arquitectura_del_sistema",
+    "inventario_modelos_datos",
+    "dependencias",
+    "recursos_computo",
+    "metricas_validacion",
+    "medidas_ciberseguridad",
+    "cambios_predeterminados"
+   ],
+   "regla_de_procedencia": {
+    "es": "Cada sección publica de dónde sale: derivada del código, escrita por una persona, o ausente. Nunca en blanco y nunca inventada.",
+    "en": "Every section publishes its provenance: derived from code, written by a person, or missing. Never blank and never invented."
+   },
+   "aplica_desde_por_via": {
+    "anexo_iii": "2027-12-02",
+    "anexo_i": "2028-08-02"
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplazó las Secciones 1, 2 y 3 del Capítulo III con dos fechas: 2 de diciembre de 2027 para los sistemas del Anexo III (artículo 6.2) y 2 de agosto de 2028 para los que son componente de seguridad de un producto ya regulado (Anexo I, artículo 6.1). Publicar una sola fecha obliga a elegir, y las dos elecciones mienten a la mitad de los clientes.",
+    "en": "Regulation (EU) 2026/1744 deferred Chapter III Sections 1, 2 and 3 with two dates: 2 December 2027 for Annex III systems (Article 6(2)) and 2 August 2028 for those that are a safety component of an already regulated product (Annex I, Article 6(1)). Publishing a single date forces a choice, and either choice lies to half the customers."
+   }
+  },
+  {
+   "id": "AIA-012",
+   "articulo": "12",
+   "titulo": {
+    "es": "Registro de acontecimientos",
+    "en": "Record-keeping"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2027-12-02",
+   "alcance": "alto_riesgo",
+   "nivel": "maquina",
+   "comprueba": [
+    "punto_invocacion_registra",
+    "campos_minimos_presentes",
+    "retencion_configurada",
+    "registro_inalterable"
+   ],
+   "campos_minimos": [
+    "instante",
+    "referencia_entrada",
+    "referencia_salida",
+    "identificador_modelo",
+    "version_modelo",
+    "quien_invoco"
+   ],
+   "no_comprueba": {
+    "es": "Que el registro sea suficiente para el análisis posterior que exige el artículo 72 depende de para que se use, y eso es juicio.",
+    "en": "Whether the log suffices for the post-market analysis Article 72 requires depends on what it is used for, and that is judgement."
+   },
+   "relacionado": [
+    "AIA-019",
+    "AIA-072"
+   ],
+   "aplica_desde_por_via": {
+    "anexo_iii": "2027-12-02",
+    "anexo_i": "2028-08-02"
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplazó las Secciones 1, 2 y 3 del Capítulo III con dos fechas: 2 de diciembre de 2027 para los sistemas del Anexo III (artículo 6.2) y 2 de agosto de 2028 para los que son componente de seguridad de un producto ya regulado (Anexo I, artículo 6.1). Publicar una sola fecha obliga a elegir, y las dos elecciones mienten a la mitad de los clientes.",
+    "en": "Regulation (EU) 2026/1744 deferred Chapter III Sections 1, 2 and 3 with two dates: 2 December 2027 for Annex III systems (Article 6(2)) and 2 August 2028 for those that are a safety component of an already regulated product (Annex I, Article 6(1)). Publishing a single date forces a choice, and either choice lies to half the customers."
+   }
+  },
+  {
+   "id": "AIA-013",
+   "articulo": "13",
+   "titulo": {
+    "es": "Transparencia e información a los responsables del despliegue",
+    "en": "Transparency and provision of information to deployers"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2027-12-02",
+   "alcance": "alto_riesgo",
+   "nivel": "maquina",
+   "genera": [
+    "instrucciones_de_uso",
+    "nivel_exactitud_declarado",
+    "limitaciones_conocidas"
+   ],
+   "cruce_tecnico": {
+    "es": "El nivel de exactitud que se declara aquí tiene que ser el mismo que reproduce el arnes del artículo 15. Si no coincide, es un no cumple del 15, no del 13.",
+    "en": "The accuracy level declared here has to be the one the Article 15 harness reproduces. A mismatch is a failure of Article 15, not of Article 13."
+   },
+   "comprueba": [
+    "instrucciones_presentes",
+    "exactitud_declarada_coincide_con_el_arnes",
+    "version_del_sistema_visible",
+    "limitaciones_publicadas"
+   ],
+   "aplica_desde_por_via": {
+    "anexo_iii": "2027-12-02",
+    "anexo_i": "2028-08-02"
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplazó las Secciones 1, 2 y 3 del Capítulo III con dos fechas: 2 de diciembre de 2027 para los sistemas del Anexo III (artículo 6.2) y 2 de agosto de 2028 para los que son componente de seguridad de un producto ya regulado (Anexo I, artículo 6.1). Publicar una sola fecha obliga a elegir, y las dos elecciones mienten a la mitad de los clientes.",
+    "en": "Regulation (EU) 2026/1744 deferred Chapter III Sections 1, 2 and 3 with two dates: 2 December 2027 for Annex III systems (Article 6(2)) and 2 August 2028 for those that are a safety component of an already regulated product (Annex I, Article 6(1)). Publishing a single date forces a choice, and either choice lies to half the customers."
+   }
+  },
+  {
+   "id": "AIA-014",
+   "articulo": "14",
+   "titulo": {
+    "es": "Vigilancia humana",
+    "en": "Human oversight"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2027-12-02",
+   "alcance": "alto_riesgo",
+   "nivel": "maquina",
+   "comprueba": [
+    "existe_ruta_intervencion",
+    "existe_parada",
+    "aprobacion_previa_accion_consecuente",
+    "permisos_agente_no_autoaprueban"
+   ],
+   "no_comprueba": {
+    "es": "Que la supervisión sea efectiva, que la persona entienda los límites del sistema y que no caiga en sesgo de automatización. Eso es el 14.4 y es juicio.",
+    "en": "Whether oversight is effective, whether the person understands the system's limits, and whether they fall into automation bias. That is 14(4) and it is judgement."
+   },
+   "aplica_desde_por_via": {
+    "anexo_iii": "2027-12-02",
+    "anexo_i": "2028-08-02"
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplazó las Secciones 1, 2 y 3 del Capítulo III con dos fechas: 2 de diciembre de 2027 para los sistemas del Anexo III (artículo 6.2) y 2 de agosto de 2028 para los que son componente de seguridad de un producto ya regulado (Anexo I, artículo 6.1). Publicar una sola fecha obliga a elegir, y las dos elecciones mienten a la mitad de los clientes.",
+    "en": "Regulation (EU) 2026/1744 deferred Chapter III Sections 1, 2 and 3 with two dates: 2 December 2027 for Annex III systems (Article 6(2)) and 2 August 2028 for those that are a safety component of an already regulated product (Annex I, Article 6(1)). Publishing a single date forces a choice, and either choice lies to half the customers."
+   }
+  },
+  {
+   "id": "AIA-015",
+   "articulo": "15",
+   "titulo": {
+    "es": "Exactitud, solidez y ciberseguridad",
+    "en": "Accuracy, robustness and cybersecurity"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2027-12-02",
+   "alcance": "alto_riesgo",
+   "nivel": "maquina",
+   "comprueba": [
+    "cifra_declarada_reproducible",
+    "suite_evaluacion_existe",
+    "suite_corre_en_ci",
+    "validacion_entrada",
+    "validacion_salida",
+    "resistencia_inyeccion",
+    "integridad_artefacto_modelo",
+    "digest_modelo_fijado"
+   ],
+   "regla_central": {
+    "es": "Una exactitud declarada que ningún arnes regenera no se aprueba. Es la única regla de este catálogo que puede tumbar un sistema por lo que dice de si mismo.",
+    "en": "A declared accuracy that no harness regenerates is not approved. It is the only rule in this catalogue that can fail a system for what it says about itself."
+   },
+   "aplica_desde_por_via": {
+    "anexo_iii": "2027-12-02",
+    "anexo_i": "2028-08-02"
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplazó las Secciones 1, 2 y 3 del Capítulo III con dos fechas: 2 de diciembre de 2027 para los sistemas del Anexo III (artículo 6.2) y 2 de agosto de 2028 para los que son componente de seguridad de un producto ya regulado (Anexo I, artículo 6.1). Publicar una sola fecha obliga a elegir, y las dos elecciones mienten a la mitad de los clientes.",
+    "en": "Regulation (EU) 2026/1744 deferred Chapter III Sections 1, 2 and 3 with two dates: 2 December 2027 for Annex III systems (Article 6(2)) and 2 August 2028 for those that are a safety component of an already regulated product (Annex I, Article 6(1)). Publishing a single date forces a choice, and either choice lies to half the customers."
+   }
+  },
+  {
+   "id": "AIA-016",
+   "articulo": "16",
+   "titulo": {
+    "es": "Obligaciones de los proveedores de sistemas de IA de alto riesgo",
+    "en": "Obligations of providers of high-risk AI systems"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2027-12-02",
+   "alcance": "alto_riesgo",
+   "nivel": "organizativa",
+   "parte_tecnica": [
+    "AIA-010",
+    "AIA-011",
+    "AIA-012",
+    "AIA-014",
+    "AIA-015"
+   ],
+   "por_que_no_mas": {
+    "es": "Es el artículo paraguas: enumera obligaciones que viven en otros artículos. Lo único propio y comprobable es que el sistema desplegado sea el mismo que se evaluó, y eso se comprueba por digest.",
+    "en": "It is the umbrella article: it enumerates obligations that live in other articles. The only self-standing checkable part is that the deployed system is the one that was assessed, and that is checked by digest."
+   },
+   "comprueba": [
+    "digest_desplegado_coincide_con_aprobado"
+   ],
+   "aplica_desde_por_via": {
+    "anexo_iii": "2027-12-02",
+    "anexo_i": "2028-08-02"
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplazó las Secciones 1, 2 y 3 del Capítulo III con dos fechas: 2 de diciembre de 2027 para los sistemas del Anexo III (artículo 6.2) y 2 de agosto de 2028 para los que son componente de seguridad de un producto ya regulado (Anexo I, artículo 6.1). Publicar una sola fecha obliga a elegir, y las dos elecciones mienten a la mitad de los clientes.",
+    "en": "Regulation (EU) 2026/1744 deferred Chapter III Sections 1, 2 and 3 with two dates: 2 December 2027 for Annex III systems (Article 6(2)) and 2 August 2028 for those that are a safety component of an already regulated product (Annex I, Article 6(1)). Publishing a single date forces a choice, and either choice lies to half the customers."
+   }
+  },
+  {
+   "id": "AIA-017",
+   "articulo": "17",
+   "titulo": {
+    "es": "Sistema de gestión de la calidad",
+    "en": "Quality management system"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2027-12-02",
+   "alcance": "alto_riesgo",
+   "nivel": "organizativa",
+   "nota_iso": {
+    "es": "Es el artículo que más se solapa con la ISO 42001 entera. Un sistema de gestión certificado no da por cumplido el 17, pero cubre la mayor parte de su contenido y así se declara.",
+    "en": "This is the article that overlaps most with ISO 42001 as a whole. A certified management system does not discharge Article 17, but it covers most of its content and is declared as such."
+   },
+   "aplica_desde_por_via": {
+    "anexo_iii": "2027-12-02",
+    "anexo_i": "2028-08-02"
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplazó las Secciones 1, 2 y 3 del Capítulo III con dos fechas: 2 de diciembre de 2027 para los sistemas del Anexo III (artículo 6.2) y 2 de agosto de 2028 para los que son componente de seguridad de un producto ya regulado (Anexo I, artículo 6.1). Publicar una sola fecha obliga a elegir, y las dos elecciones mienten a la mitad de los clientes.",
+    "en": "Regulation (EU) 2026/1744 deferred Chapter III Sections 1, 2 and 3 with two dates: 2 December 2027 for Annex III systems (Article 6(2)) and 2 August 2028 for those that are a safety component of an already regulated product (Annex I, Article 6(1)). Publishing a single date forces a choice, and either choice lies to half the customers."
+   }
+  },
+  {
+   "id": "AIA-018",
+   "articulo": "18",
+   "titulo": {
+    "es": "Conservación de la documentación",
+    "en": "Documentation keeping"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2027-12-02",
+   "alcance": "alto_riesgo",
+   "nivel": "organizativa",
+   "por_que_no_mas": {
+    "es": "Guardar diez años una documentación no deja rastro en el código: lo que sí se puede comprobar es que el repositorio declare DÓNDE vive el expediente y CUÁNTO tiempo se conserva. Que siga estando dentro de diez años no lo puede afirmar ninguna herramienta hoy.",
+    "en": "Keeping documentation for ten years leaves no trace in code: what can be checked is that the repository declares WHERE the file lives and HOW LONG it is kept. That it will still be there in ten years is something no tool can assert today."
+   },
+   "aplica_desde_por_via": {
+    "anexo_iii": "2027-12-02",
+    "anexo_i": "2028-08-02"
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplazó las Secciones 1, 2 y 3 del Capítulo III con dos fechas: 2 de diciembre de 2027 para los sistemas del Anexo III (artículo 6.2) y 2 de agosto de 2028 para los que son componente de seguridad de un producto ya regulado (Anexo I, artículo 6.1). Publicar una sola fecha obliga a elegir, y las dos elecciones mienten a la mitad de los clientes.",
+    "en": "Regulation (EU) 2026/1744 deferred Chapter III Sections 1, 2 and 3 with two dates: 2 December 2027 for Annex III systems (Article 6(2)) and 2 August 2028 for those that are a safety component of an already regulated product (Annex I, Article 6(1)). Publishing a single date forces a choice, and either choice lies to half the customers."
+   },
+   "comprueba": [
+    "donde_se_guarda_declarado",
+    "periodo_de_conservacion_declarado"
+   ]
+  },
+  {
+   "id": "AIA-019",
+   "articulo": "19",
+   "titulo": {
+    "es": "Conservación automática de los archivos de registro",
+    "en": "Automatically generated logs"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2027-12-02",
+   "alcance": "alto_riesgo",
+   "nivel": "maquina",
+   "comprueba": [
+    "retencion_minima_seis_meses",
+    "politica_retencion_declarada"
+   ],
+   "aplica_desde_por_via": {
+    "anexo_iii": "2027-12-02",
+    "anexo_i": "2028-08-02"
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplazó las Secciones 1, 2 y 3 del Capítulo III con dos fechas: 2 de diciembre de 2027 para los sistemas del Anexo III (artículo 6.2) y 2 de agosto de 2028 para los que son componente de seguridad de un producto ya regulado (Anexo I, artículo 6.1). Publicar una sola fecha obliga a elegir, y las dos elecciones mienten a la mitad de los clientes.",
+    "en": "Regulation (EU) 2026/1744 deferred Chapter III Sections 1, 2 and 3 with two dates: 2 December 2027 for Annex III systems (Article 6(2)) and 2 August 2028 for those that are a safety component of an already regulated product (Annex I, Article 6(1)). Publishing a single date forces a choice, and either choice lies to half the customers."
+   }
+  },
+  {
+   "id": "AIA-020",
+   "articulo": "20",
+   "titulo": {
+    "es": "Medidas correctoras y obligación de información",
+    "en": "Corrective actions and duty of information"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2027-12-02",
+   "alcance": "alto_riesgo",
+   "nivel": "organizativa",
+   "por_que_no_mas": {
+    "es": "Retirar del mercado un sistema e informar a las autoridades y a la cadena de distribución es una secuencia de actos entre personas y organismos. En el código sólo se puede comprobar que exista una ruta de retirada declarada y a quién avisa.",
+    "en": "Withdrawing a system and informing authorities and the distribution chain is a sequence of acts between people and bodies. In code one can only check that a declared withdrawal path exists and whom it notifies."
+   },
+   "aplica_desde_por_via": {
+    "anexo_iii": "2027-12-02",
+    "anexo_i": "2028-08-02"
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplazó las Secciones 1, 2 y 3 del Capítulo III con dos fechas: 2 de diciembre de 2027 para los sistemas del Anexo III (artículo 6.2) y 2 de agosto de 2028 para los que son componente de seguridad de un producto ya regulado (Anexo I, artículo 6.1). Publicar una sola fecha obliga a elegir, y las dos elecciones mienten a la mitad de los clientes.",
+    "en": "Regulation (EU) 2026/1744 deferred Chapter III Sections 1, 2 and 3 with two dates: 2 December 2027 for Annex III systems (Article 6(2)) and 2 August 2028 for those that are a safety component of an already regulated product (Annex I, Article 6(1)). Publishing a single date forces a choice, and either choice lies to half the customers."
+   },
+   "comprueba": [
+    "ruta_de_retirada_declarada",
+    "destinatarios_del_aviso"
+   ]
+  },
+  {
+   "id": "AIA-021",
+   "articulo": "21",
+   "titulo": {
+    "es": "Cooperación con las autoridades competentes",
+    "en": "Cooperation with competent authorities"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2027-12-02",
+   "alcance": "alto_riesgo",
+   "nivel": "organizativa",
+   "por_que_no_mas": {
+    "es": "Entregar a una autoridad la documentación que pida, en una lengua oficial y en un plazo, es una obligación de conducta frente a un tercero. Lo comprobable es que el expediente exista y esté completo, que es lo que cubren los artículos 11 y 18.",
+    "en": "Handing an authority the documentation it requests, in an official language and within a deadline, is a duty of conduct towards a third party. What is checkable is that the file exists and is complete, which Articles 11 and 18 cover."
+   },
+   "aplica_desde_por_via": {
+    "anexo_iii": "2027-12-02",
+    "anexo_i": "2028-08-02"
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplazó las Secciones 1, 2 y 3 del Capítulo III con dos fechas: 2 de diciembre de 2027 para los sistemas del Anexo III (artículo 6.2) y 2 de agosto de 2028 para los que son componente de seguridad de un producto ya regulado (Anexo I, artículo 6.1). Publicar una sola fecha obliga a elegir, y las dos elecciones mienten a la mitad de los clientes.",
+    "en": "Regulation (EU) 2026/1744 deferred Chapter III Sections 1, 2 and 3 with two dates: 2 December 2027 for Annex III systems (Article 6(2)) and 2 August 2028 for those that are a safety component of an already regulated product (Annex I, Article 6(1)). Publishing a single date forces a choice, and either choice lies to half the customers."
+   }
+  },
+  {
+   "id": "AIA-022",
+   "articulo": "22",
+   "titulo": {
+    "es": "Representantes autorizados de los proveedores de sistemas de IA de alto riesgo",
+    "en": "Authorised representatives of providers of high-risk AI systems"
+   },
+   "roles": [
+    "proveedor",
+    "representante_autorizado"
+   ],
+   "aplica_desde": "2027-12-02",
+   "alcance": "alto_riesgo",
+   "nivel": "organizativa",
+   "por_que_no_mas": {
+    "es": "Designar un representante autorizado en la Unión mediante mandato escrito es un acto jurídico. Lo que el repositorio puede declarar es quién es y dónde está su mandato.",
+    "en": "Appointing an authorised representative in the Union by written mandate is a legal act. What the repository can declare is who it is and where the mandate is."
+   },
+   "aplica_desde_por_via": {
+    "anexo_iii": "2027-12-02",
+    "anexo_i": "2028-08-02"
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplazó las Secciones 1, 2 y 3 del Capítulo III con dos fechas: 2 de diciembre de 2027 para los sistemas del Anexo III (artículo 6.2) y 2 de agosto de 2028 para los que son componente de seguridad de un producto ya regulado (Anexo I, artículo 6.1). Publicar una sola fecha obliga a elegir, y las dos elecciones mienten a la mitad de los clientes.",
+    "en": "Regulation (EU) 2026/1744 deferred Chapter III Sections 1, 2 and 3 with two dates: 2 December 2027 for Annex III systems (Article 6(2)) and 2 August 2028 for those that are a safety component of an already regulated product (Annex I, Article 6(1)). Publishing a single date forces a choice, and either choice lies to half the customers."
+   },
+   "comprueba": [
+    "representante_declarado",
+    "mandato_localizable"
+   ]
+  },
+  {
+   "id": "AIA-023",
+   "articulo": "23",
+   "titulo": {
+    "es": "Obligaciones de los importadores",
+    "en": "Obligations of importers"
+   },
+   "roles": [
+    "importador"
+   ],
+   "aplica_desde": "2027-12-02",
+   "alcance": "alto_riesgo",
+   "nivel": "organizativa",
+   "por_que_no_mas": {
+    "es": "Un importador comprueba papeles de otro: marcado CE, declaración de conformidad, documentación técnica y representante. Nada de eso está en SU código, así que se cubre con formulario y con la evidencia que el proveedor le entrega.",
+    "en": "An importer checks somebody else's paperwork: CE marking, declaration of conformity, technical documentation and representative. None of it is in THEIR code, so it is covered by form and by the evidence the provider hands over."
+   },
+   "aplica_desde_por_via": {
+    "anexo_iii": "2027-12-02",
+    "anexo_i": "2028-08-02"
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplazó las Secciones 1, 2 y 3 del Capítulo III con dos fechas: 2 de diciembre de 2027 para los sistemas del Anexo III (artículo 6.2) y 2 de agosto de 2028 para los que son componente de seguridad de un producto ya regulado (Anexo I, artículo 6.1). Publicar una sola fecha obliga a elegir, y las dos elecciones mienten a la mitad de los clientes.",
+    "en": "Regulation (EU) 2026/1744 deferred Chapter III Sections 1, 2 and 3 with two dates: 2 December 2027 for Annex III systems (Article 6(2)) and 2 August 2028 for those that are a safety component of an already regulated product (Annex I, Article 6(1)). Publishing a single date forces a choice, and either choice lies to half the customers."
+   }
+  },
+  {
+   "id": "AIA-024",
+   "articulo": "24",
+   "titulo": {
+    "es": "Obligaciones de los distribuidores",
+    "en": "Obligations of distributors"
+   },
+   "roles": [
+    "distribuidor"
+   ],
+   "aplica_desde": "2027-12-02",
+   "alcance": "alto_riesgo",
+   "nivel": "organizativa",
+   "por_que_no_mas": {
+    "es": "Igual que el importador: el distribuidor verifica lo que recibe y actúa si sospecha. Su conducta no deja rastro en un repositorio propio.",
+    "en": "Like the importer: the distributor verifies what it receives and acts if it suspects. Its conduct leaves no trace in a repository of its own."
+   },
+   "aplica_desde_por_via": {
+    "anexo_iii": "2027-12-02",
+    "anexo_i": "2028-08-02"
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplazó las Secciones 1, 2 y 3 del Capítulo III con dos fechas: 2 de diciembre de 2027 para los sistemas del Anexo III (artículo 6.2) y 2 de agosto de 2028 para los que son componente de seguridad de un producto ya regulado (Anexo I, artículo 6.1). Publicar una sola fecha obliga a elegir, y las dos elecciones mienten a la mitad de los clientes.",
+    "en": "Regulation (EU) 2026/1744 deferred Chapter III Sections 1, 2 and 3 with two dates: 2 December 2027 for Annex III systems (Article 6(2)) and 2 August 2028 for those that are a safety component of an already regulated product (Annex I, Article 6(1)). Publishing a single date forces a choice, and either choice lies to half the customers."
+   }
+  },
+  {
+   "id": "AIA-025",
+   "articulo": "25",
+   "titulo": {
+    "es": "Responsabilidades a lo largo de la cadena de valor de la IA",
+    "en": "Responsibilities along the AI value chain"
+   },
+   "roles": [
+    "proveedor",
+    "responsable_despliegue",
+    "importador",
+    "distribuidor"
+   ],
+   "aplica_desde": "2027-12-02",
+   "alcance": "alto_riesgo",
+   "nivel": "maquina",
+   "por_que_no_mas": {
+    "es": "Quién pasa a ser proveedor al poner su marca o modificar sustancialmente un sistema es una calificación jurídica sobre contratos, no sobre código. El motor si puede levantar el indicio: un modelo de tercero reetiquetado o un ajuste fino sobre pesos ajenos.",
+    "en": "Who becomes a provider by putting their name on a system or substantially modifying it is a legal characterisation about contracts, not about code. The engine can raise the indication: a third-party model relabelled, or a fine-tune over someone else's weights."
+   },
+   "indicios_tecnicos": [
+    "modelo_tercero_reetiquetado",
+    "ajuste_fino_sobre_pesos_ajenos"
+   ],
+   "comprueba": [
+    "modelo_tercero_reetiquetado",
+    "ajuste_fino_sobre_pesos_ajenos",
+    "cambio_sustancial_desde_la_evaluacion"
+   ],
+   "aplica_desde_por_via": {
+    "anexo_iii": "2027-12-02",
+    "anexo_i": "2028-08-02"
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplazó las Secciones 1, 2 y 3 del Capítulo III con dos fechas: 2 de diciembre de 2027 para los sistemas del Anexo III (artículo 6.2) y 2 de agosto de 2028 para los que son componente de seguridad de un producto ya regulado (Anexo I, artículo 6.1). Publicar una sola fecha obliga a elegir, y las dos elecciones mienten a la mitad de los clientes.",
+    "en": "Regulation (EU) 2026/1744 deferred Chapter III Sections 1, 2 and 3 with two dates: 2 December 2027 for Annex III systems (Article 6(2)) and 2 August 2028 for those that are a safety component of an already regulated product (Annex I, Article 6(1)). Publishing a single date forces a choice, and either choice lies to half the customers."
+   }
+  },
+  {
+   "id": "AIA-026",
+   "articulo": "26",
+   "titulo": {
+    "es": "Obligaciones de los responsables del despliegue",
+    "en": "Obligations of deployers"
+   },
+   "roles": [
+    "responsable_despliegue"
+   ],
+   "aplica_desde": "2027-12-02",
+   "alcance": "alto_riesgo",
+   "nivel": "maquina",
+   "parte_tecnica": [
+    "AIA-012",
+    "AIA-014"
+   ],
+   "comprueba": [
+    "retencion_de_registros_configurada",
+    "ruta_de_suspension_existe",
+    "monitorizacion_activa"
+   ],
+   "aplica_desde_por_via": {
+    "anexo_iii": "2027-12-02",
+    "anexo_i": "2028-08-02"
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplazó las Secciones 1, 2 y 3 del Capítulo III con dos fechas: 2 de diciembre de 2027 para los sistemas del Anexo III (artículo 6.2) y 2 de agosto de 2028 para los que son componente de seguridad de un producto ya regulado (Anexo I, artículo 6.1). Publicar una sola fecha obliga a elegir, y las dos elecciones mienten a la mitad de los clientes.",
+    "en": "Regulation (EU) 2026/1744 deferred Chapter III Sections 1, 2 and 3 with two dates: 2 December 2027 for Annex III systems (Article 6(2)) and 2 August 2028 for those that are a safety component of an already regulated product (Annex I, Article 6(1)). Publishing a single date forces a choice, and either choice lies to half the customers."
+   }
+  },
+  {
+   "id": "AIA-027",
+   "articulo": "27",
+   "titulo": {
+    "es": "Evaluación de impacto relativa a los derechos fundamentales",
+    "en": "Fundamental rights impact assessment"
+   },
+   "roles": [
+    "responsable_despliegue"
+   ],
+   "aplica_desde": "2027-12-02",
+   "alcance": "alto_riesgo_sector_publico",
+   "nivel": "organizativa",
+   "por_que_no_mas": {
+    "es": "La evaluación pregunta a quién afecta el sistema y cómo, y eso depende de la población concreta sobre la que se despliega, no de la implementación. Dos despliegues del mismo binario pueden dar evaluaciones opuestas. El motor aporta el inventario de datos y las categorías tratadas; la valoración es de la organización y va firmada por una persona.",
+    "en": "The assessment asks who the system affects and how, and that depends on the concrete population it is deployed over, not on the implementation. Two deployments of the same binary can yield opposite assessments. The engine supplies the data inventory and the categories processed; the appraisal belongs to the organisation and is signed by a person."
+   },
+   "aplica_desde_por_via": {
+    "anexo_iii": "2027-12-02",
+    "anexo_i": "2028-08-02"
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplazó las Secciones 1, 2 y 3 del Capítulo III con dos fechas: 2 de diciembre de 2027 para los sistemas del Anexo III (artículo 6.2) y 2 de agosto de 2028 para los que son componente de seguridad de un producto ya regulado (Anexo I, artículo 6.1). Publicar una sola fecha obliga a elegir, y las dos elecciones mienten a la mitad de los clientes.",
+    "en": "Regulation (EU) 2026/1744 deferred Chapter III Sections 1, 2 and 3 with two dates: 2 December 2027 for Annex III systems (Article 6(2)) and 2 August 2028 for those that are a safety component of an already regulated product (Annex I, Article 6(1)). Publishing a single date forces a choice, and either choice lies to half the customers."
+   }
+  },
+  {
+   "id": "AIA-043",
+   "articulo": "43",
+   "titulo": {
+    "es": "Evaluación de la conformidad",
+    "en": "Conformity assessment"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2026-08-02",
+   "alcance": "alto_riesgo",
+   "nivel": "organizativa",
+   "frontera_dura": {
+    "es": "Actaira no declara ni certifica conformidad. Prepara el expediente que el proveedor o el organismo notificado evaluan. Cualquier texto emitido que insinúe lo contrario es un defecto de producto.",
+    "en": "Actaira neither declares nor certifies conformity. It prepares the file that the provider or the notified body assesses. Any emitted text implying otherwise is a product defect."
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplaza las Secciones 1, 2 y 3 del Capítulo III, y este artículo no está en ellas: la fecha original se mantiene. Algunos análisis secundarios dicen que la evaluación de la conformidad y el registro también se aplazan. Mientras no se pueda leer el texto consolidado, Actaira toma la fecha TEMPRANA, que es la única que no puede perjudicar al cliente: si la tardía fuera la correcta, el cliente habrá ido con adelanto; al revés, se habría quedado sin plazo.",
+    "en": "Regulation (EU) 2026/1744 defers Chapter III Sections 1, 2 and 3, and this article is not in them: the original date stands. Some secondary analyses say conformity assessment and registration are also deferred. Until the consolidated text can be read, Actaira takes the EARLIER date, the only one that cannot harm the customer: if the later one turns out to be right, the customer will simply have been early; the other way round, they would have run out of time."
+   }
+  },
+  {
+   "id": "AIA-046",
+   "articulo": "46",
+   "titulo": {
+    "es": "Exención del procedimiento de evaluación de la conformidad",
+    "en": "Derogation from conformity assessment procedure"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2026-08-02",
+   "alcance": "alto_riesgo",
+   "nivel": "organizativa",
+   "por_que_no_mas": {
+    "es": "La autorización excepcional para poner en servicio sin evaluación previa la concede una autoridad de vigilancia del mercado por razones de seguridad pública. Es un acto administrativo: se aporta o no se aporta.",
+    "en": "The exceptional authorisation to put into service without prior assessment is granted by a market surveillance authority on public security grounds. It is an administrative act: it is supplied or it is not."
+   }
+  },
+  {
+   "id": "AIA-047",
+   "articulo": "47",
+   "titulo": {
+    "es": "Declaración UE de conformidad",
+    "en": "EU declaration of conformity"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2026-08-02",
+   "alcance": "alto_riesgo",
+   "nivel": "generable",
+   "genera": [
+    "declaracion_ue_conformidad"
+   ],
+   "por_que_no_mas": {
+    "es": "El sistema redacta la declaración con los datos que ya tiene: identificación del sistema, normas aplicadas, organismo notificado si lo hubo. Nunca la da por buena: es una declaración bajo la responsabilidad del proveedor y su valor esta en la firma, no en el texto.",
+    "en": "The system drafts the declaration from data it already holds: system identification, standards applied, notified body if any. It never approves it: this is a declaration under the provider's responsibility and its value is in the signature, not the text."
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplaza las Secciones 1, 2 y 3 del Capítulo III, y este artículo no está en ellas: la fecha original se mantiene. Algunos análisis secundarios dicen que la evaluación de la conformidad y el registro también se aplazan. Mientras no se pueda leer el texto consolidado, Actaira toma la fecha TEMPRANA, que es la única que no puede perjudicar al cliente: si la tardía fuera la correcta, el cliente habrá ido con adelanto; al revés, se habría quedado sin plazo.",
+    "en": "Regulation (EU) 2026/1744 defers Chapter III Sections 1, 2 and 3, and this article is not in them: the original date stands. Some secondary analyses say conformity assessment and registration are also deferred. Until the consolidated text can be read, Actaira takes the EARLIER date, the only one that cannot harm the customer: if the later one turns out to be right, the customer will simply have been early; the other way round, they would have run out of time."
+   }
+  },
+  {
+   "id": "AIA-048",
+   "articulo": "48",
+   "titulo": {
+    "es": "Marcado CE",
+    "en": "CE marking"
+   },
+   "roles": [
+    "proveedor",
+    "fabricante_producto"
+   ],
+   "aplica_desde": "2026-08-02",
+   "alcance": "alto_riesgo",
+   "nivel": "organizativa",
+   "por_que_no_mas": {
+    "es": "El marcado CE va en el producto físico, en su embalaje o en la documentación que lo acompaña. Un repositorio puede declarar dónde se coloca y con qué número de organismo notificado; los bytes del marcado no están en él.",
+    "en": "The CE marking goes on the physical product, its packaging or the accompanying documentation. A repository can declare where it is affixed and with which notified body number; the marking's bytes are not in it."
+   },
+   "comprueba": [
+    "donde_se_coloca_declarado"
+   ]
+  },
+  {
+   "id": "AIA-049",
+   "articulo": "49",
+   "titulo": {
+    "es": "Registro en la base de datos de la UE",
+    "en": "Registration in the EU database"
+   },
+   "roles": [
+    "proveedor",
+    "responsable_despliegue"
+   ],
+   "aplica_desde": "2026-08-02",
+   "alcance": "alto_riesgo",
+   "nivel": "organizativa",
+   "por_que_no_mas": {
+    "es": "El registro ocurre en una base de datos de la Comisión a la que se accede con credenciales de la organización. El motor puede preparar el asiento y comprobar que el sistema registrado es el mismo que el evaluado, por digest; no puede registrar por nadie, y la cuarta negativa lo prohibiría aunque pudiera.",
+    "en": "Registration happens in a Commission database accessed with the organisation's own credentials. The engine can prepare the entry and check by digest that the registered system is the one assessed; it cannot register on anyone's behalf, and the fourth negative would forbid it even if it could."
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplaza las Secciones 1, 2 y 3 del Capítulo III, y este artículo no está en ellas: la fecha original se mantiene. Algunos análisis secundarios dicen que la evaluación de la conformidad y el registro también se aplazan. Mientras no se pueda leer el texto consolidado, Actaira toma la fecha TEMPRANA, que es la única que no puede perjudicar al cliente: si la tardía fuera la correcta, el cliente habrá ido con adelanto; al revés, se habría quedado sin plazo.",
+    "en": "Regulation (EU) 2026/1744 defers Chapter III Sections 1, 2 and 3, and this article is not in them: the original date stands. Some secondary analyses say conformity assessment and registration are also deferred. Until the consolidated text can be read, Actaira takes the EARLIER date, the only one that cannot harm the customer: if the later one turns out to be right, the customer will simply have been early; the other way round, they would have run out of time."
+   }
+  },
+  {
+   "id": "AIA-050",
+   "articulo": "50",
+   "titulo": {
+    "es": "Obligaciones de transparencia",
+    "en": "Transparency obligations"
+   },
+   "roles": [
+    "proveedor",
+    "responsable_despliegue"
+   ],
+   "aplica_desde": "2026-08-02",
+   "alcance": "todo_sistema",
+   "nivel": "maquina",
+   "comprueba": [
+    "aviso_interaccion_ia",
+    "marcado_legible_maquina",
+    "marcado_sobrevive_pipeline",
+    "divulgacion_ultraf"
+   ],
+   "medicion_propia": {
+    "es": "La durabilidad del marcado se mide contra el pipeline real del cliente, no en abstracto. Un marcado correcto en origen que el CDN borra en el paso tres es un no cumple, y el informe dice en que paso murio.",
+    "en": "Marking durability is measured against the customer's real pipeline, not in the abstract. A correct marking at source that the CDN strips at step three is a failure, and the report says at which step it died."
+   },
+   "vigente": true
+  },
+  {
+   "id": "AIA-052",
+   "articulo": "52",
+   "titulo": {
+    "es": "Procedimiento",
+    "en": "Procedure"
+   },
+   "roles": [
+    "proveedor_modelo"
+   ],
+   "aplica_desde": "2025-08-02",
+   "alcance": "modelo_riesgo_sistemico",
+   "nivel": "organizativa",
+   "por_que_no_mas": {
+    "es": "Notificar a la Comisión que un modelo alcanza el umbral de riesgo sistémico, y en su caso alegar lo contrario, es un trámite con la Comisión. Lo comprobable en código es la cifra de cómputo declarada, que es lo que dispara el umbral.",
+    "en": "Notifying the Commission that a model reaches the systemic risk threshold, and where applicable arguing otherwise, is a procedure with the Commission. What is checkable in code is the declared compute figure, which is what triggers the threshold."
+   },
+   "comprueba": [
+    "computo_declarado"
+   ]
+  },
+  {
+   "id": "AIA-053",
+   "articulo": "53",
+   "titulo": {
+    "es": "Obligaciones de los proveedores de modelos de IA de uso general",
+    "en": "Obligations for providers of general-purpose AI models"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2025-08-02",
+   "alcance": "modelo_uso_general",
+   "nivel": "generable",
+   "genera": [
+    "documentacion_tecnica_modelo",
+    "informacion_para_integradores",
+    "politica_derechos_autor",
+    "resumen_datos_entrenamiento"
+   ],
+   "vigente": true
+  },
+  {
+   "id": "AIA-054",
+   "articulo": "54",
+   "titulo": {
+    "es": "Representantes autorizados de los proveedores de modelos de IA de uso general",
+    "en": "Authorised representatives of providers of general-purpose AI models"
+   },
+   "roles": [
+    "proveedor_modelo",
+    "representante_autorizado"
+   ],
+   "aplica_desde": "2025-08-02",
+   "alcance": "modelo_uso_general",
+   "nivel": "organizativa",
+   "por_que_no_mas": {
+    "es": "Un proveedor de fuera de la Unión designa representante por mandato escrito antes de introducir el modelo. Es un acto jurídico, no un artefacto de código.",
+    "en": "A provider established outside the Union appoints a representative by written mandate before placing the model on the market. It is a legal act, not a code artefact."
+   },
+   "comprueba": [
+    "representante_declarado"
+   ]
+  },
+  {
+   "id": "AIA-055",
+   "articulo": "55",
+   "titulo": {
+    "es": "Obligaciones de proveedores de modelos con riesgo sistémico",
+    "en": "Obligations for providers of models with systemic risk"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2025-08-02",
+   "alcance": "modelo_riesgo_sistemico",
+   "nivel": "maquina",
+   "comprueba": [
+    "evaluacion_adversarial_documentada",
+    "notificacion_incidentes_activa",
+    "ciberseguridad_modelo"
+   ],
+   "vigente": true
+  },
+  {
+   "id": "AIA-059",
+   "articulo": "59",
+   "titulo": {
+    "es": "Tratamiento ulterior de datos personales para el desarrollo de determinados sistemas de IA en favor del interés público en el espacio controlado de pruebas para la IA",
+    "en": "Further processing of personal data for developing certain AI systems in the public interest in the AI regulatory sandbox"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2026-08-02",
+   "alcance": "alto_riesgo",
+   "nivel": "juzgada",
+   "por_que_no_mas": {
+    "es": "Tratar datos personales recogidos para otra finalidad dentro de un espacio controlado de pruebas exige interés público, base jurídica y una lista de condiciones. Decidir si se cumplen es un juicio jurídico; lo que el código muestra es qué datos entran y de dónde vienen.",
+    "en": "Further processing personal data collected for another purpose inside a regulatory sandbox requires public interest, a legal basis and a list of conditions. Deciding whether they are met is a legal judgement; what code shows is which data goes in and where it comes from."
+   },
+   "comprueba": [
+    "origen_de_los_datos_declarado"
+   ]
+  },
+  {
+   "id": "AIA-060",
+   "articulo": "60",
+   "titulo": {
+    "es": "Pruebas de sistemas de IA de alto riesgo en condiciones reales fuera de los espacios controlados de pruebas para la IA",
+    "en": "Testing of high-risk AI systems in real world conditions outside AI regulatory sandboxes"
+   },
+   "roles": [
+    "proveedor",
+    "responsable_despliegue"
+   ],
+   "aplica_desde": "2026-08-02",
+   "alcance": "alto_riesgo",
+   "nivel": "organizativa",
+   "por_que_no_mas": {
+    "es": "Probar en condiciones reales fuera de un espacio controlado exige plan de pruebas registrado, supervisión humana, plazo máximo y capacidad de revertir. Lo comprobable es que el plan exista y esté versionado; que se siga, no.",
+    "en": "Testing in real world conditions outside a sandbox requires a registered testing plan, human oversight, a maximum period and the ability to reverse. What is checkable is that the plan exists and is versioned; that it is followed, no."
+   },
+   "comprueba": [
+    "plan_de_pruebas_declarado",
+    "plazo_maximo_declarado"
+   ]
+  },
+  {
+   "id": "AIA-061",
+   "articulo": "61",
+   "titulo": {
+    "es": "Consentimiento informado para participar en pruebas en condiciones reales fuera de los espacios controlados de pruebas para la IA",
+    "en": "Informed consent to participate in testing in real world conditions outside AI regulatory sandboxes"
+   },
+   "roles": [
+    "proveedor",
+    "responsable_despliegue"
+   ],
+   "aplica_desde": "2026-08-02",
+   "alcance": "alto_riesgo",
+   "nivel": "organizativa",
+   "por_que_no_mas": {
+    "es": "El consentimiento informado de quien participa en una prueba en condiciones reales se firma en papel o en pantalla, y se conserva. Un repositorio puede declarar dónde se guarda y qué se le cuenta al participante.",
+    "en": "The informed consent of someone taking part in real world testing is signed on paper or on screen, and kept. A repository can declare where it is stored and what the participant is told."
+   },
+   "comprueba": [
+    "donde_se_guarda_el_consentimiento"
+   ]
+  },
+  {
+   "id": "AIA-063",
+   "articulo": "63",
+   "titulo": {
+    "es": "Excepciones para operadores específicos",
+    "en": "Derogations for specific operators"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2026-08-02",
+   "alcance": "alto_riesgo",
+   "nivel": "organizativa",
+   "por_que_no_mas": {
+    "es": "Las microempresas pueden cumplir de forma simplificada determinados elementos del sistema de gestión de la calidad. Acogerse a ello es una declaración sobre el tamaño de la empresa, no sobre su código.",
+    "en": "Microenterprises may comply in a simplified manner with certain elements of the quality management system. Relying on it is a declaration about company size, not about its code."
+   }
+  },
+  {
+   "id": "AIA-072",
+   "articulo": "72",
+   "titulo": {
+    "es": "Vigilancia poscomercialización",
+    "en": "Post-market monitoring"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2026-08-02",
+   "alcance": "alto_riesgo",
+   "nivel": "maquina",
+   "comprueba": [
+    "senal_declarada_emitida",
+    "umbral_deteccion_cableado",
+    "plan_vigilancia_presente"
+   ],
+   "regla_central": {
+    "es": "No se comprueba que exista un plan. Se comprueba que la senal que el plan dice recoger salga del sistema desplegado.",
+    "en": "It is not checked that a plan exists. It is checked that the signal the plan claims to collect actually leaves the deployed system."
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplaza las Secciones 1, 2 y 3 del Capítulo III, y este artículo no está en ellas: la fecha original se mantiene. Algunos análisis secundarios dicen que la evaluación de la conformidad y el registro también se aplazan. Mientras no se pueda leer el texto consolidado, Actaira toma la fecha TEMPRANA, que es la única que no puede perjudicar al cliente: si la tardía fuera la correcta, el cliente habrá ido con adelanto; al revés, se habría quedado sin plazo.",
+    "en": "Regulation (EU) 2026/1744 defers Chapter III Sections 1, 2 and 3, and this article is not in them: the original date stands. Some secondary analyses say conformity assessment and registration are also deferred. Until the consolidated text can be read, Actaira takes the EARLIER date, the only one that cannot harm the customer: if the later one turns out to be right, the customer will simply have been early; the other way round, they would have run out of time."
+   }
+  },
+  {
+   "id": "AIA-073",
+   "articulo": "73",
+   "titulo": {
+    "es": "Notificación de incidentes graves",
+    "en": "Reporting of serious incidents"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2026-08-02",
+   "alcance": "alto_riesgo",
+   "nivel": "maquina",
+   "comprueba": [
+    "ruta_alerta_a_incidente",
+    "reloj_de_plazo_activo"
+   ],
+   "plazos_dias": {
+    "general": 15,
+    "infraccion_generalizada": 2,
+    "fallecimiento": 10
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplaza las Secciones 1, 2 y 3 del Capítulo III, y este artículo no está en ellas: la fecha original se mantiene. Algunos análisis secundarios dicen que la evaluación de la conformidad y el registro también se aplazan. Mientras no se pueda leer el texto consolidado, Actaira toma la fecha TEMPRANA, que es la única que no puede perjudicar al cliente: si la tardía fuera la correcta, el cliente habrá ido con adelanto; al revés, se habría quedado sin plazo.",
+    "en": "Regulation (EU) 2026/1744 defers Chapter III Sections 1, 2 and 3, and this article is not in them: the original date stands. Some secondary analyses say conformity assessment and registration are also deferred. Until the consolidated text can be read, Actaira takes the EARLIER date, the only one that cannot harm the customer: if the later one turns out to be right, the customer will simply have been early; the other way round, they would have run out of time."
+   }
+  },
+  {
+   "id": "AIA-085",
+   "articulo": "85",
+   "titulo": {
+    "es": "Derecho a presentar una reclamación ante una autoridad de vigilancia del mercado",
+    "en": "Right to lodge a complaint with a market surveillance authority"
+   },
+   "roles": [
+    "proveedor",
+    "responsable_despliegue"
+   ],
+   "aplica_desde": "2026-08-02",
+   "alcance": "todo_sistema",
+   "nivel": "organizativa",
+   "por_que_no_mas": {
+    "es": "El derecho es de la persona afectada: presentar una reclamación ante la autoridad de vigilancia del mercado. Lo que ata al operador es tener por dónde recibirla y a quién escalarla, y eso sí se declara.",
+    "en": "The right belongs to the affected person: lodging a complaint with the market surveillance authority. What binds the operator is having somewhere to receive it and someone to escalate it to, and that is declared."
+   },
+   "comprueba": [
+    "canal_de_reclamacion_declarado"
+   ]
+  },
+  {
+   "id": "AIA-086",
+   "articulo": "86",
+   "titulo": {
+    "es": "Derecho a explicación de decisiones tomadas individualmente",
+    "en": "Right to explanation of individual decision-making"
+   },
+   "roles": [
+    "responsable_despliegue"
+   ],
+   "aplica_desde": "2027-12-02",
+   "alcance": "alto_riesgo",
+   "nivel": "juzgada",
+   "por_que_no_mas": {
+    "es": "Explicar a una persona una decisión individual que la afecta significativamente, en términos claros y con el papel del sistema en el procedimiento, es un texto que escribe una persona. Lo comprobable es que exista una ruta que lo produzca y qué datos alimenta.",
+    "en": "Explaining to a person an individual decision that significantly affects them, in clear terms and with the system's role in the procedure, is a text a person writes. What is checkable is that a path producing it exists and what data feeds it."
+   },
+   "aplica_desde_por_via": {
+    "anexo_iii": "2027-12-02",
+    "anexo_i": "2028-08-02"
+   },
+   "nota_de_fecha": {
+    "es": "El Reglamento (UE) 2026/1744 aplazó las Secciones 1, 2 y 3 del Capítulo III con dos fechas: 2 de diciembre de 2027 para los sistemas del Anexo III (artículo 6.2) y 2 de agosto de 2028 para los que son componente de seguridad de un producto ya regulado (Anexo I, artículo 6.1). Publicar una sola fecha obliga a elegir, y las dos elecciones mienten a la mitad de los clientes.",
+    "en": "Regulation (EU) 2026/1744 deferred Chapter III Sections 1, 2 and 3 with two dates: 2 December 2027 for Annex III systems (Article 6(2)) and 2 August 2028 for those that are a safety component of an already regulated product (Annex I, Article 6(1)). Publishing a single date forces a choice, and either choice lies to half the customers."
+   },
+   "comprueba": [
+    "ruta_de_explicacion_declarada"
+   ]
+  },
+  {
+   "id": "AIA-087",
+   "articulo": "87",
+   "titulo": {
+    "es": "Denuncia de infracciones y protección de los denunciantes",
+    "en": "Reporting of infringements and protection of reporting persons"
+   },
+   "roles": [
+    "proveedor",
+    "responsable_despliegue"
+   ],
+   "aplica_desde": "2026-08-02",
+   "alcance": "todo_sistema",
+   "nivel": "organizativa",
+   "por_que_no_mas": {
+    "es": "La denuncia de infracciones y la protección de quien denuncia se rigen por la Directiva (UE) 2019/1937. Lo que ata aquí es tener canal interno y no represaliar, y eso se declara y se audita, no se lee en el código.",
+    "en": "Reporting infringements and protecting reporting persons are governed by Directive (EU) 2019/1937. What binds here is having an internal channel and not retaliating, and that is declared and audited, not read in code."
+   },
+   "comprueba": [
+    "canal_interno_declarado"
+   ]
+  },
+  {
+   "id": "AIA-091",
+   "articulo": "91",
+   "titulo": {
+    "es": "Poderes para solicitar documentación e información",
+    "en": "Power to request documentation and information"
+   },
+   "roles": [
+    "proveedor_modelo"
+   ],
+   "aplica_desde": "2025-08-02",
+   "alcance": "modelo_uso_general",
+   "nivel": "organizativa",
+   "por_que_no_mas": {
+    "es": "La Comisión puede pedir al proveedor del modelo la documentación del artículo 53 y cualquier información adicional. El deber es entregarla; lo comprobable es que la documentación exista, que es el artículo 53.",
+    "en": "The Commission may request from the model provider the Article 53 documentation and any additional information. The duty is to hand it over; what is checkable is that the documentation exists, which is Article 53."
+   }
+  },
+  {
+   "id": "AIA-092",
+   "articulo": "92",
+   "titulo": {
+    "es": "Poderes para realizar evaluaciones",
+    "en": "Power to conduct evaluations"
+   },
+   "roles": [
+    "proveedor_modelo"
+   ],
+   "aplica_desde": "2025-08-02",
+   "alcance": "modelo_riesgo_sistemico",
+   "nivel": "organizativa",
+   "por_que_no_mas": {
+    "es": "La Comisión puede evaluar el modelo, incluso mediante pruebas de acceso al mismo. El deber es facilitar el acceso; lo comprobable es que exista una vía de acceso técnica declarada.",
+    "en": "The Commission may evaluate the model, including through access testing. The duty is to enable access; what is checkable is that a declared technical access path exists."
+   },
+   "comprueba": [
+    "via_de_acceso_declarada"
+   ]
+  },
+  {
+   "id": "AIA-093",
+   "articulo": "93",
+   "titulo": {
+    "es": "Poderes para solicitar la adopción de medidas",
+    "en": "Power to request measures"
+   },
+   "roles": [
+    "proveedor_modelo"
+   ],
+   "aplica_desde": "2025-08-02",
+   "alcance": "modelo_uso_general",
+   "nivel": "organizativa",
+   "por_que_no_mas": {
+    "es": "La Comisión puede exigir medidas correctoras, la restricción del modelo o su retirada. Obedecer es conducta frente a la Comisión; lo comprobable es que exista una ruta de retirada del modelo.",
+    "en": "The Commission may require corrective measures, restriction of the model or its withdrawal. Obeying is conduct towards the Commission; what is checkable is that a model withdrawal path exists."
+   },
+   "comprueba": [
+    "ruta_de_retirada_del_modelo"
+   ]
+  },
+  {
+   "id": "AIA-095",
+   "articulo": "95",
+   "titulo": {
+    "es": "Códigos de conducta para la aplicación voluntaria de requisitos específicos",
+    "en": "Codes of conduct for voluntary application of specific requirements"
+   },
+   "roles": [
+    "proveedor",
+    "responsable_despliegue"
+   ],
+   "aplica_desde": "2026-08-02",
+   "alcance": "todo_sistema",
+   "nivel": "organizativa",
+   "por_que_no_mas": {
+    "es": "Los códigos de conducta son de aplicación VOLUNTARIA: extienden requisitos del alto riesgo a sistemas que no lo son. Adherirse crea el deber de cumplir lo que uno mismo se comprometió a cumplir, y eso se declara.",
+    "en": "Codes of conduct are VOLUNTARY: they extend high-risk requirements to systems that are not high-risk. Adhering creates the duty to comply with what one committed to, and that is declared."
+   },
+   "comprueba": [
+    "adhesion_declarada"
+   ]
+  },
+  {
+   "id": "AIA-004A",
+   "articulo": "4a",
+   "titulo": {
+    "es": "Tratamiento de datos para la detección y corrección de sesgos",
+    "en": "Processing of data for bias detection and correction"
+   },
+   "roles": [
+    "proveedor",
+    "responsable_despliegue"
+   ],
+   "aplica_desde": "2026-08-02",
+   "alcance": "todo_sistema",
+   "nivel": "juzgada",
+   "anadido_por": "Reglamento (UE) 2026/1744",
+   "comprueba": [
+    "categorias_especiales_declaradas",
+    "borrado_tras_la_correccion",
+    "acceso_restringido_declarado"
+   ],
+   "por_que_no_mas": {
+    "es": "Es una PERMISIÓN con condiciones, no un deber: autoriza tratar categorías especiales de datos personales cuando hacen falta para detectar y corregir sesgos, y sólo si son estrictamente necesarias, con limitaciones técnicas, medidas de seguridad, acceso restringido, borrado después y justificación documentada. Que las condiciones se cumplan es un juicio jurídico; lo que el código enseña es qué datos entran, quién los toca y si hay borrado.",
+    "en": "It is a PERMISSION with conditions, not a duty: it authorises processing special categories of personal data where needed to detect and correct bias, and only where strictly necessary, with technical limitations, security measures, restricted access, deletion afterwards and documented justification. Whether the conditions are met is a legal judgement; what code shows is which data goes in, who touches it and whether there is deletion."
+   }
+  },
+  {
+   "id": "AIA-060A",
+   "articulo": "60a",
+   "titulo": {
+    "es": "Pruebas en condiciones reales de los sistemas de la sección B",
+    "en": "Testing in real world conditions of Section B systems"
+   },
+   "roles": [
+    "proveedor"
+   ],
+   "aplica_desde": "2028-08-02",
+   "alcance": "alto_riesgo",
+   "nivel": "organizativa",
+   "anadido_por": "Reglamento (UE) 2026/1744",
+   "comprueba": [
+    "plan_de_pruebas_declarado"
+   ],
+   "por_que_no_mas": {
+    "es": "Extiende el régimen de pruebas en condiciones reales a los sistemas que son componente de seguridad de un producto regulado por la sección B del Anexo I. La conducta es la misma que la del artículo 60 y lo comprobable también: que el plan exista y esté versionado.",
+    "en": "It extends the real world testing regime to systems that are a safety component of a product regulated under Annex I Section B. The conduct is the same as Article 60's and so is what can be checked: that the plan exists and is versioned."
+   }
+  }
+ ],
+ "anexos": [
+  {
+   "id": "ANX-I",
+   "titulo": {
+    "es": "Productos regulados cuya IA de seguridad puede ser de alto riesgo",
+    "en": "Regulated products whose safety AI may be high-risk"
+   },
+   "funcion": "clasifica",
+   "toca_codigo": false,
+   "concreta": [
+    "AIA-006"
+   ]
+  },
+  {
+   "id": "ANX-II",
+   "titulo": {
+    "es": "Delitos relacionados con determinados usos biométricos",
+    "en": "Offences related to certain biometric uses"
+   },
+   "funcion": "clasifica",
+   "toca_codigo": false,
+   "concreta": [
+    "AIA-005"
+   ]
+  },
+  {
+   "id": "ANX-III",
+   "titulo": {
+    "es": "Lista de usos de alto riesgo",
+    "en": "List of high-risk use cases"
+   },
+   "funcion": "activa las obligaciones tecnicas",
+   "toca_codigo": false,
+   "concreta": [
+    "AIA-006"
+   ],
+   "nota": {
+    "es": "No toca código, pero es el interruptor: si el uso está aquí, se encienden los artículos 9 a 15 enteros.",
+    "en": "It does not touch code, but it is the switch: if the use is listed here, Articles 9 to 15 light up in full."
+   }
+  },
+  {
+   "id": "ANX-IV",
+   "titulo": {
+    "es": "Contenido del expediente técnico",
+    "en": "Content of the technical documentation"
+   },
+   "funcion": "contenido documental",
+   "toca_codigo": true,
+   "concreta": [
+    "AIA-011"
+   ],
+   "nota": {
+    "es": "No se comprueba, se GENERA: exige extraer evidencia del código, la arquitectura y las pruebas.",
+    "en": "It is not checked, it is GENERATED: it requires extracting evidence from code, architecture and tests."
+   }
+  },
+  {
+   "id": "ANX-V",
+   "titulo": {
+    "es": "Contenido de la declaración UE de conformidad",
+    "en": "Content of the EU declaration of conformity"
+   },
+   "funcion": "formulario",
+   "toca_codigo": false,
+   "concreta": [
+    "AIA-047"
+   ]
+  },
+  {
+   "id": "ANX-VI",
+   "titulo": {
+    "es": "Evaluación de conformidad mediante control interno",
+    "en": "Conformity assessment based on internal control"
+   },
+   "funcion": "procedimiento",
+   "toca_codigo": true,
+   "concreta": [
+    "AIA-043"
+   ],
+   "nota": {
+    "es": "Pruebas más documentación. Es la ruta que sigue la mayoría y la que el expediente de Actaira alimenta.",
+    "en": "Tests plus documentation. It is the route most take and the one Actaira's file feeds."
+   }
+  },
+  {
+   "id": "ANX-VII",
+   "titulo": {
+    "es": "Evaluación con organismo notificado",
+    "en": "Conformity assessment with a notified body"
+   },
+   "funcion": "auditoria",
+   "toca_codigo": false,
+   "concreta": [
+    "AIA-043"
+   ]
+  },
+  {
+   "id": "ANX-VIII",
+   "titulo": {
+    "es": "Datos para registrar sistemas de alto riesgo",
+    "en": "Information for registering high-risk systems"
+   },
+   "funcion": "formulario",
+   "toca_codigo": false,
+   "concreta": [
+    "AIA-049"
+   ]
+  },
+  {
+   "id": "ANX-IX",
+   "titulo": {
+    "es": "Registro de pruebas en condiciones reales",
+    "en": "Registration of real-world testing"
+   },
+   "funcion": "proceso",
+   "toca_codigo": false,
+   "concreta": [
+    "AIA-049"
+   ]
+  },
+  {
+   "id": "ANX-X",
+   "titulo": {
+    "es": "Grandes sistemas europeos de justicia, fronteras y seguridad",
+    "en": "EU large-scale IT systems for justice, borders and security"
+   },
+   "funcion": "ambito",
+   "toca_codigo": false,
+   "concreta": [
+    "AIA-006"
+   ],
+   "nota": {
+    "es": "Normalmente irrelevante para una empresa. Se cataloga para no fingir que el Reglamento tiene menos anexos de los que tiene.",
+    "en": "Usually irrelevant for a company. Catalogued so as not to pretend the Regulation has fewer annexes than it does."
+   }
+  },
+  {
+   "id": "ANX-XI",
+   "titulo": {
+    "es": "Documentación técnica de modelos de uso general",
+    "en": "Technical documentation for general-purpose AI models"
+   },
+   "funcion": "contenido documental",
+   "toca_codigo": true,
+   "concreta": [
+    "AIA-053"
+   ]
+  },
+  {
+   "id": "ANX-XII",
+   "titulo": {
+    "es": "Información que el proveedor GPAI entrega a integradores",
+    "en": "Information a GPAI provider gives to downstream providers"
+   },
+   "funcion": "contenido documental",
+   "toca_codigo": true,
+   "concreta": [
+    "AIA-053"
+   ]
+  },
+  {
+   "id": "ANX-XIII",
+   "titulo": {
+    "es": "Criterios para considerar un modelo de riesgo sistémico",
+    "en": "Criteria for designating a model with systemic risk"
+   },
+   "funcion": "clasifica",
+   "toca_codigo": false,
+   "concreta": [
+    "AIA-055"
+   ]
+  },
+  {
+   "id": "ANX-XIV",
+   "titulo": {
+    "es": "Lista de códigos, categorías y tipos de sistemas de IA para el procedimiento de notificación del artículo 30, que delimita el alcance de la designación como organismo notificado",
+    "en": "List of codes, categories and corresponding types of AI systems for the purpose of the notification procedure referred to in Article 30 specifying the scope of the designation as notified bodies"
+   },
+   "funcion": "nomenclatura",
+   "toca_codigo": false,
+   "concreta": [],
+   "introducido_por": "32026R1744",
+   "nota": {
+    "es": "Lo introdujo el Reglamento (UE) 2026/1744. Agrupa los sistemas en tres familias de códigos: AIP para los sujetos a la Sección A del Anexo I, AIB para los biométricos (AIB 0201 identificación remota, AIB 0202 categorización, AIB 0203 reconocimiento de emociones) y AIH por tecnología (AIH 0101 simbólica, AIH 0201 a 0205 aprendizaje automático, AIH 0301 generativa, AIH 0401 residual de tecnologías emergentes, donde el propio Reglamento cita la IA agéntica como ejemplo y no como definición). NO ata a ningún operador: es el vocabulario con el que un organismo de evaluación de la conformidad pide su designación por el artículo 29 y con el que la autoridad notificante lo notifica por el artículo 30. Se cataloga con `concreta` vacío porque esa lista vacía es información: dice que el anexo existe y que no le toca a un proveedor ni a un responsable del despliegue, que es distinto de no estar.",
+    "en": "Introduced by Regulation (EU) 2026/1744. It groups systems into three code families: AIP for those under Annex I Section A, AIB for biometric ones (AIB 0201 remote identification, AIB 0202 categorisation, AIB 0203 emotion recognition) and AIH by technology (AIH 0101 symbolic, AIH 0201 to 0205 machine learning, AIH 0301 generative, AIH 0401 a residual code for emerging technologies, where the Regulation names agentic AI as an example and not as a definition). It binds NO operator: it is the vocabulary a conformity assessment body uses to apply for designation under Article 29 and the notifying authority uses to notify it under Article 30. It is catalogued with an empty `concreta` because that empty list is information: it says the annex exists and that it does not fall on a provider or a deployer, which is different from not being there."
+   }
+  }
+ ],
+ "nota_de_anexos": {
+  "es": "Los anexos no son controles independientes: concretan artículos. Por eso viven en su propia lista con el campo `concreta`, y no como obligaciones. Un motor que tratara el Anexo IV como una obligación más acabaría contándolo dos veces junto al artículo 11.\n\nCORRECCIÓN DEL 21-09-2026, Y LA LECCIÓN IMPORTA MÁS QUE EL DATO. Este campo decía, con estas palabras, que «el Reglamento tiene TRECE anexos, del I al XIII» y que el ANX-XIV «no existe», y decía además que eso estaba «contrastado contra el Diario Oficial». Las dos afirmaciones eran falsas a la vez y por el mismo motivo: se contrastó contra el texto ORIGINAL del Reglamento (UE) 2024/1689, donde efectivamente hay trece anexos, y no contra el texto en vigor. El Reglamento (UE) 2026/1744 (DO de 24-07-2026, en vigor desde el 27-07-2026) inserta un Anexo XIV con los códigos AIP, AIB y AIH del procedimiento de notificación del artículo 30.\n\nLo que hizo daño no fue equivocarse de anexo: fue publicar una certeza con una procedencia inventada. «Contrastado contra el Diario Oficial» no dice contra QUÉ versión, y sin esa palabra la frase no se puede comprobar ni desmentir. Por eso el bloque `instrumento` de este fichero ya no nombra un solo acto: nombra el acto base y cada acto modificativo con su CELEX, su fecha y lo que cambió, y `version_consolidada` dice hasta dónde llega lo que hay aquí dentro. Una afirmación normativa sin versión no es una afirmación normativa.",
+  "en": "Annexes are not independent controls: they concretise articles. That is why they live in their own list with a `concreta` field, not as obligations. An engine treating Annex IV as one more obligation would end up counting it twice alongside Article 11.\n\nCORRECTION OF 2026-09-21, AND THE LESSON MATTERS MORE THAN THE FACT. This field stated, in these words, that «the Regulation has THIRTEEN annexes, I to XIII» and that ANX-XIV «does not exist», and it also stated this was «checked against the Official Journal». Both claims were false at once and for the same reason: the check was made against the ORIGINAL text of Regulation (EU) 2024/1689, where there are indeed thirteen annexes, and not against the text in force. Regulation (EU) 2026/1744 (OJ of 2026-07-24, in force since 2026-07-27) inserts an Annex XIV with the AIP, AIB and AIH codes of the Article 30 notification procedure.\n\nWhat did the damage was not being wrong about an annex: it was publishing a certainty with an invented provenance. «Checked against the Official Journal» does not say against WHICH version, and without that word the sentence can be neither verified nor refuted. That is why this file's `instrumento` block no longer names a single act: it names the base act and every amending act with its CELEX, its date and what it changed, and `version_consolidada` says how far what is in here goes. A normative claim without a version is not a normative claim."
+ },
+ "anexo_iii_ambitos": [
+  {
+   "id": "AIII-1",
+   "titulo": {
+    "es": "Biometría",
+    "en": "Biometrics"
+   },
+   "nota": {
+    "es": "Solo en la medida en que su uso esté permitido por el Derecho aplicable. Excluida la verificación biométrica cuya única finalidad es confirmar que alguien es quien dice ser.",
+    "en": "Only insofar as its use is permitted by applicable law. Biometric verification whose sole purpose is confirming a person is who they claim to be is excluded."
+   }
+  },
+  {
+   "id": "AIII-2",
+   "titulo": {
+    "es": "Infraestructuras críticas",
+    "en": "Critical infrastructure"
+   }
+  },
+  {
+   "id": "AIII-3",
+   "titulo": {
+    "es": "Educación y formación profesional",
+    "en": "Education and vocational training"
+   }
+  },
+  {
+   "id": "AIII-4",
+   "titulo": {
+    "es": "Empleo, gestión de los trabajadores y acceso al autoempleo",
+    "en": "Employment, workers management and access to self-employment"
+   }
+  },
+  {
+   "id": "AIII-5",
+   "titulo": {
+    "es": "Acceso a servicios privados esenciales y a servicios y prestaciones públicos esenciales",
+    "en": "Access to essential private services and essential public services and benefits"
+   }
+  },
+  {
+   "id": "AIII-6",
+   "titulo": {
+    "es": "Garantía del cumplimiento del Derecho",
+    "en": "Law enforcement"
+   }
+  },
+  {
+   "id": "AIII-7",
+   "titulo": {
+    "es": "Migración, asilo y gestión del control fronterizo",
+    "en": "Migration, asylum and border control management"
+   }
+  },
+  {
+   "id": "AIII-8",
+   "titulo": {
+    "es": "Administración de justicia y procesos democraticos",
+    "en": "Administration of justice and democratic processes"
+   }
+  }
+ ],
+ "exclusiones_de_ambito": [
+  {
+   "id": "EXC-2-12",
+   "fuente": "articulo 2, apartado 12",
+   "titulo": {
+    "es": "Sistemas divulgados con licencia libre y de código abierto",
+    "en": "Systems released under free and open-source licences"
+   },
+   "regla": {
+    "es": "El Reglamento NO se aplica a los sistemas de IA divulgados con licencias libres y de código abierto, salvo que se introduzcan en el mercado o se pongan en servicio como sistemas de alto riesgo, o que entren en el ámbito del artículo 5 o del artículo 50.",
+    "en": "The Regulation does NOT apply to AI systems released under free and open-source licences, unless they are placed on the market or put into service as high-risk systems, or fall within the scope of Article 5 or Article 50."
+   },
+   "por_que_importa": {
+    "es": "Es la única exclusión que puede vaciar el plan entero de una organización, y casi ningún catálogo la modela. Un motor que no la tenga le dira a un proyecto de código abierto que le atan veinte obligaciones que no le atan.",
+    "en": "It is the only exclusion that can empty an organisation's entire plan, and almost no catalogue models it. An engine without it will tell an open-source project that twenty obligations bind it when they do not."
+   }
+  },
+  {
+   "id": "EXC-2-6",
+   "fuente": "articulo 2, apartado 6",
+   "titulo": {
+    "es": "Investigación y desarrollo científicos como única finalidad",
+    "en": "Scientific research and development as sole purpose"
+   },
+   "regla": {
+    "es": "El Reglamento no se aplica a los sistemas o modelos de IA desarrollados y puestos en servicio con la investigación y el desarrollo científicos como única finalidad.",
+    "en": "The Regulation does not apply to AI systems or models developed and put into service for the sole purpose of scientific research and development."
+   }
+  },
+  {
+   "id": "EXC-2-3",
+   "fuente": "articulo 2, apartado 3",
+   "titulo": {
+    "es": "Fines militares, de defensa o de seguridad nacional",
+    "en": "Military, defence or national security purposes"
+   },
+   "regla": {
+    "es": "El Reglamento no se aplica a los sistemas de IA introducidos o utilizados exclusivamente con fines militares, de defensa o de seguridad nacional.",
+    "en": "The Regulation does not apply to AI systems placed on the market or used exclusively for military, defence or national security purposes."
+   }
+  }
+ ],
+ "calendario": {
+  "fuente": "Reglamento (UE) 2024/1689, artículo 113, modificado por el Reglamento (UE) 2026/1744 (Ómnibus digital sobre IA, de 8 de julio de 2026, en vigor el 27 de julio de 2026)",
+  "fechas": {
+   "2025-02-02": {
+    "es": "Capítulos I y II: prácticas prohibidas y alfabetización",
+    "en": "Chapters I and II: prohibited practices and AI literacy"
+   },
+   "2025-08-02": {
+    "es": "Capítulo V: modelos de IA de uso general, y gobernanza",
+    "en": "Chapter V: general-purpose AI models, and governance"
+   },
+   "2026-08-02": {
+    "es": "aplicación general del Reglamento",
+    "en": "general application of the Regulation"
+   },
+   "2026-12-02": {
+    "es": "las dos prohibiciones nuevas del artículo 5(1), letras ba) y bb), tras su período transitorio",
+    "en": "the two new prohibitions in Article 5(1)(ba) and (bb), after their transitional period"
+   },
+   "2027-12-02": {
+    "es": "Capítulo III, Secciones 1 a 3, para los sistemas del Anexo III (artículo 6.2)",
+    "en": "Chapter III Sections 1 to 3, for Annex III systems (Article 6(2))"
+   },
+   "2028-08-02": {
+    "es": "Capítulo III, Secciones 1 a 3, para los del Anexo I (artículo 6.1)",
+    "en": "Chapter III Sections 1 to 3, for Annex I ones (Article 6(1))"
+   }
+  },
+  "por_que_dos_fechas_y_no_una": {
+   "es": "El Reglamento (UE) 2026/1744 aplazó las Secciones 1, 2 y 3 del Capítulo III con dos fechas: 2 de diciembre de 2027 para los sistemas del Anexo III (artículo 6.2) y 2 de agosto de 2028 para los que son componente de seguridad de un producto ya regulado (Anexo I, artículo 6.1). Publicar una sola fecha obliga a elegir, y las dos elecciones mienten a la mitad de los clientes.",
+   "en": "Regulation (EU) 2026/1744 deferred Chapter III Sections 1, 2 and 3 with two dates: 2 December 2027 for Annex III systems (Article 6(2)) and 2 August 2028 for those that are a safety component of an already regulated product (Annex I, Article 6(1)). Publishing a single date forces a choice, and either choice lies to half the customers."
+  },
+  "donde_no_llega_el_aplazamiento": {
+   "es": "El Reglamento (UE) 2026/1744 aplaza las Secciones 1, 2 y 3 del Capítulo III, y este artículo no está en ellas: la fecha original se mantiene. Algunos análisis secundarios dicen que la evaluación de la conformidad y el registro también se aplazan. Mientras no se pueda leer el texto consolidado, Actaira toma la fecha TEMPRANA, que es la única que no puede perjudicar al cliente: si la tardía fuera la correcta, el cliente habrá ido con adelanto; al revés, se habría quedado sin plazo.",
+   "en": "Regulation (EU) 2026/1744 defers Chapter III Sections 1, 2 and 3, and this article is not in them: the original date stands. Some secondary analyses say conformity assessment and registration are also deferred. Until the consolidated text can be read, Actaira takes the EARLIER date, the only one that cannot harm the customer: if the later one turns out to be right, the customer will simply have been early; the other way round, they would have run out of time."
+  }
+ }
+}

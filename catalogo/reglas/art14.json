@@ -1,0 +1,120 @@
+{
+  "paquete": "actaira/art14",
+  "version": "1.0.0",
+  "autor": "Actaira",
+  "licencia": "Apache-2.0",
+  "obligacion": "AIA-014",
+  "nota_de_autoria": {
+    "es": "Cada regla y cada remediación de este fichero las escribió una persona. Un modelo puede proponer el borrador de una regla fuera de línea; nunca redacta reglas ni remediaciones en ejecución. Segunda negativa.",
+    "en": "Every rule and every remediation in this file was written by a person. A model may draft a candidate rule offline; it never writes rules or remediations at runtime. Second negative."
+  },
+  "reglas": [
+    {
+      "id": "ACT-14-APROBACION",
+      "version": "1.0.0",
+      "tipo": "contenido",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "una ruta por la que una persona aprueba o rechaza",
+        "en": "a path by which a person approves or rejects"
+      },
+      "titulo": {
+        "es": "No hay ruta de aprobación humana",
+        "en": "There is no human approval path"
+      },
+      "remediacion": {
+        "es": "El artículo 14 exige mecanismos EFECTIVOS de intervención. No basta con una política que diga que habrá supervisión: tiene que existir el camino en el producto por el que una persona aprueba o rechaza antes de que la decisión surta efecto.",
+        "en": "Article 14 requires EFFECTIVE intervention mechanisms. A policy saying oversight will exist is not enough: the path must exist in the product by which a person approves or rejects before the decision takes effect."
+      },
+      "patrones": [
+        "(?i)\\b(aprobar|aprobacion|approve|approval|revisar|review|validar_humano|human_review)\\b"
+      ]
+    },
+    {
+      "id": "ACT-14-ANULAR",
+      "version": "1.0.0",
+      "tipo": "contenido",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "la posibilidad de anular o corregir el resultado",
+        "en": "the ability to override or correct the output"
+      },
+      "titulo": {
+        "es": "El resultado no se puede anular ni corregir",
+        "en": "The output can be neither overridden nor corrected"
+      },
+      "remediacion": {
+        "es": "El artículo 14(4) exige poder no utilizar, ignorar, anular o revertir la salida. Añade la ruta de anulación y registra que se anuló, quién y por qué: una anulación sin registro es una decisión que desaparece.",
+        "en": "Article 14(4) requires being able to disregard, override or reverse the output. Add the override path and record what was overridden, by whom and why: an unlogged override is a decision that vanishes."
+      },
+      "patrones": [
+        "(?i)\\b(override|anular|revertir|corregir_resultado|descartar_recomendacion)\\b"
+      ]
+    },
+    {
+      "id": "ACT-14-PARADA",
+      "version": "1.0.0",
+      "tipo": "contenido",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "un mecanismo de parada del sistema",
+        "en": "a stop mechanism for the system"
+      },
+      "titulo": {
+        "es": "No hay mecanismo de parada",
+        "en": "There is no stop mechanism"
+      },
+      "remediacion": {
+        "es": "El artículo 14(4)(e) exige poder detener el sistema. Un interruptor que solo existe redesplegando no es una parada: tiene que poder accionarse sin publicar código.",
+        "en": "Article 14(4)(e) requires being able to stop the system. A switch that only exists by redeploying is not a stop: it has to be operable without shipping code."
+      },
+      "patrones": [
+        "(?i)\\b(kill_switch|interruptor|detener_sistema|suspend|suspender|circuit_breaker|feature_flag)\\b"
+      ]
+    },
+    {
+      "id": "ACT-14-REVISOR",
+      "version": "1.0.0",
+      "tipo": "contenido",
+      "severidad": "media",
+      "que_busca": {
+        "es": "que quede registrado quien revisó la decisión",
+        "en": "that who reviewed the decision is recorded"
+      },
+      "titulo": {
+        "es": "No se registra quién revisó",
+        "en": "The reviewer is not recorded"
+      },
+      "remediacion": {
+        "es": "Si una persona aprueba una recomendación y no queda su identidad, la supervisión no es demostrable ante un auditor. Registra el revisor junto a la decisión y a la versión que la produjo.",
+        "en": "If a person approves a recommendation and their identity is not kept, oversight is not demonstrable to an auditor. Record the reviewer next to the decision and the version that produced it."
+      },
+      "patrones": [
+        "(?i)(reviewer|revisor|approved_by|aprobado_por|revisado_por)"
+      ]
+    },
+    {
+      "id": "ACT-14-EFICACIA",
+      "version": "1.0.0",
+      "tipo": "aportado",
+      "severidad": "media",
+      "que_busca": {
+        "es": "si la supervisión es efectiva y no un trámite",
+        "en": "whether the oversight is effective and not a formality"
+      },
+      "titulo": {
+        "es": "Eficacia de la supervisión sin evaluar",
+        "en": "Effectiveness of oversight not assessed"
+      },
+      "remediacion": {
+        "es": "Que exista el boton no prueba que la persona entienda los límites del sistema ni que no caiga en sesgo de automatización. Eso es el artículo 14(4)(b) y es juicio: hace falta decir cómo se forma y cómo se comprueba.",
+        "en": "That the button exists does not prove the person understands the system's limits or avoids automation bias. That is Article 14(4)(b) and it is judgement: how they are trained and how it is checked must be stated."
+      },
+      "pregunta": {
+        "es": "¿Quién supervisa el sistema, qué formación tiene sobre sus límites, y cómo comprobáis que la supervisión no es un trámite?",
+        "en": "Who oversees the system, what training do they have on its limits, and how do you check that oversight is not a rubber stamp?"
+      },
+      "formato": "texto"
+    }
+  ]
+}

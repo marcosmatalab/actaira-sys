@@ -1,0 +1,215 @@
+{
+ "$schema": "../esquema/formulario.schema.json",
+ "paquete": "aia-sistema",
+ "version": "1.0.0",
+ "autor": "Actaira",
+ "titulo": {
+  "es": "El sistema en operación",
+  "en": "The system in operation"
+ },
+ "destinatario_principal": "tecnico",
+ "preguntas": [
+  {
+   "id": "F-SIS-1",
+   "sirve_a": [
+    "AIA-014"
+   ],
+   "destinatario": "tecnico",
+   "texto": {
+    "es": "¿Quién supervisa este sistema, qué formación tiene para hacerlo y qué puede hacer cuando algo va mal?",
+    "en": "Who oversees this system, what training do they have for it, and what can they do when something goes wrong?"
+   },
+   "ayuda": {
+    "es": "Actaira comprueba en el código si existe la vía de anulación, la de parada y la de revisión humana. Lo que no puede comprobar es si la persona que las tiene las entiende, y el artículo 14 pide exactamente eso: que quien supervisa comprenda las capacidades y limitaciones del sistema, sea consciente de la propensión a confiar automáticamente en su salida, y pueda decidir no usarlo. Esa parte se firma, no se deduce.",
+    "en": "Actaira checks in code whether an override path, a stop path and a human review path exist. What it cannot check is whether the person holding them understands them, and Article 14 asks exactly that: that the overseer understands the system's capacities and limitations, is aware of automation bias, and is able to decide not to use it. That part is signed, not inferred."
+   },
+   "formato": "texto_largo",
+   "vigencia_dias": 180,
+   "exige": {
+    "minimo_caracteres": 200
+   }
+  },
+  {
+   "id": "F-SIS-2",
+   "sirve_a": [
+    "AIA-010",
+    "A.7.3",
+    "A.7.5"
+   ],
+   "destinatario": "tecnico",
+   "texto": {
+    "es": "¿De dónde salen los datos de entrenamiento, validación y prueba, y qué derecho tiene a usarlos?",
+    "en": "Where do the training, validation and test data come from, and what right do you have to use them?"
+   },
+   "ayuda": {
+    "es": "El artículo 10 pide prácticas de gobernanza que cubran el origen, la recogida, el tratamiento previo, las hipótesis, la disponibilidad y la idoneidad. El control A.7.5 de la norma pide procedencia. En la práctica un auditor pregunta dos cosas: de dónde vino cada conjunto y quién le dijo que podía usarlo. La segunda hunde más expedientes que la primera.",
+    "en": "Article 10 requires governance practices covering origin, collection, pre-processing, assumptions, availability and suitability. Control A.7.5 of the standard requires provenance. In practice an auditor asks two things: where each dataset came from and who told you that you could use it. The second sinks more files than the first."
+   },
+   "formato": "texto_largo",
+   "vigencia_dias": 180,
+   "exige": {
+    "minimo_caracteres": 200
+   },
+   "salta_si_cubre": [
+    "ACT-10-FICHA"
+   ]
+  },
+  {
+   "id": "F-SIS-3",
+   "sirve_a": [
+    "AIA-010",
+    "A.7.4"
+   ],
+   "destinatario": "tecnico",
+   "texto": {
+    "es": "¿Qué examen de posibles sesgos ha hecho sobre esos datos y qué encontró?",
+    "en": "What examination of possible biases have you performed on that data and what did you find?"
+   },
+   "ayuda": {
+    "es": "El artículo 10.2.f obliga a examinar posibles sesgos que puedan afectar a la salud, la seguridad o los derechos fundamentales o dar lugar a discriminación prohibida, y la letra g obliga a tomar medidas para detectarlos, prevenirlos y atenuarlos. Un examen que no encontró nada es un resultado válido si dice qué buscó y cómo; 'no hay sesgo' a secas no lo es.",
+    "en": "Article 10(2)(f) requires examining possible biases likely to affect health, safety or fundamental rights or lead to prohibited discrimination, and point (g) requires measures to detect, prevent and mitigate them. An examination that found nothing is a valid result if it says what it looked for and how; a bare 'there is no bias' is not."
+   },
+   "formato": "texto_largo",
+   "vigencia_dias": 180,
+   "exige": {
+    "minimo_caracteres": 200
+   },
+   "salta_si_cubre": [
+    "ACT-10-SESGO"
+   ]
+  },
+  {
+   "id": "F-SIS-4",
+   "sirve_a": [
+    "AIA-012",
+    "AIA-019"
+   ],
+   "destinatario": "tecnico",
+   "texto": {
+    "es": "¿Durante cuánto tiempo conserva los registros automáticos y dónde?",
+    "en": "For how long do you retain the automatically generated logs and where?"
+   },
+   "ayuda": {
+    "es": "El artículo 19 fija un mínimo de seis meses para el proveedor, salvo que otra norma de la Unión o nacional diga otra cosa, y el artículo 26.6 pone al responsable del despliegue el mismo mínimo para los registros bajo su control. Si su política de borrado los limpia a los noventa días, el incumplimiento está en la política, no en el código.",
+    "en": "Article 19 sets a minimum of six months for the provider unless other Union or national law says otherwise, and Article 26(6) puts the same minimum on the deployer for logs under their control. If your deletion policy wipes them at ninety days, the breach is in the policy, not in the code."
+   },
+   "formato": "texto_corto",
+   "vigencia_dias": 365,
+   "exige": {
+    "minimo_caracteres": 40,
+    "exige_intervalo": true
+   },
+   "salta_si_cubre": [
+    "ACT-19-RETENCION-DECLARADA"
+   ]
+  },
+  {
+   "id": "F-SIS-5",
+   "sirve_a": [
+    "AIA-072",
+    "A.6.2.6"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "¿Quién recibe la alerta cuando una métrica de vigilancia cruza su umbral, y en cuánto tiempo actua?",
+    "en": "Who receives the alert when a monitoring metric crosses its threshold, and within what time do they act?"
+   },
+   "ayuda": {
+    "es": "Actaira comprueba que el umbral existe en el código y que está atado a una alerta. Lo que le pregunta es el otro extremo del cable: quién está al otro lado y qué hace. Un umbral que dispara a un canal que nadie lee es un umbral que no existe.",
+    "en": "Actaira checks that the threshold exists in code and that it is wired to an alert. What it asks you is the other end of the wire: who is on the other side and what they do. A threshold firing into a channel nobody reads is a threshold that does not exist."
+   },
+   "formato": "texto_corto",
+   "vigencia_dias": 90,
+   "exige": {
+    "minimo_caracteres": 60
+   }
+  },
+  {
+   "id": "F-SIS-6",
+   "sirve_a": [
+    "AIA-073"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "¿Quién decide si un incidente es grave a efectos del artículo 73, y por qué vía se notifica?",
+    "en": "Who decides whether an incident is serious for the purposes of Article 73, and through which channel is it reported?"
+   },
+   "ayuda": {
+    "es": "Los plazos del artículo 73 son cortos y empiezan a correr cuando se establece el vínculo causal entre el sistema y el incidente: quince días como regla general, dos días para una infracción generalizada o un incidente grave según se define en el artículo 3, punto 49, letra b, y diez días en caso de fallecimiento. Si nadie tiene asignada la decisión, el plazo se consume decidiendo quién decide.",
+    "en": "The Article 73 deadlines are short and start running once the causal link between the system and the incident is established: fifteen days as a general rule, two days for a widespread infringement or a serious incident as defined in Article 3(49)(b), and ten days in the event of death. If nobody is assigned the decision, the deadline is spent deciding who decides."
+   },
+   "formato": "persona",
+   "vigencia_dias": 180,
+   "exige": {
+    "minimo_elementos": 1
+   }
+  },
+  {
+   "id": "F-SIS-7",
+   "sirve_a": [
+    "AIA-026"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "¿Si usted es responsable del despliegue: ha informado a las personas afectadas de qué están sometidas a un sistema de alto riesgo?",
+    "en": "If you are a deployer: have you informed the affected persons that they are subject to a high-risk system?"
+   },
+   "ayuda": {
+    "es": "El artículo 26.7 obliga a informar a los representantes de los trabajadores y a los trabajadores afectados antes de poner en servicio un sistema de alto riesgo en el lugar de trabajo. El 26.11 obliga a informar a la persona física cuando el sistema se usa para tomar decisiones o asistir en decisiones relacionadas con ella. Son dos avisos distintos a dos destinatarios distintos.",
+    "en": "Article 26(7) requires informing workers' representatives and affected workers before putting a high-risk system into service in the workplace. Article 26(11) requires informing the natural person when the system is used to take or assist in decisions relating to them. These are two different notices to two different recipients."
+   },
+   "formato": "si_no",
+   "vigencia_dias": 180,
+   "exige": {
+    "exige_justificacion": true
+   }
+  },
+  {
+   "id": "F-SIS-8",
+   "sirve_a": [
+    "AIA-050"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "¿Cómo se entera una persona de qué está hablando con una máquina, y dónde consta ese aviso?",
+    "en": "How does a person learn they are talking to a machine, and where is that notice recorded?"
+   },
+   "ayuda": {
+    "es": "El artículo 50.1 exime del aviso cuando resulte evidente para una persona razonablemente atenta dadas las circunstancias. Esa exención se invoca mucho y se justifica poco: si se acoge a ella, escriba por que es evidente en su caso.",
+    "en": "Article 50(1) waives the notice where it is obvious to a reasonably well-informed person in the circumstances. That waiver is invoked often and justified rarely: if you rely on it, write down why it is obvious in your case."
+   },
+   "formato": "texto_corto",
+   "vigencia_dias": 180,
+   "exige": {
+    "minimo_caracteres": 60
+   },
+   "salta_si_cubre": [
+    "ACT-50-BOT"
+   ],
+   "si": {
+    "pregunta": "F-CLS-5",
+    "contiene": "interaccion"
+   }
+  },
+  {
+   "id": "F-SIS-9",
+   "sirve_a": [
+    "AIA-009"
+   ],
+   "destinatario": "tecnico",
+   "texto": {
+    "es": "¿Puede este sistema afectar negativamente a menores de dieciocho años o a otros colectivos vulnerables, y qué han hecho al respecto?",
+    "en": "Can this system adversely affect persons under eighteen or other vulnerable groups, and what have you done about it?"
+   },
+   "ayuda": {
+    "es": "Es el apartado 9 del artículo 9, y es el que una evaluación de riesgos genérica se salta con más facilidad: no pide un riesgo más, pide mirar a QUIÉN le pasa. Dos cosas concretas. Primera: si el sistema puede alcanzar a menores —porque el servicio es abierto, porque el colectivo evaluado los incluye, porque nadie comprueba la edad—, dígalo aunque no sea su público objetivo; «no van dirigidos a menores» no es lo mismo que «no les alcanza». Segunda: qué otros colectivos pueden quedar peor parados que la media —personas con discapacidad, personas sin dominio del idioma, personas en situación precaría— y qué han medido para saberlo. Si han medido el rendimiento por subgrupos, cítelo con sus cifras. Si la respuesta es que no afecta a ninguno, diga en qué se apoya: esa respuesta también hay que sostenerla, y es la que más se da sin mirar.",
+    "en": "This is Article 9(9), and it is the one a generic risk assessment skips most easily: it does not ask for one more risk, it asks you to look at WHO it happens to. Two concrete things. First: if the system can reach minors —because the service is open, because the assessed population includes them, because nobody checks age— say so even if they are not your intended audience; «not aimed at minors» is not the same as «does not reach them». Second: which other groups may come off worse than average —people with disabilities, people without command of the language, people in precarious situations— and what you measured to know. If you measured performance by subgroup, cite it with the figures. If the answer is that it affects none, say what that rests on: that answer also has to be supported, and it is the one most often given without looking."
+   },
+   "formato": "texto_largo",
+   "vigencia_dias": 365,
+   "exige": {
+    "minimo_caracteres": 200
+   }
+  }
+ ]
+}

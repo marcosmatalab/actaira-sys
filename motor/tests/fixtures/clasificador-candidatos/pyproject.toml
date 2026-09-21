@@ -1,0 +1,4 @@
+[project]
+name = "cribado-candidatos"
+version = "2.4.1"
+dependencies = ["openai==1.51.0", "fastapi>=0.110", "pydantic==2.9.2"]

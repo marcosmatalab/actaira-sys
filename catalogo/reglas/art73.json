@@ -1,0 +1,57 @@
+{
+  "paquete": "actaira/art73",
+  "version": "1.0.0",
+  "autor": "Actaira",
+  "licencia": "Apache-2.0",
+  "obligacion": "AIA-073",
+  "nota_de_autoria": {
+    "es": "Cada regla y cada remediación de este fichero las escribió una persona. Un modelo puede proponer el borrador de una regla fuera de línea; nunca redacta reglas ni remediaciones en ejecución. Segunda negativa.",
+    "en": "Every rule and every remediation in this file was written by a person. A model may draft a candidate rule offline; it never writes rules or remediations at runtime. Second negative."
+  },
+  "reglas": [
+    {
+      "id": "ACT-73-CANAL",
+      "version": "1.0.0",
+      "tipo": "fichero",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "un canal de incidentes y conservación de evidencias",
+        "en": "an incident channel and evidence retention"
+      },
+      "titulo": {
+        "es": "No hay canal de incidentes",
+        "en": "There is no incident channel"
+      },
+      "remediacion": {
+        "es": "El artículo 73 exige notificar incidentes graves con plazo. Sin un canal con registro, el plazo empieza a contar y nadie se entera.",
+        "en": "Article 73 requires reporting serious incidents within a deadline. With no channel and no record, the clock starts and nobody notices."
+      },
+      "patrones": [
+        "(?i)(incident|incidente|postmortem|oncall|on_call)"
+      ]
+    },
+    {
+      "id": "ACT-73-PLAZO",
+      "version": "1.0.0",
+      "tipo": "aportado",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "quien notifica, a quien y en cuantos días",
+        "en": "who notifies, whom, and within how many days"
+      },
+      "titulo": {
+        "es": "Plazo de notificación sin responsable",
+        "en": "Reporting deadline with no owner"
+      },
+      "remediacion": {
+        "es": "Quince días en general, dos si la infracción es generalizada y diez si hay fallecimiento. El reloj lo puede llevar el sistema; quién firma la notificación y a qué autoridad la manda, no.",
+        "en": "Fifteen days in general, two for a widespread infringement and ten in case of death. The system can keep the clock; who signs the notification and which authority it goes to, it cannot."
+      },
+      "pregunta": {
+        "es": "¿Quién es el responsable de notificar un incidente grave, a qué autoridad de vigilancia del mercado, y por qué vía?",
+        "en": "Who is responsible for reporting a serious incident, to which market surveillance authority, and through what channel?"
+      },
+      "formato": "texto"
+    }
+  ]
+}

@@ -1,0 +1,216 @@
+:root{
+  --marca-vivo:#90099C; --marca-medio:#54055B; --marca-profundo:#36033A; --marca-tinta:#0E000F;
+  --ground:#FAF7FB; --surface:#FFFFFF; --surface-2:#F3EDF4; --raised:#FFFFFF;
+  --ink:#150116; --ink-soft:#574A5A; --muted:#8B7E8D;
+  --line:#E6DCE8; --line-soft:#F0E8F1;
+  --ata:#90099C; --ata-fondo:#F6E9F8;
+  --futura:#1F5560; --futura-fondo:#E4F0F1;
+  --noata:#7B7180; --noata-fondo:#F0EDF1;
+  --indet:#8A5A07; --indet-fondo:#FBF0DC;
+  --hallazgo:#A11212; --hallazgo-fondo:#FBE9E9;
+  --sans:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --logo:url(__LOGO_COLOR__);
+  --sombra:0 1px 2px rgba(20,1,22,.05), 0 8px 24px -16px rgba(20,1,22,.25);
+}
+@media (prefers-color-scheme:dark){:root:not([data-tema="light"]){
+  --ground:#0E000F; --surface:#190A1B; --surface-2:#211026; --raised:#241329;
+  --ink:#F4EAF5; --ink-soft:#B6A6B9; --muted:#877789;
+  --line:#301A34; --line-soft:#26142A;
+  --ata:#D06BDB; --ata-fondo:#2C0A30;
+  --futura:#63C2CE; --futura-fondo:#0D2A2E;
+  --noata:#9A8C9D; --noata-fondo:#221226;
+  --indet:#E3B551; --indet-fondo:#2E2209;
+  --hallazgo:#EF8080; --hallazgo-fondo:#2E1010;
+  --logo:url(__LOGO_BLANCO__);
+  --sombra:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -18px rgba(0,0,0,.8);
+}}
+:root[data-tema="dark"]{
+  --ground:#0E000F; --surface:#190A1B; --surface-2:#211026; --raised:#241329;
+  --ink:#F4EAF5; --ink-soft:#B6A6B9; --muted:#877789;
+  --line:#301A34; --line-soft:#26142A;
+  --ata:#D06BDB; --ata-fondo:#2C0A30;
+  --futura:#63C2CE; --futura-fondo:#0D2A2E;
+  --noata:#9A8C9D; --noata-fondo:#221226;
+  --indet:#E3B551; --indet-fondo:#2E2209;
+  --hallazgo:#EF8080; --hallazgo-fondo:#2E1010;
+  --logo:url(__LOGO_BLANCO__);
+  --sombra:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -18px rgba(0,0,0,.8);
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+  font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.015em}
+h1{font-size:clamp(21px,3.4vw,30px);line-height:1.2}
+h2{font-size:16px}
+h3{font-size:14px}
+button,input,select{font:inherit;color:inherit}
+a{color:var(--marca-vivo)}
+.wrap{max-width:1180px;margin-inline:auto;padding-inline:16px}
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);margin:0}
+.mono{font-family:var(--mono)}
+
+/* --- cabecera ---------------------------------------------------------- */
+header{position:sticky;top:0;z-index:30;background:var(--surface);
+  border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:14px;min-height:56px;flex-wrap:wrap}
+.logo{background-image:var(--logo);background-size:contain;background-repeat:no-repeat;
+  background-position:left center;width:150px;height:32px;flex:none}
+.crece{flex:1 1 auto}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.seg button{background:transparent;border:0;padding:6px 11px;font-size:12.5px;
+  cursor:pointer;color:var(--ink-soft);white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--marca-vivo);color:#fff}
+.seg button:focus-visible{outline:2px solid var(--marca-vivo);outline-offset:-2px}
+.enchufe{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-soft);
+  border:1px solid var(--line);border-radius:3px;padding:5px 10px;background:var(--surface-2);
+  cursor:pointer}
+.punto{width:8px;height:8px;border-radius:50%;background:var(--muted);flex:none}
+.punto.vivo{background:var(--ata);box-shadow:0 0 0 3px var(--ata-fondo)}
+
+/* --- portada ----------------------------------------------------------- */
+.hero{padding-block:28px 20px}
+.hero p.lede{margin:10px 0 0;color:var(--ink-soft);max-width:78ch}
+.aviso{margin-top:16px;border-left:3px solid var(--marca-vivo);background:var(--surface);
+  padding:11px 14px;font-size:13px;color:var(--ink-soft);border-radius:0 3px 3px 0;
+  box-shadow:var(--sombra)}
+
+/* --- categorias de producto -------------------------------------------- */
+.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;
+  margin-block:18px}
+.cat{text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:5px;
+  padding:14px 15px;cursor:pointer;transition:border-color .12s,transform .12s;
+  box-shadow:var(--sombra)}
+.cat:hover{border-color:var(--marca-vivo)}
+.cat[aria-pressed="true"]{border-color:var(--marca-vivo);
+  box-shadow:0 0 0 1px var(--marca-vivo),var(--sombra)}
+.cat h3{margin-bottom:4px}
+.cat p{margin:0;font-size:12.5px;color:var(--ink-soft)}
+.cat .n{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.14em}
+
+/* --- el ciclo ---------------------------------------------------------- */
+.ciclo{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:5px;overflow:hidden;
+  margin-bottom:18px}
+.paso{background:var(--surface);padding:12px 14px;min-height:72px;display:flex;
+  flex-direction:column;gap:2px}
+.paso .v{margin-top:auto}
+.paso .n{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.paso .t{font-size:12.5px;font-weight:600}
+.paso .v{font-family:var(--mono);font-size:22px;line-height:1.1;color:var(--ink)}
+.paso .v.gris{color:var(--muted);font-size:12px;font-weight:400;padding-top:4px}
+
+/* --- rejilla ----------------------------------------------------------- */
+.rejilla{display:grid;grid-template-columns:308px minmax(0,1fr);gap:18px;align-items:start;
+  padding-bottom:56px}
+/* `minmax(0,1fr)` y no `1fr`: un elemento de rejilla tiene `min-width:auto`, asi
+   que el <pre> del documento crudo empujaba la columna entera mas ancha que la
+   pagina y aparecia una barra horizontal en toda la ventana. */
+.rejilla>*{min-width:0}
+.columna-izquierda{position:sticky;top:72px}
+@media (max-width:1000px){.rejilla{grid-template-columns:1fr}
+  .columna-izquierda{position:static}}
+.tarjeta{background:var(--surface);border:1px solid var(--line);border-radius:5px;
+  box-shadow:var(--sombra);overflow:hidden}
+.tarjeta>header{position:static;border:0;border-bottom:1px solid var(--line-soft);
+  background:var(--surface-2);padding:10px 14px;display:flex;align-items:center;gap:10px;
+  flex-wrap:wrap}
+.tarjeta>header h2{font-size:13px}
+.cuerpo{padding:13px 14px}
+.campo{display:block;margin-bottom:11px}
+.campo>span{display:block;font-size:11.5px;color:var(--muted);margin-bottom:4px}
+.campo input,.campo select{width:100%;padding:7px 9px;border:1px solid var(--line);
+  border-radius:3px;background:var(--ground);font-size:13.5px}
+.campo input:focus,.campo select:focus{outline:2px solid var(--marca-vivo);outline-offset:-1px}
+.boton{background:var(--marca-vivo);color:#fff;border:0;border-radius:3px;padding:8px 14px;
+  font-size:13.5px;cursor:pointer;font-weight:500}
+.boton:hover{background:var(--marca-medio)}
+.boton:disabled{background:var(--muted);cursor:progress}
+.boton.plano{background:transparent;color:var(--marca-vivo);border:1px solid var(--line)}
+.boton.plano:hover{border-color:var(--marca-vivo);background:var(--ata-fondo)}
+.acciones{display:flex;flex-wrap:wrap;gap:8px}
+
+/* --- recuentos --------------------------------------------------------- */
+.recuento{display:flex;flex-wrap:wrap;gap:7px;padding:13px 14px;align-items:center}
+.recuento .sub{flex-basis:100%;margin:4px 0 0;font-size:12px;color:var(--muted);
+  line-height:1.45}
+.pastilla{display:inline-flex;align-items:baseline;gap:7px;border-radius:3px;padding:5px 10px;
+  font-size:12px;background:var(--noata-fondo);color:var(--noata)}
+.pastilla b{font-family:var(--mono);font-size:15px;font-weight:500}
+.pastilla.ata{background:var(--ata-fondo);color:var(--ata)}
+.pastilla.futura{background:var(--futura-fondo);color:var(--futura)}
+.pastilla.indet{background:var(--indet-fondo);color:var(--indet)}
+.pastilla.mal{background:var(--hallazgo-fondo);color:var(--hallazgo)}
+
+/* --- lineas ------------------------------------------------------------ */
+.linea{border-bottom:1px solid var(--line-soft);padding:11px 14px;display:grid;
+  grid-template-columns:76px minmax(0,1fr) auto;gap:12px;align-items:start;
+  transition:background .1s}
+.linea:hover{background:var(--surface-2)}
+.linea>div{min-width:0}
+.linea:last-child{border-bottom:0}
+.art{font-family:var(--mono);font-size:12px;color:var(--muted);padding-top:2px}
+.linea h3{font-size:13.5px;font-weight:500;line-height:1.4}
+.linea .sub{font-size:12px;color:var(--ink-soft);margin-top:3px}
+.marca{font-size:10.5px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;
+  border-radius:2px;padding:3px 7px;white-space:nowrap;background:var(--noata-fondo);
+  color:var(--noata)}
+.marca.ata{background:var(--ata-fondo);color:var(--ata)}
+.marca.futura{background:var(--futura-fondo);color:var(--futura)}
+.marca.indet{background:var(--indet-fondo);color:var(--indet)}
+.marca.mal{background:var(--hallazgo-fondo);color:var(--hallazgo)}
+details.detalle{margin-top:7px}
+details.detalle summary{cursor:pointer;font-size:12px;color:var(--marca-vivo);
+  list-style:none}
+details.detalle summary::-webkit-details-marker{display:none}
+details.detalle summary::before{content:"▸ ";font-size:10px}
+details.detalle[open] summary::before{content:"▾ "}
+.detalle ul{margin:7px 0 0;padding-left:17px;font-size:12.5px;color:var(--ink-soft)}
+.detalle li{margin-bottom:5px}
+.vacio{padding:26px 14px;text-align:center;color:var(--muted);font-size:13px}
+pre.crudo{margin:0;padding:13px 14px;overflow:auto;max-height:420px;max-width:100%;font-family:var(--mono);
+  font-size:11.5px;line-height:1.5;background:var(--surface-2);color:var(--ink-soft)}
+.pie{border-top:1px solid var(--line);padding-block:20px 34px;color:var(--muted);font-size:12px}
+.oculto{display:none!important}
+.grave{color:var(--hallazgo)}
+
+/* El aviso de que no hay porcentaje va arriba y se queda: es la frase que
+   distingue a este producto del resto, y la unica que alguien buscara en la
+   pantalla cuando su director le pida "el porcentaje". */
+.aviso{font-size:13px}
+#sello{max-width:100%;overflow-wrap:anywhere}
+.paso .v.gris{margin-top:auto}
+
+/* Texto que sólo leen los lectores de pantalla.
+ *
+ * No es `display:none` ni `visibility:hidden`: los dos lo quitan también del
+ * árbol de accesibilidad, así que el lector tampoco lo lee y la etiqueta deja
+ * de existir para quien la necesita. El recorte a un píxel es la forma que sí
+ * lo deja leer.
+ *
+ * Hace falta porque el buscador de la lista no tiene etiqueta visible -- su
+ * sitio está junto al título de la tarjeta -- y un `input` sin nombre
+ * accesible se anuncia como «campo de edición» y nada más. */
+.visualmente-oculto {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* El foco del teclado, VISIBLE.
+ *
+ * Los navegadores lo pintan solos y es lo primero que quita cualquier hoja de
+ * estilo con `outline:none` para que «quede limpio». Aquí se refuerza en vez
+ * de quitarse: sin un foco visible, la página se puede recorrer con el teclado
+ * y no se puede saber donde estas, que es lo mismo que no poder recorrerla. */
+:is(button, a, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  border-radius: 4px;
+}

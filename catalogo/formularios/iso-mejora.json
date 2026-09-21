@@ -1,0 +1,56 @@
+{
+  "$schema": "../esquema/formulario.schema.json",
+  "paquete": "iso-mejora",
+  "version": "1.0.0",
+  "autor": "Actaira",
+  "titulo": {
+    "es": "Mejora",
+    "en": "Improvement"
+  },
+  "destinatario_principal": "responsable",
+  "preguntas": [
+    {
+      "id": "F-MEJ-1",
+      "sirve_a": [
+        "ISO-10.2",
+        "A.8.4",
+        "AIA-073"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Qué no conformidades ha registrado y qué acción correctiva tomo en cada una?",
+        "en": "Which nonconformities have you recorded and what corrective action did you take for each?"
+      },
+      "ayuda": {
+        "es": "La cláusula 10.2 pide reaccionar, evaluar si hace falta eliminar la causa, comprobar si existen no conformidades similares en otro sitio, implantar la acción, revisar su eficacia y cambiar el sistema de gestión si hace falta. Un registro vacio no es una buena noticia: casi siempre significa que no se registran, no que no ocurren. Si un incidente además entra en el artículo 73 del Reglamento, el plazo de notificación es distinto y mucho más corto.",
+        "en": "Clause 10.2 requires reacting, evaluating whether the cause must be eliminated, checking whether similar nonconformities exist elsewhere, implementing the action, reviewing its effectiveness and changing the management system if needed. An empty register is not good news: it almost always means they are not recorded, not that they do not happen. If an incident also falls under Article 73 of the Regulation, the reporting deadline is different and much shorter."
+      },
+      "formato": "lista",
+      "vigencia_dias": 90,
+      "exige": {
+        "minimo_elementos": 0
+      },
+      "produce": "registro-de-no-conformidades"
+    },
+    {
+      "id": "F-MEJ-2",
+      "sirve_a": [
+        "ISO-10.1"
+      ],
+      "destinatario": "direccion",
+      "texto": {
+        "es": "¿Qué ha mejorado de su sistema de gestión de la IA en el último ciclo y de dónde salió esa mejora?",
+        "en": "What have you improved in your AI management system in the last cycle and where did that improvement come from?"
+      },
+      "ayuda": {
+        "es": "La mejora continua de la 10.1 se demuestra con una traza: hallazgo de auditoría, incidente o revisión por la dirección, y el cambio que provocó. Sin origen, una lista de mejoras parece un folleto.",
+        "en": "Continual improvement under 10.1 is demonstrated with a trace: an audit finding, an incident or a management review, and the change it caused. Without an origin, a list of improvements reads like a brochure."
+      },
+      "formato": "texto_corto",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_caracteres": 100
+      }
+    }
+  ]
+}

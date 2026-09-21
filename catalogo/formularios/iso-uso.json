@@ -1,0 +1,53 @@
+{
+ "$schema": "../../contrato/cuestionario.json",
+ "paquete": "iso-uso",
+ "version": "1.0.0",
+ "autor": "Actaira",
+ "titulo": {
+  "es": "Uso responsable y uso previsto del sistema (ISO/IEC 42001 A.9)",
+  "en": "Responsible use and intended use of the system (ISO/IEC 42001 A.9)"
+ },
+ "destinatario_principal": "responsable",
+ "preguntas": [
+  {
+   "id": "F-USO-1",
+   "sirve_a": [
+    "A.9.2"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "¿Qué reglas tienen escritas sobre cómo se puede y cómo no se puede usar este sistema, y cómo se enteran de que alguien se las salta?",
+    "en": "What rules do you have written about how this system may and may not be used, and how do you find out when somebody breaks them?"
+   },
+   "ayuda": {
+    "es": "Control A.9.2. La primera mitad la tiene casi todo el mundo: una política de uso aceptable. La segunda casi nadie, y es la que convierte la política en un control: cómo se detecta un uso fuera de lo previsto.\n\nDiga las dos. Si la detección es que alguien se queje, dígalo también: es una respuesta honesta y deja claro el hueco. Una regla que nadie puede comprobar que se cumple es una declaración de intenciones, y la norma distingue las dos cosas.",
+    "en": "Control A.9.2. Almost everybody has the first half: an acceptable use policy. Almost nobody has the second, and it is what turns the policy into a control: how a use outside what was intended gets detected.\n\nGive both. If detection is that somebody complains, say that too: it is an honest answer and it makes the gap plain. A rule nobody can check is being followed is a statement of intent, and the standard tells the two apart."
+   },
+   "formato": "texto_largo",
+   "vigencia_dias": 365,
+   "exige": {
+    "minimo_caracteres": 200
+   }
+  },
+  {
+   "id": "F-USO-2",
+   "sirve_a": [
+    "A.9.4"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "¿Para qué se diseñó este sistema, y en qué usos que alguien podría darle NO se puede confiar en él?",
+    "en": "What was this system designed for, and in which uses somebody might give it can it NOT be relied on?"
+   },
+   "ayuda": {
+    "es": "Control A.9.4. La primera parte suele estar escrita. La segunda es la que pide la norma y la que casi nunca está: los usos RAZONABLEMENTE PREVISIBLES para los que el sistema no sirve.\n\nNo es un descargo de responsabilidad. Es concreto: un clasificador entrenado con candidatos de un país no vale para otro; uno calibrado sobre un período no vale cuando el mercado cambia; uno que apoya una decisión no vale para tomarla solo. Escriba los que ha visto intentar o los que le preocuparían, y qué impide que ocurran. Si la respuesta es que nada lo impide, ése es el hallazgo.",
+    "en": "Control A.9.4. The first part is usually written. The second is what the standard asks for and what is almost never there: the REASONABLY FORESEEABLE uses the system is not fit for.\n\nThis is not a disclaimer. It is concrete: a classifier trained on one country's candidates does not hold for another; one calibrated over a period does not hold when the market shifts; one that supports a decision does not hold for taking it alone. Write the ones you have seen attempted or the ones that would worry you, and what stops them. If the answer is that nothing stops them, that is the finding."
+   },
+   "formato": "texto_largo",
+   "vigencia_dias": 365,
+   "exige": {
+    "minimo_caracteres": 200
+   }
+  }
+ ]
+}

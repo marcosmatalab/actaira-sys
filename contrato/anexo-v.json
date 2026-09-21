@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://actaira.com/contrato/anexo-v.json",
+  "title": "La declaracion UE de conformidad del articulo 47",
+  "type": "object",
+  "properties": {
+    "esquema": {
+      "const": "actaira/anexo-v/v1"
+    },
+    "fecha": {
+      "type": "string",
+      "format": "date"
+    },
+    "firmado": {
+      "type": "boolean"
+    },
+    "aviso": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "es": {
+              "type": "string",
+              "minLength": 1
+            },
+            "en": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "es",
+            "en"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "no_es_un_veredicto": {
+      "type": "object",
+      "properties": {
+        "es": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "es",
+        "en"
+      ]
+    },
+    "recuento": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "puntos": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^AV-[1-8]$"
+          },
+          "punto": {
+            "type": "string"
+          },
+          "titulo": {
+            "type": "object",
+            "properties": {
+              "es": {
+                "type": "string",
+                "minLength": 1
+              },
+              "en": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "es",
+              "en"
+            ]
+          },
+          "procedencia": {
+            "enum": [
+              "derivada",
+              "aportada",
+              "formula",
+              "ausente",
+              "no_procede"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "punto",
+          "titulo",
+          "procedencia"
+        ]
+      }
+    },
+    "nombres_de_estado": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "es": {
+            "type": "string",
+            "minLength": 1
+          },
+          "en": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "es",
+          "en"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "esquema",
+    "fecha",
+    "firmado",
+    "no_es_un_veredicto",
+    "recuento",
+    "puntos"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "firmado": {
+            "const": false
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "aviso": {
+            "type": "object",
+            "properties": {
+              "es": {
+                "type": "string",
+                "minLength": 1
+              },
+              "en": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "es",
+              "en"
+            ]
+          }
+        },
+        "description": "Sin firma, el aviso de BORRADOR es obligatorio."
+      }
+    }
+  ]
+}

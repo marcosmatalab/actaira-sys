@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://actaira.com/contrato/noconformidades.json",
+  "title": "Las no conformidades de la clausula 10.2, y en que punto del ciclo esta cada una",
+  "por_que_existe": {
+    "es": "Salia como una lista JSON suelta, que no es un documento: no declaraba version, no se podia extender sin romper a quien la leyera por posicion, y la plataforma la rechazaba en la frontera. Un array no tiene sitio donde decir quien es.",
+    "en": "It came out as a bare JSON array, which is not a document: it declared no version, could not be extended without breaking positional readers, and the platform rejected it at the boundary. An array has nowhere to say what it is."
+  },
+  "type": "object",
+  "properties": {
+    "esquema": {
+      "const": "actaira/noconformidades/v1"
+    },
+    "recuento": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "no_conformidades": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "origen": {
+            "type": "string",
+            "minLength": 1
+          },
+          "descripcion": {
+            "type": "string",
+            "minLength": 1
+          },
+          "abierta_en": {
+            "type": "string",
+            "minLength": 1
+          },
+          "estado": {
+            "enum": [
+              "abierta",
+              "en_analisis",
+              "con_accion",
+              "ejecutada",
+              "verificada"
+            ]
+          },
+          "evidencia_de_eficacia": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "incoherencias": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "vencida": {
+            "type": "boolean"
+          },
+          "estancada": {
+            "type": "boolean"
+          },
+          "dias_abierta": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "transiciones": {
+            "type": "array",
+            "minItems": 1
+          }
+        },
+        "required": [
+          "id",
+          "origen",
+          "descripcion",
+          "estado",
+          "transiciones"
+        ]
+      }
+    },
+    "nota_del_cierre": {
+      "type": "object",
+      "properties": {
+        "es": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "es",
+        "en"
+      ],
+      "additionalProperties": false
+    },
+    "nombres_de_estado": {
+      "type": "object",
+      "description": "Como se lee cada estado que ESTE documento usa, en los dos idiomas. Los estados viajan sin traducir porque son identificadores; esto dice como se ensenan.",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "es": {
+            "type": "string",
+            "minLength": 1
+          },
+          "en": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "es",
+          "en"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "esquema",
+    "recuento",
+    "no_conformidades",
+    "nota_del_cierre",
+    "nombres_de_estado"
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "paquete": "actaira/art25",
+  "version": "1.0.0",
+  "autor": "Actaira",
+  "licencia": "Apache-2.0",
+  "obligacion": "AIA-025",
+  "nota_de_autoria": {
+    "es": "Cada regla y cada remediación de este fichero las escribió una persona. Un modelo puede proponer el borrador de una regla fuera de línea; nunca redacta reglas ni remediaciones en ejecución. Segunda negativa.",
+    "en": "Every rule and every remediation in this file was written by a person. A model may draft a candidate rule offline; it never writes rules or remediations at runtime. Second negative."
+  },
+  "reglas": [
+    {
+      "id": "ACT-25-REETIQUETADO",
+      "version": "1.0.0",
+      "tipo": "llamada",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "un modelo de tercero cargado y reetiquetado",
+        "en": "a third-party model loaded and rebranded"
+      },
+      "titulo": {
+        "es": "Modelo de tercero bajo tu marca",
+        "en": "Third-party model under your name"
+      },
+      "remediacion": {
+        "es": "El artículo 25 convierte en PROVEEDOR a quien pone su nombre o marca en un sistema de alto riesgo ya comercializado. Si estas usando pesos de un tercero bajo tu producto, las obligaciones del proveedor pasan a ser tuyas: comprueba el reparto por contrato.",
+        "en": "Article 25 turns whoever puts their name or trademark on an already-placed high-risk system into a PROVIDER. If you run a third party's weights under your product, the provider's obligations become yours: check the contractual allocation."
+      },
+      "firmas": [
+        "from_pretrained",
+        "AutoModel.from_pretrained",
+        "hf_hub_download",
+        "snapshot_download"
+      ],
+      "requiere_import": [
+        "transformers",
+        "huggingface_hub",
+        "diffusers",
+        "torch"
+      ]
+    },
+    {
+      "id": "ACT-25-CAMBIO",
+      "version": "1.0.0",
+      "tipo": "aportado",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "si hubo un cambio sustancial desde la última evaluación",
+        "en": "whether there was a substantial modification since the last assessment"
+      },
+      "titulo": {
+        "es": "Cambio sustancial sin reevaluar",
+        "en": "Substantial modification not reassessed"
+      },
+      "remediacion": {
+        "es": "Una modificación sustancial obliga a reevaluar la conformidad, y que un cambio lo sea depende del uso previsto, no del diff. El motor puede decir que cambio; solo la organización puede decir si eso cambia el uso previsto.",
+        "en": "A substantial modification requires reassessing conformity, and whether a change is substantial depends on the intended purpose, not on the diff. The engine can say what changed; only the organisation can say whether that changes the intended purpose."
+      },
+      "pregunta": {
+        "es": "¿Desde la última evaluación de conformidad, ha cambiado el uso previsto, el dominio de aplicación o el colectivo afectado?",
+        "en": "Since the last conformity assessment, has the intended purpose, the application domain or the affected group changed?"
+      },
+      "formato": "si_no_detalle"
+    }
+  ]
+}

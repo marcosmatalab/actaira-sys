@@ -1,0 +1,280 @@
+# Actaira en tu integración continua.
+#
+# Copia este fichero a `.github/workflows/actaira.yml` en el repositorio que
+# quieras vigilar. Hace tres cosas, y ninguna de ellas decide por ti:
+#
+#   1. Corre los controles que se deciden leyendo código y publica los
+#      hallazgos en SARIF, que es lo que hace que aparezcan en la pestaña
+#      Security y dentro de la revisión del pull request.
+#   2. Reconcilia contra el almacén de evidencia: dice qué caducó y qué cambió
+#      de sujeto, y por tanto qué hay que volver a observar. No corre lo que
+#      sigue valiendo.
+#   3. Guarda lo observado en el almacén, que es un fichero al que solo se
+#      añade. Se versiona con el repositorio a propósito: el historial del
+#      expediente es el historial de git.
+#
+# La decisión de si un hallazgo bloquea o no el despliegue es TUYA. Se escribe
+# abajo y se enciende con una variable del repositorio, no editando este
+# fichero. Actaira no la toma: la cuarta negativa de la casa es nunca actuar
+# sobre lo observado.
+#
+# ANTES DE USARLO EN SERIO: ANCLA LAS ACCIONES
+# ----------------------------------------------
+# Las acciones de abajo están referenciadas POR ETIQUETA (`@v4`), y una
+# etiqueta se puede mover. Quien controle `actions/checkout` puede cambiar lo
+# que `v4` apunta y ejecutar su código dentro de tu integración continua, con
+# tu token. Corre una vez:
+#
+#     ./anclar.sh .github/workflows/actaira.yml
+#
+# y cada `uses:` queda clavado a un digest, con la etiqueta al lado en un
+# comentario para que se lea. Este fichero NO se distribuye anclado porque los
+# digests envejecen y publicar uno inventado sería peor que no publicar
+# ninguno: no se afirma aquí lo que no se ha comprobado.
+
+name: Actaira
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Una vez al día, para que la caducidad se note sin que nadie empuje nada.
+    # Esto es el único sondeo que hay, y es uno al día y no uno por minuto,
+    # porque la invalidación la dispara el empujón y no el reloj.
+    - cron: "17 6 * * *"
+
+# Nada por defecto. Cada tarea pide lo suyo, abajo.
+permissions: {}
+
+# El almacén de evidencia es una CADENA: cada línea sella a la anterior. Dos
+# ejecuciones añadiendo a la vez producirían dos líneas con el mismo número de
+# orden y la cadena dejaría de verificar. Esto las pone en fila.
+concurrency:
+  group: actaira-evidencia-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # ---------------------------------------------------------------------
+  # Mirar. No escribe nada en el repositorio, así que no pide permiso para
+  # escribir: si esta tarea se vuelve hostil, no puede empujar un commit.
+  # ---------------------------------------------------------------------
+  comprobar:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write     # solo para subir el SARIF
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # La versión va clavada. `pip install actaira-motor` a secas instala lo
+      # que haya publicado hoy en PyPI, que es exactamente la puerta por la que
+      # entra una dependencia comprometida a un sitio donde hay un token.
+      - name: Instalar Actaira
+        env:
+          ACTAIRA_VERSION: "0.15.0"
+        run: |
+          python -m pip install --upgrade pip
+          pip install "actaira-motor==${ACTAIRA_VERSION}"
+          # Para cadena de suministro seria, sustituye la línea de arriba por
+          # un fichero de requisitos con hashes y:
+          #   pip install --require-hashes -r actaira-requirements.txt
+
+      # El perfil de tu sistema. Estas respuestas deciden qué obligaciones te
+      # atan, así que viven en el repositorio y se revisan como código.
+      # El codigo de salida se GUARDA, no se traduce a exito/fallo. Actaira
+      # devuelve 1 cuando hay hallazgos y 3 cuando falta que alguien conteste,
+      # y son dos cosas distintas: una puerta que las funde para el despliegue
+      # de una organizacion porque tiene el cuestionario a medias.
+      - name: El plan, y los hallazgos en SARIF
+        id: plan
+        run: |
+          set +e
+          actaira plan . \
+            --rol proveedor \
+            --alto-riesgo si \
+            --sarif actaira.sarif
+          codigo=$?
+          set -e
+          echo "codigo=$codigo" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      # `always()` subía el SARIF incluso cuando el paso anterior murió antes
+      # de escribirlo, y entonces fallaba la subida en vez de fallar el plan,
+      # que es el error contado en el sitio equivocado.
+      - name: Subir los hallazgos a la pestaña Security
+        if: hashFiles('actaira.sarif') != ''
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: actaira.sarif
+          category: actaira
+
+      # Qué pasó, en una línea, SIEMPRE. Un `continue-on-error` sin esto
+      # convierte la tarea en verde pase lo que pase, que es la comodidad que
+      # este producto existe para quitar.
+      - name: Qué se decidió
+        if: always()
+        run: |
+          case "${{ steps.plan.outputs.codigo }}" in
+            0) echo "se miró y no apareció nada" ;;
+            1) echo "hay hallazgos" ;;
+            3) echo "hay preguntas sin contestar (no es un fallo: es trabajo)" ;;
+            *) echo "el motor salió con ${{ steps.plan.outputs.codigo }}" ;;
+          esac
+          if [ "${{ vars.ACTAIRA_BLOQUEA }}" != "si" ]; then
+            echo "No hay puerta configurada: los hallazgos se publican y NO paran nada."
+            echo "Para que paren, pon la variable de repositorio ACTAIRA_BLOQUEA=si."
+          fi
+
+      # AQUÍ decides tú, y se enciende sin tocar este fichero: Settings ->
+      # Secrets and variables -> Actions -> Variables -> ACTAIRA_BLOQUEA=si.
+      # Solo el 1. Un 3 es el cuestionario a medias, y parar un despliegue por
+      # eso enseña a la gente a apagar la puerta, que es como se pierden las
+      # puertas de verdad.
+      - name: La puerta
+        if: vars.ACTAIRA_BLOQUEA == 'si' && steps.plan.outputs.codigo == '1'
+        run: |
+          echo "Hay hallazgos. Esta organización no despliega con hallazgos abiertos."
+          exit 1
+
+  # ---------------------------------------------------------------------
+  # Escribir. Es la única tarea con permiso de escritura, no corre en pull
+  # requests, y lo único que escribe es el almacén.
+  # ---------------------------------------------------------------------
+  registrar:
+    needs: comprobar
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write            # para empujar el almacén de evidencia
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar Actaira
+        env:
+          ACTAIRA_VERSION: "0.15.0"
+        run: pip install "actaira-motor==${ACTAIRA_VERSION}"
+
+      # La cabeza que esta ejecución esperaba encontrar, traída de FUERA del
+      # repositorio.
+      #
+      # POR QUÉ HACE FALTA, Y QUÉ NO DEMUESTRA LA CADENA SOLA
+      # -------------------------------------------------------
+      # Cada línea del almacén sella a la anterior, así que editar una, quitarla
+      # o cambiarlas de orden rompe la cadena y `almacen verificar` lo dice. Lo
+      # que la cadena NO puede detectar es que alguien reescriba el fichero
+      # ENTERO y vuelva a sellarlo: el resultado es una cadena interna
+      # impecable, porque una cadena demuestra consistencia y no anclaje.
+      #
+      # Hasta aquí el flujo verificaba la cadena y no pasaba nunca
+      # `--cabeza-esperada`, así que el único ataque que la cadena no cubre era
+      # exactamente el que quedaba sin cubrir. Ahora la cabeza de cada ejecución
+      # se guarda como artefacto de Actions, que vive FUERA del repositorio y no
+      # lo cambia un `git push`, y la siguiente ejecución la exige.
+      #
+      # LO QUE ESTO SIGUE SIN DEMOSTRAR, dicho aquí para que nadie lo suponga:
+      # quien tenga permisos de administración sobre el repositorio puede
+      # borrar artefactos, y los artefactos caducan. Lo que queda entonces es el
+      # registro de ejecuciones, donde la cabeza también se imprime. Un anclaje
+      # de verdad -- una firma en un registro de transparencia, o la cabeza
+      # dentro de un sello firmado y publicado -- es más fuerte que esto; la
+      # diferencia es que esto no necesita nada más que el propio GitHub.
+      - name: Traer la cabeza anclada de la ejecución anterior
+        id: anclaje
+        uses: actions/download-artifact@v4
+        continue-on-error: true            # la primera vez no hay ninguna
+        with:
+          name: actaira-cabeza
+          path: .actaira-anclaje
+
+      - name: Exigir la cabeza anclada antes de tocar nada
+        run: |
+          if [ -f .actaira-anclaje/cabeza.txt ]; then
+            esperada="$(cat .actaira-anclaje/cabeza.txt)"
+            echo "cabeza anclada por la ejecución anterior: ${esperada}"
+            actaira almacen verificar \
+              --almacen .actaira/evidencia.jsonl \
+              --cabeza-esperada "${esperada}"
+          else
+            echo "No hay cabeza anclada todavía: esta es la primera ejecución que ancla."
+            echo "Hasta que haya dos, una reescritura completa del almacén NO se detecta."
+          fi
+
+      # Sale 3 cuando hay algo que volver a observar, y 0 cuando no. Tres no es
+      # un fallo: es trabajo.
+      - name: Qué caducó y qué cambió
+        id: vigilancia
+        continue-on-error: true
+        run: |
+          actaira vigilar . \
+            --rol proveedor \
+            --alto-riesgo si \
+            --almacen .actaira/evidencia.jsonl \
+            --registrar
+
+      # POR QUÉ ESTO NO ES UN `git pull --rebase`
+      # -------------------------------------------
+      # El almacén encadena por número de orden. Rebasar intercala las líneas
+      # de dos ejecuciones y deja dos con el mismo número: la cadena deja de
+      # verificar y el expediente pasa a estar roto por una carrera de la
+      # integración continua, que es el peor motivo posible. Si otro empujón
+      # ganó, esta ejecución TIRA lo suyo y vuelve a observar sobre la cabeza
+      # nueva. Observar otra vez es barato; un expediente roto no.
+      - name: Guardar la evidencia observada
+        run: |
+          set -euo pipefail
+          empujar() {
+            if [ -z "$(git status --porcelain .actaira/)" ]; then
+              echo "nada nuevo que guardar"; return 0
+            fi
+            git add .actaira/
+            git commit -m "Actaira: evidencia observada el $(date -u +%F)"
+            git push
+          }
+          git config user.name  "actaira[bot]"
+          git config user.email "actaira@users.noreply.github.com"
+          if ! empujar; then
+            echo "otro empujón llegó antes: se descarta lo observado y se vuelve a observar"
+            git fetch origin "${GITHUB_REF_NAME}"
+            git reset --hard "origin/${GITHUB_REF_NAME}"
+            actaira vigilar . --rol proveedor --alto-riesgo si \
+              --almacen .actaira/evidencia.jsonl --registrar || true
+            empujar
+          fi
+
+      # Que el almacén sigue siendo una cadena, después de escribir en él. Si
+      # esto falla, el expediente está roto y hay que saberlo AQUÍ y no delante
+      # de un auditor seis meses después.
+      - name: El almacén sigue encadenado
+        run: actaira almacen verificar --almacen .actaira/evidencia.jsonl
+
+      # La cabeza de AHORA, guardada fuera del repositorio para que la próxima
+      # ejecución pueda exigirla. Se hace DESPUÉS de verificar a propósito: si
+      # la cadena no verifica, no se ancla nada, porque anclar una cabeza que
+      # sale de un almacén roto sería darle un sello de bueno.
+      - name: Anclar la cabeza de esta ejecución
+        run: |
+          mkdir -p .actaira-anclaje
+          actaira almacen verificar --almacen .actaira/evidencia.jsonl \
+            | grep '^cabeza: ' | cut -d' ' -f2 > .actaira-anclaje/cabeza.txt
+          cabeza="$(cat .actaira-anclaje/cabeza.txt)"
+          test -n "${cabeza}" || { echo "no se pudo leer la cabeza"; exit 1; }
+          echo "cabeza anclada: ${cabeza}"
+          # También al resumen de la ejecución, que es un registro que un
+          # `git push` no reescribe y que sobrevive al artefacto.
+          echo "Cabeza del almacén de evidencia: \`${cabeza}\`" >> "${GITHUB_STEP_SUMMARY}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: actaira-cabeza
+          path: .actaira-anclaje/cabeza.txt
+          retention-days: 90
+          overwrite: true

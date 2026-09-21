@@ -1,0 +1,76 @@
+{
+  "paquete": "actaira/art72",
+  "version": "1.0.0",
+  "autor": "Actaira",
+  "licencia": "Apache-2.0",
+  "obligacion": "AIA-072",
+  "nota_de_autoria": {
+    "es": "Cada regla y cada remediación de este fichero las escribió una persona. Un modelo puede proponer el borrador de una regla fuera de línea; nunca redacta reglas ni remediaciones en ejecución. Segunda negativa.",
+    "en": "Every rule and every remediation in this file was written by a person. A model may draft a candidate rule offline; it never writes rules or remediations at runtime. Second negative."
+  },
+  "reglas": [
+    {
+      "id": "ACT-72-TELEMETRIA",
+      "version": "1.0.0",
+      "tipo": "fichero",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "telemetría que salga del sistema desplegado",
+        "en": "telemetry leaving the deployed system"
+      },
+      "titulo": {
+        "es": "El sistema desplegado no emite senal",
+        "en": "The deployed system emits no signal"
+      },
+      "remediacion": {
+        "es": "El artículo 72 no pide un plan, pide vigilancia. Lo único que la demuestra es que la senal que el plan dice recoger salga de verdad del sistema en producción.",
+        "en": "Article 72 does not ask for a plan, it asks for monitoring. The only thing that demonstrates it is that the signal the plan claims to collect actually leaves the system in production."
+      },
+      "patrones": [
+        "(?i)(opentelemetry|otel|prometheus|telemetr|metrics?\\.py|monitoring)"
+      ]
+    },
+    {
+      "id": "ACT-72-DRIFT",
+      "version": "1.0.0",
+      "tipo": "fichero",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "detección de caida de rendimiento o deriva",
+        "en": "detection of performance decay or drift"
+      },
+      "titulo": {
+        "es": "Sin detección de deriva",
+        "en": "No drift detection"
+      },
+      "remediacion": {
+        "es": "Un sistema de alto riesgo que se degrada en silencio incumple el 72 aunque tenga paneles. Define la métrica, el umbral y que pasa al cruzarlo.",
+        "en": "A high-risk system that degrades silently breaches Article 72 even with dashboards. Define the metric, the threshold, and what happens when it is crossed."
+      },
+      "patrones": [
+        "(?i)(drift|deriva|degradacion|performance_decay|psi_|ks_test)"
+      ]
+    },
+    {
+      "id": "ACT-72-UMBRAL-PARA",
+      "version": "1.0.0",
+      "tipo": "contenido",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "que superar un límite suspenda o alerte",
+        "en": "that crossing a threshold suspends or alerts"
+      },
+      "titulo": {
+        "es": "Superar el límite no dispara nada",
+        "en": "Crossing the limit triggers nothing"
+      },
+      "remediacion": {
+        "es": "Detectar sin actuar no es vigilancia. Ata el umbral a una alerta con destinatario, y a la ruta de suspensión del artículo 14.",
+        "en": "Detecting without acting is not monitoring. Wire the threshold to an alert with a recipient, and to the Article 14 suspension path."
+      },
+      "patrones": [
+        "(?i)(alert|alerta|pagerduty|notify|suspend|suspender).*(threshold|umbral|limite)|((threshold|umbral).*(alert|alerta|suspend))"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "$schema": "../esquema/formulario.schema.json",
+  "paquete": "aia-proveedor",
+  "version": "1.0.0",
+  "autor": "Actaira",
+  "titulo": {
+    "es": "Obligaciones del proveedor",
+    "en": "Provider obligations"
+  },
+  "destinatario_principal": "direccion",
+  "preguntas": [
+    {
+      "id": "F-PRV-1",
+      "sirve_a": [
+        "AIA-016",
+        "AIA-017",
+        "A.10.2"
+      ],
+      "destinatario": "direccion",
+      "texto": {
+        "es": "¿Tiene implantado un sistema de gestión de la calidad conforme al artículo 17, y en qué documento consta?",
+        "en": "Do you have a quality management system in place under Article 17, and in which document is it recorded?"
+      },
+      "ayuda": {
+        "es": "El artículo 17 enumera trece elementos que ese sistema tiene que contener por escrito, entre ellos la estrategia de cumplimiento normativo, las técnicas de diseño y verificación, los procedimientos de gestión de datos, el sistema de gestión de riesgos del artículo 9, la vigilancia poscomercialización del artículo 72 y la notificación de incidentes del artículo 73. Un sistema de gestión certificado en la ISO 42001 cubre buena parte, pero no todo: el Reglamento pide cosas que la norma no pide. Actaira le dice cuáles faltan.",
+        "en": "Article 17 lists thirteen elements that system must contain in writing, among them the regulatory compliance strategy, the design and verification techniques, the data management procedures, the Article 9 risk management system, the Article 72 post-market monitoring and the Article 73 incident reporting. A management system certified to ISO 42001 covers much of it, but not all: the Regulation asks for things the standard does not. Actaira tells you which are missing."
+      },
+      "formato": "artefacto",
+      "vigencia_dias": 365,
+      "produce": "sistema-de-calidad"
+    },
+    {
+      "id": "F-PRV-2",
+      "sirve_a": [
+        "AIA-016"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Qué nombre, nombre comercial registrado y dirección de contacto figuran en el sistema o en su embalaje o documentación?",
+        "en": "Which name, registered trade name and contact address appear on the system or on its packaging or documentation?"
+      },
+      "ayuda": {
+        "es": "El artículo 16.b lo pide literalmente. Parece trivial y es de los incumplimientos más fáciles de detectar desde fuera, porque basta mirar el producto.",
+        "en": "Article 16(b) requires it literally. It looks trivial and it is one of the easiest failures to spot from outside, because you only have to look at the product."
+      },
+      "formato": "texto_corto",
+      "vigencia_dias": 365,
+      "exige": {
+        "minimo_caracteres": 30
+      }
+    },
+    {
+      "id": "F-PRV-3",
+      "sirve_a": [
+        "AIA-043"
+      ],
+      "destinatario": "direccion",
+      "texto": {
+        "es": "¿Qué procedimiento de evaluación de la conformidad le corresponde y en qué estado está?",
+        "en": "Which conformity assessment procedure applies to you and what is its status?"
+      },
+      "ayuda": {
+        "es": "El artículo 43 distingue control interno (Anexo VI) de la intervención de un organismo notificado (Anexo VII). La regla práctica: los sistemas del Anexo III suelen ir por control interno salvo el punto 1 de biometría, y los del Anexo I siguen el procedimiento de su propia legislación sectorial. Si aplica una norma armonizada por completo, la vía suele ser más corta.",
+        "en": "Article 43 distinguishes internal control (Annex VI) from notified body involvement (Annex VII). The practical rule: Annex III systems usually go through internal control except biometrics in point 1, and Annex I systems follow their own sector legislation's procedure. If you apply a harmonised standard in full, the route is usually shorter."
+      },
+      "formato": "eleccion",
+      "vigencia_dias": 365,
+      "opciones": [
+        {
+          "valor": "interno",
+          "es": "Control interno, Anexo VI",
+          "en": "Internal control, Annex VI"
+        },
+        {
+          "valor": "notificado",
+          "es": "Organismo notificado, Anexo VII",
+          "en": "Notified body, Annex VII"
+        },
+        {
+          "valor": "sectorial",
+          "es": "El de la legislación de armonización aplicable",
+          "en": "That of the applicable harmonisation legislation"
+        },
+        {
+          "valor": "pendiente",
+          "es": "Todavía no determinado",
+          "en": "Not yet determined"
+        }
+      ]
+    },
+    {
+      "id": "F-PRV-4",
+      "sirve_a": [
+        "AIA-047"
+      ],
+      "destinatario": "direccion",
+      "texto": {
+        "es": "¿Quién firma la declaración UE de conformidad y desde qué fecha está emitida?",
+        "en": "Who signs the EU declaration of conformity and from what date is it issued?"
+      },
+      "ayuda": {
+        "es": "El artículo 47 exige que el proveedor la redacte, la firme, la mantenga a disposición de las autoridades diez años y asuma con ella la responsabilidad del cumplimiento. El Anexo V fija su contenido. Actaira la genera desde el expediente y usted la firma: lo que no puede hacer ningún software es asumir la responsabilidad por usted.",
+        "en": "Article 47 requires the provider to draw it up, sign it, keep it available to authorities for ten years and thereby assume responsibility for compliance. Annex V fixes its content. Actaira generates it from the file and you sign it: what no software can do is assume the responsibility for you."
+      },
+      "formato": "persona",
+      "vigencia_dias": 365,
+      "produce": "declaracion-ue-conformidad"
+    },
+    {
+      "id": "F-PRV-5",
+      "sirve_a": [
+        "AIA-049"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Está el sistema registrado en la base de datos de la UE del artículo 71, y con qué identificador?",
+        "en": "Is the system registered in the EU database of Article 71, and under which identifier?"
+      },
+      "ayuda": {
+        "es": "El artículo 49 obliga a registrarse antes de comercializar o poner en servicio. Los sistemas del Anexo III que se acogen a la excepción del artículo 6.3 también se registran, precisamente para que conste que se acogieron. Si aún no existe, escriba 'pendiente' y la fecha prevista.",
+        "en": "Article 49 requires registration before placing on the market or putting into service. Annex III systems relying on the Article 6(3) derogation also register, precisely so that the reliance is on record. If it does not exist yet, write 'pending' and the expected date."
+      },
+      "formato": "texto_corto",
+      "vigencia_dias": 90,
+      "exige": {
+        "minimo_caracteres": 5
+      }
+    },
+    {
+      "id": "F-PRV-6",
+      "sirve_a": [
+        "AIA-016",
+        "AIA-025",
+        "A.10.4"
+      ],
+      "destinatario": "responsable",
+      "texto": {
+        "es": "¿Qué información entrega a sus clientes o responsables del despliegue, y cómo les comunica un cambio en el sistema?",
+        "en": "What information do you hand to your customers or deployers, and how do you notify them of a change in the system?"
+      },
+      "ayuda": {
+        "es": "El artículo 13 fija que tienen que contener las instrucciones de uso, y el artículo 25 establece que si un tercero modifica sustancialmente su sistema pasa a ser el el proveedor. La línea entre los dos se dibuja en el contrato: si no dice quién responde de qué, responderá usted.",
+        "en": "Article 13 fixes what the instructions for use must contain, and Article 25 establishes that a third party who substantially modifies your system becomes the provider. The line between them is drawn in the contract: if it does not say who answers for what, you will."
+      },
+      "formato": "texto_largo",
+      "vigencia_dias": 180,
+      "exige": {
+        "minimo_caracteres": 150
+      },
+      "salta_si_cubre": [
+        "ACT-13-INSTRUCCIONES"
+      ]
+    }
+  ]
+}

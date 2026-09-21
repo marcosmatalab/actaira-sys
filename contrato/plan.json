@@ -1,0 +1,511 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://actaira.com/contrato/plan.json",
+ "title": "El plan: que te ata, que se comprobo y que hay que preguntarte",
+ "type": "object",
+ "properties": {
+  "esquema": {
+   "const": "actaira/plan/v1"
+  },
+  "fecha": {
+   "type": "string",
+   "format": "date"
+  },
+  "recuento": {
+   "type": "object",
+   "propertyNames": {
+    "enum": [
+     "comprobada",
+     "con_hallazgos",
+     "a_preguntar",
+     "solo_formulario",
+     "futura",
+     "no_ata",
+     "sin_resolver"
+    ]
+   },
+   "additionalProperties": {
+    "type": "integer",
+    "minimum": 0
+   }
+  },
+  "nota_de_recuento": {
+   "type": "object",
+   "properties": {
+    "es": {
+     "type": "string",
+     "minLength": 1
+    },
+    "en": {
+     "type": "string",
+     "minLength": 1
+    }
+   },
+   "required": [
+    "es",
+    "en"
+   ]
+  },
+  "nota_cruce": {
+   "type": "object",
+   "properties": {
+    "es": {
+     "type": "string",
+     "minLength": 1
+    },
+    "en": {
+     "type": "string",
+     "minLength": 1
+    }
+   },
+   "required": [
+    "es",
+    "en"
+   ]
+  },
+  "total_preguntas": {
+   "type": "integer",
+   "minimum": 0
+  },
+  "lineas": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "obligacion_id": {
+      "type": "string",
+      "pattern": "^AIA-[0-9]{3}[A-Z]?$"
+     },
+     "articulo": {
+      "type": "string"
+     },
+     "titulo": {
+      "type": "object",
+      "properties": {
+       "es": {
+        "type": "string",
+        "minLength": 1
+       },
+       "en": {
+        "type": "string",
+        "minLength": 1
+       }
+      },
+      "required": [
+       "es",
+       "en"
+      ]
+     },
+     "nivel": {
+      "enum": [
+       "maquina",
+       "generable",
+       "juzgada",
+       "organizativa"
+      ]
+     },
+     "estado": {
+      "enum": [
+       "comprobada",
+       "con_hallazgos",
+       "a_preguntar",
+       "solo_formulario",
+       "futura",
+       "no_ata",
+       "sin_resolver"
+      ]
+     },
+     "regla_aplicabilidad": {
+      "type": "string",
+      "minLength": 1
+     },
+     "hallazgos": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "regla_id": {
+         "type": "string"
+        },
+        "regla_version": {
+         "type": "string"
+        },
+        "autor": {
+         "type": "string",
+         "minLength": 1
+        },
+        "paquete": {
+         "type": "string",
+         "minLength": 1
+        },
+        "severidad": {
+         "enum": [
+          "alta",
+          "media",
+          "baja"
+         ]
+        },
+        "localizacion": {
+         "type": "string"
+        },
+        "remediacion": {
+         "type": "object",
+         "properties": {
+          "es": {
+           "type": "string",
+           "minLength": 1
+          },
+          "en": {
+           "type": "string",
+           "minLength": 1
+          }
+         },
+         "required": [
+          "es",
+          "en"
+         ]
+        }
+       },
+       "required": [
+        "regla_id",
+        "regla_version",
+        "autor",
+        "paquete",
+        "severidad",
+        "localizacion",
+        "remediacion"
+       ]
+      }
+     },
+     "preguntas": {
+      "type": "array"
+     },
+     "cubre": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "controles_cubiertos": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "no_cubre": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "iso42001": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "desde": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "ejecucion_id": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "description": "digest de la ejecucion que produjo esta linea; null si el control aun no pasa por capas"
+     },
+     "observacion_id": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "description": "digest de lo observado. Dos pasadas que ven lo mismo dan el mismo identificador"
+     },
+     "suficiencia": {
+      "type": [
+       "object",
+       "null"
+      ],
+      "properties": {
+       "esquema": {
+        "const": "actaira/suficiencia/v1"
+       },
+       "requisito_id": {
+        "type": "string"
+       },
+       "estado": {
+        "enum": [
+         "suficiente",
+         "insuficiente",
+         "indeterminada",
+         "no_exigible"
+        ]
+       },
+       "politica": {
+        "type": "string"
+       },
+       "politica_version": {
+        "type": "string"
+       },
+       "se_apoya_en": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "falta": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "required": [
+          "que",
+          "que_hacer",
+          "quien"
+         ]
+        }
+       },
+       "motivo": {
+        "type": [
+         "object",
+         "null"
+        ]
+       },
+       "id": {
+        "type": "string"
+       }
+      },
+      "required": [
+       "esquema",
+       "requisito_id",
+       "estado",
+       "politica",
+       "politica_version"
+      ],
+      "description": "Para ESTE requisito, alcanza lo que hay. `suficiente` NO es `cumple`: dice que la evidencia que el requisito pide esta, esta fresca y es valida, que es una afirmacion sobre el expediente y no sobre la conducta de la organizacion."
+     },
+     "procedencia": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "analizador": {
+         "type": "string"
+        },
+        "ejecucion": {
+         "type": "string"
+        },
+        "observacion": {
+         "type": "string"
+        },
+        "sujeto": {
+         "type": "object"
+        }
+       },
+       "required": [
+        "analizador",
+        "ejecucion",
+        "observacion",
+        "sujeto"
+       ]
+      },
+      "description": "De que analizadores y de que sujetos salio esta linea. Una obligacion puede comprobarse con VARIOS: el articulo 14 se mira en el arbol de ficheros y en la estructura de agentes, que son dos sujetos con dos digests y dos invalidaciones. Sin esto, un hallazgo no podria decir de cual vino."
+     },
+     "requisitos": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "id": {
+         "type": "string"
+        },
+        "apartados": {
+         "type": "array"
+        },
+        "nivel": {
+         "type": "string"
+        },
+        "actores": {
+         "type": "array"
+        },
+        "exige": {
+         "type": "object"
+        },
+        "cubierto_por": {
+         "type": "array"
+        },
+        "estado": {
+         "enum": [
+          "comprobado",
+          "con_hallazgos",
+          "a_preguntar",
+          "sin_cubrir",
+          "no_evaluado"
+         ]
+        }
+       },
+       "required": [
+        "id",
+        "apartados",
+        "nivel",
+        "exige",
+        "estado"
+       ]
+      },
+      "description": "Los deberes concretos del articulo, uno a uno. Un articulo con seis deberes cerrado entero porque uno esta cubierto es la manera mas rapida de emitir un expediente falso."
+     },
+     "fuerza_maxima": {
+      "description": "La clase de senal mas fuerte que respalda esta obligacion, o null.",
+      "enum": [
+       "comportamiento",
+       "presencia",
+       "aportado",
+       null
+      ]
+     },
+     "fuerzas": {
+      "type": "object",
+      "description": "El desglose entero, para que no se pueda leer «comportamiento» sobre una obligacion en la que ocho de nueve senales eran de presencia.",
+      "additionalProperties": {
+       "type": "integer",
+       "minimum": 0
+      },
+      "propertyNames": {
+       "enum": [
+        "comportamiento",
+        "presencia",
+        "aportado"
+       ]
+      }
+     }
+    },
+    "required": [
+     "obligacion_id",
+     "articulo",
+     "titulo",
+     "nivel",
+     "estado",
+     "regla_aplicabilidad",
+     "hallazgos",
+     "preguntas",
+     "cubre",
+     "no_cubre",
+     "iso42001"
+    ]
+   }
+  },
+  "recuento_de_requisitos": {
+   "type": "object",
+   "description": "Recuento por estado de requisito. Enteros, nunca una proporcion."
+  },
+  "nombres_de_estado": {
+   "type": "object",
+   "description": "Como se lee cada estado que ESTE documento usa, en los dos idiomas. Los estados viajan sin traducir porque son identificadores; esto dice como se ensenan.",
+   "additionalProperties": {
+    "type": "object",
+    "properties": {
+     "es": {
+      "type": "string",
+      "minLength": 1
+     },
+     "en": {
+      "type": "string",
+      "minLength": 1
+     }
+    },
+    "required": [
+     "es",
+     "en"
+    ],
+    "additionalProperties": false
+   }
+  },
+  "ilegibles": {
+   "type": "array",
+   "description": "Ficheros que el motor no pudo leer. Lo que no se leyo no produce hallazgos, asi que su ausencia del resto del documento no significa que este bien: significa que no se miro. El plan los descartaba, y con eso un repositorio con media rama ilegible producia exactamente el mismo documento que uno leido entero.",
+   "items": {
+    "type": "object",
+    "required": [
+     "fichero",
+     "por_que"
+    ],
+    "properties": {
+     "fichero": {
+      "type": "string"
+     },
+     "por_que": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "nota_de_ilegibles": {
+   "type": "object",
+   "required": [
+    "es",
+    "en"
+   ],
+   "properties": {
+    "es": {
+     "type": "string"
+    },
+    "en": {
+     "type": "string"
+    }
+   }
+  },
+  "recuento_por_fuerza": {
+   "type": "object",
+   "description": "Cuantas obligaciones estan respaldadas por cada CLASE de senal. `comportamiento` es lo que el programa hace, leido del arbol sintactico. `presencia` es que un fichero o una linea casan un patron: dice que el artefacto esta, y no dice nada de si sirve. El informe imprimia las dos igual.",
+   "required": [
+    "comportamiento",
+    "presencia",
+    "aportado"
+   ],
+   "properties": {
+    "comportamiento": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "presencia": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "aportado": {
+     "type": "integer",
+     "minimum": 0
+    }
+   }
+  },
+  "nota_de_fuerza": {
+   "type": "object",
+   "required": [
+    "es",
+    "en"
+   ],
+   "properties": {
+    "es": {
+     "type": "string"
+    },
+    "en": {
+     "type": "string"
+    }
+   }
+  }
+ },
+ "required": [
+  "esquema",
+  "fecha",
+  "ilegibles",
+  "lineas",
+  "nombres_de_estado",
+  "nota_cruce",
+  "nota_de_fuerza",
+  "nota_de_ilegibles",
+  "nota_de_recuento",
+  "recuento",
+  "recuento_por_fuerza"
+ ]
+}

@@ -1,0 +1,90 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "El estado de la cadena de evidencia",
+ "description": "Lo que devuelve `almacen verificar --json`. Es la vista de PROCEDENCIA: si el almacen es el que esta casa escribio, cual es su cabeza, y cuantas lineas no se puede demostrar que esten intactas.\n\nEste verbo solo sabia imprimir prosa, asi que la plataforma no lo podia consumir y ninguna pantalla podia ensenar el estado de la evidencia. Es el documento que sostiene la unica afirmacion que este producto hace frente a un tercero, y no estaba publicado.",
+ "type": "object",
+ "required": [
+  "esquema",
+  "ruta",
+  "existe",
+  "verifica",
+  "roturas",
+  "observaciones",
+  "cabeza",
+  "sin_cadena_demostrable",
+  "nota_de_la_cabeza"
+ ],
+ "properties": {
+  "esquema": {
+   "const": "actaira/almacen/v1"
+  },
+  "ruta": {
+   "type": "string"
+  },
+  "existe": {
+   "type": "boolean",
+   "description": "Si hay fichero. `false` NO significa que algo este mal: un cliente que todavia no ha observado nada no tiene almacen, y ese es su estado normal el primer dia."
+  },
+  "verifica": {
+   "type": "boolean",
+   "description": "Si la cadena de sellos cuadra de principio a fin. Lo que demuestra es que el fichero es consistente CONSIGO MISMO, y no que esten todas sus lineas: quitarle las ultimas deja un prefijo que verifica igual."
+  },
+  "roturas": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   },
+   "description": "Los motivos, de la primera rotura y solo de esa. A partir de una rotura todo lo que sigue encadena con un sello que ya no vale, asi que enumerar las demas seria contar N veces el mismo incidente."
+  },
+  "observaciones": {
+   "type": "integer",
+   "minimum": 0
+  },
+  "cabeza": {
+   "type": [
+    "string",
+    "null"
+   ],
+   "description": "El sello de la ultima linea. Es lo UNICO que hay que anotar fuera para detectar que alguien reescribio el fichero entero y lo volvio a sellar, que es el ataque que la cadena por si sola no cubre."
+  },
+  "sin_cadena_demostrable": {
+   "type": "integer",
+   "minimum": 0,
+   "description": "Cuantas lineas llevan una marca de que no se puede demostrar que esten intactas: o las escribio una version del motor que no encadenaba, o vinieron de un almacen que encadenaba y no cuadraba. La marca va DENTRO del sello y no se puede quitar."
+  },
+  "cabeza_esperada": {
+   "type": [
+    "string",
+    "null"
+   ]
+  },
+  "cabeza_es_la_esperada": {
+   "type": [
+    "boolean",
+    "null"
+   ],
+   "description": "`null` cuando nadie dijo que cabeza esperaba, que NO es lo mismo que `true`. Sin una cabeza anotada fuera, esta comprobacion no se ha hecho."
+  },
+  "por_que_no_es_la_esperada": {
+   "type": [
+    "string",
+    "null"
+   ]
+  },
+  "nota_de_la_cabeza": {
+   "type": "object",
+   "required": [
+    "es",
+    "en"
+   ],
+   "properties": {
+    "es": {
+     "type": "string"
+    },
+    "en": {
+     "type": "string"
+    }
+   }
+  }
+ }
+}

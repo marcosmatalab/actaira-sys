@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://actaira.com/contrato/soa.json",
+  "title": "La declaracion de aplicabilidad de la ISO/IEC 42001",
+  "type": "object",
+  "properties": {
+    "esquema": {
+      "const": "actaira/soa/v1"
+    },
+    "fecha": {
+      "type": "string",
+      "format": "date"
+    },
+    "referencia": {
+      "type": "object",
+      "properties": {
+        "es": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "es",
+        "en"
+      ]
+    },
+    "recuento": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "aprobada_por": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "nota_de_aprobacion": {
+      "type": "object",
+      "properties": {
+        "es": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "es",
+        "en"
+      ]
+    },
+    "nota_de_exclusion": {
+      "type": "object",
+      "properties": {
+        "es": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "es",
+        "en"
+      ]
+    },
+    "nota_de_no_herencia": {
+      "type": "object",
+      "properties": {
+        "es": {
+          "type": "string",
+          "minLength": 1
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "es",
+        "en"
+      ]
+    },
+    "controles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "control_id": {
+            "type": "string",
+            "pattern": "^A\\."
+          },
+          "titulo": {
+            "type": "object",
+            "properties": {
+              "es": {
+                "type": "string",
+                "minLength": 1
+              },
+              "en": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "es",
+              "en"
+            ]
+          },
+          "incluido": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "procedencia": {
+            "enum": [
+              "derivada",
+              "derivada_sin_resolver",
+              "aportada",
+              "pendiente_de_justificar"
+            ]
+          },
+          "justificacion": {
+            "type": "object",
+            "properties": {
+              "es": {
+                "type": "string",
+                "minLength": 1
+              },
+              "en": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "es",
+              "en"
+            ]
+          },
+          "estado_de_implantacion": {
+            "type": "object",
+            "properties": {
+              "estado": {
+                "enum": [
+                  "con_evidencia_tecnica",
+                  "con_hallazgos",
+                  "con_respuesta_firmada",
+                  "sin_evidencia_todavia",
+                  "fuera_del_cruce"
+                ]
+              }
+            },
+            "required": [
+              "estado"
+            ]
+          }
+        },
+        "required": [
+          "control_id",
+          "titulo",
+          "incluido",
+          "procedencia",
+          "justificacion",
+          "estado_de_implantacion"
+        ]
+      }
+    },
+    "nombres_de_estado": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "es": {
+            "type": "string",
+            "minLength": 1
+          },
+          "en": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "es",
+          "en"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "esquema",
+    "fecha",
+    "referencia",
+    "recuento",
+    "nota_de_exclusion",
+    "nota_de_no_herencia",
+    "controles",
+    "nombres_de_estado"
+  ]
+}

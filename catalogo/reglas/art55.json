@@ -1,0 +1,95 @@
+{
+ "$schema": "actaira/catalogo/reglas/v1",
+ "paquete": "actaira/art55",
+ "version": "1.0.0",
+ "autor": "Actaira",
+ "licencia": "Apache-2.0",
+ "obligacion": "AIA-055",
+ "nota_de_autoria": {
+  "es": "Cada regla y cada remediación de este fichero las escribió una persona. Un modelo puede proponer el borrador de una regla fuera de línea; nunca redacta reglas ni remediaciones en ejecución. Segunda negativa.",
+  "en": "Every rule and every remediation in this file was written by a person. A model may draft a candidate rule offline; it never writes rules or remediations at runtime. Second negative."
+ },
+ "por_que_este_paquete_existe": {
+  "es": "Las obligaciones del artículo 55 son las únicas del Reglamento que se activan por una CIFRA -el cómputo acumulado de entrenamiento- y no por un uso. Eso las hace fáciles de ignorar hasta el día en que el modelo cruza el umbral, así que conviene que el repositorio enseñe lo que va a hacer falta antes de que haga falta.",
+  "en": "The Article 55 obligations are the only ones in the Regulation triggered by a FIGURE - cumulative training compute - rather than by a use. That makes them easy to ignore until the day the model crosses the threshold, so the repository had better show what will be needed before it is needed."
+ },
+ "lo_que_este_paquete_no_puede_ver": {
+  "es": "Si las pruebas adversarias cubren los riesgos sistémicos que este modelo plantea de verdad, si el nivel de ciberseguridad es adecuado, y si el seguimiento de incidentes funciona. Los tres se preguntan. Y que el fichero de seguridad diga «Oficina de IA» no demuestra que alguien vaya a notificar: demuestra que el destinatario está escrito, que es lo único que se puede leer.",
+  "en": "Whether the adversarial testing covers the systemic risks this model actually poses, whether the cybersecurity level is adequate, and whether incident tracking works. All three are asked. And that the security file says 'AI Office' does not prove anyone will report: it proves the recipient is written down, which is all that can be read."
+ },
+ "reglas": [
+  {
+   "id": "ACT-55-EVAL",
+   "version": "1.0.0",
+   "tipo": "fichero",
+   "severidad": "alta",
+   "que_busca": {
+    "es": "pruebas adversarias documentadas sobre el modelo",
+    "en": "documented adversarial testing of the model"
+   },
+   "patrones": [
+    "(?i)red[_-]?team",
+    "(?i)adversarial",
+    "(?i)evals?/",
+    "(?i)pruebas[_-]?adversari"
+   ],
+   "titulo": {
+    "es": "No hay rastro de pruebas adversarias",
+    "en": "No trace of adversarial testing"
+   },
+   "remediacion": {
+    "es": "El artículo 55(1)(a) obliga al proveedor de un modelo con riesgo sistémico a evaluarlo con protocolos y herramientas normalizados y del estado de la técnica, incluidas pruebas adversarias documentadas, para detectar y mitigar riesgos sistémicos. Documentadas quiere decir con su protocolo, sus resultados y su fecha: una sesión de equipo rojo de la que no queda nada no se puede enseñar.",
+    "en": "Article 55(1)(a) requires the provider of a model with systemic risk to evaluate it against standardised, state-of-the-art protocols and tools, including documented adversarial testing, in order to identify and mitigate systemic risks. Documented means with its protocol, its results and its date: a red-team session that leaves nothing behind cannot be shown."
+   }
+  },
+  {
+   "id": "ACT-55-INCIDENTES",
+   "version": "1.0.0",
+   "tipo": "contenido",
+   "severidad": "alta",
+   "que_busca": {
+    "es": "un canal declarado para notificar incidentes graves a la Oficina de IA",
+    "en": "a declared channel to report serious incidents to the AI Office"
+   },
+   "ambito": "documentacion",
+   "patrones": [
+    "(?i)oficina de ia",
+    "(?i)\\bai office\\b"
+   ],
+   "titulo": {
+    "es": "No se declara a quién se notifica un incidente grave del modelo",
+    "en": "Whom a serious model incident is reported to is not declared"
+   },
+   "remediacion": {
+    "es": "El artículo 55(1)(c) obliga a hacer un seguimiento de los incidentes graves, a documentarlos y a informar sin demora indebida a la Oficina de IA y, cuando proceda, a las autoridades nacionales competentes. El destinatario no es el mismo que el del artículo 73, y confundirlos hace que la notificación llegue tarde al sitio correcto. Esta regla mira DENTRO del fichero de seguridad o de incidentes que ya tengas, no en cualquier documento del repositorio: la primera versión aceptaba cualquier markdown que mencionara «incidentes graves», con lo que un documento que se prometía a sí mismo la satisfacía. Ese es el defecto D-4 de esta casa y la puerta que lo vigila lo cazó el mismo día.",
+    "en": "Article 55(1)(c) requires tracking serious incidents, documenting them and reporting without undue delay to the AI Office and, where appropriate, to national competent authorities. The recipient is not the same as under Article 73, and confusing them makes the report reach the right place late. This rule looks INSIDE the security or incident file you already have, not in any document in the repository: the first version accepted any markdown mentioning 'serious incidents', so a document that promised itself satisfied it. That is this house's D-4 defect and the gate that watches for it caught it the same day."
+   },
+   "solo_en": "(?i)(security|seguridad|incident|incidente)[^/]*\\.(md|txt|rst)$",
+   "solo_si_hay_fichero": true
+  },
+  {
+   "id": "ACT-55-CIBER",
+   "version": "1.0.0",
+   "tipo": "fichero",
+   "severidad": "alta",
+   "que_busca": {
+    "es": "medidas de ciberseguridad declaradas para el modelo y su infraestructura",
+    "en": "declared cybersecurity measures for the model and its infrastructure"
+   },
+   "patrones": [
+    "(?i)security\\.md$",
+    "(?i)SECURITY$",
+    "(?i)seguridad\\.md$",
+    "(?i)threat[_-]?model"
+   ],
+   "titulo": {
+    "es": "No hay ninguna declaración de ciberseguridad del modelo",
+    "en": "There is no cybersecurity statement for the model"
+   },
+   "remediacion": {
+    "es": "El artículo 55(1)(d) obliga a garantizar un nivel adecuado de protección de la ciberseguridad del modelo Y de su infraestructura física. Lo segundo se olvida siempre: los pesos del modelo son el activo, y quien pueda copiarlos se lleva el modelo entero sin tocar la API.",
+    "en": "Article 55(1)(d) requires ensuring an adequate level of cybersecurity protection for the model AND its physical infrastructure. The second part is always forgotten: the model weights are the asset, and whoever can copy them takes the whole model without touching the API."
+   }
+  }
+ ]
+}

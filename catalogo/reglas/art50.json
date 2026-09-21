@@ -1,0 +1,187 @@
+{
+ "paquete": "actaira/art50",
+ "version": "1.0.0",
+ "autor": "Actaira",
+ "licencia": "Apache-2.0",
+ "obligacion": "AIA-050",
+ "nota_de_autoria": {
+  "es": "Toda regla de este fichero la escribió una persona, y su remediación también. Ningún modelo redacta reglas ni remediaciones en ejecución: la segunda negativa dice que Actaira no opina, cita. Un modelo puede proponer el borrador de una regla nueva fuera de línea, y entonces pasa por revisión humana antes de entrar aquí.",
+  "en": "Every rule in this file was written by a person, and so was its remediation. No model writes rules or remediations at runtime: the second negative says Actaira does not opine, it cites. A model may draft a candidate rule offline, and it then goes through human review before entering here."
+ },
+ "reglas": [
+  {
+   "id": "ACT-50-GEN-IMG",
+   "version": "1.0.0",
+   "severidad": "alta",
+   "que_busca": {
+    "es": "llamada a una API de generación de imagen",
+    "en": "a call to an image generation API"
+   },
+   "firmas": [
+    "openai.images.generate",
+    "client.images.generate",
+    "images.generate",
+    "replicate.run",
+    "StableDiffusionPipeline.from_pretrained",
+    "genai.GenerativeModel.generate_images",
+    "bedrock.invoke_model"
+   ],
+   "titulo": {
+    "es": "Punto de generación de imagen sin marcado en el mismo camino",
+    "en": "Image generation point with no marking on the same path"
+   },
+   "remediacion": {
+    "es": "Escribe el marcado IPTC digitalSourceType en el fichero ANTES de devolverlo o guardarlo, en la misma función que recibe los bytes del proveedor. Marcar más tarde, en otro módulo, deja una ventana en la que el fichero sale sin marcar.",
+    "en": "Write the IPTC digitalSourceType marking into the file BEFORE returning or storing it, in the same function that receives the provider's bytes. Marking later, in another module, leaves a window where the file leaves unmarked."
+   },
+   "requiere_import": [
+    "openai",
+    "replicate",
+    "diffusers",
+    "google.generativeai",
+    "boto3"
+   ]
+  },
+  {
+   "id": "ACT-50-GEN-TXT",
+   "version": "1.0.0",
+   "severidad": "media",
+   "que_busca": {
+    "es": "llamada a una API de generación de texto",
+    "en": "a call to a text generation API"
+   },
+   "firmas": [
+    "openai.chat.completions.create",
+    "client.chat.completions.create",
+    "chat.completions.create",
+    "anthropic.messages.create",
+    "client.messages.create",
+    "messages.create",
+    "genai.GenerativeModel.generate_content",
+    "ollama.chat"
+   ],
+   "titulo": {
+    "es": "Punto de generación de texto",
+    "en": "Text generation point"
+   },
+   "remediacion": {
+    "es": "El artículo 50(4) solo obliga a divulgar el texto generado cuando se publica para informar al público sobre asuntos de interés general. Si ese es tu caso, la divulgación va en el propio texto publicado, no en los metadatos. Si no lo es, declara el motivo por escrito: este hallazgo no se cierra solo.",
+    "en": "Article 50(4) only requires disclosure of generated text when it is published to inform the public on matters of public interest. If that is your case, the disclosure goes in the published text itself, not in metadata. If it is not, write down the reason: this finding does not close by itself."
+   },
+   "requiere_import": [
+    "openai",
+    "anthropic",
+    "google.generativeai",
+    "ollama"
+   ]
+  },
+  {
+   "id": "ACT-50-BOT",
+   "version": "1.0.0",
+   "severidad": "alta",
+   "que_busca": {
+    "es": "punto de entrada de un asistente conversacional",
+    "en": "the entry point of a conversational assistant"
+   },
+   "firmas": [
+    "app.post",
+    "router.post",
+    "bot.on_message",
+    "slack_app.event",
+    "on_message"
+   ],
+   "requiere_ademas": "generacion_de_texto_en_el_mismo_fichero",
+   "titulo": {
+    "es": "Interacción con personas sin aviso de que es IA",
+    "en": "Interaction with people with no AI disclosure"
+   },
+   "remediacion": {
+    "es": "El artículo 50(1) exige informar a la persona de que interactúa con un sistema de IA, en la primera interacción y de forma clara. Ponlo en el primer mensaje del asistente o en la cabecera de la interfaz, no en los términos de uso.",
+    "en": "Article 50(1) requires informing the person that they are interacting with an AI system, at the first interaction and clearly. Put it in the assistant's first message or in the interface header, not in the terms of use."
+   },
+   "requiere_import": [
+    "fastapi",
+    "flask",
+    "slack_bolt",
+    "discord"
+   ]
+  },
+  {
+   "id": "ACT-50-MARCA-AUSENTE",
+   "version": "1.0.0",
+   "severidad": "alta",
+   "que_busca": {
+    "es": "fichero generado que sale sin la propiedad de marcado",
+    "en": "a generated file that ships without the marking property"
+   },
+   "titulo": {
+    "es": "Artefacto generado sin marcado legible por máquina",
+    "en": "Generated artefact with no machine-readable marking"
+   },
+   "remediacion": {
+    "es": "El fichero no lleva Iptc4xmpExt:DigitalSourceType ni manifiesto C2PA. Escribe el paquete XMP mínimo con el newscode trainedAlgorithmicMedia en el momento de crear el fichero.",
+    "en": "The file carries neither Iptc4xmpExt:DigitalSourceType nor a C2PA manifest. Write the minimal XMP packet with the trainedAlgorithmicMedia newscode at file creation time."
+   }
+  },
+  {
+   "id": "ACT-50-PIPE-BORRA",
+   "version": "1.0.0",
+   "severidad": "alta",
+   "que_busca": {
+    "es": "un paso del pipeline destruye el marcado",
+    "en": "a pipeline step that destroys the marking"
+   },
+   "titulo": {
+    "es": "El pipeline de publicación destruye el marcado",
+    "en": "The publishing pipeline destroys the marking"
+   },
+   "remediacion": {
+    "es": "El marcado es correcto en origen y muere en un paso posterior. La durabilidad de un marcado de metadatos es una propiedad del pipeline, no del marcado: o el paso conserva los metadatos, o hay que reponer el marcado después de el. El informe nombra el paso exacto.",
+    "en": "The marking is correct at source and dies at a later step. The durability of a metadata marking is a property of the pipeline, not of the marking: either the step preserves metadata, or the marking must be reapplied after it. The report names the exact step."
+   }
+  },
+  {
+   "id": "ACT-50-MARCA-ILEGIBLE",
+   "version": "1.0.0",
+   "severidad": "alta",
+   "que_busca": {
+    "es": "un DigitalSourceType que no es ninguno de los códigos del vocabulario del IPTC",
+    "en": "a DigitalSourceType that is none of the IPTC vocabulary newscodes"
+   },
+   "titulo": {
+    "es": "El artefacto lleva marcado, y el marcado no se puede interpretar",
+    "en": "The artefact carries a marking, and the marking cannot be interpreted"
+   },
+   "remediacion": {
+    "es": "El fichero trae un campo DigitalSourceType con un valor que no está en el vocabulario del IPTC, así que ninguna máquina que lo lea sabrá qué dice. Suele significar que la tubería escribe el campo mal, no que no lo escriba: revisa qué valor está poniendo y usa el código del IPTC que corresponda (trainedAlgorithmicMedia para contenido generado por un modelo). Un marcado que no se puede interpretar no cumple el artículo 50(2), y es peor que no tenerlo porque parece que sí.",
+    "en": "The file carries a DigitalSourceType field whose value is not in the IPTC vocabulary, so no machine reading it will know what it says. This usually means the pipeline writes the field wrongly rather than not writing it: check what value it is setting and use the matching IPTC newscode (trainedAlgorithmicMedia for model-generated content). A marking that cannot be interpreted does not satisfy Article 50(2), and is worse than having none because it looks like it does."
+   }
+  },
+  {
+   "id": "ACT-50-PIPE-FRAGIL",
+   "version": "1.0.0",
+   "severidad": "media",
+   "que_busca": {
+    "es": "un marcado que sobrevive a la cadena solo si cada herramienta arrastra los metadatos",
+    "en": "a marking that survives the pipeline only if every tool carries metadata across"
+   },
+   "titulo": {
+    "es": "El marcado sobrevive, y sobrevive por los pelos",
+    "en": "The marking survives, and it survives by a thread"
+   },
+   "remediacion": {
+    "es": "El marcado sobrevive a tu cadena SI cada herramienta arrastra los metadatos, y no sobrevive a ninguno de sus pasos si alguna no lo hace. Este motor no puede saber cuál de las dos cosas hacen tus herramientas concretas: un `convert` de ImageMagick conserva el XMP, el mismo `convert` con `-strip` lo tira, y los dos se declaran aquí con el mismo nombre de paso. Comprueba tus herramientas de verdad, o deja de depender de que lo hagan: un marcado que vive sólo en los metadatos es frágil por construcción, y el artículo 50(2) no pide que esté marcado al salir del modelo, pide que lo esté cuando llega a una persona.",
+    "en": "The marking survives your pipeline IF every tool carries metadata across, and survives none of its steps if any tool does not. This engine cannot know which of the two your concrete tools do: ImageMagick's `convert` preserves XMP, the same `convert` with `-strip` drops it, and both are declared here under the same step name. Check your actual tools, or stop depending on them: a marking that lives only in metadata is fragile by construction, and Article 50(2) does not ask that it be marked as it leaves the model, it asks that it be marked when it reaches a person."
+   }
+  }
+ ],
+ "nota_de_falsos_positivos": {
+  "es": "La pasada adversarial de la fase 2 encontró que casar solo por sufijo de segmentos da falsos positivos reales: `correo.messages.create` casa `messages.create`. Un falso positivo en un informe de cumplimiento destruye la confianza en todos los verdaderos, así que cada regla declara además que paquete tiene que importar el fichero para que su firma cuente. Se acepta el coste: un cliente que envuelva el SDK en un módulo propio y lo importe indirectamente sale INDETERMINADO en vez de detectado, y eso es preferible a acusarle de algo que no hace.",
+  "en": "Phase 2's adversarial pass found that matching by segment suffix alone yields real false positives: `correo.messages.create` matches `messages.create`. A false positive in a compliance report destroys trust in every true one, so each rule also declares which package the file must import for its signature to count. The cost is accepted: a customer wrapping the SDK in their own module and importing it indirectly comes out INDETERMINATE rather than detected, and that is preferable to accusing them of something they do not do."
+ },
+ "motor": "art50",
+ "por_que_motor_propio": {
+  "es": "El artículo 50 es el único que necesita leer los BYTES de la salida, no el código que la produce. El motor genérico lee el árbol del repositorio; el marcado vive en ficheros que el cliente aporta. Se declara aquí en vez de que el motor genérico lo adivine por el nombre del paquete.",
+  "en": "Article 50 is the only one that needs to read the output's BYTES, not the code that produces it. The generic engine reads the repository tree; the marking lives in files the customer supplies. Declared here rather than having the generic engine guess it from the pack's name."
+ }
+}

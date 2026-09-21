@@ -1,0 +1,164 @@
+{
+  "$schema": "actaira/catalogo/reglas/v1",
+  "paquete": "actaira/agentes",
+  "version": "1.0.0",
+  "autor": "Actaira",
+  "licencia": "Apache-2.0",
+  "obligacion": "AIA-014",
+  "motor": "agentes",
+  "nota_de_autoria": {
+    "es": "Cada regla y cada remediación de este fichero las escribió una persona. Un modelo puede proponer el borrador de una regla fuera de línea; nunca redacta reglas ni remediaciones en ejecución. Segunda negativa.",
+    "en": "Every rule and every remediation in this file was written by a person. A model may draft a candidate rule offline; it never writes rules or remediations at runtime. Second negative."
+  },
+  "por_que_este_paquete_existe": {
+    "es": "El Reglamento de 2024 no habla de agentes. Habla de sistemas de IA, y un agente con herramientas es un sistema de IA: la diferencia no es jurídica, es que su superficie de riesgo no está donde el catálogo la busca. Un clasificador arriesga una predicción mala. Un agente con una herramienta que escribe arriesga una predicción mala QUE ADEMÁS ACTÚA, y eso mueve la mitad del artículo 14 de «que una persona pueda vigilar» a «que una persona pueda parar». Lo que este paquete mide no es si las herramientas son peligrosas: es si CONSTA lo que hacen. Deducir el efecto de una herramienta de su nombre es el patrón que la segunda negativa prohíbe, y además se equivoca en cuanto alguien llama `obtener_factura` a algo que emite una factura.",
+    "en": "The 2024 Regulation does not talk about agents. It talks about AI systems, and an agent with tools is an AI system: the difference is not legal, it is that its risk surface is not where the catalogue looks for it. A classifier risks a bad prediction. An agent with a writing tool risks a bad prediction THAT ALSO ACTS, and that moves half of Article 14 from 'a person can oversee it' to 'a person can stop it'.\n\nWhat this pack measures is not whether the tools are dangerous: it is whether what they do IS RECORDED. Inferring a tool's effect from its name is the pattern the second negative forbids, and it is wrong the moment somebody names `get_invoice` something that issues an invoice."
+  },
+  "lo_que_este_paquete_no_puede_ver": {
+    "es": "Si una herramienta hace lo que declara; si el límite declarado se respeta en ejecución; qué pasa cuando el modelo encadena dos herramientas inofensivas para conseguir una que no lo es; y qué herramientas expone de verdad un servidor MCP que no las enumera en su configuración. Los cuatro se preguntan.",
+    "en": "Whether a tool does what it declares; whether a declared limit is honoured at runtime; what happens when the model chains two harmless tools into one that is not; and which tools an MCP server that does not enumerate them actually exposes. All four are asked."
+  },
+  "reglas": [
+    {
+      "id": "ACT-AG-EFECTO-SIN-DECLARAR",
+      "version": "1.0.0",
+      "tipo": "agentes",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "herramientas cuyo efecto no consta en ninguna parte",
+        "en": "tools whose effect is not recorded anywhere"
+      },
+      "titulo": {
+        "es": "Hay herramientas y no consta qué hacen",
+        "en": "There are tools and what they do is not recorded"
+      },
+      "remediacion": {
+        "es": "Una persona no puede supervisar lo que no sabe que va a pasar. El artículo 14 pide que quien supervisa pueda entender las capacidades y los límites del sistema, y en un agente eso empieza por saber cuáles de sus herramientas leen y cuáles actúan. Declara el efecto donde el esquema ya tiene sitio: las anotaciones de MCP (`readOnlyHint`, `destructiveHint`, `idempotentHint`) o un campo explícito en tu propia definición. No vale deducirlo del nombre: `obtener_factura` puede emitir una factura.",
+        "en": "A person cannot oversee what they do not know is going to happen. Article 14 requires whoever oversees to understand the system's capabilities and limitations, and in an agent that starts with knowing which of its tools read and which act. Declare the effect where the schema already has room: the MCP annotations (`readOnlyHint`, `destructiveHint`, `idempotentHint`) or an explicit field in your own definition. Inferring it from the name is not enough: `get_invoice` may issue an invoice."
+      }
+    },
+    {
+      "id": "ACT-AG-SERVIDOR-SIN-INVENTARIO",
+      "version": "1.0.0",
+      "tipo": "agentes",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "servidores MCP declarados sin enumerar las herramientas que exponen",
+        "en": "MCP servers declared without enumerating the tools they expose"
+      },
+      "titulo": {
+        "es": "Un servidor conectado y su arsenal sin inventariar",
+        "en": "A connected server with an uninventoried arsenal"
+      },
+      "remediacion": {
+        "es": "Un servidor MCP conectado y sin enumerar es un conjunto de capacidades desconocido dentro del sistema: lo que exponga hoy y lo que exponga tras una actualización no son lo mismo, y nadie de la organización tiene por qué enterarse del cambio. Inventaría las herramientas que expone, con su versión, y fija esa versión. Este motor NO se inventa la lista: registrar el servidor y decir que no se conoce su arsenal es más honesto que adivinarlo.",
+        "en": "A connected MCP server with no enumeration is an unknown set of capabilities inside the system: what it exposes today and what it exposes after an update are not the same thing, and nobody in the organisation necessarily finds out about the change. Inventory the tools it exposes, with their version, and pin that version. This engine does NOT invent the list: recording the server and saying its arsenal is unknown is more honest than guessing it."
+      }
+    },
+    {
+      "id": "ACT-AG-SIN-LIMITES",
+      "version": "1.0.0",
+      "tipo": "agentes",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "algún límite declarado de pasos, tiempo o gasto",
+        "en": "any declared limit on steps, time or spend"
+      },
+      "titulo": {
+        "es": "Un agente sin ningún límite declarado",
+        "en": "An agent with no declared limit"
+      },
+      "remediacion": {
+        "es": "El artículo 14 pide que quien supervisa pueda intervenir o interrumpir el sistema. En un agente, «interrumpir» empieza antes: un bucle sin límite de pasos no se interrumpe, se descubre en la factura. Declara al menos un límite de pasos y, si el agente gasta, uno de gasto. Un límite declarado tampoco demuestra que se respete: eso se pregunta.",
+        "en": "Article 14 requires whoever oversees to be able to intervene or interrupt the system. In an agent, 'interrupt' starts earlier: a loop with no step limit is not interrupted, it is discovered in the bill. Declare at least a step limit and, if the agent spends, a spend limit. A declared limit does not prove it is honoured either: that is asked."
+      }
+    },
+    {
+      "id": "ACT-AG-DELEGACION-SIN-TOPE",
+      "version": "1.0.0",
+      "tipo": "agentes",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "delegación entre agentes con un tope de profundidad",
+        "en": "delegation between agents with a depth bound"
+      },
+      "titulo": {
+        "es": "Un agente crea agentes y nada acota la profundidad",
+        "en": "An agent creates agents and nothing bounds the depth"
+      },
+      "remediacion": {
+        "es": "Un agente que crea otro agente hereda su superficie de riesgo y la multiplica, y sin un tope de profundidad ni de pasos la recursión sólo la para un error. Además: este motor NO puede leer si el agente hijo hereda los permisos del padre, que es la pregunta que de verdad importa. Declara el tope y responde a la pregunta.",
+        "en": "An agent that creates another agent inherits its risk surface and multiplies it, and with no depth or step bound only an error stops the recursion. Also: this engine CANNOT read whether the child agent inherits the parent's permissions, which is the question that really matters. Declare the bound and answer the question."
+      }
+    },
+    {
+      "id": "ACT-AG-APROBACION",
+      "version": "1.0.0",
+      "tipo": "aportado",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "qué herramientas exigen que una persona apruebe antes de actuar",
+        "en": "which tools require a person to approve before acting"
+      },
+      "pregunta": {
+        "es": "¿Qué herramientas del agente exigen que una persona apruebe antes de ejecutarse, y qué ve esa persona en el momento de aprobar?",
+        "en": "Which of the agent's tools require a person to approve before running, and what does that person see at the moment of approving?"
+      },
+      "formato": "texto_largo",
+      "titulo": {
+        "es": "Sin constancia de qué se aprueba y qué no",
+        "en": "No record of what is approved and what is not"
+      },
+      "remediacion": {
+        "es": "La segunda parte de la pregunta es la que suele faltar. Una aprobación en la que la persona ve «ejecutar herramienta: transferir» y un identificador no es supervisión humana: es un botón. El artículo 14 pide que quien supervisa entienda la salida y pueda decidir no usarla, y eso exige que vea el argumento, el efecto esperado y lo que no se puede deshacer.",
+        "en": "The second half of the question is the one usually missing. An approval where the person sees 'run tool: transfer' and an identifier is not human oversight: it is a button. Article 14 requires whoever oversees to understand the output and be able to decide not to use it, and that requires seeing the argument, the expected effect and what cannot be undone."
+      }
+    },
+    {
+      "id": "ACT-AG-REGISTRO-DE-LLAMADAS",
+      "version": "1.0.0",
+      "tipo": "aportado",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "si queda registro de cada llamada a herramienta con su argumento y su resultado",
+        "en": "whether each tool call is logged with its argument and result"
+      },
+      "pregunta": {
+        "es": "¿Queda registro de cada llamada a herramienta con su argumento, su resultado y quién la desencadenó, y durante cuánto tiempo?",
+        "en": "Is each tool call logged with its argument, its result and who triggered it, and for how long?"
+      },
+      "formato": "texto_largo",
+      "titulo": {
+        "es": "Llamadas a herramientas sin registro comprobable",
+        "en": "Tool calls with no verifiable log"
+      },
+      "remediacion": {
+        "es": "El artículo 12 pide que el sistema permita registrar acontecimientos durante su ciclo de vida, y el 19 fija seis meses de conservación. En un agente, el acontecimiento que importa no es la predicción: es la llamada que actuó. Un registro del texto que devolvió el modelo y no de la herramienta que ejecutó no sirve para reconstruir lo que pasó.",
+        "en": "Article 12 requires the system to allow event logging over its lifecycle, and Article 19 sets six months of retention. In an agent, the event that matters is not the prediction: it is the call that acted. A log of the text the model returned and not of the tool that ran is no use for reconstructing what happened."
+      }
+    },
+    {
+      "id": "ACT-AG-CONTENIDO-NO-CONFIABLE",
+      "version": "1.0.0",
+      "tipo": "aportado",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "si alguna herramienta trae contenido de fuera que después alimenta una decisión de actuar",
+        "en": "whether any tool brings in outside content that then feeds a decision to act"
+      },
+      "pregunta": {
+        "es": "¿Alguna herramienta trae contenido que no controla usted -una página web, un correo, un fichero de un tercero- y ese contenido llega al modelo que decide la siguiente llamada? ¿Qué lo separa de las instrucciones?",
+        "en": "Does any tool bring in content you do not control - a web page, an email, a third-party file - and does that content reach the model that decides the next call? What separates it from the instructions?"
+      },
+      "formato": "texto_largo",
+      "titulo": {
+        "es": "Contenido de fuera que puede dirigir la siguiente acción",
+        "en": "Outside content that can steer the next action"
+      },
+      "remediacion": {
+        "es": "Es la forma que toma la inyección de instrucciones del artículo 15(5) cuando el sistema tiene herramientas: el atacante no se conforma con una respuesta rara, consigue una llamada. Lo que este motor puede leer es que hay herramientas de lectura externa y herramientas que actúan en el mismo agente; lo que no puede leer es qué separa una cosa de la otra. Declara la separación: qué contenido entra marcado como dato, qué herramientas no se pueden llamar después de leer contenido externo, y qué se registra cuando ocurre.",
+        "en": "This is what Article 15(5) prompt injection looks like once the system has tools: the attacker is not satisfied with an odd answer, they get a call. What this engine can read is that there are external-reading tools and acting tools in the same agent; what it cannot read is what separates one from the other. Declare the separation: which content enters marked as data, which tools cannot be called after reading external content, and what is logged when it happens."
+      }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+Actaira
+Copyright 2026 Marcos Mata García
+
+Este producto incluye software desarrollado para Actaira
+(https://actaira.com).
+
+Los catálogos de `catalogo/` contienen identificadores, numeración y títulos de
+normas, más trabajo propio: la atribución de nivel de comprobabilidad, el cruce
+entre marcos, las reglas de comprobación y sus remediaciones. El texto de la
+ISO/IEC 42001:2023 NO se reproduce: la norma es de pago. El texto del Reglamento
+(UE) 2024/1689 es público y se cita por referencia, nunca a granel.
+
+Las reglas y las remediaciones de `catalogo/reglas/` las escribió una persona.
+Un modelo puede proponer el borrador de una regla fuera de línea; nunca redacta
+reglas ni remediaciones en ejecución.

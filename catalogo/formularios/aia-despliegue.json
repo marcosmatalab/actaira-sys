@@ -1,0 +1,57 @@
+{
+ "$schema": "../../contrato/cuestionario.json",
+ "paquete": "aia-despliegue",
+ "version": "1.0.0",
+ "autor": "Actaira",
+ "titulo": {
+  "es": "Obligaciones del responsable del despliegue frente a las personas",
+  "en": "Deployer obligations towards people"
+ },
+ "destinatario_principal": "responsable",
+ "nota": {
+  "es": "Este formulario existe porque faltaba. El requisito AIA-R-026-04 —informar a los trabajadores y a sus representantes antes de poner en servicio un sistema de alto riesgo en el lugar de trabajo, e informar a las personas cuando el sistema decide sobre ellas— estaba catalogado y sin ninguna pregunta que lo cubriera, y la razón escrita era que toca Derecho laboral y varía por Estado miembro.\n\nEsa razón era buena para no improvisar la NORMA y mala para no hacer la PREGUNTA. Lo que varía por Estado miembro es qué cauce de información o consulta exige cada legislación nacional; lo que no varía es que el artículo 26(7) obliga a informar y que quien despliega sabe si lo hizo, cuándo y por qué cauce. Así que se pregunta eso, se pide el Estado miembro y se dice expresamente que la suficiencia del cauce la juzga quien conozca esa legislación. Preguntar sin fingir que aquí se sabe la respuesta es distinto de no preguntar.",
+  "en": "This form exists because it was missing. Requirement AIA-R-026-04 —inform workers and their representatives before putting a high-risk system into service in the workplace, and inform persons when the system decides about them— was catalogued with no question covering it, and the reason written down was that it touches labour law and varies by Member State.\n\nThat reason was good for not improvising the RULE and bad for not asking the QUESTION. What varies by Member State is which information or consultation channel each national law requires; what does not vary is that Article 26(7) requires informing, and that whoever deploys knows whether they did, when, and through what channel. So that is what is asked, the Member State is requested, and it is stated outright that the sufficiency of the channel is judged by someone who knows that law. Asking without pretending the answer is known here is different from not asking."
+ },
+ "preguntas": [
+  {
+   "id": "F-DPL-1",
+   "sirve_a": [
+    "AIA-026"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "Antes de poner el sistema en servicio en el lugar de trabajo, ¿cómo informaron a los trabajadores afectados y a sus representantes, cuándo, y bajo qué legislación nacional?",
+    "en": "Before putting the system into service in the workplace, how did you inform the affected workers and their representatives, when, and under which national law?"
+   },
+   "ayuda": {
+    "es": "Artículo 26(7). Hacen falta cuatro cosas y las cuatro son comprobables: el Estado miembro cuya legislación aplica, el cauce usado (comité de empresa, representación sindical, comunicación directa), la fecha —que tiene que ser ANTERIOR a la puesta en servicio, y es el detalle que más se incumple sin querer— y qué se les dijo del sistema.\n\nActaira no juzga si el cauce basta: eso depende de la legislación laboral de su Estado miembro y lo decide quien la conozca. Lo que sí queda registrado con su fecha es que usted afirmó haberlo hecho de esta manera, y eso es lo que un inspector va a contrastar.\n\nSi el sistema no se usa en un lugar de trabajo, dígalo y por qué: el apartado no le ata y el expediente lo dirá en vez de dejar un hueco.",
+    "en": "Article 26(7). Four things are needed and all four are checkable: the Member State whose law applies, the channel used (works council, union representation, direct communication), the date —which must be BEFORE putting into service, and is the detail most often missed unintentionally— and what they were told about the system.\n\nActaira does not judge whether the channel suffices: that depends on your Member State's labour law and is decided by someone who knows it. What is recorded, with its date, is that you stated you did it this way, and that is what an inspector will check against.\n\nIf the system is not used in a workplace, say so and why: the paragraph does not bind you and the dossier will say so instead of leaving a gap."
+   },
+   "formato": "texto_largo",
+   "vigencia_dias": 365,
+   "exige": {
+    "minimo_caracteres": 200
+   }
+  },
+  {
+   "id": "F-DPL-2",
+   "sirve_a": [
+    "AIA-026"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "Cuando el sistema se usa para tomar o apoyar una decisión sobre una persona, ¿cómo se le informa de ello, y dónde puede verse ese aviso?",
+    "en": "When the system is used to take or support a decision about a person, how are they informed of it, and where can that notice be seen?"
+   },
+   "ayuda": {
+    "es": "Artículo 26(11). No pregunta si tienen una política que lo diga: pregunta por el aviso que ve la persona. Dé la ubicación concreta —la pantalla, la carta, la cláusula— y el texto o un enlace a él. Un aviso que sólo existe en un procedimiento interno no informa a nadie.\n\nSi el sistema no decide sobre personas ni apoya esas decisiones, dígalo y describa qué hace: es una respuesta legítima y el expediente la recogerá como tal.",
+    "en": "Article 26(11). It does not ask whether you have a policy saying so: it asks about the notice the person sees. Give the concrete location —the screen, the letter, the clause— and the text or a link to it. A notice that exists only in an internal procedure informs nobody.\n\nIf the system neither decides about people nor supports such decisions, say so and describe what it does: that is a legitimate answer and the dossier will record it as such."
+   },
+   "formato": "texto_largo",
+   "vigencia_dias": 365,
+   "exige": {
+    "minimo_caracteres": 150
+   }
+  }
+ ]
+}

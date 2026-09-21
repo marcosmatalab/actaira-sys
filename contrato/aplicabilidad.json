@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://actaira.com/contrato/aplicabilidad.json",
+  "title": "Que obligaciones atan a un perfil, y desde cuando",
+  "por_que_existe": {
+    "es": "Es el primer documento que ve un cliente y el unico que se puede pedir sin ensenar codigo. Que no declarara su version era el hueco por el que la plataforma leia un recuento sin saber de que version venia.",
+    "en": "It is the first document a client sees and the only one obtainable without showing code. Not declaring its version was the gap through which the platform read a count without knowing which version produced it."
+  },
+  "type": "object",
+  "properties": {
+    "esquema": {
+      "const": "actaira/aplicabilidad/v1"
+    },
+    "fecha": {
+      "type": "string",
+      "format": "date"
+    },
+    "recuento": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "veredictos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "obligacion_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "situacion": {
+            "enum": [
+              "ata",
+              "futura",
+              "no_ata",
+              "indeterminada"
+            ]
+          },
+          "regla": {
+            "type": "string",
+            "minLength": 1
+          },
+          "desde": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "falta_responder": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "obligacion_id",
+          "situacion",
+          "regla"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "nombres_de_estado": {
+      "type": "object",
+      "description": "Como se lee cada estado que ESTE documento usa, en los dos idiomas. Los estados viajan sin traducir porque son identificadores; esto dice como se ensenan.",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "es": {
+            "type": "string",
+            "minLength": 1
+          },
+          "en": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "es",
+          "en"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "esquema",
+    "fecha",
+    "recuento",
+    "veredictos",
+    "nombres_de_estado"
+  ]
+}

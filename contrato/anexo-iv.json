@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://actaira.com/contrato/anexo-iv.json",
+  "title": "La documentacion tecnica del Anexo IV",
+  "type": "object",
+  "properties": {
+    "esquema": {
+      "const": "actaira/anexo-iv/v1"
+    },
+    "fecha": {
+      "type": "string",
+      "format": "date"
+    },
+    "recuento": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "secciones": {
+      "type": "array",
+      "minItems": 23,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^AIV-"
+          },
+          "punto": {
+            "type": "string"
+          },
+          "titulo": {
+            "type": "object",
+            "properties": {
+              "es": {
+                "type": "string",
+                "minLength": 1
+              },
+              "en": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "es",
+              "en"
+            ]
+          },
+          "procedencia": {
+            "enum": [
+              "derivada",
+              "aportada",
+              "ausente"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "punto",
+          "titulo",
+          "procedencia"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "procedencia": {
+                  "const": "ausente"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "motivo_ausencia"
+              ],
+              "description": "Una seccion ausente dice POR QUE. Nunca en blanco."
+            }
+          }
+        ]
+      }
+    },
+    "nombres_de_estado": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "es": {
+            "type": "string",
+            "minLength": 1
+          },
+          "en": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "es",
+          "en"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "esquema",
+    "fecha",
+    "recuento",
+    "secciones",
+    "nombres_de_estado"
+  ]
+}

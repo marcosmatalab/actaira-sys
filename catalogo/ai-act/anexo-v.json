@@ -1,0 +1,117 @@
+{
+  "referencia": {
+    "es": "Anexo V del Reglamento (UE) 2024/1689, declaración UE de conformidad a que se refiere el artículo 47",
+    "en": "Annex V to Regulation (EU) 2024/1689, EU declaration of conformity referred to in Article 47"
+  },
+  "version_catalogo": "2026-09-20",
+  "nota_de_firma": {
+    "es": "Los puntos 3 y 4 del Anexo V no son datos: son AFIRMACIONES que hace el proveedor bajo su exclusiva responsabilidad. Ningún programa puede hacerlas por el. Este generador arma el borrador entero, deja esas dos como fórmulas que una persona asume al firmar, y mientras no haya firma el documento se emite marcado como BORRADOR en su encabezado. Un software que emitiera una declaración de conformidad firmada sería exactamente el producto que este no quiere ser.",
+    "en": "Points 3 and 4 of Annex V are not data: they are AFFIRMATIONS the provider makes under its sole responsibility. No program can make them on its behalf. This generator builds the whole draft, leaves those two as formulas a person assumes on signing, and until there is a signature the document is emitted marked DRAFT in its header. Software that issued a signed declaration of conformity would be exactly the product this one refuses to be."
+  },
+  "puntos": [
+    {
+      "id": "AV-1",
+      "punto": "1",
+      "origen": "derivada",
+      "extractor": "identificacion",
+      "tambien_humana": true,
+      "titulo": {
+        "es": "Nombre y tipo del sistema de IA, y referencia inequívoca que permita identificarlo y trazarlo",
+        "en": "Name and type of the AI system, and any additional unambiguous reference allowing its identification and traceability"
+      }
+    },
+    {
+      "id": "AV-2",
+      "punto": "2",
+      "origen": "aportada",
+      "pregunta": "F-PRV-2",
+      "titulo": {
+        "es": "Nombre y dirección del proveedor o, en su caso, de su representante autorizado",
+        "en": "Name and address of the provider or, where applicable, of its authorised representative"
+      }
+    },
+    {
+      "id": "AV-3",
+      "punto": "3",
+      "origen": "formula",
+      "formula": "responsabilidad",
+      "titulo": {
+        "es": "Afirmación de que la declaración se expide bajo la exclusiva responsabilidad del proveedor",
+        "en": "Statement that the declaration is issued under the sole responsibility of the provider"
+      }
+    },
+    {
+      "id": "AV-4",
+      "punto": "4",
+      "origen": "formula",
+      "formula": "conformidad",
+      "titulo": {
+        "es": "Declaración de que el sistema es conforme con el Reglamento y con el demás Derecho de la Unión pertinente",
+        "en": "Declaration that the system is in conformity with the Regulation and with other relevant Union law"
+      }
+    },
+    {
+      "id": "AV-5",
+      "punto": "5",
+      "origen": "formula",
+      "formula": "datos_personales",
+      "si": {
+        "pregunta": "F-CNF-1",
+        "vale": true
+      },
+      "titulo": {
+        "es": "Cuando haya tratamiento de datos personales, declaración de conformidad con el RGPD, el Reglamento 2018/1725 y la Directiva 2016/680",
+        "en": "Where personal data is processed, statement of conformity with the GDPR, Regulation 2018/1725 and Directive 2016/680"
+      }
+    },
+    {
+      "id": "AV-6",
+      "punto": "6",
+      "origen": "aportada",
+      "pregunta": "F-CNF-2",
+      "titulo": {
+        "es": "Referencias a las normas armonizadas aplicadas o a otras especificaciones comunes",
+        "en": "References to the harmonised standards applied or to any other common specification"
+      }
+    },
+    {
+      "id": "AV-7",
+      "punto": "7",
+      "origen": "aportada",
+      "pregunta": "F-CNF-3",
+      "si": {
+        "pregunta": "F-PRV-3",
+        "contiene": "notificado"
+      },
+      "titulo": {
+        "es": "En su caso, organismo notificado, procedimiento de evaluación seguido y certificado expedido",
+        "en": "Where applicable, the notified body, the conformity assessment procedure followed and the certificate issued"
+      }
+    },
+    {
+      "id": "AV-8",
+      "punto": "8",
+      "origen": "aportada",
+      "pregunta": "F-CNF-4",
+      "es_la_firma": true,
+      "titulo": {
+        "es": "Lugar y fecha de expedición, nombre y cargo de quien firma, persona en cuyo nombre firma, y la firma",
+        "en": "Place and date of issue, name and position of the signatory, the person on whose behalf they sign, and the signature"
+      }
+    }
+  ],
+  "formulas": {
+    "responsabilidad": {
+      "es": "La presente declaración UE de conformidad se expide bajo la exclusiva responsabilidad del proveedor identificado en el punto 2.",
+      "en": "This EU declaration of conformity is issued under the sole responsibility of the provider identified in point 2."
+    },
+    "conformidad": {
+      "es": "El proveedor declara que el sistema de IA identificado en el punto 1 es conforme con el Reglamento (UE) 2024/1689 y, en su caso, con las demás disposiciones del Derecho de la Unión que exijan la expedición de esta declaración.",
+      "en": "The provider declares that the AI system identified in point 1 is in conformity with Regulation (EU) 2024/1689 and, where applicable, with any other Union law provision requiring the issue of this declaration."
+    },
+    "datos_personales": {
+      "es": "El proveedor declara que el sistema de IA se ajusta al Reglamento (UE) 2016/679, al Reglamento (UE) 2018/1725 y a la Directiva (UE) 2016/680.",
+      "en": "The provider declares that the AI system complies with Regulation (EU) 2016/679, Regulation (EU) 2018/1725 and Directive (EU) 2016/680."
+    }
+  }
+}

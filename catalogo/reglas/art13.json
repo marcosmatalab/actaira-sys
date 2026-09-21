@@ -1,0 +1,132 @@
+{
+  "paquete": "actaira/art13",
+  "version": "1.0.0",
+  "autor": "Actaira",
+  "licencia": "Apache-2.0",
+  "obligacion": "AIA-013",
+  "nota_de_autoria": {
+    "es": "Cada regla y cada remediación de este fichero las escribió una persona. Un modelo puede proponer el borrador de una regla fuera de línea; nunca redacta reglas ni remediaciones en ejecución. Segunda negativa.",
+    "en": "Every rule and every remediation in this file was written by a person. A model may draft a candidate rule offline; it never writes rules or remediations at runtime. Second negative."
+  },
+  "reglas": [
+    {
+      "id": "ACT-13-INSTRUCCIONES",
+      "version": "1.0.0",
+      "tipo": "fichero",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "las instrucciones de uso para el responsable del despliegue",
+        "en": "the instructions for use for the deployer"
+      },
+      "titulo": {
+        "es": "No hay instrucciones de uso",
+        "en": "There are no instructions for use"
+      },
+      "remediacion": {
+        "es": "El artículo 13 obliga a entregar instrucciones de uso al responsable del despliegue, y el apartado 3 enumera qué tienen que contener: identidad y contacto del proveedor, características y límites del sistema, nivel de exactitud con sus métricas, circunstancias previsibles de mal uso, medidas de supervisión humana, y los recursos de cómputo y mantenimiento esperados. Un README de desarrollo no es esto: va dirigido a otra persona y no contesta ninguna de esas seis cosas.",
+        "en": "Article 13 requires instructions for use to be handed to the deployer, and paragraph 3 lists what they must contain: the provider's identity and contact, the system's characteristics and limitations, the accuracy level with its metrics, foreseeable misuse, human oversight measures, and the expected compute and maintenance. A development README is not this: it addresses a different person and answers none of those six things."
+      },
+      "patrones": [
+        "(?i)(instrucciones|instructions)[-_ ]?(de[-_ ]?uso|for[-_ ]?use)?",
+        "(?i)(manual|user[-_ ]?guide|guia[-_ ]?de[-_ ]?uso)"
+      ]
+    },
+    {
+      "id": "ACT-13-CONTACTO",
+      "version": "1.0.0",
+      "tipo": "contenido",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "la identidad y el contacto del proveedor dentro de las instrucciones",
+        "en": "the provider's identity and contact inside the instructions"
+      },
+      "titulo": {
+        "es": "Las instrucciones no dicen a quién llamar",
+        "en": "The instructions do not say who to call"
+      },
+      "remediacion": {
+        "es": "El artículo 13.3.a pide la identidad y los datos de contacto del proveedor dentro de las instrucciones. Es la letra más fácil de cumplir y la que más falta: cuando el sistema se porta mal, el responsable del despliegue necesita saber a quién escribir sin abrir un contrato.",
+        "en": "Article 13(3)(a) asks for the provider's identity and contact details inside the instructions. It is the easiest point to meet and the most often missing: when the system misbehaves, the deployer needs to know who to write to without opening a contract."
+      },
+      "ambito": "documentacion",
+      "solo_en": "(?i)(instrucciones|instructions|manual|user[-_ ]?guide)",
+      "patrones": [
+        "[\\w.+-]+@[\\w-]+\\.[\\w.]+",
+        "(?i)contacto|contact|soporte|support"
+      ],
+      "solo_si_hay_fichero": true
+    },
+    {
+      "id": "ACT-13-EXACTITUD-DECLARADA",
+      "version": "1.0.0",
+      "tipo": "contenido",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "el nivel de exactitud declarado y la métrica con la que se mide",
+        "en": "the declared accuracy level and the metric it is measured with"
+      },
+      "titulo": {
+        "es": "Las instrucciones no declaran el nivel de exactitud",
+        "en": "The instructions do not state the accuracy level"
+      },
+      "remediacion": {
+        "es": "El artículo 13.3.b.ii pide el nivel de exactitud, solidez y ciberseguridad con respecto al cual se ha probado el sistema, y las métricas. Una cifra sin métrica no dice nada, y una métrica sin cifra tampoco: hacen falta las dos, y el conjunto de datos sobre el que se midieron.",
+        "en": "Article 13(3)(b)(ii) asks for the level of accuracy, robustness and cybersecurity against which the system was tested, and the metrics. A figure without a metric says nothing, and a metric without a figure says nothing either: both are needed, plus the dataset they were measured on."
+      },
+      "ambito": "documentacion",
+      "solo_en": "(?i)(instrucciones|instructions|manual|user[-_ ]?guide)",
+      "patrones": [
+        "(?i)(exactitud|accuracy|precision|recall|f1|auc)[^\\n]{0,60}\\d",
+        "\\d+([.,]\\d+)?\\s*%[^\\n]{0,60}(?i)(exactitud|accuracy|precision|recall)"
+      ],
+      "solo_si_hay_fichero": true
+    },
+    {
+      "id": "ACT-13-SUPERVISION-DESCRITA",
+      "version": "1.0.0",
+      "tipo": "contenido",
+      "severidad": "media",
+      "que_busca": {
+        "es": "las medidas de supervisión humana descritas en las instrucciones",
+        "en": "the human oversight measures described in the instructions"
+      },
+      "titulo": {
+        "es": "Las instrucciones no describen la supervisión humana",
+        "en": "The instructions do not describe human oversight"
+      },
+      "remediacion": {
+        "es": "El artículo 13.3.d pide las medidas de supervisión humana del artículo 14, incluidas las herramientas técnicas para facilitar la interpretación de los resultados. Quien despliega tiene que saber qué puede hacer cuando el sistema se equivoca, y saberlo antes de que ocurra.",
+        "en": "Article 13(3)(d) asks for the Article 14 human oversight measures, including the technical tools that help interpret the outputs. Whoever deploys must know what they can do when the system gets it wrong, and know it before it happens."
+      },
+      "ambito": "documentacion",
+      "solo_en": "(?i)(instrucciones|instructions|manual|user[-_ ]?guide)",
+      "patrones": [
+        "(?i)(supervis|oversight|revisi[oó]n humana|human review|anular|override)"
+      ],
+      "solo_si_hay_fichero": true
+    },
+    {
+      "id": "ACT-13-VIDA-UTIL",
+      "version": "1.0.0",
+      "tipo": "aportado",
+      "severidad": "media",
+      "que_busca": {
+        "es": "la vida útil esperada y el mantenimiento necesario",
+        "en": "the expected lifetime and the maintenance it needs"
+      },
+      "titulo": {
+        "es": "Nadie ha dicho cuánto dura este sistema",
+        "en": "Nobody has said how long this system lasts"
+      },
+      "remediacion": {
+        "es": "El artículo 13.3.e pide la vida útil esperada del sistema y las medidas de mantenimiento y cuidado necesarias, incluidas las actualizaciones de software. No está en el código y no se deduce de él: es una decisión de producto que alguien toma y firma.",
+        "en": "Article 13(3)(e) asks for the system's expected lifetime and the necessary maintenance and care measures, including software updates. It is not in the code and cannot be inferred from it: it is a product decision somebody makes and signs."
+      },
+      "pregunta": {
+        "es": "¿Cuál es la vida útil esperada de este sistema y qué mantenimiento necesita para seguir siendo exacto?",
+        "en": "What is this system's expected lifetime and what maintenance does it need to stay accurate?"
+      },
+      "formato": "texto"
+    }
+  ]
+}

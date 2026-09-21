@@ -1,0 +1,145 @@
+{
+ "$schema": "../esquema/formulario.schema.json",
+ "paquete": "iso-operacion",
+ "version": "1.0.0",
+ "autor": "Actaira",
+ "titulo": {
+  "es": "Operación",
+  "en": "Operation"
+ },
+ "destinatario_principal": "responsable",
+ "preguntas": [
+  {
+   "id": "F-OPE-1",
+   "sirve_a": [
+    "ISO-8.1"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "¿Qué criterios tiene establecidos para los procesos de desarrollo y uso de sus sistemas de IA, y cómo controla que se siguen?",
+    "en": "Which criteria have you established for the processes of developing and using your AI systems, and how do you control that they are followed?"
+   },
+   "ayuda": {
+    "es": "La cláusula 8.1 es donde el plan se convierte en práctica: criterios para los procesos, control de los procesos contra esos criterios, y seguimiento de si los controles funcionan con acción correctiva si no. Una puerta de integración continua que bloquea el despliegue cuando falta algo es exactamente esto, y Actaira la lee sin preguntarle.",
+    "en": "Clause 8.1 is where the plan becomes practice: criteria for the processes, control of the processes against those criteria, and monitoring of whether the controls work with corrective action if they do not. A CI gate that blocks deployment when something is missing is exactly this, and Actaira reads it without asking you."
+   },
+   "formato": "texto_largo",
+   "vigencia_dias": 365,
+   "exige": {
+    "minimo_caracteres": 150
+   },
+   "salta_si_cubre": [
+    "ACT-09-GATE",
+    "ACT-15-CI"
+   ]
+  },
+  {
+   "id": "F-OPE-2",
+   "sirve_a": [
+    "ISO-8.1",
+    "A.10.3",
+    "AIA-025"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "¿Qué procesos, productos o servicios relevantes para sus sistemas de IA le presta un tercero, y cómo los controla?",
+    "en": "Which processes, products or services relevant to your AI systems are provided externally, and how do you control them?"
+   },
+   "ayuda": {
+    "es": "La cláusula 8.1 exige controlar lo provisto externamente y el control A.10.3 lo desarrolla. En la práctica esto es su proveedor de modelo fundacional, su nube, su etiquetador de datos y su API de terceros. El artículo 25 del Reglamento añade que si usted pone su marca sobre un sistema de alto riesgo de otro, o lo modifica sustancialmente, pasa a ser usted el proveedor con todo lo que eso arrastra.",
+    "en": "Clause 8.1 requires control of externally provided items and control A.10.3 develops it. In practice this is your foundation model supplier, your cloud, your data labeller and your third-party APIs. Article 25 of the Regulation adds that if you put your name on someone else's high-risk system, or substantially modify it, you become the provider with everything that entails."
+   },
+   "formato": "lista",
+   "vigencia_dias": 180,
+   "exige": {
+    "minimo_elementos": 1
+   },
+   "salta_si_cubre": [
+    "ACT-25-CAMBIO"
+   ]
+  },
+  {
+   "id": "F-OPE-3",
+   "sirve_a": [
+    "ISO-8.2",
+    "ISO-8.4"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "¿A qué intervalos se repiten la evaluación de riesgos y la evaluación de impacto, y qué cambio se considera lo bastante significativo como para adelantarlas?",
+    "en": "At what intervals are the risk assessment and the impact assessment repeated, and which change is significant enough to trigger them early?"
+   },
+   "ayuda": {
+    "es": "Las cláusulas 8.2 y 8.4 piden 'a intervalos planificados o cuando se propongan o produzcan cambios significativos'. La trampa está en la segunda mitad: si no ha definido que es un cambio significativo, no puede demostrar que no lo hubo. Defina el umbral: cambio de modelo base, de datos de entrenamiento, de finalidad prevista, de población afectada.",
+    "en": "Clauses 8.2 and 8.4 require 'at planned intervals or when significant changes are proposed or occur'. The trap is the second half: if you have not defined what a significant change is, you cannot show there was none. Define the threshold: change of base model, of training data, of intended purpose, of affected population."
+   },
+   "formato": "texto_corto",
+   "vigencia_dias": 365,
+   "exige": {
+    "minimo_caracteres": 100,
+    "exige_intervalo": true
+   }
+  },
+  {
+   "id": "F-OPE-4",
+   "sirve_a": [
+    "ISO-8.3"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "¿Cómo comprueba que una medida de tratamiento de riesgo funcionó, y qué hace cuando no funciona?",
+    "en": "How do you verify that a risk treatment measure worked, and what do you do when it does not?"
+   },
+   "ayuda": {
+    "es": "La cláusula 8.3 no se conforma con implantar el plan: exige verificar su eficacia, y cuando una opción de tratamiento no es eficaz, revisarla y revalidarla por el proceso de la 6.1.3 y actualizar el plan. Es el bucle que separa un sistema de gestión vivo de una carpeta. Diga con que evidencia comprueba la eficacia: una métrica, un muestreo, una auditoría.",
+    "en": "Clause 8.3 is not satisfied by implementing the plan: it requires verifying its effectiveness, and when a treatment option is not effective, reviewing and revalidating it through the 6.1.3 process and updating the plan. This is the loop that separates a living management system from a folder. Say with what evidence you verify effectiveness: a metric, a sample, an audit."
+   },
+   "formato": "texto_largo",
+   "vigencia_dias": 180,
+   "exige": {
+    "minimo_caracteres": 150
+   }
+  },
+  {
+   "id": "F-OPE-D1",
+   "sirve_a": [
+    "A.5.3"
+   ],
+   "destinatario": "responsable",
+   "texto": {
+    "es": "¿Dónde está la evaluación de impacto de este sistema sobre las personas, quién la firmó y cuándo se revisó por última vez?",
+    "en": "Where is this system's impact assessment on people, who signed it and when was it last reviewed?"
+   },
+   "ayuda": {
+    "es": "Control A.5.3. La norma separa el riesgo PARA la organización del impacto SOBRE las personas, y pide documentar el segundo. No es el registro de riesgos: es quién puede salir perjudicado, cómo, y qué se decidió al respecto.\n\nTres datos comprobables: dónde está el documento, quién lo aprobó con su cargo, y la fecha de la última revisión. Si nunca se ha revisado desde que se escribió, dígalo: una evaluación de impacto de hace tres años sobre un sistema que se reentrena cada mes describe otro sistema.",
+    "en": "Control A.5.3. The standard separates risk TO the organisation from impact ON people, and requires documenting the second. It is not the risk register: it is who can be harmed, how, and what was decided about it.\n\nThree checkable facts: where the document is, who approved it and in what role, and the date of the last review. If it has never been reviewed since it was written, say so: a three-year-old impact assessment on a system retrained monthly describes a different system."
+   },
+   "formato": "texto_largo",
+   "vigencia_dias": 365,
+   "exige": {
+    "minimo_caracteres": 200
+   }
+  },
+  {
+   "id": "F-OPE-D2",
+   "sirve_a": [
+    "A.6.2.3",
+    "A.6.1.3"
+   ],
+   "destinatario": "tecnico",
+   "texto": {
+    "es": "¿Qué queda escrito de las decisiones de diseño de este sistema, y dónde puede leerlas alguien que llegue nuevo?",
+    "en": "What is written down about this system's design decisions, and where can somebody new read them?"
+   },
+   "ayuda": {
+    "es": "Controles A.6.1.3 y A.6.2.3. Lo que se busca no es documentación de uso: es el rastro de POR QUÉ el sistema es como es. Qué alternativas se descartaron y con qué argumento, qué umbrales se eligieron y contra qué se calibraron, qué se decidió no hacer.\n\nLa prueba práctica: si la persona que tomó esas decisiones se marcha mañana, ¿queda algo que permita a otra entender el sistema sin reconstruirlo? Si la respuesta es que está en la cabeza de alguien o en un hilo de chat, es una respuesta y hay que darla: es exactamente el hallazgo que este control existe para encontrar.",
+    "en": "Controls A.6.1.3 and A.6.2.3. What is sought is not user documentation: it is the trail of WHY the system is the way it is. Which alternatives were discarded and on what argument, which thresholds were chosen and against what they were calibrated, what was decided not to do.\n\nThe practical test: if the person who made those decisions leaves tomorrow, is there anything letting somebody else understand the system without rebuilding it? If the answer is that it lives in somebody's head or a chat thread, that is an answer and it must be given: it is exactly the finding this control exists to surface."
+   },
+   "formato": "texto_largo",
+   "vigencia_dias": 365,
+   "exige": {
+    "minimo_caracteres": 250
+   }
+  }
+ ]
+}

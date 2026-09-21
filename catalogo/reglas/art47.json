@@ -1,0 +1,108 @@
+{
+  "paquete": "actaira/art47",
+  "version": "1.0.0",
+  "autor": "Actaira",
+  "licencia": "Apache-2.0",
+  "obligacion": "AIA-047",
+  "nota_de_autoria": {
+    "es": "Cada regla y cada remediación de este fichero las escribió una persona. Un modelo puede proponer el borrador de una regla fuera de línea; nunca redacta reglas ni remediaciones en ejecución. Segunda negativa.",
+    "en": "Every rule and every remediation in this file was written by a person. A model may draft a candidate rule offline; it never writes rules or remediations at runtime. Second negative."
+  },
+  "reglas": [
+    {
+      "id": "ACT-47-DECLARACION",
+      "version": "1.0.0",
+      "tipo": "fichero",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "la declaración UE de conformidad, versionada y a mano",
+        "en": "the EU declaration of conformity, versioned and at hand"
+      },
+      "titulo": {
+        "es": "No hay declaración UE de conformidad",
+        "en": "There is no EU declaration of conformity"
+      },
+      "remediacion": {
+        "es": "El artículo 47 obliga al proveedor a redactar una declaración UE de conformidad por cada sistema de alto riesgo, firmarla, y mantenerla a disposición de las autoridades nacionales durante DIEZ AÑOS desde su introducción en el mercado. El Anexo V fija los ocho puntos que tiene que contener. `actaira anexo --cual v` arma el borrador con sus ocho puntos; la firma la pone una persona.",
+        "en": "Article 47 requires the provider to draw up an EU declaration of conformity for each high-risk system, sign it, and keep it available to national authorities for TEN YEARS from placing on the market. Annex V fixes the eight points it must contain. `actaira anexo --cual v` builds the draft with its eight points; a person signs it."
+      },
+      "patrones": [
+        "(?i)declaracion[-_ ]?(ue[-_ ]?)?de[-_ ]?conformidad",
+        "(?i)declaration[-_ ]?of[-_ ]?conformity",
+        "(?i)anexo[-_ ]?v\\b",
+        "(?i)annex[-_ ]?v\\b"
+      ]
+    },
+    {
+      "id": "ACT-47-SIGUE-EN-BORRADOR",
+      "version": "1.0.0",
+      "tipo": "contenido_prohibido",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "la palabra BORRADOR dentro de una declaración de conformidad",
+        "en": "the word DRAFT inside a declaration of conformity"
+      },
+      "titulo": {
+        "es": "La declaración sigue marcada como BORRADOR",
+        "en": "The declaration is still marked DRAFT"
+      },
+      "remediacion": {
+        "es": "Hay un fichero de declaración de conformidad en el repositorio y todavía lleva la palabra BORRADOR en el encabezado, que es como Actaira emite el documento mientras no existe la respuesta del punto 8 del Anexo V: el lugar, la fecha, el nombre y el cargo de quien firma. Un borrador comprometido en la rama principal se acaba enviando como si fuera el bueno. Fírmalo o sácalo de ahí.",
+        "en": "There is a declaration of conformity file in the repository and it still carries the word DRAFT in its header, which is how Actaira emits the document while the Annex V point 8 answer does not exist: the place, the date, the name and the position of the signatory. A draft committed to the main branch ends up being sent as if it were the real one. Sign it or take it out."
+      },
+      "ambito": "documentacion",
+      "solo_en": "(?i)(declaracion|declaration|anexo[-_ ]?v\\b|annex[-_ ]?v\\b)",
+      "patrones": [
+        "(?i)\\b(BORRADOR|DRAFT)\\b"
+      ],
+      "solo_si_hay_fichero": true
+    },
+    {
+      "id": "ACT-47-RESPONSABILIDAD",
+      "version": "1.0.0",
+      "tipo": "contenido",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "la afirmación de responsabilidad exclusiva del punto 3 del Anexo V",
+        "en": "the sole-responsibility statement of Annex V point 3"
+      },
+      "titulo": {
+        "es": "La declaración no asume la responsabilidad exclusiva",
+        "en": "The declaration does not assume sole responsibility"
+      },
+      "remediacion": {
+        "es": "El punto 3 del Anexo V no es un dato que se rellena: es la afirmación de que la declaración se expide bajo la EXCLUSIVA RESPONSABILIDAD del proveedor. Sin esa frase, el documento es una lista de características técnicas, no una declaración. Ningún programa puede hacer esa afirmación por ti, y por eso Actaira la deja escrita y sin firmar hasta que la firmas.",
+        "en": "Annex V point 3 is not a field to fill in: it is the statement that the declaration is issued under the provider's SOLE RESPONSIBILITY. Without that sentence the document is a list of technical characteristics, not a declaration. No program can make that statement for you, which is why Actaira leaves it written and unsigned until you sign it."
+      },
+      "ambito": "documentacion",
+      "solo_en": "(?i)(declaracion|declaration|anexo[-_ ]?v\\b|annex[-_ ]?v\\b)",
+      "patrones": [
+        "(?i)exclusiva responsabilidad|sole responsibility"
+      ],
+      "solo_si_hay_fichero": true
+    },
+    {
+      "id": "ACT-47-DIEZ-ANOS",
+      "version": "1.0.0",
+      "tipo": "aportado",
+      "severidad": "alta",
+      "que_busca": {
+        "es": "donde se guarda la declaración firmada y por cuanto tiempo",
+        "en": "where the signed declaration is kept and for how long"
+      },
+      "titulo": {
+        "es": "Falta decir dónde se guarda la declaración durante diez años",
+        "en": "It is missing where the declaration is kept for ten years"
+      },
+      "remediacion": {
+        "es": "El artículo 47.1 obliga a mantener la declaración a disposición de las autoridades nacionales competentes durante diez años desde la introducción en el mercado. Diez años son más que la vida de casi cualquier herramienta interna, así que la respuesta «está en el repositorio» necesita una segunda mitad: qué pasa cuando el repositorio se archive.",
+        "en": "Article 47(1) requires keeping the declaration available to the competent national authorities for ten years from placing on the market. Ten years outlive almost any internal tool, so the answer 'it is in the repository' needs a second half: what happens when the repository is archived."
+      },
+      "pregunta": {
+        "es": "¿Dónde se conserva la declaración UE de conformidad firmada, quién responde de qué siga disponible durante diez años, y qué pasa si se archiva el repositorio?",
+        "en": "Where is the signed EU declaration of conformity kept, who is accountable for it staying available for ten years, and what happens if the repository is archived?"
+      },
+      "formato": "texto"
+    }
+  ]
+}
