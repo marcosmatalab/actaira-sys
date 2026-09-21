@@ -68,7 +68,7 @@ dev = [
 
 [project.urls]
 Homepage = "https://actaira.com"
-Source = "https://github.com/marcosmata/actaira-sys"
+Source = "https://github.com/marcosmatalab/actaira-sys"
 
 [project.scripts]
 actaira = "actaira_motor.cli:main"
