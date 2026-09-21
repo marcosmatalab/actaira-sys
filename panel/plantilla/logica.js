@@ -34,10 +34,40 @@ const T = () => TEXTOS[estado.idioma];
 /* Lo que cada categoria de producto ensena. NO cambia lo que el motor dice:
  * cambia que le pides y que ves primero, que es lo unico que una categoria
  * comercial tiene derecho a cambiar. */
+/* ESTA TABLA SE QUEDO ATRAS Y ESCONDIO EL PRODUCTO.
+ *
+ * `RUTAS` paso de cuatro vistas a once y esto no se toco, asi que SIETE de las
+ * once no se podian alcanzar desde ninguna categoria: el Anexo IV, la
+ * declaracion de aplicabilidad, el cuestionario, el almacen de evidencia, la
+ * revision por la direccion, la aplicabilidad y el control del articulo 50.
+ * Justo lo que la portada vende.
+ *
+ * Es el mismo defecto que ya tuvo la API una capa mas abajo -- traducia cinco
+ * de diecinueve verbos, y quien abria el panel concluia que el producto hace
+ * cinco cosas -- reaparecido una capa mas arriba: se arreglo la API, se
+ * amplio `RUTAS`, y la tabla que decide QUE SE VE se quedo como estaba. El
+ * arreglo nunca llego a la pantalla.
+ *
+ * Y lo peor es que el texto de cada categoria ya prometia lo que la categoria
+ * no daba: «Pyme: lo que te ata, lo que falta por contestar y el expediente»
+ * ensenaba el plan y los vencimientos, ni el cuestionario ni el expediente.
+ * El reparto de abajo es el que ese texto ya decia.
+ *
+ * Hay ahora una puerta -- `test_toda_vista_es_alcanzable` -- que falla si una
+ * vista de `RUTAS` no aparece en ninguna categoria: un boton que existe y no
+ * se puede pulsar nunca es peor que un boton que no existe, porque nadie lo
+ * echa de menos. */
 const CATEGORIAS = {
-  dev:     { pasos: ["p2", "p3", "p5"],             verbos: ["plan", "nc"] },
-  pyme:    { pasos: ["p1", "p2", "p3"],             verbos: ["plan", "venc"] },
-  empresa: { pasos: ["p1", "p2", "p3", "p4", "p5"], verbos: ["plan", "vig", "venc", "nc"] },
+  // El repositorio, la integracion continua y los hallazgos donde ya miras.
+  dev:     { pasos: ["p2", "p3", "p5"],
+             verbos: ["plan", "comp", "ev", "nc"] },
+  // Lo que te ata, lo que falta por contestar y el expediente.
+  pyme:    { pasos: ["p1", "p2", "p3"],
+             verbos: ["apl", "plan", "preg", "soa", "anx", "venc"] },
+  // Varios sistemas, vigilancia continua, no conformidades y remediacion.
+  empresa: { pasos: ["p1", "p2", "p3", "p4", "p5"],
+             verbos: ["apl", "plan", "comp", "preg", "soa", "anx",
+                      "vig", "venc", "nc", "ev", "rev"] },
 };
 
 /* Los campos de DOCUMENTO que esta pagina lee, en un solo sitio y con nombre.
@@ -198,6 +228,16 @@ async function traer(verbo) {
     if (boton) boton.disabled = !estado.conectado;
     pintar();
   }
+}
+
+/* Que poner cuando no hay nada que ensenar.
+ *
+ * Decia siempre «conecta un servidor y pide el plan», tambien despues de
+ * conectar. Una pantalla que te manda hacer lo que acabas de hacer te dice que
+ * no se ha enterado, y lo primero que piensa quien la usa es que no funciona.
+ */
+function vacio() {
+  return estado.conectado ? T().sin_datos_conectado : T().sin_datos;
 }
 
 function fallo(texto) {
@@ -377,9 +417,22 @@ function pintarCiclo() {
 
 function pintarBotones() {
   const permitidos = new Set(CATEGORIAS[estado.categoria].verbos);
-  for (const [verbo, sel] of [["plan", "#pedir-plan"], ["vig", "#pedir-vig"],
-                              ["venc", "#pedir-venc"], ["nc", "#pedir-nc"]]) {
-    const b = $(sel);
+  // UNA LINEA POR VISTA DE `RUTAS`, NO UNA LISTA ESCRITA A MANO.
+  //
+  // Aqui habia cuatro pares escritos a mano -- plan, vig, venc y nc -- y
+  // `RUTAS` tiene once. Los otros SIETE botones no los tocaba nadie, asi que
+  // se quedaban con el `disabled` del HTML PARA SIEMPRE, en cualquier
+  // categoria. Existian, se veian si la categoria los dejaba ver, y no se
+  // podian pulsar nunca.
+  //
+  // La leccion ya estaba aprendida VEINTE LINEAS MAS ABAJO, donde los clics se
+  // enganchan recorriendo `Object.keys(RUTAS)` con este comentario: «Eran
+  // cuatro lineas identicas; con nueve vistas, la novena es la que alguien
+  // olvida y el boton no hace nada sin que falle nada». Se arreglo ahi y se
+  // dejo intacto aqui, que es como una leccion se queda a medias.
+  for (const verbo of Object.keys(RUTAS)) {
+    const b = $("#pedir-" + verbo);
+    if (!b) continue;
     b.classList.toggle("oculto", !permitidos.has(verbo));
     b.disabled = !estado.conectado;
   }
@@ -393,7 +446,7 @@ function pintarRecuento() {
   const sello = $("#sello");
   if (!r || !r.documento) {
     sello.textContent = "";
-    caja.appendChild(el("p", "vacio", T().sin_datos));
+    caja.appendChild(el("p", "vacio", vacio()));
     return;
   }
   const t = T();
@@ -434,11 +487,114 @@ function pintarFiltro() {
   }
 }
 
+/* De un documento del motor a las filas de la pantalla.
+ *
+ * ESTO CONOCIA TRES FORMAS Y EL PANEL PIDE ONCE DOCUMENTOS.
+ *
+ * Las ocho restantes caian aqui, devolvian cero filas, y lo unico que veia
+ * quien las pedia era el volcado de JSON de abajo. El cuestionario son
+ * NOVENTA preguntas y salia como cuatrocientos kilobytes de JSON; la
+ * declaracion de aplicabilidad, treinta y ocho controles; el Anexo IV,
+ * veintitres secciones. Es decir: justo lo que la portada vende, servido
+ * crudo.
+ *
+ * El volcado se queda -- es honesto y dice «si algo de la pantalla no esta
+ * aqui dentro, es un defecto de esta pagina» -- pero deja de ser lo unico.
+ *
+ * Cada adaptador traduce a la MISMA fila que ya usa el plan: clave, titulo,
+ * marca y motivo. No inventa ningun dato: si un campo no viene, la fila lo
+ * deja vacio en vez de rellenarlo. */
 function lineasDe(doc) {
-  if (Array.isArray(doc.lineas)) return doc.lineas.map(deLineaDePlan);
-  if (Array.isArray(doc.no_conformidades)) return doc.no_conformidades.map(deNoConformidad);
-  if (Array.isArray(doc.veredictos)) return doc.veredictos.map(deVeredicto);
+  // GANA LA PRIMERA LISTA CON ALGO DENTRO, NO LA PRIMERA QUE EXISTA.
+  //
+  // `Array.isArray([])` es cierto, asi que una lista VACIA que aparezca antes
+  // en esta cadena tapaba a una llena que viniera despues. Paso de verdad: el
+  // documento de la revision por la direccion trae `no_conformidades` vacio y
+  // `entradas` con diez, y la pantalla salia con «ninguna linea encaja con
+  // este filtro» teniendo diez cosas que ensenar.
+  //
+  // El orden se queda como desempate para cuando TODAS estan vacias: asi un
+  // documento sin datos sigue diciendo que forma tiene.
+  const formas = [
+    [doc.lineas, deLineaDePlan],
+    [doc.no_conformidades, deNoConformidad],
+    [doc.veredictos, deVeredicto],
+    [doc.preguntas, dePregunta],
+    [doc.controles, deControlIso],
+    [doc.secciones, deSeccionDeAnexo],
+    [doc.entradas, deEntradaDeRevision],
+  ];
+  for (const [lista, comoFila] of formas) {
+    if (Array.isArray(lista) && lista.length) return lista.map(comoFila);
+  }
+  if (Array.isArray(doc.inspeccionado) && doc.inspeccionado.length) return lineasDeControl(doc);
   return [];
+}
+
+function dePregunta(p) {
+  // `por_que` es la LISTA de obligaciones a las que sirve la pregunta. Es el
+  // dato que hace que este cuestionario no sea otro cuestionario de
+  // trescientas preguntas: cada una dice a que ata.
+  const ata = (p.por_que || []).map((x) => x.id).filter(Boolean);
+  return {
+    clave: p.id || "",
+    titulo: bil(p.texto) || p.id || "",
+    marca: p.estado,
+    hallazgos: [],
+    preguntas: bil(p.ayuda) ? [{ texto: bil(p.ayuda) }] : [],
+    motivo: [p.destinatario, ata.join(" · ")].filter(Boolean).join("  —  "),
+  };
+}
+
+function deControlIso(c) {
+  const e = c.estado_de_implantacion || {};
+  return {
+    clave: c.control_id || "",
+    titulo: bil(c.titulo) || c.control_id || "",
+    // `incluido` es un booleano, y la marca del resto de la pantalla es un
+    // nombre. Se traduce aqui y no en la hoja de estilo.
+    marca: c.incluido === false ? "no_ata" : (e.estado || c.procedencia),
+    hallazgos: [],
+    preguntas: [],
+    motivo: bil(c.justificacion) || "",
+  };
+}
+
+function deSeccionDeAnexo(s) {
+  return {
+    clave: s.punto ? s.punto : (s.id || ""),
+    titulo: bil(s.titulo) || s.id || "",
+    marca: s.procedencia,
+    hallazgos: [],
+    preguntas: [],
+    // Si falta, el motivo de que falte. Es la tercera negativa de la casa
+    // puesta en una fila: lo que no se pudo sacar dice por que.
+    motivo: bil(s.motivo_ausencia) || (s.de_donde || []).join(", "),
+  };
+}
+
+function deEntradaDeRevision(e) {
+  return {
+    clave: (e.clausulas || []).join(" ") || e.entrada || "",
+    titulo: bil(e.texto) || e.entrada || "",
+    marca: e.situacion,
+    hallazgos: [],
+    preguntas: [],
+    motivo: (e.se_apoya_en || []).join(", "),
+  };
+}
+
+function lineasDeControl(doc) {
+  // El control del articulo 50 no trae una lista de obligaciones: trae lo que
+  // MIRO. Enseñarlo es la procedencia, que es media promesa del producto.
+  return (doc.inspeccionado || []).map((x) => ({
+    clave: doc.control_id || "",
+    titulo: String(x),
+    marca: doc.resultado,
+    hallazgos: [],
+    preguntas: [],
+    motivo: bil(doc.motivo_indeterminado) || "",
+  }));
 }
 
 function deLineaDePlan(l) {
@@ -491,7 +647,9 @@ function filtrarPorTexto() {
   const t = T();
   const cuenta = $("#buscar-cuenta");
   if (!filas.length) { cuenta.textContent = ""; return; }
-  const plantilla = !q ? t.buscar_todas
+  // Singular y plural. Decia «1 lineas» en un producto que tiene una puerta
+  // para las tildes del castellano.
+  const plantilla = !q ? (filas.length === 1 ? t.buscar_una : t.buscar_todas)
     : visibles ? t.buscar_algunas : t.buscar_nada;
   cuenta.textContent = plantilla
     .replace("{n}", String(visibles))
@@ -502,7 +660,7 @@ function filtrarPorTexto() {
 function pintarLineas() {
   const t = T(), caja = vaciar($("#lineas"));
   const r = estado.documentos[estado.vista];
-  if (!r || !r.documento) { caja.appendChild(el("p", "vacio", t.sin_datos)); return; }
+  if (!r || !r.documento) { caja.appendChild(el("p", "vacio", vacio())); return; }
   let lineas = lineasDe(r.documento);
   if (estado.filtro === "hallazgos") lineas = lineas.filter((l) => l.hallazgos.length);
   if (estado.filtro === "preguntas") lineas = lineas.filter((l) => l.preguntas.length);

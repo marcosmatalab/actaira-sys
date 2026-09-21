@@ -63,7 +63,14 @@ section{padding-block:62px;border-bottom:1px solid var(--line)}
 .claim .no{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--marca);text-transform:uppercase}
 .claim code{font-family:var(--mono);font-size:12.5px;background:var(--surface-2);padding:1px 5px;border-radius:4px}
 
-.cod{background:var(--marca-tinta);color:#EFE3F0;border-radius:12px;padding:22px 24px;overflow-x:auto;font-family:var(--mono);font-size:13px;line-height:1.85}
+/* `white-space:pre` NO es decoracion: sin el, este bloque era un parrafo
+   corrido. Es un `div` con saltos de linea dentro, y el HTML los colapsa,
+   asi que las cinco ordenes y sus comentarios salian pegados en una sola
+   linea ilegible. Es el unico elemento de esta pagina que alguien va a
+   COPIAR, y era el que peor estaba. `overflow-x:auto` ya estaba, y con
+   `pre` hace lo correcto: una orden larga se desplaza en vez de partirse,
+   porque una orden partida por la mitad no se puede pegar. */
+.cod{background:var(--marca-tinta);color:#EFE3F0;border-radius:12px;padding:22px 24px;overflow-x:auto;white-space:pre;font-family:var(--mono);font-size:13px;line-height:1.85}
 .cod .c{color:#A88FAC}
 .cod .k{color:#E5A8ED}
 
@@ -162,7 +169,7 @@ nav.idiomas a[aria-current="page"]{background:var(--marca);color:#fff}
     <div><b>48</b>obrigações do Regulamento</div>
     <div><b>38+32</b>controlos e cláusulas ISO</div>
     <div><b>68</b>regras de código</div>
-    <div><b>561</b>testes</div>
+    <div><b>562</b>testes</div>
     <div><b>1</b>dependência em execução</div>
     <div><b>0</b>telemetria</div>
   </div>

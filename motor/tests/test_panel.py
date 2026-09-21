@@ -348,6 +348,56 @@ def test_el_panel_puede_ensenar_todo_lo_que_la_api_traduce():
                 f"falta el texto {idioma}.{clave} del boton de {vista!r}")
 
 
+def test_toda_vista_de_rutas_es_alcanzable_desde_alguna_categoria():
+    """Un boton que existe y no se puede pulsar nunca es peor que no tenerlo.
+
+    `RUTAS` paso de cuatro vistas a once y `CATEGORIAS` -- la tabla que decide
+    cual se ENSENA -- se quedo en cuatro. Siete quedaron inalcanzables desde
+    cualquier categoria: el Anexo IV, la declaracion de aplicabilidad, el
+    cuestionario, el almacen de evidencia, la revision por la direccion, la
+    aplicabilidad y el control del articulo 50. Es decir, justo lo que la
+    portada vende.
+
+    Nadie lo echo de menos porque un boton oculto no deja hueco. La puerta que
+    ya habia comprobaba que cada vista tuviera boton y texto, y las once lo
+    tenian: lo que faltaba era que alguien pudiera llegar a pulsarlo.
+
+    Es el mismo defecto que tuvo la API una capa mas abajo, reaparecido una
+    capa mas arriba. Por eso esta puerta mira la CADENA entera y no un eslabon.
+    """
+    import re as _re
+
+    logica = (PANEL / "plantilla" / "logica.js").read_text(encoding="utf-8")
+
+    rutas = logica.split("const RUTAS = {", 1)[1].split("\n};", 1)[0]
+    vistas = set(_re.findall(r"^\s*([a-z]+):\s*\(c\)", rutas, _re.M))
+
+    cats = logica.split("const CATEGORIAS = {", 1)[1].split("\n};", 1)[0]
+    alcanzables = set()
+    for m in _re.finditer(r"verbos:\s*\[([^\]]*)\]", cats, _re.S):
+        alcanzables |= set(_re.findall(r'"([a-z]+)"', m.group(1)))
+
+    huerfanas = sorted(vistas - alcanzables)
+    assert not huerfanas, (
+        f"estas vistas estan en RUTAS y no las ensena ninguna categoria, asi que "
+        f"su boton no se puede pulsar nunca: {huerfanas}")
+
+    inventadas = sorted(alcanzables - vistas)
+    assert not inventadas, (
+        f"estas categorias ensenan vistas que no existen en RUTAS: {inventadas}")
+
+    # Y que NADIE vuelva a escribir la lista a mano.
+    #
+    # `pintarBotones` llevaba cuatro pares escritos a mano con once vistas en
+    # `RUTAS`: los otros siete se quedaban con el `disabled` del HTML para
+    # siempre. La comprobacion de arriba no lo habria cazado, porque las once
+    # SI estaban en alguna categoria. Lo que fallaba era el pintado.
+    pintar = logica.split("function pintarBotones()", 1)[1].split("\n}", 1)[0]
+    assert "Object.keys(RUTAS)" in pintar, (
+        "`pintarBotones` no recorre `RUTAS`: si lleva una lista escrita a mano, "
+        "la vista que alguien olvide se queda apagada para siempre y no falla nada")
+
+
 def test_la_pagina_pasa_su_propia_puerta_de_accesibilidad():
     """La puerta corre al CONSTRUIR, y aqui se comprueba que sigue corriendo.
 

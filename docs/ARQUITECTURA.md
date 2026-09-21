@@ -8,7 +8,7 @@ Versión <!--cifra:version-->0.15.0<!--/cifra-->, 21 de septiembre de 2026.
 Toda cifra de este documento sale del árbol y **ninguna está escrita a mano**.
 Esa frase ya estaba aquí y era falsa: el documento decía <!--historica-->24<!--/historica--> obligaciones
 con <!--cifra:obligaciones-->48<!--/cifra--> en el catálogo, <!--historica-->60<!--/historica--> pares del cruce con
-<!--cifra:pares-->101<!--/cifra-->, y <!--historica-->205<!--/historica--> pruebas con <!--cifra:pruebas-->561<!--/cifra-->. Lo que hacía daño no era cada número, sino que la frase convertía
+<!--cifra:pares-->101<!--/cifra-->, y <!--historica-->205<!--/historica--> pruebas con <!--cifra:pruebas-->562<!--/cifra-->. Lo que hacía daño no era cada número, sino que la frase convertía
 una lista de cifras viejas en una lista de cifras *avaladas*: quien lee deja de
 comprobarlas porque el documento le ha dicho que ya están comprobadas.
 
@@ -638,7 +638,7 @@ observación sin límites no la puede fabricar ni el motor ni la plataforma.
 ## 15. Estado real hoy, y lo que falta
 
 Construido y verde en este árbol (`python herramientas/todo.py`:
-**<!--cifra:pruebas-->561<!--/cifra--> pruebas de Python** y **<!--cifra:pruebas_go-->98<!--/cifra--> de Go**).
+**<!--cifra:pruebas-->562<!--/cifra--> pruebas de Python** y **<!--cifra:pruebas_go-->98<!--/cifra--> de Go**).
 
 La puerta de aceptación ya no es el `Makefile`. Lo era, y la mayoría de sus
 objetivos **no podían ponerse rojos**: terminaban en `; true`, `|| true` o

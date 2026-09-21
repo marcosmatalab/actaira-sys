@@ -89,7 +89,9 @@
     "buscar_algunas": "{n} de {total} líneas coinciden con «{q}».",
     "buscar_todas": "{total} líneas.",
     "pedir_apl": "Qué me ata",
-    "pedir_comp": "Artículo 50"
+    "pedir_comp": "Artículo 50",
+    "sin_datos_conectado": "Conectado. Elige una vista arriba para pedirle el documento al motor.",
+    "buscar_una": "1 línea."
   },
   "en": {
     "titulo": "Actaira · Console",
@@ -181,6 +183,8 @@
     "buscar_algunas": "{n} of {total} lines match «{q}».",
     "buscar_todas": "{total} lines.",
     "pedir_apl": "What binds me",
-    "pedir_comp": "Article 50"
+    "pedir_comp": "Article 50",
+    "sin_datos_conectado": "Connected. Pick a view above to ask the engine for the document.",
+    "buscar_una": "1 line."
   }
 }
