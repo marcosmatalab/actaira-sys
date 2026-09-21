@@ -89,10 +89,11 @@ antes de que lo vea un cliente.
   el arranque paso a paso y las preguntas que salen siempre, con capturas
   generadas contra la pila de verdad.
 - **README en inglés**: `README.en.md`.
-- Dos puertas nuevas sobre los cuatro documentos: que sus imágenes existan,
+- Tres puertas nuevas sobre los cuatro documentos: que sus imágenes existan,
   lleven texto alternativo y estén todas citadas —también al revés: una captura
-  que ya no enseña nadie es un fichero que viaja en cada clon— y que sus enlaces
-  internos lleven a algún sitio.
+  que ya no enseña nadie es un fichero que viaja en cada clon—, que sus enlaces
+  internos lleven a algún sitio, y que las 32 órdenes que mandan teclear existan
+  de verdad con sus banderas, preguntándoselo al CLI.
 - `python herramientas/navegador.py --web CARPETA` saca la portada entera en los
   seis idiomas, fuera del árbol.
 

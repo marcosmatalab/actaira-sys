@@ -1082,6 +1082,44 @@ def fase_documentacion(reg: list[str]) -> None:
     _afirma(not rotos, f"hay enlaces que no llevan a ningun sitio: {rotos}")
     reg.append(f"los {enlaces} enlaces internos de esos documentos existen")
 
+    # Y QUE LAS ORDENES QUE MANDAN TECLEAR EXISTAN, CON SUS BANDERAS.
+    #
+    # `fase_instalacion` ya comprueba la PRIMERA orden que lee alguien -- la de
+    # instalar -- porque mando a un 404 durante meses. Las demas no las
+    # comprobaba nadie, y el manual manda teclear treinta y dos.
+    #
+    # Una bandera renombrada en el motor deja el manual mandando teclear algo
+    # que contesta «unrecognized arguments» y, lo que es peor, lo deja
+    # exactamente igual de creible: nada falla, nada se pone rojo, y el defecto
+    # solo lo encuentra el primer cliente que copie la linea.
+    #
+    # Se le pregunta al CLI de verdad con `--help` en vez de leer `cli.py` con
+    # un analizador: un analizador a medias de argparse se relaja hasta que deja
+    # de mirar, y aqui lo que se quiere saber es lo que el binario acepta.
+    citadas: set[tuple[str, str]] = set()
+    for rel in CON_IMAGENES:
+        texto = (RAIZ / rel).read_text(encoding="utf-8")
+        for verbo, resto in _re2.findall(r"`?actaira ([a-z]+)([^`\n]*)`?", texto):
+            citadas.add((verbo, resto.strip()))
+
+    malas: list[str] = []
+    ayudas: dict[str, str] = {}
+    for verbo, resto in sorted(citadas):
+        if verbo not in ayudas:
+            r = subprocess.run([PY, "-m", "actaira_motor.cli", verbo, "--help"],
+                               cwd=RAIZ, env=entorno(), capture_output=True, text=True,
+                               encoding="utf-8", errors="replace")
+            ayudas[verbo] = r.stdout if r.returncode == 0 else ""
+            if r.returncode != 0:
+                malas.append(f"los documentos mandan `actaira {verbo}` y ese verbo no existe")
+        for bandera in _re2.findall(r"(--[a-z-]+)", resto):
+            if ayudas[verbo] and bandera not in ayudas[verbo]:
+                malas.append(f"los documentos mandan `actaira {verbo} {bandera}` "
+                             f"y ese verbo no acepta esa bandera")
+    _afirma(not malas, "ordenes que no existen:\n  " + "\n  ".join(sorted(set(malas))))
+    reg.append(f"las {len(citadas)} ordenes que esos documentos mandan teclear existen, "
+               f"con sus banderas ({len(ayudas)} verbos)")
+
 
 def fase_identidad(reg: list[str]) -> None:
     """OIDC y papeles, contra el servidor LEVANTADO.

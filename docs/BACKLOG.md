@@ -1763,3 +1763,11 @@ alternativo y esten todas citadas — con el reves incluido, una captura que ya 
 ensena nadie es un fichero que viaja en cada clon para siempre — y que los
 enlaces internos lleven a algun sitio. La primera version del manual tenia cinco
 capturas huerfanas y la puerta las canto el dia que nacio.
+
+Y una tercera, que sale de mirar lo que el manual pide que la gente TECLEE:
+`fase_instalacion` comprobaba la primera orden --la de instalar, que mando a un
+404 durante meses-- y ninguna de las demas. El manual manda teclear treinta y
+dos. Una bandera renombrada en el motor dejaria el manual mandando teclear algo
+que contesta «unrecognized arguments», igual de creible y sin que nada se ponga
+rojo. Ahora se le pregunta al CLI de verdad con `--help`, verbo por verbo. Se
+vio fallar cambiando `--cual` por `--que-anexo` en una linea del manual.
