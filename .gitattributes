@@ -15,6 +15,7 @@
 
 # Binarios: que nadie les toque un byte.
 *.png binary
+*.gif binary
 *.jpg binary
 *.ico binary
 *.pdf binary

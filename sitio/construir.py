@@ -64,13 +64,16 @@ from paginas import revisar_estructura, revisar_textos  # noqa: E402
 # empezar tenia que volver a subir y buscar el bloque de ordenes a mano.
 REPO = "https://github.com/marcosmatalab/actaira-sys"
 
-# EL CORREO ESTA SUPUESTO, Y SE DICE AQUI.
+# EL CORREO, EN UNA SOLA LINEA.
 #
-# La decision fue «un correo en actaira.com», sin concretar cual. `hola@` es la
-# convencion en castellano y es lo que hay hasta que alguien diga otra cosa.
-# Vive en UNA linea a proposito: cambiarlo es cambiar esto, y las seis paginas
-# se rehacen solas.
-CORREO = "hola@actaira.com"
+# Estuvo supuesto (`hola@`) mientras la decision era «un correo en actaira.com»
+# sin concretar cual, y la suposicion se decia aqui en vez de disimularse. Ya
+# esta concretado.
+#
+# Sigue viviendo en UNA linea a proposito: cambiarlo es cambiar esto, y las seis
+# paginas se rehacen solas. Escrito a mano en seis ficheros habria seis sitios
+# donde queda el viejo.
+CORREO = "marcosmata@actaira.com"
 
 # Donde vive cada idioma y como se llama EN SU PROPIA LENGUA.
 #

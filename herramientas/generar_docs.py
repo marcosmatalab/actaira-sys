@@ -60,7 +60,16 @@ from actaira_motor.catalogo.cargador import cargar                     # noqa: E
 # pruebas con 591 en el arbol, y la prosa decia «Diecinueve» defectos
 # adversariales con noventa y tantos en el backlog. Es el documento que mas
 # gente lee y el unico que no estaba bajo este mecanismo.
-DOCS = (RAIZ / "docs" / "ARQUITECTURA.md", RAIZ / "README.md")
+DOCS = (
+    RAIZ / "docs" / "ARQUITECTURA.md",
+    RAIZ / "README.md",
+    # El README en ingles y el manual en los dos idiomas entran por lo mismo
+    # que entro el README: son documentos que AFIRMAN cifras sobre el arbol, y
+    # una traduccion es el sitio donde una cifra se queda vieja sin que nadie
+    # mire. La version castellana se corrige y la inglesa se queda con el
+    # numero del mes pasado.
+    RAIZ / "README.en.md",
+)
 
 _MARCA = re.compile(r"<!--cifra:([a-z0-9_]+)-->(.*?)<!--/cifra-->", re.S)
 
@@ -106,6 +115,46 @@ def _indeterminadas_con_perfil_vacio() -> int:
                if v.situacion is Situacion.INDETERMINADA)
 
 
+def _vistas_del_panel() -> int:
+    """Las vistas que el panel declara en `RUTAS`.
+
+    Se cuentan leyendo el JavaScript por la misma razon por la que la puerta lo
+    lee: el numero de vistas es la cifra que mas veces se ha quedado vieja en
+    este arbol. `RUTAS` paso de cuatro a once y se quedaron atras la tabla de
+    categorias, los botones y la traduccion de documentos a filas, cada una por
+    su cuenta. Un README que diga «once vistas» a mano seria el cuarto sitio.
+    """
+    js = (RAIZ / "panel" / "plantilla" / "logica.js").read_text(encoding="utf-8")
+    bloque = js.split("const RUTAS = {", 1)[1].split("\n};", 1)[0]
+    return sum(1 for ln in bloque.splitlines()
+               if ln.strip() and not ln.strip().startswith("//")
+               and ":" in ln and ln.strip()[0].isalpha())
+
+
+def _fases_de_la_puerta() -> int:
+    """Las fases de `herramientas/todo.py`, contadas sin importarlo.
+
+    Importarlo aqui arrastraria todo lo que la puerta necesita para correr, y
+    este guion tiene que poder correr en cualquier sitio.
+    """
+    arbol = ast.parse((RAIZ / "herramientas" / "todo.py").read_text(encoding="utf-8"))
+    for nodo in ast.walk(arbol):
+        # `FASES` lleva anotacion de tipo, asi que es un `AnnAssign` y no un
+        # `Assign`. Mirar solo uno de los dos es como esta funcion salio mal la
+        # primera vez: encontraba cero y reventaba.
+        objetivos = (nodo.targets if isinstance(nodo, ast.Assign)
+                     else [nodo.target] if isinstance(nodo, ast.AnnAssign) else [])
+        if any(isinstance(d, ast.Name) and d.id == "FASES" for d in objetivos):
+            return len(nodo.value.keys)                    # type: ignore[union-attr]
+    raise SystemExit("no encuentro `FASES` en herramientas/todo.py")
+
+
+def _idiomas() -> tuple[int, int]:
+    """(idiomas de la interfaz, claves de texto por idioma) del panel."""
+    t = json.loads((RAIZ / "panel" / "textos.json").read_text(encoding="utf-8"))
+    return len(t), len(t["es"])
+
+
 def _defectos_adversariales() -> int:
     """Los defectos con numero que el backlog da por cerrados.
 
@@ -148,6 +197,10 @@ def cifras() -> dict[str, str]:
         "pruebas": str(_pruebas()),
         "defectos_adversariales": str(_defectos_adversariales()),
         "pruebas_go": str(_pruebas_go()),
+        "vistas_del_panel": str(_vistas_del_panel()),
+        "fases_de_la_puerta": str(_fases_de_la_puerta()),
+        "idiomas": str(_idiomas()[0]),
+        "claves_de_texto": str(_idiomas()[1]),
         # El ejemplo trabajado de la seccion 2: cuantas obligaciones quedan sin
         # resolver con un perfil VACIO. Es la cifra que sostiene la afirmacion
         # de que ningun camino lleva de un perfil sin responder a un resultado

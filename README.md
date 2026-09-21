@@ -3,10 +3,22 @@
 # Actaira
 
 **El Reglamento (UE) 2024/1689 y la ISO/IEC 42001, comprobados leyendo tu repositorio.**
+
 Con procedencia por afirmación, y sin inventarse un porcentaje.
 
+[![Puerta](https://github.com/marcosmatalab/actaira-sys/actions/workflows/ci.yml/badge.svg)](https://github.com/marcosmatalab/actaira-sys/actions/workflows/ci.yml)
+[![Versión](https://img.shields.io/github/v/tag/marcosmatalab/actaira-sys?label=versi%C3%B3n&color=90099C)](docs/CAMBIOS.md)
 [![Licencia](https://img.shields.io/badge/licencia-Apache--2.0-90099C)](LICENSE)
-[![Pruebas](https://img.shields.io/badge/pruebas-en%20motor%2Ftests-90099C)](motor/tests)
+[![Pruebas](https://img.shields.io/badge/pruebas-Python%20y%20Go-90099C)](motor/tests)
+[![Puerta de aceptación](https://img.shields.io/badge/puerta-make%20todo-90099C)](herramientas/todo.py)
+
+<img src="docs/imagenes/panel.gif" width="860" alt="El panel de Actaira: qué te ata, qué se comprobó leyendo bytes, qué falta por contestar, el expediente, el buscador y los seis idiomas.">
+
+<sub>Treinta segundos contra la API de verdad y el repositorio de ejemplo. Nada
+de esto está montado: se graba con un comando, y el mismo comando es la puerta
+que comprueba que la pantalla funciona.</sub>
+
+**[Manual de uso completo](docs/MANUAL.md)** · **[English](README.en.md)**
 
 </div>
 
@@ -59,20 +71,178 @@ actaira soa .     --rol proveedor --alto-riesgo si     # la declaración de apli
 Necesita Python 3.12 o posterior. Nada de esto sube tu código a ningún sitio y
 no hace falta cuenta: se puede correr con la red desconectada.
 
-Nada de esto sube tu código a ningún sitio.
+El **[manual de uso](docs/MANUAL.md)** lo explica entero: cada comando, cada
+botón, cada estado y el arranque paso a paso.
 
-### El cuestionario que sobra
+## La plataforma
 
-Cada pregunta del banco declara a qué sirve **con identificadores de los tres
-catálogos a la vez**: obligaciones del Reglamento, cláusulas 4 a 10 de la
-norma, y controles del Anexo A. «¿Quién responde de que el sistema de gestión
-cumpla, y quién informa de su desempeño a la dirección?» cierra el artículo 16,
-el 17, la cláusula 5.3 y el control A.3.2 con una sola respuesta.
+El motor es un ejecutable y con eso basta. Encima hay un servidor en Go que lo
+sirve por HTTP, y un panel de <!--cifra:vistas_del_panel-->11<!--/cifra--> vistas
+en <!--cifra:idiomas-->6<!--/cifra--> idiomas que **no calcula nada**: cada
+número que enseña viene dentro del documento que emitió el motor, y cada frase
+que lo explica también.
 
-Y una pregunta desaparece en cuanto un control lee los bytes que la contestan.
-La resta se publica con los identificadores de los controles que la
-produjeron, para que se pueda auditar: un número sin la lista detrás es
-publicidad.
+<img src="docs/imagenes/panel.png" alt="El panel entero: categoría de producto, el ciclo con sus recuentos, el perfil y la respuesta.">
+
+Arriba, la categoría de producto y el ciclo. No cambian lo que el motor dice:
+cambian qué le pides y qué ves primero, que es lo único que una categoría
+comercial tiene derecho a cambiar.
+
+<table>
+<tr>
+<td width="50%"><img src="docs/imagenes/panel-plan.png" alt="El plan: obligación por obligación, con su estado y su remediación."></td>
+<td width="50%"><img src="docs/imagenes/panel-cuestionario.png" alt="El cuestionario: cada pregunta dice a qué artículo, a qué cláusula y a qué control del Anexo A sirve."></td>
+</tr>
+<tr>
+<td><b>El plan.</b> Obligación por obligación: qué te ata, qué se comprobó
+leyendo bytes, dónde está el hallazgo y qué hacer con él.</td>
+<td><b>El cuestionario.</b> Cada pregunta declara a qué sirve con
+identificadores de los <b>tres</b> catálogos a la vez. Una respuesta cierra el
+artículo 16, el 17, la cláusula 5.3 y el control A.3.2.</td>
+</tr>
+<tr>
+<td><img src="docs/imagenes/panel-soa.png" alt="La declaración de aplicabilidad de la ISO 42001, control por control."></td>
+<td><img src="docs/imagenes/panel-anexo-iv.png" alt="El Anexo IV, sección por sección, y cada sección dice de dónde salió o por qué falta."></td>
+</tr>
+<tr>
+<td><b>La declaración de aplicabilidad.</b> Los
+<!--cifra:controles_iso-->38<!--/cifra--> controles del Anexo A, cada uno con
+su justificación.</td>
+<td><b>El expediente técnico.</b> El Anexo IV sección por sección, y cada
+sección dice de dónde salió <i>o por qué falta</i>.</td>
+</tr>
+</table>
+
+En oscuro también, porque es la mitad de las capturas que alguien mira y la que
+suele estar rota:
+
+<img src="docs/imagenes/panel-oscuro.png" width="49%" alt="El panel en tema oscuro.">
+
+### El idioma de la pantalla y el del documento
+
+La plataforma habla **castellano, inglés, francés, portugués, italiano y
+alemán**. El motor emite el contenido normativo en **dos**: castellano e
+inglés. No es una limitación que se vaya a arreglar traduciendo más — es que
+los títulos de obligación, los motivos y las remediaciones los escribe una
+persona, y traducirlos a máquina es exactamente lo que prohíbe la segunda
+negativa de esta casa.
+
+Así que no hay dos ajustes. **Hay uno, y el otro se deriva de él**:
+
+| la pantalla en | el documento llega en |
+|---|---|
+| castellano | castellano |
+| cualquier otro de los seis | inglés, y la pantalla lo dice, en ese idioma |
+
+No existe ningún sitio donde elegir el idioma del documento por separado, y hay
+una puerta que lo comprueba mirando la cabecera `Accept-Language` que el panel
+manda de verdad: seis idiomas de interfaz, un solo mando, y la regla de arriba.
+
+## Los números
+
+Ninguno está escrito a mano. Salen del catálogo y del árbol, los rellena
+`herramientas/generar_docs.py` y la puerta falla si alguno se queda viejo.
+
+| | |
+|---|---|
+| Obligaciones del Reglamento | <!--cifra:obligaciones-->48<!--/cifra--> (<!--cifra:obligaciones_maquina-->13<!--/cifra--> comprobables leyendo bytes, <!--cifra:obligaciones_organizativa-->27<!--/cifra--> organizativas) |
+| Requisitos de la ISO/IEC 42001 | <!--cifra:requisitos-->88<!--/cifra--> sobre <!--cifra:clausulas-->32<!--/cifra--> cláusulas |
+| Controles del Anexo A | <!--cifra:controles_iso-->38<!--/cifra--> |
+| Pares del cruce entre marcos | <!--cifra:pares-->101<!--/cifra-->, con <!--cifra:pares_rotos-->0<!--/cifra--> rotos y <!--cifra:huecos-->0<!--/cifra--> huecos de cobertura |
+| Reglas que leen código | <!--cifra:reglas-->68<!--/cifra--> en <!--cifra:paquetes_de_reglas-->17<!--/cifra--> paquetes |
+| Preguntas del banco | <!--cifra:preguntas-->90<!--/cifra-->, cada una atada a los tres catálogos |
+| Pruebas | <!--cifra:pruebas-->563<!--/cifra--> de Python + <!--cifra:pruebas_go-->98<!--/cifra--> de Go |
+| Fases de la puerta de aceptación | <!--cifra:fases_de_la_puerta-->24<!--/cifra--> |
+| Defectos de las pasadas adversariales | <!--cifra:defectos_adversariales-->125<!--/cifra-->, cada uno con su nombre en `docs/BACKLOG.md` |
+
+Y el número que **no** existe: no hay porcentaje de cumplimiento. Con un perfil
+sin responder, <!--cifra:indeterminadas_perfil_vacio-->48<!--/cifra-->
+obligaciones salen sin resolver y ninguna sale limpia. No hay camino de un
+formulario vacío a un resultado verde.
+
+## Lo que tarda
+
+Medido contra la pila entera —servidor Go compilado, motor como proceso aparte,
+el repositorio de ejemplo— con un comando que cualquiera puede repetir:
+
+```bash
+python herramientas/navegador.py --latencias
+```
+
+| | |
+|---|---|
+| Cargar el panel | **~200 ms**, un solo fichero de 208 KB, cero peticiones de red |
+| Transporte de un verbo (HTTP + JSON) | **~4 ms** de mediana; las 11 vistas suman menos de 100 ms |
+| El análisis en sí | **9–28 ms**, según el verbo, sobre el repositorio de ejemplo |
+| Arrancar el intérprete que lo corre | **440–1 750 ms** |
+
+El último renglón es **entre el 94 y el 98 %** del tiempo, y no es un defecto:
+**es la frontera**.
+Cada verbo es un proceso aparte para que el motor que contesta por HTTP sea
+exactamente el mismo binario que corre quien te audita en su máquina. El precio
+de esa garantía es un arranque de Python por petición. Cargar el catálogo entero
+—<!--cifra:obligaciones-->48<!--/cifra--> obligaciones,
+<!--cifra:controles_iso-->38<!--/cifra--> controles,
+<!--cifra:reglas-->68<!--/cifra--> reglas, 39 ficheros JSON— cuesta **4 ms**, así
+que no hay nada que optimizar ahí: lo que se optimizaría es el intérprete.
+
+Y por eso el servidor lleva topes de concurrencia por cliente y globales, con
+`Retry-After` en el rechazo. Un verbo no es una petición barata: es un proceso
+que lee el repositorio entero de alguien.
+
+## Cómo se sostiene
+
+```bash
+make todo               # la puerta entera
+make fase F=navegador   # una sola
+```
+
+Cada fase **afirma** algo concreto y se pone roja si no se cumple. Lo que no se
+puede medir en una máquina se declara OMITIDO con su motivo, y en integración
+continua se corre con `--sin-omitir`, donde una omisión es un rojo: si algo deja
+de estar instalado, el resumen no puede seguir diciendo «0 en rojo».
+
+- **La matriz.** La puerta corre en **Ubuntu y Windows × Python 3.12 y 3.13**.
+  No es una comodidad. Con las pruebas corriendo solo en Windows, el conector de
+  git estaba roto en todo POSIX y sus cinco pruebas salían verdes; con solo
+  Linux, tres verbos reventaban con la página de códigos cp850 y el traceback
+  salía con el código que significa «hay hallazgos». Cada defecto era invisible
+  desde el otro sistema.
+- **El detector de carreras.** Las pruebas de la plataforma corren bajo `-race`,
+  con el motor instalado y el fixture apuntado, y **cero saltadas**: una prueba
+  que se salta no es una prueba que pasa.
+- **El navegador.** Una fase abre el panel en Chromium, pulsa las
+  <!--cifra:vistas_del_panel-->11<!--/cifra--> vistas contra la API de verdad y
+  comprueba que cada una pinta filas —o dice por qué no—, que los seis idiomas
+  no escriben `undefined`, y que la consola no suelta ni un error. Existe porque
+  el panel no tenía **ni una sola prueba que ejecutara su JavaScript**: siete de
+  las once vistas estuvieron inalcanzables sin que nada fallara, y un
+  `ReferenceError` que rompía las once pasó cuatro auditorías seguidas.
+- **El contrato.** <!--cifra:vistas_del_panel-->11<!--/cifra--> esquemas JSON
+  publicados en `contrato/`, comprobados contra lo que el motor emite y contra
+  los campos que el panel lee. Si el motor renombra un campo, la puerta lo dice
+  en vez de que la pantalla se quede en blanco sin que falle nada.
+- **Las pasadas adversariales.** Cada fase cierra con una antes de abrir la
+  siguiente, y lo encontrado se escribe en `docs/BACKLOG.md` con su número y su
+  lección. <!--cifra:defectos_adversariales-->125<!--/cifra--> hasta hoy. Los más
+  caros no eran fallos: eran respuestas plausibles y falsas, que es lo peor que
+  puede emitir una herramienta que va a un auditor.
+
+Y una regla que sale de haberla necesitado dos veces: **una puerta nueva hay que
+verla fallar** contra el código roto antes de creérsela. Escribirla no basta.
+Una de ellas nació muerta porque un heredoc de bash convirtió el `\b` de su
+expresión regular en un byte de retroceso, y pasó verde con el fallo delante.
+
+## En tu integración continua
+
+Copia [`integraciones/github/actaira.yml`](integraciones/github/actaira.yml) a
+`.github/workflows/`. Los hallazgos salen en **SARIF**, o sea en la pestaña
+Security y dentro de la revisión del pull request, con la remediación escrita
+al lado. El hallazgo llega a quien puede arreglarlo, el día que escribió la
+línea.
+
+La puerta que bloquea el despliegue va **comentada** en la plantilla. Hay un
+test que comprueba que sigue comentada.
 
 ### La vigilancia que no sondea
 
@@ -93,17 +263,6 @@ Consecuencia de coste: sondear N repositorios cada minuto son N × 1440
 ejecuciones al día. Reaccionar a un empujón más un vencimiento son del orden de
 las veces que commiteas, más una.
 
-## En tu integración continua
-
-Copia [`integraciones/github/actaira.yml`](integraciones/github/actaira.yml) a
-`.github/workflows/`. Los hallazgos salen en **SARIF**, o sea en la pestaña
-Security y dentro de la revisión del pull request, con la remediación escrita
-al lado. El hallazgo llega a quien puede arreglarlo, el día que escribió la
-línea.
-
-La puerta que bloquea el despliegue va **comentada** en la plantilla. Hay un
-test que comprueba que sigue comentada.
-
 ## Lo que NO hace
 
 - No emite un porcentaje de cumplimiento. No existe.
@@ -122,23 +281,30 @@ test que comprueba que sigue comentada.
 catalogo/     el contenido normativo como DATOS, no como código, para que lo
               revise un jurista y no un programador
 motor/        Python. Un motor genérico de controles; los artículos son JSON
+plataforma/   Go. Sirve los verbos por HTTP, con papeles, topes por cliente y
+              vigilancia continua. No decide nada: invoca el motor
+panel/        se construye de tres piezas con `make panel`; una sola página que
+              se abre sin servidor y no guarda la credencial en ninguna parte
+sitio/        la portada, en los seis idiomas, con las cifras sacadas del árbol
 consola/      se construye desde el motor con `make consola`, no se edita
+contrato/     los esquemas JSON que el motor promete, comprobados en los dos lados
+herramientas/ la puerta de aceptación, el navegador y los generadores
 integraciones/ SARIF y la plantilla de CI
-.github/      la puerta corrida en DOS sistemas. Un defecto que solo se ve en
-              uno es invisible mientras las pruebas corran en el otro, y eso
-              ya pasó dos veces
-docs/         ARQUITECTURA.md (las decisiones y por qué) y BACKLOG.md (los
-              defectos encontrados en cada pasada adversarial, con su nombre)
+.github/      la puerta corrida en DOS sistemas
+docs/         ARQUITECTURA.md (las decisiones y por qué), BACKLOG.md (los
+              defectos de cada pasada adversarial, con su nombre) e imagenes/
 ```
 
-`make todo` corre las puertas: el catálogo, el cruce, los formularios, la
-ortografía del castellano, la consola y las <!--cifra:pruebas-->563<!--/cifra--> pruebas de Python, más <!--cifra:pruebas_go-->98<!--/cifra--> de Go.
+### Cómo se hicieron estas imágenes
 
-Cada fase cierra con una **pasada adversarial** antes de abrir la siguiente, y
-los defectos encontrados se escriben en `docs/BACKLOG.md` con su número y su
-lección. <!--cifra:defectos_adversariales-->117<!--/cifra--> hasta hoy. Los más caros no eran fallos: eran respuestas
-plausibles y falsas, que es lo peor que puede emitir una herramienta que va a
-un auditor.
+Con el mismo arnés que sujeta el panel, contra la pila de verdad. No hay ninguna
+captura montada ni ningún dato inventado:
+
+```bash
+python herramientas/navegador.py --capturas    # las imágenes de este README
+python herramientas/navegador.py --gif         # el recorrido de 30 s
+python herramientas/navegador.py --puerta      # y lo que comprueba que funciona
+```
 
 ## Licencia y alcance de los catálogos
 
