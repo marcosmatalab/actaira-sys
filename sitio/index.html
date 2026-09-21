@@ -1,3 +1,5 @@
+<!doctype html>
+<html lang="es">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Actaira</title>
@@ -107,13 +109,20 @@ td.q{color:var(--ink-soft);min-width:190px}
 .out{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
 @media(min-width:680px){.out{grid-template-columns:repeat(2,1fr)}}
 .out div{background:var(--surface);padding:20px}
-.out h4{margin:0 0 6px;font-size:14.5px;font-weight:600}
+.out h3{margin:0 0 6px;font-size:14.5px;font-weight:600}
 .out p{font-size:13.5px;color:var(--ink-soft)}
 
 footer{padding-block:46px;font-size:13px;color:var(--muted)}
 .foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 .foot a{color:var(--ink-soft)}
 .caveat{max-width:72ch;margin-top:24px;padding-top:18px;border-top:1px solid var(--line-soft);font-size:12.5px;line-height:1.7}
+nav.idiomas{display:flex;gap:2px;align-items:center;margin-left:14px;
+  border:1px solid var(--line);border-radius:999px;padding:2px;background:var(--surface)}
+nav.idiomas a{padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:500;
+  letter-spacing:.05em;color:var(--muted);text-decoration:none;line-height:1.6}
+nav.idiomas a:hover{color:var(--marca)}
+nav.idiomas a[aria-current="page"]{background:var(--marca);color:#fff}
+@media(max-width:860px){nav.idiomas{margin-left:auto}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -126,6 +135,16 @@ footer{padding-block:46px;font-size:13px;color:var(--muted)}
     <a href="#alcance">Alcance</a>
     <a href="#niveles">Niveles</a>
   </nav>
+  <!-- EL CONMUTADOR DE IDIOMA: SEIS ENLACES, NO UN BOTON DE JAVASCRIPT.
+       Cada idioma es una pagina de verdad, con su propio `lang` y su propia
+       direccion. Un conmutador que reescribe el texto en el navegador da una
+       pagina que no se puede enviar por correo, que los buscadores indexan en
+       un solo idioma, y que un lector de pantalla pronuncia con el idioma
+       equivocado hasta que alguien pulsa algo. Seis enlaces funcionan sin
+       JavaScript, se pueden abrir en otra pestana y se pueden marcar.
+       `aria-current="page"` es lo que dice cual estas leyendo a quien no lo
+       ve por el color. -->
+  <nav class="idiomas" aria-label="Idioma"><a href="./" hreflang="es" lang="es" aria-current="page" title="Español">ES</a><a href="./en/" hreflang="en" lang="en" title="English">EN</a><a href="./fr/" hreflang="fr" lang="fr" title="Français">FR</a><a href="./pt/" hreflang="pt" lang="pt" title="Português">PT</a><a href="./it/" hreflang="it" lang="it" title="Italiano">IT</a><a href="./de/" hreflang="de" lang="de" title="Deutsch">DE</a></nav>
 </div></header>
 
 <main>
@@ -154,7 +173,7 @@ footer{padding-block:46px;font-size:13px;color:var(--muted)}
 
 <section class="wrap" id="como">
   <div class="head">
-    <p class="eyebrow">Cuatro comandos</p>
+    <p class="eyebrow">Cinco comandos</p>
     <h2>Se instala, se corre y no sube tu código a ningún sitio</h2>
     <p>
       El motor es abierto y corre en tu máquina o en tu integración continua. Los hallazgos
@@ -164,7 +183,7 @@ footer{padding-block:46px;font-size:13px;color:var(--muted)}
   </div>
   <div class="cod">
 <span class="c"># el motor, Apache-2.0</span>
-pip install actaira-motor
+pip install git+https://github.com/marcosmatalab/actaira-sys
 
 actaira <span class="k">plan</span> .       <span class="c"># qué te ata, qué se comprobó y qué hay que preguntarte</span>
 actaira <span class="k">preguntar</span> .  <span class="c"># las preguntas que tu código NO contesta</span>
@@ -342,9 +361,9 @@ actaira <span class="k">vigilar</span> .    <span class="c"># qué caducó, qué
       <tr><td class="art">Anexos IV y V<small>Los dos documentos</small></td>
         <td class="q">23 secciones del Anexo IV y los 8 puntos del Anexo V, cada uno diciendo si sale del código, de una persona o si falta y por qué. La declaración se emite BORRADOR hasta que la firmas.<span class="mod">actaira anexo · anexo --cual v</span></td>
         <td><span class="chip b">Construido</span></td></tr>
-      <tr><td class="art">Plataforma<small>Multi tenant y facturación</small></td>
-        <td class="q">Identidad, aprovisionamiento, aislamiento por cliente y avisos cuando algo caduca sin que nadie empuje nada. El motor es el mismo fichero que puedes leer.<span class="mod">en construcción</span></td>
-        <td><span class="chip p">En curso</span></td></tr>
+      <tr><td class="art">Plataforma<small>Multi tenant y vigilancia</small></td>
+        <td class="q">Identidad OIDC con papeles, aislamiento por cliente, topes por cliente y avisos cuando algo caduca sin que nadie empuje nada. El motor es el mismo fichero que puedes leer, corriendo como proceso detras de la API.<span class="mod">actaira-api · OIDC · RBAC · topes</span></td>
+        <td><span class="chip p">Construido</span></td></tr>
     </tbody>
   </table></div>
 </section>
@@ -365,7 +384,7 @@ actaira <span class="k">vigilar</span> .    <span class="c"># qué caducó, qué
       <h3>Motor</h3>
       <p class="precio">Libre · Apache-2.0</p>
       <ul>
-        <li>Los diez verbos, enteros</li>
+        <li>Todos los verbos del motor, enteros</li>
         <li>Anexo IV, Anexo V y declaración de aplicabilidad</li>
         <li>SARIF para la pestaña Security</li>
         <li>Sello Merkle y firma Ed25519, verificable sin red</li>
@@ -403,10 +422,10 @@ actaira <span class="k">vigilar</span> .    <span class="c"># qué caducó, qué
     <h2>Lo que Actaira no hace</h2>
   </div>
   <div class="out">
-    <div><h4>No emite un porcentaje de cumplimiento</h4><p>No existe. Lo que se publica es qué se comprobó y qué no, con recuentos de obligaciones.</p></div>
-    <div><h4>No dice que cumples</h4><p>Una obligación la cumple una organización, no un control. Dice qué se comprobó leyendo bytes, con qué regla y de qué autor, y qué queda fuera del alcance de esa comprobación.</p></div>
-    <div><h4>No cierra la ISO porque el Reglamento salga limpio</h4><p>Un cruce dice que dos textos hablan de lo mismo, no que cumplir uno cumpla el otro. La norma pide cosas que el artículo no pide.</p></div>
-    <div><h4>No firma por ti</h4><p>Los puntos 3 y 4 del Anexo V son afirmaciones del proveedor bajo su exclusiva responsabilidad. Ningún programa puede hacerlas, y ninguna bandera quita la palabra BORRADOR.</p></div>
+    <div><h3>No emite un porcentaje de cumplimiento</h3><p>No existe. Lo que se publica es qué se comprobó y qué no, con recuentos de obligaciones.</p></div>
+    <div><h3>No dice que cumples</h3><p>Una obligación la cumple una organización, no un control. Dice qué se comprobó leyendo bytes, con qué regla y de qué autor, y qué queda fuera del alcance de esa comprobación.</p></div>
+    <div><h3>No cierra la ISO porque el Reglamento salga limpio</h3><p>Un cruce dice que dos textos hablan de lo mismo, no que cumplir uno cumpla el otro. La norma pide cosas que el artículo no pide.</p></div>
+    <div><h3>No firma por ti</h3><p>Los puntos 3 y 4 del Anexo V son afirmaciones del proveedor bajo su exclusiva responsabilidad. Ningún programa puede hacerlas, y ninguna bandera quita la palabra BORRADOR.</p></div>
   </div>
 </section>
 </main>

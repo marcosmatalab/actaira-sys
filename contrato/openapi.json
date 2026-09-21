@@ -844,6 +844,107 @@
     },
     "title": "Las cinco capas: ejecucion, observacion, suficiencia y decision"
    },
+   "control": {
+    "$id": "actaira/control/v1",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "description": {
+     "en": "What a control concluded BY READING BYTES, with what it covers and what it does not. `resultado` is not a grade: `no_aplica` says no rule in the pack had anything to bite on, and `indeterminado` says it could not be decided AND WHY, in `motivo_indeterminado`. Both differ from `sin_hallazgos`, and conflating them is the easiest way to publish compliance nobody checked.",
+     "es": "Lo que un control concluyo MIRANDO BYTES, con lo que cubre y lo que no. `resultado` no es una nota: `no_aplica` dice que ninguna regla del paquete tenia sobre que morder, e `indeterminado` dice que no se pudo decidir Y POR QUE, en `motivo_indeterminado`. Los dos son respuestas distintas de `sin_hallazgos`, y confundirlos es la forma mas facil de publicar un cumplimiento que nadie comprobo."
+    },
+    "properties": {
+     "control_id": {
+      "description": "el control que corrio",
+      "type": "string"
+     },
+     "controles_cubiertos": {
+      "description": "los controles de la norma que esta lectura cierra, si alguno",
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "cubre": {
+      "description": "lo que esta comprobacion SI alcanza",
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "esquema": {
+      "const": "actaira/control/v1"
+     },
+     "hallazgos": {
+      "description": "lo que aparecio, con su remediacion al lado",
+      "items": {
+       "type": "object"
+      },
+      "type": "array"
+     },
+     "inspeccionado": {
+      "description": "que se miro exactamente, fichero y linea. Es la procedencia: sin esto, el resultado es una afirmacion sin lista detras",
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "motivo_indeterminado": {
+      "description": "por que no se pudo decidir, en los dos idiomas. Un INDETERMINADO sin motivo escrito es un NO_CUMPLE disfrazado",
+      "properties": {
+       "en": {
+        "type": "string"
+       },
+       "es": {
+        "type": "string"
+       }
+      },
+      "required": [
+       "es",
+       "en"
+      ],
+      "type": [
+       "object",
+       "null"
+      ]
+     },
+     "no_cubre": {
+      "description": "la frontera, escrita. Un control que no publica lo que deja fuera invita a leerlo como si lo cubriera todo",
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     },
+     "obligacion_id": {
+      "description": "la obligacion del Reglamento que intenta cerrar",
+      "type": "string"
+     },
+     "resultado": {
+      "description": {
+       "en": "Five states, not two. `indeterminado` (\\u00abcould not decide\\u00bb) and `no_aplica` (\\u00abnothing to bite on\\u00bb) are not flavours of \\u00abit is fine\\u00bb.",
+       "es": "Cinco estados y no dos. `indeterminado` («no pude decidir») y `no_aplica` («no habia sobre que morder») no son variantes de «esta bien»."
+      },
+      "enum": [
+       "sin_hallazgos",
+       "con_hallazgos",
+       "indeterminado",
+       "no_aplica",
+       "error"
+      ]
+     }
+    },
+    "required": [
+     "esquema",
+     "control_id",
+     "obligacion_id",
+     "resultado",
+     "cubre",
+     "no_cubre",
+     "inspeccionado",
+     "hallazgos"
+    ],
+    "title": "El resultado de un control leido sobre el codigo",
+    "type": "object"
+   },
    "cuestionario": {
     "$id": "https://actaira.com/contrato/cuestionario.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -2792,6 +2893,450 @@
      }
     ],
     "summary": "`actaira anexo`"
+   }
+  },
+  "/v1/clientes/{cliente}/aplicabilidad": {
+   "post": {
+    "description": "Traduccion 1:1 del verbo `aplicabilidad` de la linea de mandatos. Esta capa no compone nada ni anade logica: lo que sale es lo que emite el motor, con su `esquema` dentro.",
+    "operationId": "aplicabilidad",
+    "parameters": [
+     {
+      "description": "El cliente. Tiene que ser el mismo al que da acceso la credencial: pedir otro devuelve 401 y no 403, porque un 403 confirmaria que ese cliente existe.",
+      "in": "path",
+      "name": "cliente",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "additionalProperties": false,
+        "description": "Lo que la organizacion declara de si misma. Los tres valores de cada booleano -- `si`, `no` y ausente -- no son un descuido: ausente significa «no me lo han preguntado todavia» y produce INDETERMINADA, que no es lo mismo que «no me ata».",
+        "properties": {
+         "alto_riesgo": {
+          "enum": [
+           "si",
+           "no",
+           ""
+          ]
+         },
+         "fecha": {
+          "format": "date",
+          "type": "string"
+         },
+         "modelo_uso_general": {
+          "enum": [
+           "si",
+           "no",
+           ""
+          ]
+         },
+         "riesgo_sistemico": {
+          "enum": [
+           "si",
+           "no",
+           ""
+          ]
+         },
+         "roles": {
+          "description": "Los roles del Reglamento. VARIOS a la vez: una organizacion suele ser proveedor de un sistema y responsable del despliegue de otro. Un rol que el motor no conozca se RECHAZA con 400; devolver cero obligaciones seria indistinguible de un rol valido al que no le ata nada.",
+          "items": {
+           "type": "string"
+          },
+          "type": "array"
+         },
+         "sector_publico": {
+          "enum": [
+           "si",
+           "no",
+           ""
+          ]
+         },
+         "via_anexo": {
+          "enum": [
+           "anexo_iii",
+           "anexo_i",
+           ""
+          ]
+         }
+        },
+        "type": "object"
+       }
+      }
+     },
+     "required": false
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "properties": {
+          "codigo": {
+           "description": "El codigo de salida del motor, SIN INTERPRETAR. 0 es «se miro y no aparecio nada», 1 es «aparecio algo» y 3 es «no se pudo decidir o falta que alguien conteste». Tres NO es un fallo: es el estado normal de un cliente que empieza.",
+           "type": "integer"
+          },
+          "documento": {
+           "$ref": "#/components/schemas/aplicabilidad"
+          },
+          "esquema": {
+           "const": "actaira/api/v1"
+          }
+         },
+         "required": [
+          "esquema",
+          "codigo",
+          "documento"
+         ],
+         "type": "object"
+        }
+       }
+      },
+      "description": "El documento que emite el motor, sin tocar."
+     },
+     "401": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "properties": {
+          "esquema": {
+           "const": "actaira/api/fallo/v1"
+          },
+          "que": {
+           "properties": {
+            "en": {
+             "type": "string"
+            },
+            "es": {
+             "type": "string"
+            }
+           },
+           "required": [
+            "es",
+            "en"
+           ],
+           "type": "object"
+          }
+         },
+         "required": [
+          "esquema",
+          "que"
+         ],
+         "type": "object"
+        }
+       }
+      },
+      "description": "Credencial no valida, o de otro cliente. El mensaje es el mismo en los dos casos: dos respuestas distintas serian un oraculo para enumerar clientes."
+     },
+     "429": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "properties": {
+          "esquema": {
+           "const": "actaira/api/fallo/v1"
+          },
+          "que": {
+           "properties": {
+            "en": {
+             "type": "string"
+            },
+            "es": {
+             "type": "string"
+            }
+           },
+           "required": [
+            "es",
+            "en"
+           ],
+           "type": "object"
+          }
+         },
+         "required": [
+          "esquema",
+          "que"
+         ],
+         "type": "object"
+        }
+       }
+      },
+      "description": "Demasiadas peticiones, o demasiados verbos del motor en curso. Un verbo del motor es un PROCESO que lee el repositorio entero, asi que lo que se agota no son peticiones: es la maquina. Viene con `Retry-After`.",
+      "headers": {
+       "Retry-After": {
+        "description": "Segundos a esperar.",
+        "schema": {
+         "type": "integer"
+        }
+       }
+      }
+     },
+     "502": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "properties": {
+          "esquema": {
+           "const": "actaira/api/fallo/v1"
+          },
+          "que": {
+           "properties": {
+            "en": {
+             "type": "string"
+            },
+            "es": {
+             "type": "string"
+            }
+           },
+           "required": [
+            "es",
+            "en"
+           ],
+           "type": "object"
+          }
+         },
+         "required": [
+          "esquema",
+          "que"
+         ],
+         "type": "object"
+        }
+       }
+      },
+      "description": "El motor no devolvio un documento que esta plataforma entienda."
+     }
+    },
+    "security": [
+     {
+      "credencialDelCliente": []
+     }
+    ],
+    "summary": "`actaira aplicabilidad`"
+   }
+  },
+  "/v1/clientes/{cliente}/comprobar": {
+   "post": {
+    "description": "Traduccion 1:1 del verbo `comprobar` de la linea de mandatos. Esta capa no compone nada ni anade logica: lo que sale es lo que emite el motor, con su `esquema` dentro.",
+    "operationId": "comprobar",
+    "parameters": [
+     {
+      "description": "El cliente. Tiene que ser el mismo al que da acceso la credencial: pedir otro devuelve 401 y no 403, porque un 403 confirmaria que ese cliente existe.",
+      "in": "path",
+      "name": "cliente",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "additionalProperties": false,
+        "description": "Lo que la organizacion declara de si misma. Los tres valores de cada booleano -- `si`, `no` y ausente -- no son un descuido: ausente significa «no me lo han preguntado todavia» y produce INDETERMINADA, que no es lo mismo que «no me ata».",
+        "properties": {
+         "alto_riesgo": {
+          "enum": [
+           "si",
+           "no",
+           ""
+          ]
+         },
+         "fecha": {
+          "format": "date",
+          "type": "string"
+         },
+         "modelo_uso_general": {
+          "enum": [
+           "si",
+           "no",
+           ""
+          ]
+         },
+         "riesgo_sistemico": {
+          "enum": [
+           "si",
+           "no",
+           ""
+          ]
+         },
+         "roles": {
+          "description": "Los roles del Reglamento. VARIOS a la vez: una organizacion suele ser proveedor de un sistema y responsable del despliegue de otro. Un rol que el motor no conozca se RECHAZA con 400; devolver cero obligaciones seria indistinguible de un rol valido al que no le ata nada.",
+          "items": {
+           "type": "string"
+          },
+          "type": "array"
+         },
+         "sector_publico": {
+          "enum": [
+           "si",
+           "no",
+           ""
+          ]
+         },
+         "via_anexo": {
+          "enum": [
+           "anexo_iii",
+           "anexo_i",
+           ""
+          ]
+         }
+        },
+        "type": "object"
+       }
+      }
+     },
+     "required": false
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "properties": {
+          "codigo": {
+           "description": "El codigo de salida del motor, SIN INTERPRETAR. 0 es «se miro y no aparecio nada», 1 es «aparecio algo» y 3 es «no se pudo decidir o falta que alguien conteste». Tres NO es un fallo: es el estado normal de un cliente que empieza.",
+           "type": "integer"
+          },
+          "documento": {
+           "$ref": "#/components/schemas/control"
+          },
+          "esquema": {
+           "const": "actaira/api/v1"
+          }
+         },
+         "required": [
+          "esquema",
+          "codigo",
+          "documento"
+         ],
+         "type": "object"
+        }
+       }
+      },
+      "description": "El documento que emite el motor, sin tocar."
+     },
+     "401": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "properties": {
+          "esquema": {
+           "const": "actaira/api/fallo/v1"
+          },
+          "que": {
+           "properties": {
+            "en": {
+             "type": "string"
+            },
+            "es": {
+             "type": "string"
+            }
+           },
+           "required": [
+            "es",
+            "en"
+           ],
+           "type": "object"
+          }
+         },
+         "required": [
+          "esquema",
+          "que"
+         ],
+         "type": "object"
+        }
+       }
+      },
+      "description": "Credencial no valida, o de otro cliente. El mensaje es el mismo en los dos casos: dos respuestas distintas serian un oraculo para enumerar clientes."
+     },
+     "429": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "properties": {
+          "esquema": {
+           "const": "actaira/api/fallo/v1"
+          },
+          "que": {
+           "properties": {
+            "en": {
+             "type": "string"
+            },
+            "es": {
+             "type": "string"
+            }
+           },
+           "required": [
+            "es",
+            "en"
+           ],
+           "type": "object"
+          }
+         },
+         "required": [
+          "esquema",
+          "que"
+         ],
+         "type": "object"
+        }
+       }
+      },
+      "description": "Demasiadas peticiones, o demasiados verbos del motor en curso. Un verbo del motor es un PROCESO que lee el repositorio entero, asi que lo que se agota no son peticiones: es la maquina. Viene con `Retry-After`.",
+      "headers": {
+       "Retry-After": {
+        "description": "Segundos a esperar.",
+        "schema": {
+         "type": "integer"
+        }
+       }
+      }
+     },
+     "502": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "properties": {
+          "esquema": {
+           "const": "actaira/api/fallo/v1"
+          },
+          "que": {
+           "properties": {
+            "en": {
+             "type": "string"
+            },
+            "es": {
+             "type": "string"
+            }
+           },
+           "required": [
+            "es",
+            "en"
+           ],
+           "type": "object"
+          }
+         },
+         "required": [
+          "esquema",
+          "que"
+         ],
+         "type": "object"
+        }
+       }
+      },
+      "description": "El motor no devolvio un documento que esta plataforma entienda."
+     }
+    },
+    "security": [
+     {
+      "credencialDelCliente": []
+     }
+    ],
+    "summary": "`actaira comprobar`"
    }
   },
   "/v1/clientes/{cliente}/empujon": {

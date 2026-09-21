@@ -1,37 +1,38 @@
 {
- "$schema": "https://json-schema.org/draft/2020-12/schema",
- "titulo": "El contrato entre el motor y la plataforma",
- "version": "1.0.0",
- "por_que_existe": {
-  "es": "El motor es Python y la plataforma es Go, y la frontera entre los dos es un proceso y un JSON. Sin un contrato escrito, esa frontera se rompe en silencio: el motor cambia el nombre de un campo, la plataforma lo lee como vacio, y el cliente ve un expediente incompleto sin que falle nada. Estos esquemas son el contrato, y hay una puerta que valida contra ellos CADA documento que el motor emite en los tests.",
-  "en": "The engine is Python and the platform is Go, and the boundary between them is a process and a JSON. Without a written contract that boundary breaks silently: the engine renames a field, the platform reads it as empty, and the customer sees an incomplete file with nothing failing. These schemas are the contract, and a gate validates EVERY document the engine emits in the tests against them."
- },
- "nota_de_dependencia": {
-  "es": "Validar contra estos esquemas necesita `jsonschema`, y por eso es una dependencia de DESARROLLO y no de ejecucion: el motor sigue teniendo una sola dependencia en ejecucion, que es la criptografia del sello. Un contrato que obligara a instalar un validador en cada cliente seria un contrato que se salta el primer cliente con prisa.",
-  "en": "Validating against these schemas needs `jsonschema`, which is why it is a DEVELOPMENT dependency and not a runtime one: the engine still has a single runtime dependency, the signature's cryptography. A contract that forced every customer to install a validator would be a contract the first customer in a hurry skips."
- },
- "lo_que_el_esquema_no_puede_decir": {
-  "es": "Un esquema JSON fija la forma, no la doctrina. Que no aparezca nunca un porcentaje, que un INDETERMINADO traiga su motivo, o que la SoA no excluya sola son invariantes que se sujetan con pruebas en Python, no aqui. El contrato dice que campos hay; las cuatro negativas dicen que puede haber dentro.",
-  "en": "A JSON schema fixes the shape, not the doctrine. That no percentage ever appears, that an INDETERMINATE carries its reason, or that the statement of applicability never excludes on its own are invariants held by tests in Python, not here. The contract says which fields exist; the four negatives say what may be inside them."
- },
- "documentos": {
-  "plan": "plan.json",
-  "cuestionario": "cuestionario.json",
-  "soa": "soa.json",
-  "vigilancia": "vigilancia.json",
-  "anexo-iv": "anexo-iv.json",
-  "anexo-v": "anexo-v.json",
-  "capas": "capas.json",
-  "aplicabilidad": "aplicabilidad.json",
-  "noconformidades": "noconformidades.json",
-  "decision-de-empujon": "decision-de-empujon.json",
-  "almacen": "almacen.json"
- },
- "codigos_de_salida": {
-  "0": "lo que se pidio esta completo",
-  "1": "hay hallazgos, o una respuesta no admite",
-  "3": "esta incompleto o hay trabajo que hacer: NO es un fallo del comando",
-  "4": "el motor no pudo hacer lo que se le pidio",
-  "5": "el almacen de evidencia no es el que esta casa escribio: es un incidente, no un fallo transitorio"
- }
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "titulo": "El contrato entre el motor y la plataforma",
+  "version": "1.0.0",
+  "por_que_existe": {
+    "es": "El motor es Python y la plataforma es Go, y la frontera entre los dos es un proceso y un JSON. Sin un contrato escrito, esa frontera se rompe en silencio: el motor cambia el nombre de un campo, la plataforma lo lee como vacio, y el cliente ve un expediente incompleto sin que falle nada. Estos esquemas son el contrato, y hay una puerta que valida contra ellos CADA documento que el motor emite en los tests.",
+    "en": "The engine is Python and the platform is Go, and the boundary between them is a process and a JSON. Without a written contract that boundary breaks silently: the engine renames a field, the platform reads it as empty, and the customer sees an incomplete file with nothing failing. These schemas are the contract, and a gate validates EVERY document the engine emits in the tests against them."
+  },
+  "nota_de_dependencia": {
+    "es": "Validar contra estos esquemas necesita `jsonschema`, y por eso es una dependencia de DESARROLLO y no de ejecucion: el motor sigue teniendo una sola dependencia en ejecucion, que es la criptografia del sello. Un contrato que obligara a instalar un validador en cada cliente seria un contrato que se salta el primer cliente con prisa.",
+    "en": "Validating against these schemas needs `jsonschema`, which is why it is a DEVELOPMENT dependency and not a runtime one: the engine still has a single runtime dependency, the signature's cryptography. A contract that forced every customer to install a validator would be a contract the first customer in a hurry skips."
+  },
+  "lo_que_el_esquema_no_puede_decir": {
+    "es": "Un esquema JSON fija la forma, no la doctrina. Que no aparezca nunca un porcentaje, que un INDETERMINADO traiga su motivo, o que la SoA no excluya sola son invariantes que se sujetan con pruebas en Python, no aqui. El contrato dice que campos hay; las cuatro negativas dicen que puede haber dentro.",
+    "en": "A JSON schema fixes the shape, not the doctrine. That no percentage ever appears, that an INDETERMINATE carries its reason, or that the statement of applicability never excludes on its own are invariants held by tests in Python, not here. The contract says which fields exist; the four negatives say what may be inside them."
+  },
+  "documentos": {
+    "plan": "plan.json",
+    "cuestionario": "cuestionario.json",
+    "soa": "soa.json",
+    "vigilancia": "vigilancia.json",
+    "anexo-iv": "anexo-iv.json",
+    "anexo-v": "anexo-v.json",
+    "capas": "capas.json",
+    "aplicabilidad": "aplicabilidad.json",
+    "noconformidades": "noconformidades.json",
+    "decision-de-empujon": "decision-de-empujon.json",
+    "almacen": "almacen.json",
+    "control": "control.json"
+  },
+  "codigos_de_salida": {
+    "0": "lo que se pidio esta completo",
+    "1": "hay hallazgos, o una respuesta no admite",
+    "3": "esta incompleto o hay trabajo que hacer: NO es un fallo del comando",
+    "4": "el motor no pudo hacer lo que se le pidio",
+    "5": "el almacen de evidencia no es el que esta casa escribio: es un incidente, no un fallo transitorio"
+  }
 }

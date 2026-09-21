@@ -8,7 +8,7 @@ Versión <!--cifra:version-->0.15.0<!--/cifra-->, 21 de septiembre de 2026.
 Toda cifra de este documento sale del árbol y **ninguna está escrita a mano**.
 Esa frase ya estaba aquí y era falsa: el documento decía <!--historica-->24<!--/historica--> obligaciones
 con <!--cifra:obligaciones-->48<!--/cifra--> en el catálogo, <!--historica-->60<!--/historica--> pares del cruce con
-<!--cifra:pares-->101<!--/cifra-->, y <!--historica-->205<!--/historica--> pruebas con <!--cifra:pruebas-->562<!--/cifra-->. Lo que hacía daño no era cada número, sino que la frase convertía
+<!--cifra:pares-->101<!--/cifra-->, y <!--historica-->205<!--/historica--> pruebas con <!--cifra:pruebas-->561<!--/cifra-->. Lo que hacía daño no era cada número, sino que la frase convertía
 una lista de cifras viejas en una lista de cifras *avaladas*: quien lee deja de
 comprobarlas porque el documento le ha dicho que ya están comprobadas.
 
@@ -638,7 +638,7 @@ observación sin límites no la puede fabricar ni el motor ni la plataforma.
 ## 15. Estado real hoy, y lo que falta
 
 Construido y verde en este árbol (`python herramientas/todo.py`:
-**<!--cifra:pruebas-->562<!--/cifra--> pruebas de Python** y **<!--cifra:pruebas_go-->98<!--/cifra--> de Go**).
+**<!--cifra:pruebas-->561<!--/cifra--> pruebas de Python** y **<!--cifra:pruebas_go-->98<!--/cifra--> de Go**).
 
 La puerta de aceptación ya no es el `Makefile`. Lo era, y la mayoría de sus
 objetivos **no podían ponerse rojos**: terminaban en `; true`, `|| true` o
@@ -659,7 +659,7 @@ como aprobado.
 | 7 | la consola en tres vistas, bilingüe y construida desde el motor; el castellano con sus tildes | `exportar`, `ortografia` |
 | 8 | el almacén de evidencia que solo se añade, la invalidación selectiva por digest de sujeto, la revalidación, y SARIF para la pestaña Security | `vigilar`, `plan --sarif` |
 | 9 | los artículos 11, 13, 19 y 47, y el sexto tipo de regla (`contenido_prohibido`) | `plan` |
-| 10 | el paquete instalable con el catálogo dentro, la licencia y el README | `pip install actaira-motor` |
+| 10 | el paquete instalable con el catálogo dentro, la licencia y el README | `pip install git+https://github.com/marcosmatalab/actaira-sys` |
 | 11 | los seis esquemas del contrato, la ortografía del castellano que vive en el código, y el lado Go de la frontera | `make contrato` |
 | 12 | el aislamiento por cliente, el vencimiento que se da cuenta sin que nadie empuje, y los motivos bilingües | `vigilar --solo-almacen` |
 

@@ -161,6 +161,18 @@ const RUTAS = {
   soa:  (c) => ["POST", `/v1/clientes/${c}/soa`, perfilDelFormulario()],
   anx:  (c) => ["POST", `/v1/clientes/${c}/anexo?cual=iv`, perfilDelFormulario()],
   rev:  (c) => ["GET", `/v1/clientes/${c}/revision`, null],
+  // La aplicabilidad es la PRIMERA pregunta del producto -- que te ata y que
+  // no -- y era la unica de las grandes que no tenia pantalla. Sin ella habia
+  // que lanzar un `plan`, que arranca el motor sobre el repositorio entero,
+  // para contestar algo que sale del perfil y no lee ni un byte del codigo.
+  apl:  (c) => ["POST", `/v1/clientes/${c}/aplicabilidad`, perfilDelFormulario()],
+  // Y el control del articulo 50 a solas. Estaba dentro del `plan`, mezclado
+  // con todo lo demas: quien queria la respuesta de UN control sobre su codigo
+  // tenia que pedir el ciclo entero y buscarla.
+  //
+  // SIN perfil: este verbo no pregunta a quien ata nada, lee el codigo y dice
+  // lo que ve.
+  comp: (c) => ["POST", `/v1/clientes/${c}/comprobar`, null],
 };
 
 async function traer(verbo) {
@@ -258,7 +270,8 @@ function pintarTextos() {
     "#pedir-venc": "pedir_venc", "#pedir-nc": "pedir_nc",
     "#pedir-ev": "pedir_ev", "#pedir-preg": "pedir_preg",
     "#pedir-soa": "pedir_soa", "#pedir-anx": "pedir_anx",
-    "#pedir-rev": "pedir_rev",
+    "#pedir-rev": "pedir_rev", "#pedir-apl": "pedir_apl",
+    "#pedir-comp": "pedir_comp",
     "#t-vistas": "vistas", "#t-buscar": "buscar",
     "#t-recuento": "recuento", "#t-lineas": "lineas", "#t-documento": "documento",
     "#doc-nota": "doc_nota",

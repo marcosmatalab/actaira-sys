@@ -55,11 +55,15 @@ var PERMISOS = map[string]string{
 	"soa":           PapelLectura,
 	"anexo":         PapelLectura,
 	"preguntar":     PapelLectura,
+	// No lee ni un byte del repositorio: la aplicabilidad sale del perfil.
+	"aplicabilidad": PapelLectura,
 
 	// Mirar de nuevo. Arranca un proceso que lee el repositorio entero y
 	// escribe evidencia en el expediente.
 	"plan":    PapelObservacion,
 	"vigilar": PapelObservacion,
+	// Arranca el control sobre el repositorio entero del cliente.
+	"comprobar": PapelObservacion,
 
 	// Mover trabajo y recibir eventos de fuera.
 	"empujon":  PapelRemediacion,

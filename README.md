@@ -42,13 +42,22 @@ tiene su prueba.
 ## Lo que hace, en cuatro comandos
 
 ```bash
-pip install actaira-motor
+pip install git+https://github.com/marcosmatalab/actaira-sys
 
 actaira plan .    --rol proveedor --alto-riesgo si     # qué te ata y qué se comprobó
 actaira preguntar . --rol proveedor --alto-riesgo si   # lo que hay que preguntarte, y lo que no
 actaira anexo .   --rol proveedor --alto-riesgo si     # el Anexo IV, con procedencia por sección
 actaira soa .     --rol proveedor --alto-riesgo si     # la declaración de aplicabilidad de la ISO 42001
 ```
+
+> Se instala desde el repositorio y no desde PyPI porque **todavía no está
+> publicado en PyPI**, y decir `pip install actaira-motor` sería mandarte a un
+> 404 en la primera orden. Cuando se publique, esa será la línea y esta nota
+> desaparece. Hay una puerta que lo comprueba: mientras
+> `PUBLICADO_EN_PYPI` sea `False`, ningún documento puede decir lo contrario.
+
+Necesita Python 3.12 o posterior. Nada de esto sube tu código a ningún sitio y
+no hace falta cuenta: se puede correr con la red desconectada.
 
 Nada de esto sube tu código a ningún sitio.
 
@@ -123,7 +132,7 @@ docs/         ARQUITECTURA.md (las decisiones y por qué) y BACKLOG.md (los
 ```
 
 `make todo` corre las puertas: el catálogo, el cruce, los formularios, la
-ortografía del castellano, la consola y las <!--cifra:pruebas-->562<!--/cifra--> pruebas de Python, más <!--cifra:pruebas_go-->98<!--/cifra--> de Go.
+ortografía del castellano, la consola y las <!--cifra:pruebas-->561<!--/cifra--> pruebas de Python, más <!--cifra:pruebas_go-->98<!--/cifra--> de Go.
 
 Cada fase cierra con una **pasada adversarial** antes de abrir la siguiente, y
 los defectos encontrados se escriben en `docs/BACKLOG.md` con su número y su

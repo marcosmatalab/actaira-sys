@@ -23,3 +23,17 @@ invariantes de este paquete, no aspiraciones:
   4. Nunca actuar sobre lo observado. Se sugiere la remediacion; no se aplica.
 """
 __version__ = "0.15.0"
+
+
+# SI EL PAQUETE ESTA PUBLICADO EN PyPI, Y UNA SOLA VEZ
+#
+# El README, la portada y la plantilla de integracion continua decian las tres
+# `pip install actaira-motor`, y ese paquete NO existe en PyPI todavia: la
+# primera orden que lee quien llega al repositorio fallaba con un 404. Es el
+# peor sitio posible para una instruccion que no funciona, porque no hay
+# segunda oportunidad.
+#
+# Mientras esto sea False, la puerta de documentacion exige que las tres digan
+# la via que SI funciona hoy, que es instalar desde el repositorio. El dia que
+# se publique se pone a True y la misma puerta exige lo contrario.
+PUBLICADO_EN_PYPI = False

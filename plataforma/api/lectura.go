@@ -118,6 +118,44 @@ func (s *Servidor) anexo(w http.ResponseWriter, r *http.Request, c *cliente.Clie
 	s.correr(w, r, c, "anexo", c.Trabajo(), args...)
 }
 
+// aplicabilidad: que obligaciones atan a este perfil, y cuales no.
+//
+// Es la primera pantalla de todo el producto y era la unica de las grandes que
+// no se podia pedir por HTTP. Sin ella, quien abre el panel tiene que lanzar un
+// `plan` -- que arranca el motor sobre el repositorio entero -- para contestar
+// una pregunta que no necesita leer ni un byte del codigo: la aplicabilidad
+// sale del PERFIL, no del arbol.
+//
+// Por eso es de LECTURA y no de observacion: no arranca nada sobre el
+// repositorio del cliente y no escribe evidencia.
+func (s *Servidor) aplicabilidad(w http.ResponseWriter, r *http.Request, c *cliente.Cliente) {
+	_, args, ok := s.leerPerfil(w, r)
+	if !ok {
+		return
+	}
+	// SIN ruta de trabajo: este verbo no toma repositorio. Pasarselo lo habria
+	// matado por argumento invalido, que es el defecto que ya tuvieron otras
+	// tres rutas de esta API.
+	args = append(args, "--idioma", idiomaDe(r))
+	s.correrSinRuta(w, r, c, "aplicabilidad", args...)
+}
+
+// comprobar: el control del articulo 50 sobre el codigo del cliente.
+//
+// Es el control insignia del producto -- el que lee bytes y decide -- y no se
+// podia pedir por HTTP: solo se veia dentro de un `plan`, mezclado con todo lo
+// demas. Quien quiere la respuesta de UN control sobre su repositorio tenia que
+// pedir el ciclo entero.
+//
+// Es de OBSERVACION: arranca un proceso que lee el repositorio completo.
+//
+// NO se le pasa el perfil. Este verbo no pregunta a quien ata nada; lee el
+// codigo y dice lo que ve. Darle `--rol` o `--alto-riesgo` habria sido pasarle
+// banderas que no tiene.
+func (s *Servidor) comprobar(w http.ResponseWriter, r *http.Request, c *cliente.Cliente) {
+	s.correr(w, r, c, "comprobar", c.Trabajo())
+}
+
 // revision: la carpeta de entrada de la revision por la direccion (ISO 9.3).
 func (s *Servidor) revision(w http.ResponseWriter, r *http.Request, c *cliente.Cliente) {
 	s.correrSinRuta(w, r, c, "revision",

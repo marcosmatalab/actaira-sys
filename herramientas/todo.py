@@ -767,6 +767,63 @@ def fase_paquete(reg: list[str]) -> None:
                    f"instala en entorno virgen y responde fuera del arbol")
 
 
+# Los ficheros que le dicen a alguien como instalar esto. Si aparece uno
+# nuevo, se anade aqui: la lista corta es el precio de que la puerta sea
+# exacta en vez de aproximada.
+DONDE_SE_INSTRUYE_INSTALAR = (
+    "README.md",
+    "integraciones/README.md",
+    "integraciones/github/actaira.yml",
+    "docs/ARQUITECTURA.md",
+    "sitio/textos.json",
+)
+
+
+def fase_instalacion(reg: list[str]) -> None:
+    """Que lo que se manda instalar EXISTA.
+
+    El README, la portada y la plantilla de integracion continua decian las
+    tres `pip install actaira-motor`. Ese paquete no esta publicado en PyPI, y
+    no lo estaba cuando se escribieron: la PRIMERA orden que lee quien llega al
+    repositorio fallaba con un 404. No es un defecto del producto -- el
+    producto instala y corre perfectamente -- es un defecto de lo que el
+    producto dice de si mismo, y en la primera linea.
+
+    No se comprueba contra la red a proposito. Una puerta que pregunta a PyPI
+    se pone roja el dia que PyPI este caido, y entonces se aprende a ignorarla.
+    Lo que se comprueba es que los documentos y la casa digan LO MISMO: hay una
+    sola declaracion, `PUBLICADO_EN_PYPI`, y los documentos tienen que seguirla.
+    """
+    sys.path.insert(0, str(MOTOR_SRC))
+    from actaira_motor import PUBLICADO_EN_PYPI
+
+    desde_pypi = "pip install actaira-motor"
+    desde_repo = "pip install git+https://github.com/marcosmatalab/actaira-sys"
+
+    malos = []
+    for rel in DONDE_SE_INSTRUYE_INSTALAR:
+        fichero = RAIZ / rel
+        _afirma(fichero.exists(), f"{rel} no existe y esta en la lista")
+        for numero, linea in enumerate(fichero.read_text(encoding="utf-8").splitlines(), 1):
+            pelada = linea.strip().lstrip("#").lstrip(">").strip()
+            # Un comentario o una nota PUEDEN nombrar la via que no vale: es
+            # justo donde se explica por que no vale. Lo que no puede es ser
+            # una instruccion.
+            if pelada.startswith("//") or linea.lstrip().startswith(("#", ">", "|")):
+                continue
+            if not PUBLICADO_EN_PYPI and desde_pypi in linea and desde_repo not in linea:
+                malos.append(f"{rel}:{numero} manda instalar de PyPI y ahi no hay nada: "
+                             f"{linea.strip()[:80]}")
+            if PUBLICADO_EN_PYPI and desde_repo in linea:
+                malos.append(f"{rel}:{numero} sigue instalando del repositorio con el "
+                             f"paquete ya publicado: {linea.strip()[:80]}")
+
+    _afirma(not malos, "instalacion:\n  " + "\n  ".join(malos))
+    donde = "PyPI" if PUBLICADO_EN_PYPI else "el repositorio"
+    reg.append(f"lo que se manda instalar sale de {donde}, y los "
+               f"{len(DONDE_SE_INSTRUYE_INSTALAR)} documentos que lo dicen coinciden")
+
+
 def fase_documentacion(reg: list[str]) -> None:
     """Que lo que los documentos AFIRMAN sobre el arbol siga siendo lo que hay.
 
@@ -791,6 +848,10 @@ def fase_documentacion(reg: list[str]) -> None:
     flujo = (RAIZ / "integraciones" / "github" / "actaira.yml").read_text(encoding="utf-8")
     import re as _re
     clavadas = set(_re.findall(r'ACTAIRA_VERSION:\s*"([^"]+)"', flujo))
+    # La plantilla clava una ETIQUETA de git (`v0.15.0`) mientras no haya
+    # paquete publicado, y el paquete se llama `0.15.0`. Misma version, dos
+    # convenciones. Ver el mismo comentario en `test_documentacion.py`.
+    clavadas = {v[1:] if v.startswith("v") else v for v in clavadas}
     _afirma(clavadas == {__version__},
             f"la plantilla de integracion continua instala {sorted(clavadas)} y el "
             f"paquete es {__version__}: un cliente que la copie correria otra version")
@@ -1301,6 +1362,7 @@ FASES: dict[str, Callable[[list[str]], None]] = {
     "identidad": fase_identidad,
     "identidad_real": fase_identidad_real,
     "matriz": fase_matriz,
+    "instalacion": fase_instalacion,
     "documentacion": fase_documentacion,
 }
 

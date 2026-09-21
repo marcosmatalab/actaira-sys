@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="it">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Actaira</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<style>
+:root{
+  --marca:#90099C; --marca-medio:#54055B; --marca-tinta:#0E000F;
+  --ground:#FAF7FB; --surface:#FFFFFF; --surface-2:#F3EDF4;
+  --ink:#150116; --ink-soft:#574A5A; --muted:#8B7E8D;
+  --line:#E6DCE8; --line-soft:#F0E8F1;
+  --ok:#1F5560; --ok-soft:#E4F0F1;
+  --alerta:#8A5A07; --alerta-soft:#FBF0DC;
+  --sans:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E000F; --surface:#190A1B; --surface-2:#211026;
+  --ink:#F4EAF5; --ink-soft:#B6A6B9; --muted:#877789;
+  --line:#301A34; --line-soft:#26142A;
+  --marca:#D06BDB; --ok:#63C2CE; --ok-soft:#0D2A2E;
+  --alerta:#E3B551; --alerta-soft:#2E2209;
+}}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1060px;margin:0 auto;padding-inline:22px}
+a{color:inherit}h1,h2,h3{text-wrap:balance;margin:0}p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+
+header{border-bottom:1px solid var(--line);background:var(--surface);position:sticky;top:0;z-index:5}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px;flex-wrap:wrap}
+.mark{font-family:var(--mono);font-weight:500;letter-spacing:.26em;font-size:13px}
+.bar nav{display:flex;gap:18px;flex-wrap:wrap}
+.bar nav a{font-size:13px;color:var(--ink-soft);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px}
+.bar nav a:hover{color:var(--ink);border-bottom-color:var(--marca)}
+
+.hero{padding-block:76px 58px;border-bottom:1px solid var(--line)}
+.hero h1{font-family:var(--serif);font-weight:400;letter-spacing:-.015em;font-size:clamp(34px,6vw,62px);line-height:1.06;max-width:19ch}
+.hero h1 em{font-style:normal;color:var(--marca)}
+.lede{margin-top:24px;max-width:64ch;font-size:clamp(16px,2.2vw,19px);color:var(--ink-soft)}
+.cta{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-size:14px;font-weight:600;padding:12px 20px;border:1px solid var(--marca);background:var(--marca);color:#fff;border-radius:8px}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn:hover{opacity:.88}
+.btn:focus-visible,a:focus-visible{outline:2px solid var(--marca);outline-offset:3px}
+.facts{display:flex;gap:30px;margin-top:46px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.facts b{display:block;font-family:var(--sans);font-size:23px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.2}
+
+section{padding-block:62px;border-bottom:1px solid var(--line)}
+.head{max-width:68ch;margin-bottom:36px}
+.head h2{font-family:var(--serif);font-weight:400;font-size:clamp(25px,3.6vw,35px);line-height:1.18;margin-top:10px}
+.head p{margin-top:14px;color:var(--ink-soft)}
+
+.claims{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+@media(min-width:760px){.claims{grid-template-columns:repeat(2,1fr)}}
+.claim{background:var(--surface);padding:24px}
+.claim h3{font-size:15.5px;font-weight:600;margin-bottom:7px}
+.claim p{font-size:14px;color:var(--ink-soft)}
+.claim .no{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--marca);text-transform:uppercase}
+.claim code{font-family:var(--mono);font-size:12.5px;background:var(--surface-2);padding:1px 5px;border-radius:4px}
+
+.cod{background:var(--marca-tinta);color:#EFE3F0;border-radius:12px;padding:22px 24px;overflow-x:auto;font-family:var(--mono);font-size:13px;line-height:1.85}
+.cod .c{color:#A88FAC}
+.cod .k{color:#E5A8ED}
+
+.dos{display:grid;gap:26px}
+@media(min-width:840px){.dos{grid-template-columns:1fr 1fr;align-items:start}}
+.concl{font-family:var(--serif);font-size:clamp(20px,3vw,27px);line-height:1.32;margin-bottom:16px}
+.dos p{color:var(--ink-soft);font-size:15px;margin-top:12px}
+.dos .concl{color:var(--ink);font-size:clamp(20px,3vw,27px);margin-top:0}
+
+.barras{border:1px solid var(--line);background:var(--surface);padding:24px;border-radius:12px}
+.row{margin-bottom:22px}.row:last-child{margin-bottom:0}
+.row .lab{display:flex;justify-content:space-between;align-items:baseline;font-size:13.5px;margin-bottom:8px;gap:12px}
+.row .lab b{font-family:var(--mono);font-weight:500;font-variant-numeric:tabular-nums}
+.track{height:16px;background:var(--surface-2);border-radius:3px;overflow:hidden}
+.fill{height:100%;display:block}
+.fill.muro{background:var(--alerta);width:100%}
+.fill.sel{background:var(--marca);width:62.5%}
+.fill.nada{background:var(--muted);width:0}
+.note{font-size:13px;color:var(--muted);margin-top:18px;border-top:1px solid var(--line-soft);padding-top:14px}
+
+.tablewrap{overflow-x:auto;border:1px solid var(--line);background:var(--surface);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:700px;font-size:14px}
+thead th{text-align:left;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:400;padding:13px 16px;border-bottom:1px solid var(--line);white-space:nowrap}
+tbody td{padding:15px 16px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+.art{font-family:var(--mono);font-weight:500;white-space:nowrap;font-size:13px}
+.art small{display:block;font-family:var(--sans);font-size:11px;color:var(--muted);letter-spacing:0;margin-top:3px;white-space:normal}
+td.q{color:var(--ink-soft);min-width:190px}
+.chip{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;white-space:nowrap;border:1px solid transparent;border-radius:4px}
+.chip.b{background:var(--ok-soft);color:var(--ok);border-color:var(--ok)}
+.chip.p{background:var(--alerta-soft);color:var(--alerta);border-color:var(--alerta)}
+.mod{font-family:var(--mono);font-size:11px;color:var(--muted);display:block;margin-top:7px}
+
+.niveles{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+@media(min-width:780px){.niveles{grid-template-columns:repeat(3,1fr)}}
+.nivel{background:var(--surface);padding:26px 24px}
+.nivel.destacado{background:var(--surface-2)}
+.nivel h3{font-size:18px;font-weight:700;margin-bottom:4px}
+.nivel .precio{font-family:var(--mono);font-size:12px;color:var(--marca);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.nivel ul{margin:0;padding-left:18px;font-size:14px;color:var(--ink-soft)}
+.nivel li{margin-bottom:7px}
+
+.out{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+@media(min-width:680px){.out{grid-template-columns:repeat(2,1fr)}}
+.out div{background:var(--surface);padding:20px}
+.out h3{margin:0 0 6px;font-size:14.5px;font-weight:600}
+.out p{font-size:13.5px;color:var(--ink-soft)}
+
+footer{padding-block:46px;font-size:13px;color:var(--muted)}
+.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.foot a{color:var(--ink-soft)}
+.caveat{max-width:72ch;margin-top:24px;padding-top:18px;border-top:1px solid var(--line-soft);font-size:12.5px;line-height:1.7}
+nav.idiomas{display:flex;gap:2px;align-items:center;margin-left:14px;
+  border:1px solid var(--line);border-radius:999px;padding:2px;background:var(--surface)}
+nav.idiomas a{padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:500;
+  letter-spacing:.05em;color:var(--muted);text-decoration:none;line-height:1.6}
+nav.idiomas a:hover{color:var(--marca)}
+nav.idiomas a[aria-current="page"]{background:var(--marca);color:#fff}
+@media(max-width:860px){nav.idiomas{margin-left:auto}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<header><div class="wrap bar">
+  <span class="mark">ACTAIRA</span>
+  <nav>
+    <a href="#como">Come funziona</a>
+    <a href="#resta">La sottrazione</a>
+    <a href="#vigilancia">La sorveglianza</a>
+    <a href="#alcance">Ambito</a>
+    <a href="#niveles">Piani</a>
+  </nav>
+  <!-- EL CONMUTADOR DE IDIOMA: SEIS ENLACES, NO UN BOTON DE JAVASCRIPT.
+       Cada idioma es una pagina de verdad, con su propio `lang` y su propia
+       direccion. Un conmutador que reescribe el texto en el navegador da una
+       pagina que no se puede enviar por correo, que los buscadores indexan en
+       un solo idioma, y que un lector de pantalla pronuncia con el idioma
+       equivocado hasta que alguien pulsa algo. Seis enlaces funcionan sin
+       JavaScript, se pueden abrir en otra pestana y se pueden marcar.
+       `aria-current="page"` es lo que dice cual estas leyendo a quien no lo
+       ve por el color. -->
+  <nav class="idiomas" aria-label="Lingua"><a href="../" hreflang="es" lang="es" title="Español">ES</a><a href="../en/" hreflang="en" lang="en" title="English">EN</a><a href="../fr/" hreflang="fr" lang="fr" title="Français">FR</a><a href="../pt/" hreflang="pt" lang="pt" title="Português">PT</a><a href="./" hreflang="it" lang="it" aria-current="page" title="Italiano">IT</a><a href="../de/" hreflang="de" lang="de" title="Deutsch">DE</a></nav>
+</div></header>
+
+<main>
+<div class="wrap hero">
+  <p class="eyebrow">Regolamento (UE) 2024/1689 · ISO/IEC 42001:2023 · Apache-2.0</p>
+  <h1>Il tuo consulente ti dice quale articolo ti si applica. Questo ti dice <em>quale riga cambiare</em>.</h1>
+  <p class="lede">
+    Actaira legge il tuo repository, decide ciò che si può decidere leggendo byte, e dice ad alta voce ciò che non può decidere. Genera l'Allegato IV con la provenienza di ogni sezione, la dichiarazione di applicabilità della ISO 42001 derivata dal tuo profilo, e una prova che scade da sola quando cambia ciò su cui è stata raccolta.
+  </p>
+  <div class="cta">
+    <a class="btn" href="#niveles">Inizia gratis</a>
+    <a class="btn ghost" href="#como">Come funziona</a>
+  </div>
+  <div class="facts">
+    <div><b>48</b>obblighi del Regolamento</div>
+    <div><b>38+32</b>controlli e clausole ISO</div>
+    <div><b>68</b>regole di codice</div>
+    <div><b>561</b>test</div>
+    <div><b>1</b>dipendenza a runtime</div>
+    <div><b>0</b>telemetria</div>
+  </div>
+</div>
+
+<section class="wrap" id="como">
+  <div class="head">
+    <p class="eyebrow">Cinque comandi</p>
+    <h2>Si installa, gira, e non carica il tuo codice da nessuna parte</h2>
+    <p>
+      Il motore è aperto e gira sulla tua macchina o nella tua integrazione continua. I rilievi escono in SARIF: nella scheda Security di GitHub e dentro la revisione della pull request, con la remediation scritta accanto, il giorno stesso in cui la riga è stata scritta.
+    </p>
+  </div>
+  <div class="cod">
+<span class="c"># il motore, Apache-2.0</span>
+pip install git+https://github.com/marcosmatalab/actaira-sys
+
+actaira <span class="k">plan</span> .       <span class="c"># cosa ti vincola, cosa è stato verificato e cosa bisogna chiederti</span>
+actaira <span class="k">preguntar</span> .  <span class="c"># le domande a cui il tuo codice NON risponde</span>
+actaira <span class="k">anexo</span> .      <span class="c"># l'Allegato IV, con provenienza per sezione</span>
+actaira <span class="k">soa</span> .        <span class="c"># la dichiarazione di applicabilità della ISO 42001</span>
+actaira <span class="k">vigilar</span> .    <span class="c"># cosa è scaduto, cosa è cambiato e cosa bisogna riguardare</span>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="head">
+    <p class="eyebrow">La dottrina</p>
+    <h2>Quattro cose che Actaira non fa, e la ragione per cui esiste</h2>
+    <p>
+      Uno strumento di compliance che ha opinioni non serve come prova. Questi quattro rifiuti sono invarianti del codice, non promesse di una pagina: ognuno ha un cancello che fallisce se viene rotto.
+    </p>
+  </div>
+  <div class="claims">
+    <div class="claim">
+      <p class="no">Rifiuto 1</p><h3>Mai un numero</h3>
+      <p>Un «87 % di conformità» non esiste e non verrà emesso. Quello che si pubblica sono conteggi di obblighi, mai proporzioni. C'è un test che percorre ogni documento generato e fallisce se compare una percentuale.</p>
+    </div>
+    <div class="claim">
+      <p class="no">Rifiuto 2</p><h3>Mai giudicare, solo citare</h3>
+      <p>Vedere <code>verify_signature</code> nel codice è vedere uno schema, non sapere che esiste una misura adottata. Ogni rilievo pubblica la regola, la sua versione, il suo pacchetto e il suo autore. L'interpretazione la firma una persona.</p>
+    </div>
+    <div class="claim">
+      <p class="no">Rifiuto 3</p><h3>Mai dedurre ciò che non è stato osservato</h3>
+      <p>Un <code>INDETERMINADO</code> senza motivo scritto è un <code>NO_CUMPLE</code> travestito, e il modello dei dati lo vieta: un risultato indeterminato senza causa nominata salta in costruzione.</p>
+    </div>
+    <div class="claim">
+      <p class="no">Rifiuto 4</p><h3>Mai agire su ciò che è stato osservato</h3>
+      <p>Actaira dice cosa bisogna riguardare. Se questo blocca un rilascio lo decidi tu, nel tuo file di integrazione continua, dove la decisione viene riletta. Il modello porta quel cancello commentato, e c'è un test che verifica che resti commentato.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="resta">
+  <div class="head">
+    <p class="eyebrow">Il questionario</p>
+    <h2>Una società di consulenza apre con trecento domande perché non ha guardato il tuo codice</h2>
+  </div>
+  <div class="dos">
+    <div>
+      <p class="concl">Ogni domanda chiude i due framework insieme, e sparisce non appena un controllo legge i byte che le rispondono.</p>
+      <p>
+        «Chi risponde del fatto che il sistema di gestione sia conforme, e chi riferisce le sue prestazioni alla direzione?» chiude l'articolo 16, il 17, la clausola 5.3 e il controllo A.3.2 della ISO 42001. Rispondi una volta sola.
+      </p>
+      <p>
+        E la sottrazione si pubblica con gli identificatori dei controlli che l'hanno prodotta, perché sia verificabile: un numero che dice «ti abbiamo risparmiato otto domande» senza l'elenco dietro è pubblicità.
+      </p>
+      <p>
+        Quello che non si eredita è la conclusione. Che una verifica del Regolamento esca pulita
+        <strong>non</strong> chiude il controllo dell'Allegato A: la norma chiede cose che l'articolo non chiede, e il piano lo dice a ogni riga.
+      </p>
+    </div>
+    <div class="barras">
+      <div class="row">
+        <div class="lab"><span>Domande della banca</span><b>90</b></div>
+        <div class="track"><span class="fill muro"></span></div>
+      </div>
+      <div class="row">
+        <div class="lab"><span>Che servono i due framework insieme</span><b>38</b></div>
+        <div class="track"><span class="fill sel" style="width:23%"></span></div>
+      </div>
+      <div class="row">
+        <div class="lab"><span>A cui il tuo codice risponde da solo</span><b>8</b></div>
+        <div class="track"><span class="fill sel" style="width:14%"></span></div>
+      </div>
+      <p class="note">
+        Conteggi sul catalogo pubblicato, non stime. Le 32 clausole da 4 a 10 della ISO/IEC 42001 sono coperte: nessuna resta senza una domanda che la serva, e c'è un cancello che fallisce se qualcuna resta orfana.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="vigilancia">
+  <div class="head">
+    <p class="eyebrow">La sorveglianza</p>
+    <h2>Tutti dimostrano che il registro non è stato alterato. Nessuno, che la conclusione sia ancora vera</h2>
+  </div>
+  <div class="dos">
+    <div class="barras">
+      <div class="row">
+        <div class="lab"><span>Digest dell'intero repository</span><b>14 / 14 sostituite</b></div>
+        <div class="track"><span class="fill muro"></span></div>
+      </div>
+      <div class="row">
+        <div class="lab"><span>Actaira: digest del soggetto</span><b>1 / 14 sostituite</b></div>
+        <div class="track"><span class="fill sel" style="width:8.3%"></span></div>
+      </div>
+      <div class="row">
+        <div class="lab"><span>Scadenza per nome di controllo</span><b>0 / 14 sostituite</b></div>
+        <div class="track"><span class="fill nada"></span></div>
+      </div>
+      <p class="note">
+        Misurato sul repository di esempio, aggiungendo una riga a
+        <span style="font-family:var(--mono);font-size:12px">datos/README.md</span>. Riproducibile con <span style="font-family:var(--mono);font-size:12px">make fase8</span>. L'unico controllo sostituito è quello dell'articolo 10, che è l'unico a leggere quella scheda dati. Gli altri undici non la leggono, ed è per questo che valgono ancora.
+      </p>
+    </div>
+    <div>
+      <p class="concl">Una prova viene sostituita dal digest del soggetto su cui è stata raccolta, non dal nome di quel soggetto.</p>
+      <p>
+        Il digest dell'intero repository dipinge un muro rosso ogni volta che qualcuno corregge un refuso, e un muro rosso si impara a ignorarlo in due settimane. La scadenza per nome non sostituisce mai niente: è un timer con un altro nome.
+      </p>
+      <p>
+        Da lì esce anche l'argomento del costo. Sondare N repository ogni minuto sono N × 1440 esecuzioni al giorno. Reagire a un push più una scadenza è dell'ordine delle volte che fai commit, più una.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="alcance">
+  <div class="head">
+    <p class="eyebrow">Ambito tecnico</p>
+    <h2>Gli articoli che si verificano leggendo codice, e a che punto sono</h2>
+    <p>
+      Se una riga dice costruito, c'è un comando dietro e i suoi test. Gli obblighi di livello organizzativo e quelli di giudizio non escono qui: escono nel questionario, che è dove gli tocca.
+    </p>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Articolo</th><th>Cosa verifica leggendo byte</th><th>Stato</th></tr></thead>
+    <tbody>
+      <tr><td class="art">Art. 9<small>Gestione dei rischi</small></td>
+        <td class="q">Che il criterio di accettazione del rischio residuo sia scritto in un file versionato e legato a un cancello della pipeline, non in una slide.<span class="mod">ACT-09-UMBRAL · GATE · RESIDUAL</span></td>
+        <td><span class="chip b">Costruito</span></td></tr>
+      <tr><td class="art">Art. 10<small>Dati e governance</small></td>
+        <td class="q">Una scheda per dataset con origine e digest, partizioni dichiarate, esame dei bias per gruppo, e trattamento delle categorie particolari.<span class="mod">ACT-10-FICHA · PARTICIONES · SESGO · SENSIBLES</span></td>
+        <td><span class="chip b">Costruito</span></td></tr>
+      <tr><td class="art">Art. 11<small>Documentazione tecnica</small></td>
+        <td class="q">Che l'Allegato IV viva nel repository accanto a ciò che descrive, nomini la versione del sistema, valuti la sorveglianza umana e descriva il monitoraggio post-commercializzazione.<span class="mod">ACT-11-EXPEDIENTE · VERSION · SUPERVISION · VIGILANCIA</span></td>
+        <td><span class="chip b">Costruito</span></td></tr>
+      <tr><td class="art">Art. 12 e 19<small>Registrazioni e conservazione</small></td>
+        <td class="q">Che dove invochi il modello resti traccia sullo stesso percorso, con la versione del modello, e che il periodo di conservazione dichiarato non scenda sotto il minimo di sei mesi.<span class="mod">ACT-12-SIN-REGISTRO · VERSION · ACT-19-RETENCION</span></td>
+        <td><span class="chip b">Costruito</span></td></tr>
+      <tr><td class="art">Art. 13<small>Istruzioni per l'uso</small></td>
+        <td class="q">Le sei cose del paragrafo 3: identità e contatto, accuratezza con la sua metrica, sorveglianza umana descritta, vita utile. Un README di sviluppo non è questo.<span class="mod">ACT-13-INSTRUCCIONES · CONTACTO · EXACTITUD</span></td>
+        <td><span class="chip b">Costruito</span></td></tr>
+      <tr><td class="art">Art. 14<small>Sorveglianza umana</small></td>
+        <td class="q">Che nel codice esista un percorso di approvazione, di annullamento, di arresto e di revisione umana. Se la sorveglianza sia efficace non lo decide un programma: si chiede e si firma.<span class="mod">ACT-14-APROBACION · ANULAR · PARADA · REVISOR</span></td>
+        <td><span class="chip b">Costruito</span></td></tr>
+      <tr><td class="art">Art. 15<small>Accuratezza e cibersicurezza</small></td>
+        <td class="q">Che il dato di accuratezza dichiarato sia riprodotto da un harness eseguibile, che la pipeline lo verifichi, e che il modello sia fissato per digest.<span class="mod">ACT-15-EVALS · CI · INYECCION · DIGEST · CIFRA</span></td>
+        <td><span class="chip b">Costruito</span></td></tr>
+      <tr><td class="art">Art. 25<small>Catena del valore</small></td>
+        <td class="q">Se carichi il modello di un terzo e lo rietichetti come tuo, l'articolo 25 ti trasforma in fornitore, con tutto quello che si porta dietro.<span class="mod">ACT-25-REETIQUETADO · CAMBIO</span></td>
+        <td><span class="chip b">Costruito</span></td></tr>
+      <tr><td class="art">Art. 47<small>Dichiarazione UE</small></td>
+        <td class="q">Che esista, che si assuma la responsabilità esclusiva del punto 3 dell'Allegato V, e che non sia più marcata BORRADOR sul ramo principale.<span class="mod">ACT-47-DECLARACION · BORRADOR · RESPONSABILIDAD</span></td>
+        <td><span class="chip b">Costruito</span></td></tr>
+      <tr><td class="art">Art. 50<small>Trasparenza e marcatura</small></td>
+        <td class="q">Localizza i punti di generazione, verifica la marcatura e misura se sopravvive alla tua catena reale di pubblicazione. Motore proprio. In vigore dal 2 agosto 2026.<span class="mod">ACT-50-GEN-IMG · MARCA-AUSENTE · PIPE-BORRA</span></td>
+        <td><span class="chip b">Costruito</span></td></tr>
+      <tr><td class="art">Art. 72 e 73<small>Sorveglianza e incidenti</small></td>
+        <td class="q">Non che esista un piano: che il segnale che il piano dice di raccogliere esca davvero dal sistema, che ci sia una soglia legata a un allarme con un destinatario, e che il termine dell'articolo 73 sia cablato.<span class="mod">ACT-72-TELEMETRIA · DRIFT · UMBRAL · ACT-73-CANAL · PLAZO</span></td>
+        <td><span class="chip b">Costruito</span></td></tr>
+      <tr><td class="art">Allegati IV e V<small>I due documenti</small></td>
+        <td class="q">Le 23 sezioni dell'Allegato IV e gli 8 punti dell'Allegato V, ognuno dicendo se esce dal codice, da una persona, o se manca e perché. La dichiarazione si emette BORRADOR finché non la firmi.<span class="mod">actaira anexo · anexo --cual v</span></td>
+        <td><span class="chip b">Costruito</span></td></tr>
+      <tr><td class="art">Piattaforma<small>Multi-cliente e sorveglianza</small></td>
+        <td class="q">Identità OIDC con ruoli, isolamento per cliente, limiti per cliente e avvisi quando qualcosa scade senza che nessuno spinga niente. Il motore è lo stesso file che puoi leggere, in esecuzione come processo dietro l'API.<span class="mod">actaira-api · OIDC · RBAC · limiti</span></td>
+        <td><span class="chip p">Costruito</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="wrap" id="niveles">
+  <div class="head">
+    <p class="eyebrow">Come si paga</p>
+    <h2>Il motore è libero. Quello che si paga è non doverlo sorvegliare</h2>
+    <p>
+      La parte che verifica, genera e firma è pubblicata con licenza Apache-2.0 e funziona per intero sulla tua macchina, senza account e senza rete. Quello che costa è il magazzino di prove gestito, il questionario condiviso tra le persone che devono rispondere, e qualcuno che guardi quando qualcosa scade un martedì di agosto.
+    </p>
+  </div>
+  <div class="niveles">
+    <div class="nivel">
+      <h3>Motore</h3>
+      <p class="precio">Libero · Apache-2.0</p>
+      <ul>
+        <li>Tutti i verbi del motore, interi</li>
+        <li>Allegato IV, Allegato V e dichiarazione di applicabilità</li>
+        <li>SARIF per la scheda Security</li>
+        <li>Sigillo Merkle e firma Ed25519, verificabili senza rete</li>
+        <li>Senza telemetria, senza account, senza limite di repository</li>
+      </ul>
+    </div>
+    <div class="nivel destacado">
+      <h3>Piattaforma</h3>
+      <p class="precio">PMI e team</p>
+      <ul>
+        <li>Tutto quanto sopra, più:</li>
+        <li>Magazzino di prove gestito, con il suo storico</li>
+        <li>Il questionario ripartito per destinatario: direzione, responsabile IA, team tecnico</li>
+        <li>Avviso quando qualcosa scade senza che nessuno spinga niente</li>
+        <li>Fascicolo pronto da mostrare, in spagnolo e in inglese</li>
+      </ul>
+    </div>
+    <div class="nivel">
+      <h3>Enterprise</h3>
+      <p class="precio">Con supporto</p>
+      <ul>
+        <li>Tutto quanto sopra, più:</li>
+        <li>Identità dell'organizzazione e provisioning</li>
+        <li>Isolamento per cliente e residenza dei dati</li>
+        <li>Pacchetti di regole propri per il vostro settore</li>
+        <li>Accompagnamento durante l'audit, da chi ha scritto questo</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="head">
+    <p class="eyebrow">Onestà sull'ambito</p>
+    <h2>Quello che Actaira non fa</h2>
+  </div>
+  <div class="out">
+    <div><h3>Non emette nessuna percentuale di conformità</h3><p>Non esiste. Quello che si pubblica è cosa è stato verificato e cosa no, con conteggi di obblighi.</p></div>
+    <div><h3>Non dice che sei conforme</h3><p>Un obbligo lo adempie un'organizzazione, non un controllo. Dice cosa è stato verificato leggendo byte, con quale regola e di quale autore, e cosa resta fuori dall'ambito di quella verifica.</p></div>
+    <div><h3>Non chiude la ISO perché il Regolamento esce pulito</h3><p>Una corrispondenza dice che due testi parlano della stessa cosa, non che soddisfare l'uno soddisfi l'altro. La norma chiede cose che l'articolo non chiede.</p></div>
+    <div><h3>Non firma al posto tuo</h3><p>I punti 3 e 4 dell'Allegato V sono affermazioni del fornitore sotto la sua esclusiva responsabilità. Nessun programma può farle, e nessun flag toglie la parola BORRADOR.</p></div>
+  </div>
+</section>
+</main>
+
+<footer class="wrap">
+  <div class="foot">
+    <span>Actaira · Apache-2.0 · senza telemetria, senza account, funziona offline</span>
+    <span>actaira.com</span>
+  </div>
+  <p class="caveat">
+    Sulle scadenze, perché conviene dirlo qui e non in fondo in piccolo: gli obblighi dei sistemi ad alto rischio dell'Allegato III sono stati rinviati a dicembre 2027 e quelli dell'Allegato I ad agosto 2028. In Spagna il regime sanzionatorio vive nel disegno di legge organica per il buon uso e la governance dell'IA, ancora in discussione. Quello che è in vigore oggi sono i divieti dell'articolo 5, l'alfabetizzazione dell'articolo 4, gli obblighi dei modelli per finalità generali e la trasparenza dell'articolo 50, in vigore dal 2 agosto 2026. Actaira risolve quelle date per te e separa ciò che ti vincola oggi da ciò che ti vincolerà.
+  </p>
+</footer>

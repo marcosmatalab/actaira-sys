@@ -66,20 +66,27 @@ _MARCA = re.compile(r"<!--cifra:([a-z0-9_]+)-->(.*?)<!--/cifra-->", re.S)
 
 
 def _pruebas() -> int:
-    """Las funciones `test_` del arbol, contadas LEYENDO el codigo.
+    """Las funciones `test_` del arbol. UNA definicion, la de la portada.
 
-    Ni importa ni ejecuta, asi que sale igual en cualquier maquina: es la misma
-    decision que ya tomo la portada cuando un auditor externo, sin `jsonschema`,
-    recogio doce pruebas menos que esta casa y la cifra publicada cambio con el
-    entorno de quien la media.
+    Aqui habia una segunda implementacion de este mismo recuento, y las dos
+    discrepaban: esta usaba `rglob` y la de `sitio/cifras.py` usa `glob`, asi
+    que esta contaba 562 donde aquella contaba 561. Dos cifras con el mismo
+    nombre en el mismo producto, y publicadas las dos.
+
+    Y la que estaba mal era esta. El fichero de mas es
+    `motor/tests/fixtures/clasificador-candidatos/evals/test_exactitud.py`, que
+    NO es una prueba del producto: es una prueba que vive dentro del
+    repositorio de EJEMPLO, el que el producto analiza como sujeto. Contarla
+    hinchaba la cifra del README con una prueba de mentira, que es peor que
+    quedarse corto: la cifra existe para que alguien se fie de ella.
+
+    Asi que no se arregla copiando el `glob` bueno aqui -- eso dejaria dos
+    definiciones de acuerdo por ahora --, se arregla llamando a la unica que
+    hay. Es la regla 10 de la casa: dos copias no se suman, se anulan.
     """
-    n = 0
-    for py in sorted((RAIZ / "motor" / "tests").rglob("test_*.py")):
-        arbol = ast.parse(py.read_text(encoding="utf-8"))
-        n += sum(1 for x in ast.walk(arbol)
-                 if isinstance(x, (ast.FunctionDef, ast.AsyncFunctionDef))
-                 and x.name.startswith("test_"))
-    return n
+    sys.path.insert(0, str(RAIZ / "sitio"))
+    from cifras import pruebas
+    return pruebas(RAIZ)
 
 
 def _pruebas_go() -> int:

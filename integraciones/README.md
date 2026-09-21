@@ -5,7 +5,7 @@ Tres maneras, de menos a más compromiso.
 ## 1. A mano, en tu máquina
 
 ```bash
-pip install actaira-motor
+pip install git+https://github.com/marcosmatalab/actaira-sys
 actaira plan .  --rol proveedor --alto-riesgo si
 actaira anexo . --rol proveedor --alto-riesgo si            # el Anexo IV
 actaira soa .   --rol proveedor --alto-riesgo si            # la declaración de aplicabilidad

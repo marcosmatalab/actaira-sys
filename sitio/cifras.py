@@ -77,7 +77,18 @@ def invalidacion_selectiva(raiz: Path) -> tuple[int, int]:
     return rec.get("superada", 0), rec.get("superada", 0) + rec.get("valida", 0)
 
 
-def de(raiz: str | Path) -> dict[str, str]:
+# La unica palabra que viaja DENTRO de una cifra, y por eso vive aqui.
+#
+# Las barras dicen «14 / 14 superados». El numero sale del arbol y la palabra
+# no, asi que la portada inglesa decia «superados» en medio de una frase en
+# ingles. Se resuelve dando idioma a quien calcula la cifra, y no parcheando la
+# palabra despues: parchear una palabra dentro de un valor ya calculado es
+# inventarse una segunda fuente para lo mismo.
+SUPERADOS = {"es": "superados", "en": "superseded", "fr": "remplacées",
+             "pt": "substituídas", "it": "sostituite", "de": "ersetzt"}
+
+
+def de(raiz: str | Path, idioma: str = "es") -> dict[str, str]:
     """Todas las cifras de la portada, con la etiqueta con la que se publican."""
     import sys
     raiz = Path(raiz)
@@ -99,11 +110,11 @@ def de(raiz: str | Path) -> dict[str, str]:
         "Que sirven a los dos marcos a la vez": str(cruzadas),
         "Que tu código contesta solo": str(len([q for q in cat.preguntas.values()
                                                 if q.salta_si_cubre])),
-        **_barras(raiz),
+        **_barras(raiz, idioma),
     }
 
 
-def _barras(raiz: Path) -> dict[str, str]:
+def _barras(raiz: Path, idioma: str = "es") -> dict[str, str]:
     """Las tres barras de la comparacion, derivadas de UNA medida.
 
     La de en medio se mide; las otras dos son lo que darian las dos maneras que
@@ -114,9 +125,9 @@ def _barras(raiz: Path) -> dict[str, str]:
     """
     superadas, total = invalidacion_selectiva(raiz)
     return {
-        "Digest del repositorio entero": f"{total} / {total} superados",
-        "Actaira: digest del sujeto": f"{superadas} / {total} superados",
-        "Caducidad por nombre de control": f"0 / {total} superados",
+        "Digest del repositorio entero": f"{total} / {total} {SUPERADOS[idioma]}",
+        "Actaira: digest del sujeto": f"{superadas} / {total} {SUPERADOS[idioma]}",
+        "Caducidad por nombre de control": f"0 / {total} {SUPERADOS[idioma]}",
     }
 
 

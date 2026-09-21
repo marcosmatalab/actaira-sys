@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "actaira/control/v1",
+  "title": "El resultado de un control leido sobre el codigo",
+  "description": {
+    "es": "Lo que un control concluyo MIRANDO BYTES, con lo que cubre y lo que no. `resultado` no es una nota: `no_aplica` dice que ninguna regla del paquete tenia sobre que morder, e `indeterminado` dice que no se pudo decidir Y POR QUE, en `motivo_indeterminado`. Los dos son respuestas distintas de `sin_hallazgos`, y confundirlos es la forma mas facil de publicar un cumplimiento que nadie comprobo.",
+    "en": "What a control concluded BY READING BYTES, with what it covers and what it does not. `resultado` is not a grade: `no_aplica` says no rule in the pack had anything to bite on, and `indeterminado` says it could not be decided AND WHY, in `motivo_indeterminado`. Both differ from `sin_hallazgos`, and conflating them is the easiest way to publish compliance nobody checked."
+  },
+  "type": "object",
+  "required": [
+    "esquema",
+    "control_id",
+    "obligacion_id",
+    "resultado",
+    "cubre",
+    "no_cubre",
+    "inspeccionado",
+    "hallazgos"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "esquema": {
+      "const": "actaira/control/v1"
+    },
+    "control_id": {
+      "type": "string",
+      "description": "el control que corrio"
+    },
+    "obligacion_id": {
+      "type": "string",
+      "description": "la obligacion del Reglamento que intenta cerrar"
+    },
+    "resultado": {
+      "enum": [
+        "sin_hallazgos",
+        "con_hallazgos",
+        "indeterminado",
+        "no_aplica",
+        "error"
+      ],
+      "description": {
+        "es": "Cinco estados y no dos. `indeterminado` («no pude decidir») y `no_aplica` («no habia sobre que morder») no son variantes de «esta bien».",
+        "en": "Five states, not two. `indeterminado` (\\u00abcould not decide\\u00bb) and `no_aplica` (\\u00abnothing to bite on\\u00bb) are not flavours of \\u00abit is fine\\u00bb."
+      }
+    },
+    "cubre": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "lo que esta comprobacion SI alcanza"
+    },
+    "no_cubre": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "la frontera, escrita. Un control que no publica lo que deja fuera invita a leerlo como si lo cubriera todo"
+    },
+    "controles_cubiertos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "los controles de la norma que esta lectura cierra, si alguno"
+    },
+    "inspeccionado": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "que se miro exactamente, fichero y linea. Es la procedencia: sin esto, el resultado es una afirmacion sin lista detras"
+    },
+    "motivo_indeterminado": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "es": {
+          "type": "string"
+        },
+        "en": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "es",
+        "en"
+      ],
+      "description": "por que no se pudo decidir, en los dos idiomas. Un INDETERMINADO sin motivo escrito es un NO_CUMPLE disfrazado"
+    },
+    "hallazgos": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "description": "lo que aparecio, con su remediacion al lado"
+    }
+  }
+}

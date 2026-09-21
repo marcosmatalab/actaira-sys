@@ -76,13 +76,19 @@ jobs:
       # entra una dependencia comprometida a un sitio donde hay un token.
       - name: Instalar Actaira
         env:
-          ACTAIRA_VERSION: "0.15.0"
+          # La versión va clavada a una ETIQUETA del repositorio. Todavía no
+          # hay paquete en PyPI: `pip install actaira-motor` fallaría con un
+          # 404, así que se instala de donde sí está. Una etiqueta de git se
+          # puede mover igual que una de PyPI, así que para cadena de
+          # suministro seria clava el commit en vez de la etiqueta.
+          ACTAIRA_VERSION: "v0.15.0"
         run: |
           python -m pip install --upgrade pip
-          pip install "actaira-motor==${ACTAIRA_VERSION}"
-          # Para cadena de suministro seria, sustituye la línea de arriba por
-          # un fichero de requisitos con hashes y:
-          #   pip install --require-hashes -r actaira-requirements.txt
+          pip install "git+https://github.com/marcosmatalab/actaira-sys@${{ env.ACTAIRA_VERSION }}"
+          # Cuando haya paquete publicado, esta línea pasa a ser:
+          #   pip install "actaira-motor==0.15.0"
+          # y para cadena de suministro seria, un fichero de requisitos con
+          # hashes y `pip install --require-hashes -r actaira-requirements.txt`
 
       # El perfil de tu sistema. Estas respuestas deciden qué obligaciones te
       # atan, así que viven en el repositorio y se revisan como código.
@@ -160,8 +166,8 @@ jobs:
 
       - name: Instalar Actaira
         env:
-          ACTAIRA_VERSION: "0.15.0"
-        run: pip install "actaira-motor==${ACTAIRA_VERSION}"
+          ACTAIRA_VERSION: "v0.15.0"
+        run: pip install "git+https://github.com/marcosmatalab/actaira-sys@${{ env.ACTAIRA_VERSION }}"
 
       # La cabeza que esta ejecución esperaba encontrar, traída de FUERA del
       # repositorio.

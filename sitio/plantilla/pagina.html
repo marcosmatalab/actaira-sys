@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="__LANG__">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>__T:t001_actaira__</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<style>
+:root{
+  --marca:#90099C; --marca-medio:#54055B; --marca-tinta:#0E000F;
+  --ground:#FAF7FB; --surface:#FFFFFF; --surface-2:#F3EDF4;
+  --ink:#150116; --ink-soft:#574A5A; --muted:#8B7E8D;
+  --line:#E6DCE8; --line-soft:#F0E8F1;
+  --ok:#1F5560; --ok-soft:#E4F0F1;
+  --alerta:#8A5A07; --alerta-soft:#FBF0DC;
+  --sans:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0E000F; --surface:#190A1B; --surface-2:#211026;
+  --ink:#F4EAF5; --ink-soft:#B6A6B9; --muted:#877789;
+  --line:#301A34; --line-soft:#26142A;
+  --marca:#D06BDB; --ok:#63C2CE; --ok-soft:#0D2A2E;
+  --alerta:#E3B551; --alerta-soft:#2E2209;
+}}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1060px;margin:0 auto;padding-inline:22px}
+a{color:inherit}h1,h2,h3{text-wrap:balance;margin:0}p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+
+header{border-bottom:1px solid var(--line);background:var(--surface);position:sticky;top:0;z-index:5}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px;flex-wrap:wrap}
+.mark{font-family:var(--mono);font-weight:500;letter-spacing:.26em;font-size:13px}
+.bar nav{display:flex;gap:18px;flex-wrap:wrap}
+.bar nav a{font-size:13px;color:var(--ink-soft);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px}
+.bar nav a:hover{color:var(--ink);border-bottom-color:var(--marca)}
+
+.hero{padding-block:76px 58px;border-bottom:1px solid var(--line)}
+.hero h1{font-family:var(--serif);font-weight:400;letter-spacing:-.015em;font-size:clamp(34px,6vw,62px);line-height:1.06;max-width:19ch}
+.hero h1 em{font-style:normal;color:var(--marca)}
+.lede{margin-top:24px;max-width:64ch;font-size:clamp(16px,2.2vw,19px);color:var(--ink-soft)}
+.cta{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-size:14px;font-weight:600;padding:12px 20px;border:1px solid var(--marca);background:var(--marca);color:#fff;border-radius:8px}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn:hover{opacity:.88}
+.btn:focus-visible,a:focus-visible{outline:2px solid var(--marca);outline-offset:3px}
+.facts{display:flex;gap:30px;margin-top:46px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.facts b{display:block;font-family:var(--sans);font-size:23px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.2}
+
+section{padding-block:62px;border-bottom:1px solid var(--line)}
+.head{max-width:68ch;margin-bottom:36px}
+.head h2{font-family:var(--serif);font-weight:400;font-size:clamp(25px,3.6vw,35px);line-height:1.18;margin-top:10px}
+.head p{margin-top:14px;color:var(--ink-soft)}
+
+.claims{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+@media(min-width:760px){.claims{grid-template-columns:repeat(2,1fr)}}
+.claim{background:var(--surface);padding:24px}
+.claim h3{font-size:15.5px;font-weight:600;margin-bottom:7px}
+.claim p{font-size:14px;color:var(--ink-soft)}
+.claim .no{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--marca);text-transform:uppercase}
+.claim code{font-family:var(--mono);font-size:12.5px;background:var(--surface-2);padding:1px 5px;border-radius:4px}
+
+.cod{background:var(--marca-tinta);color:#EFE3F0;border-radius:12px;padding:22px 24px;overflow-x:auto;font-family:var(--mono);font-size:13px;line-height:1.85}
+.cod .c{color:#A88FAC}
+.cod .k{color:#E5A8ED}
+
+.dos{display:grid;gap:26px}
+@media(min-width:840px){.dos{grid-template-columns:1fr 1fr;align-items:start}}
+.concl{font-family:var(--serif);font-size:clamp(20px,3vw,27px);line-height:1.32;margin-bottom:16px}
+.dos p{color:var(--ink-soft);font-size:15px;margin-top:12px}
+.dos .concl{color:var(--ink);font-size:clamp(20px,3vw,27px);margin-top:0}
+
+.barras{border:1px solid var(--line);background:var(--surface);padding:24px;border-radius:12px}
+.row{margin-bottom:22px}.row:last-child{margin-bottom:0}
+.row .lab{display:flex;justify-content:space-between;align-items:baseline;font-size:13.5px;margin-bottom:8px;gap:12px}
+.row .lab b{font-family:var(--mono);font-weight:500;font-variant-numeric:tabular-nums}
+.track{height:16px;background:var(--surface-2);border-radius:3px;overflow:hidden}
+.fill{height:100%;display:block}
+.fill.muro{background:var(--alerta);width:100%}
+.fill.sel{background:var(--marca);width:62.5%}
+.fill.nada{background:var(--muted);width:0}
+.note{font-size:13px;color:var(--muted);margin-top:18px;border-top:1px solid var(--line-soft);padding-top:14px}
+
+.tablewrap{overflow-x:auto;border:1px solid var(--line);background:var(--surface);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:700px;font-size:14px}
+thead th{text-align:left;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:400;padding:13px 16px;border-bottom:1px solid var(--line);white-space:nowrap}
+tbody td{padding:15px 16px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+.art{font-family:var(--mono);font-weight:500;white-space:nowrap;font-size:13px}
+.art small{display:block;font-family:var(--sans);font-size:11px;color:var(--muted);letter-spacing:0;margin-top:3px;white-space:normal}
+td.q{color:var(--ink-soft);min-width:190px}
+.chip{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;white-space:nowrap;border:1px solid transparent;border-radius:4px}
+.chip.b{background:var(--ok-soft);color:var(--ok);border-color:var(--ok)}
+.chip.p{background:var(--alerta-soft);color:var(--alerta);border-color:var(--alerta)}
+.mod{font-family:var(--mono);font-size:11px;color:var(--muted);display:block;margin-top:7px}
+
+.niveles{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+@media(min-width:780px){.niveles{grid-template-columns:repeat(3,1fr)}}
+.nivel{background:var(--surface);padding:26px 24px}
+.nivel.destacado{background:var(--surface-2)}
+.nivel h3{font-size:18px;font-weight:700;margin-bottom:4px}
+.nivel .precio{font-family:var(--mono);font-size:12px;color:var(--marca);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.nivel ul{margin:0;padding-left:18px;font-size:14px;color:var(--ink-soft)}
+.nivel li{margin-bottom:7px}
+
+.out{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+@media(min-width:680px){.out{grid-template-columns:repeat(2,1fr)}}
+.out div{background:var(--surface);padding:20px}
+.out h3{margin:0 0 6px;font-size:14.5px;font-weight:600}
+.out p{font-size:13.5px;color:var(--ink-soft)}
+
+footer{padding-block:46px;font-size:13px;color:var(--muted)}
+.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.foot a{color:var(--ink-soft)}
+.caveat{max-width:72ch;margin-top:24px;padding-top:18px;border-top:1px solid var(--line-soft);font-size:12.5px;line-height:1.7}
+nav.idiomas{display:flex;gap:2px;align-items:center;margin-left:14px;
+  border:1px solid var(--line);border-radius:999px;padding:2px;background:var(--surface)}
+nav.idiomas a{padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:500;
+  letter-spacing:.05em;color:var(--muted);text-decoration:none;line-height:1.6}
+nav.idiomas a:hover{color:var(--marca)}
+nav.idiomas a[aria-current="page"]{background:var(--marca);color:#fff}
+@media(max-width:860px){nav.idiomas{margin-left:auto}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<header><div class="wrap bar">
+  <span class="mark">__T:t002_actaira__</span>
+  <nav>
+    <a href="#como">__T:t003_c_mo_funciona__</a>
+    <a href="#resta">__T:t004_la_resta__</a>
+    <a href="#vigilancia">__T:t005_la_vigilancia__</a>
+    <a href="#alcance">__T:t006_alcance__</a>
+    <a href="#niveles">__T:t007_niveles__</a>
+  </nav>
+  <!-- EL CONMUTADOR DE IDIOMA: SEIS ENLACES, NO UN BOTON DE JAVASCRIPT.
+       Cada idioma es una pagina de verdad, con su propio `lang` y su propia
+       direccion. Un conmutador que reescribe el texto en el navegador da una
+       pagina que no se puede enviar por correo, que los buscadores indexan en
+       un solo idioma, y que un lector de pantalla pronuncia con el idioma
+       equivocado hasta que alguien pulsa algo. Seis enlaces funcionan sin
+       JavaScript, se pueden abrir en otra pestana y se pueden marcar.
+       `aria-current="page"` es lo que dice cual estas leyendo a quien no lo
+       ve por el color. -->
+  <nav class="idiomas" aria-label="__T:l000_idioma__">__IDIOMAS__</nav>
+</div></header>
+
+<main>
+<div class="wrap hero">
+  <p class="eyebrow">__T:t008_reglamento_ue_2024_1689_iso__</p>
+  <h1>__T:t009_tu_consultor_te_dice_qu_art__ <em>__T:t010_qu_l_nea_cambiar__</em>.</h1>
+  <p class="lede">
+    __T:t011_actaira_lee_tu_repositorio_d__
+  </p>
+  <div class="cta">
+    <a class="btn" href="#niveles">__T:t012_empezar_gratis__</a>
+    <a class="btn ghost" href="#como">__T:t003_c_mo_funciona__</a>
+  </div>
+  <div class="facts">
+    <div><b>__C:obligaciones del Reglamento__</b>__T:c001_obligaciones_reglamento__</div>
+    <div><b>__C:controles y cláusulas ISO__</b>__T:c002_controles_clausulas_iso__</div>
+    <div><b>__C:reglas de código__</b>__T:c003_reglas_de_codigo__</div>
+    <div><b>__C:pruebas__</b>__T:c004_pruebas__</div>
+    <div><b>1</b>__T:c005_dependencia_en_ejecucion__</div>
+    <div><b>0</b>__T:c006_telemetria__</div>
+  </div>
+</div>
+
+<section class="wrap" id="como">
+  <div class="head">
+    <p class="eyebrow">__T:t013_cuatro_comandos__</p>
+    <h2>__T:t014_se_instala_se_corre_y_no_sub__</h2>
+    <p>
+      __T:t015_el_motor_es_abierto_y_corre__
+    </p>
+  </div>
+  <div class="cod">
+<span class="c">__T:t016_el_motor_apache_2_0__</span>
+__T:t017_pip_install_actaira_motor_ac__ <span class="k">__T:t018_plan__</span> .       <span class="c">__T:t019_qu_te_ata_qu_se_comprob_y_q__</span>
+__T:t020_actaira__ <span class="k">__T:t021_preguntar__</span> .  <span class="c">__T:t022_las_preguntas_que_tu_c_digo__</span>
+__T:t020_actaira__ <span class="k">__T:t023_anexo__</span> .      <span class="c">__T:t024_el_anexo_iv_con_procedencia__</span>
+__T:t020_actaira__ <span class="k">__T:t025_soa__</span> .        <span class="c">__T:t026_la_declaraci_n_de_aplicabil__</span>
+__T:t020_actaira__ <span class="k">__T:t027_vigilar__</span> .    <span class="c">__T:t028_qu_caduc_qu_cambi_y_qu_hay__</span>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="head">
+    <p class="eyebrow">__T:t029_la_doctrina__</p>
+    <h2>__T:t030_cuatro_cosas_que_actaira_no__</h2>
+    <p>
+      __T:t031_una_herramienta_de_cumplimie__
+    </p>
+  </div>
+  <div class="claims">
+    <div class="claim">
+      <p class="no">__T:t032_negativa_1__</p><h3>__T:t033_nunca_un_n_mero__</h3>
+      <p>__T:t034_no_existe_un_87_de_cumplimie__</p>
+    </div>
+    <div class="claim">
+      <p class="no">__T:t035_negativa_2__</p><h3>__T:t036_nunca_juzgar_solo_citar__</h3>
+      <p>__T:t037_ver__ <code>__T:t038_verify_signature__</code> __T:t039_en_el_c_digo_es_ver_un_patr__</p>
+    </div>
+    <div class="claim">
+      <p class="no">__T:t040_negativa_3__</p><h3>__T:t041_nunca_inferir_lo_no_observad__</h3>
+      <p>__T:t042_un__ <code>__T:t043_indeterminado__</code> __T:t044_sin_motivo_escrito_es_un__ <code>__T:t045_no_cumple__</code> __T:t046_disfrazado_y_el_modelo_de_da__</p>
+    </div>
+    <div class="claim">
+      <p class="no">__T:t047_negativa_4__</p><h3>__T:t048_nunca_actuar_sobre_lo_observ__</h3>
+      <p>__T:t049_actaira_dice_qu_hay_que_volv__</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="resta">
+  <div class="head">
+    <p class="eyebrow">__T:t050_el_cuestionario__</p>
+    <h2>__T:t051_una_consultora_abre_con_tres__</h2>
+  </div>
+  <div class="dos">
+    <div>
+      <p class="concl">__T:t052_cada_pregunta_cierra_los_dos__</p>
+      <p>
+        __T:t053_qui_n_responde_de_que_el_si__
+      </p>
+      <p>
+        __T:t054_y_la_resta_se_publica_con_lo__
+      </p>
+      <p>
+        __T:t055_lo_que_no_se_hereda_es_la_co__
+        <strong>__T:t056_no__</strong> __T:t057_cierra_el_control_del_anexo__
+      </p>
+    </div>
+    <div class="barras">
+      <div class="row">
+        <div class="lab"><span>__T:t058_preguntas_del_banco__</span><b>__C:Preguntas del banco__</b></div>
+        <div class="track"><span class="fill muro"></span></div>
+      </div>
+      <div class="row">
+        <div class="lab"><span>__T:t059_que_sirven_a_los_dos_marcos__</span><b>__C:Que sirven a los dos marcos a la vez__</b></div>
+        <div class="track"><span class="fill sel" style="width:23%"></span></div>
+      </div>
+      <div class="row">
+        <div class="lab"><span>__T:t060_que_tu_c_digo_contesta_solo__</span><b>__C:Que tu código contesta solo__</b></div>
+        <div class="track"><span class="fill sel" style="width:14%"></span></div>
+      </div>
+      <p class="note">
+        __T:t061_recuentos_sobre_el_cat_logo__
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="vigilancia">
+  <div class="head">
+    <p class="eyebrow">__T:t005_la_vigilancia__</p>
+    <h2>__T:t062_todos_demuestran_que_el_regi__</h2>
+  </div>
+  <div class="dos">
+    <div class="barras">
+      <div class="row">
+        <div class="lab"><span>__T:t063_digest_del_repositorio_enter__</span><b>__C:Digest del repositorio entero__</b></div>
+        <div class="track"><span class="fill muro"></span></div>
+      </div>
+      <div class="row">
+        <div class="lab"><span>__T:t064_actaira_digest_del_sujeto__</span><b>__C:Actaira: digest del sujeto__</b></div>
+        <div class="track"><span class="fill sel" style="width:8.3%"></span></div>
+      </div>
+      <div class="row">
+        <div class="lab"><span>__T:t065_caducidad_por_nombre_de_cont__</span><b>__C:Caducidad por nombre de control__</b></div>
+        <div class="track"><span class="fill nada"></span></div>
+      </div>
+      <p class="note">
+        __T:t066_medido_sobre_el_repositorio__
+        <span style="font-family:var(--mono);font-size:12px">__T:t067_datos_readme_md__</span>__T:t068_reproducible_con__ <span style="font-family:var(--mono);font-size:12px">__T:t069_make_fase8__</span>__T:t070_el_nico_control_superado_es__
+      </p>
+    </div>
+    <div>
+      <p class="concl">__T:t071_a_una_evidencia_la_supera_el__</p>
+      <p>
+        __T:t072_el_digest_del_repositorio_en__
+      </p>
+      <p>
+        __T:t073_de_ah_sale_tambi_n_el_argume__
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="alcance">
+  <div class="head">
+    <p class="eyebrow">__T:t074_alcance_t_cnico__</p>
+    <h2>__T:t075_los_art_culos_que_se_comprue__</h2>
+    <p>
+      __T:t076_si_una_fila_pone_construido__
+    </p>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>__T:t077_art_culo__</th><th>__T:t078_qu_comprueba_leyendo_bytes__</th><th>__T:t079_estado__</th></tr></thead>
+    <tbody>
+      <tr><td class="art">__T:t080_art_9__<small>__T:t081_gesti_n_de_riesgos__</small></td>
+        <td class="q">__T:t082_que_el_criterio_de_aceptaci__<span class="mod">__T:t083_act_09_umbral_gate_residual__</span></td>
+        <td><span class="chip b">__T:t084_construido__</span></td></tr>
+      <tr><td class="art">__T:t085_art_10__<small>__T:t086_datos_y_gobernanza__</small></td>
+        <td class="q">__T:t087_ficha_por_conjunto_con_orige__<span class="mod">__T:t088_act_10_ficha_particiones_ses__</span></td>
+        <td><span class="chip b">__T:t084_construido__</span></td></tr>
+      <tr><td class="art">__T:t089_art_11__<small>__T:t090_documentaci_n_t_cnica__</small></td>
+        <td class="q">__T:t091_que_el_anexo_iv_viva_en_el_r__<span class="mod">__T:t092_act_11_expediente_version_su__</span></td>
+        <td><span class="chip b">__T:t084_construido__</span></td></tr>
+      <tr><td class="art">__T:t093_art_12_y_19__<small>__T:t094_registros_y_conservaci_n__</small></td>
+        <td class="q">__T:t095_que_donde_invocas_el_modelo__<span class="mod">__T:t096_act_12_sin_registro_version__</span></td>
+        <td><span class="chip b">__T:t084_construido__</span></td></tr>
+      <tr><td class="art">__T:t097_art_13__<small>__T:t098_instrucciones_de_uso__</small></td>
+        <td class="q">__T:t099_las_seis_cosas_del_apartado__<span class="mod">__T:t100_act_13_instrucciones_contact__</span></td>
+        <td><span class="chip b">__T:t084_construido__</span></td></tr>
+      <tr><td class="art">__T:t101_art_14__<small>__T:t102_supervisi_n_humana__</small></td>
+        <td class="q">__T:t103_que_exista_ruta_de_aprobaci__<span class="mod">__T:t104_act_14_aprobacion_anular_par__</span></td>
+        <td><span class="chip b">__T:t084_construido__</span></td></tr>
+      <tr><td class="art">__T:t105_art_15__<small>__T:t106_exactitud_y_ciberseguridad__</small></td>
+        <td class="q">__T:t107_que_la_cifra_de_exactitud_de__<span class="mod">__T:t108_act_15_evals_ci_inyeccion_di__</span></td>
+        <td><span class="chip b">__T:t084_construido__</span></td></tr>
+      <tr><td class="art">__T:t109_art_25__<small>__T:t110_cadena_de_valor__</small></td>
+        <td class="q">__T:t111_si_cargas_un_modelo_de_un_te__<span class="mod">__T:t112_act_25_reetiquetado_cambio__</span></td>
+        <td><span class="chip b">__T:t084_construido__</span></td></tr>
+      <tr><td class="art">__T:t113_art_47__<small>__T:t114_declaraci_n_ue__</small></td>
+        <td class="q">__T:t115_que_exista_que_asuma_la_resp__<span class="mod">__T:t116_act_47_declaracion_borrador__</span></td>
+        <td><span class="chip b">__T:t084_construido__</span></td></tr>
+      <tr><td class="art">__T:t117_art_50__<small>__T:t118_transparencia_y_marcado__</small></td>
+        <td class="q">__T:t119_localiza_los_puntos_de_gener__<span class="mod">__T:t120_act_50_gen_img_marca_ausente__</span></td>
+        <td><span class="chip b">__T:t084_construido__</span></td></tr>
+      <tr><td class="art">__T:t121_art_72_y_73__<small>__T:t122_vigilancia_e_incidentes__</small></td>
+        <td class="q">__T:t123_no_que_exista_un_plan_que_la__<span class="mod">__T:t124_act_72_telemetria_drift_umbr__</span></td>
+        <td><span class="chip b">__T:t084_construido__</span></td></tr>
+      <tr><td class="art">__T:t125_anexos_iv_y_v__<small>__T:t126_los_dos_documentos__</small></td>
+        <td class="q">__T:t127_23_secciones_del_anexo_iv_y__<span class="mod">__T:t128_actaira_anexo_anexo_cual_v__</span></td>
+        <td><span class="chip b">__T:t084_construido__</span></td></tr>
+      <tr><td class="art">__T:t129_plataforma__<small>__T:t130_multi_tenant_y_facturaci_n__</small></td>
+        <td class="q">__T:t131_identidad_aprovisionamiento__<span class="mod">__T:t132_en_construcci_n__</span></td>
+        <td><span class="chip p">__T:t133_en_curso__</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="wrap" id="niveles">
+  <div class="head">
+    <p class="eyebrow">__T:t134_c_mo_se_paga__</p>
+    <h2>__T:t135_el_motor_es_libre_lo_que_se__</h2>
+    <p>
+      __T:t136_la_parte_que_comprueba_gener__
+    </p>
+  </div>
+  <div class="niveles">
+    <div class="nivel">
+      <h3>__T:t137_motor__</h3>
+      <p class="precio">__T:t138_libre_apache_2_0__</p>
+      <ul>
+        <li>__T:t139_los_diez_verbos_enteros__</li>
+        <li>__T:t140_anexo_iv_anexo_v_y_declaraci__</li>
+        <li>__T:t141_sarif_para_la_pesta_a_securi__</li>
+        <li>__T:t142_sello_merkle_y_firma_ed25519__</li>
+        <li>__T:t143_sin_telemetr_a_sin_cuenta_si__</li>
+      </ul>
+    </div>
+    <div class="nivel destacado">
+      <h3>__T:t129_plataforma__</h3>
+      <p class="precio">__T:t144_pyme_y_equipos__</p>
+      <ul>
+        <li>__T:t145_todo_lo_anterior_m_s__</li>
+        <li>__T:t146_almac_n_de_evidencia_gestion__</li>
+        <li>__T:t147_el_cuestionario_repartido_po__</li>
+        <li>__T:t148_aviso_cuando_algo_caduca_sin__</li>
+        <li>__T:t149_expediente_listo_para_ense_a__</li>
+      </ul>
+    </div>
+    <div class="nivel">
+      <h3>__T:t150_enterprise__</h3>
+      <p class="precio">__T:t151_con_soporte__</p>
+      <ul>
+        <li>__T:t145_todo_lo_anterior_m_s__</li>
+        <li>__T:t152_identidad_de_la_organizaci_n__</li>
+        <li>__T:t153_aislamiento_por_cliente_y_re__</li>
+        <li>__T:t154_paquetes_de_reglas_propios_p__</li>
+        <li>__T:t155_acompa_amiento_en_la_auditor__</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="head">
+    <p class="eyebrow">__T:t156_honestidad_de_alcance__</p>
+    <h2>__T:t157_lo_que_actaira_no_hace__</h2>
+  </div>
+  <div class="out">
+    <div><h3>__T:t158_no_emite_un_porcentaje_de_cu__</h3><p>__T:t159_no_existe_lo_que_se_publica__</p></div>
+    <div><h3>__T:t160_no_dice_que_cumples__</h3><p>__T:t161_una_obligaci_n_la_cumple_una__</p></div>
+    <div><h3>__T:t162_no_cierra_la_iso_porque_el_r__</h3><p>__T:t163_un_cruce_dice_que_dos_textos__</p></div>
+    <div><h3>__T:t164_no_firma_por_ti__</h3><p>__T:t165_los_puntos_3_y_4_del_anexo_v__</p></div>
+  </div>
+</section>
+</main>
+
+<footer class="wrap">
+  <div class="foot">
+    <span>__T:t166_actaira_apache_2_0_sin_telem__</span>
+    <span>__T:t167_actaira_com__</span>
+  </div>
+  <p class="caveat">
+    __T:t168_sobre_plazos_porque_conviene__
+  </p>
+</footer>

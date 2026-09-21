@@ -93,7 +93,16 @@ def test_la_version_es_la_misma_en_todas_partes():
     flujo = (RAIZ / "integraciones" / "github" / "actaira.yml").read_text(encoding="utf-8")
     clavadas = set(re.findall(r'ACTAIRA_VERSION:\s*"([^"]+)"', flujo))
     assert clavadas, "la plantilla ya no clava la version: una etiqueta movil no se audita"
-    assert clavadas == {__version__}, (
+    # UNA ETIQUETA DE GIT LLEVA `v` DELANTE Y EL PAQUETE NO.
+    #
+    # Mientras no haya paquete en PyPI, la plantilla instala desde el
+    # repositorio y clava una ETIQUETA, que por costumbre se llama `v0.15.0`.
+    # El paquete se llama `0.15.0`. Son la misma version en dos convenciones, y
+    # compararlas en crudo ponia esto rojo por una letra. Se quita la `v` del
+    # principio y se comparan los numeros; lo que NO se hace es aflojar la
+    # comparacion a «que se parezcan».
+    numeros = {v[1:] if v.startswith("v") else v for v in clavadas}
+    assert numeros == {__version__}, (
         f"la plantilla instala {sorted(clavadas)} y el paquete es {__version__}: "
         f"un cliente que la copie correria otra version de la que dice este arbol")
 

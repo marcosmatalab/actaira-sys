@@ -85,8 +85,13 @@ __ESTILO__
         <label class="campo"><span id="t-fecha"></span><input id="fecha" type="date"></label>
         <!-- Las vistas, como un grupo de navegacion y no como botones sueltos.
              `role="group"` con nombre accesible para que un lector de pantalla
-             anuncie que son nueve opciones del mismo conjunto, y no nueve
-             botones sin relacion repartidos por la pagina. -->
+             anuncie que son opciones del mismo conjunto, y no botones sin
+             relacion repartidos por la pagina.
+
+             El numero NO se escribe aqui. Ponia «nueve» cuando eran nueve y
+             habria seguido poniendolo con once: una cifra a mano dentro de un
+             comentario es la misma clase de mentira que la insignia del README
+             que decia 180 pruebas con 591. -->
         <div class="acciones" role="group" aria-labelledby="t-vistas">
           <span id="t-vistas" class="sub"
                 style="width:100%;font-size:11.5px;color:var(--muted);margin:0 0 4px"></span>
@@ -99,6 +104,8 @@ __ESTILO__
           <button class="boton plano" id="pedir-soa" disabled></button>
           <button class="boton plano" id="pedir-anx" disabled></button>
           <button class="boton plano" id="pedir-rev" disabled></button>
+          <button class="boton plano" id="pedir-apl" disabled></button>
+          <button class="boton plano" id="pedir-comp" disabled></button>
         </div>
       </div>
     </section>

@@ -1,3 +1,5 @@
+<!doctype html>
+<html lang="es">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Actaira</title>
@@ -222,9 +224,13 @@ td .just{font:400 13px/1.5 Archivo,system-ui;color:var(--muted)}
 <div class="ciclo wrap" id="ciclo"></div>
 
 <nav class="wrap vistas" id="vistas" role="tablist">
-  <button data-v="aplica" role="tab" aria-selected="true"></button>
-  <button data-v="pregunta" role="tab" aria-selected="false"></button>
-  <button data-v="soa" role="tab" aria-selected="false"></button>
+  <!-- Cada boton con su `id`. Nacen vacios a proposito -- el texto lo pone el
+       idioma -- y un boton vacio sin id ni `aria-label` es un boton que un
+       lector de pantalla no puede anunciar: quien no ve la pantalla oye
+       «boton» tres veces y no sabe cual es cual. El id lo ata a su texto. -->
+  <button id="v-aplica" data-v="aplica" role="tab" aria-selected="true"></button>
+  <button id="v-pregunta" data-v="pregunta" role="tab" aria-selected="false"></button>
+  <button id="v-soa" data-v="soa" role="tab" aria-selected="false"></button>
 </nav>
 
 <main class="wrap" id="v-aplica">
@@ -241,8 +247,8 @@ td .just{font:400 13px/1.5 Archivo,system-ui;color:var(--muted)}
         <div class="campo">
           <span class="pregunta" id="lb-fecha"></span>
           <div class="seg" id="fecha" style="width:100%">
-            <button data-f="2026-09-20" aria-pressed="true" style="flex:1"></button>
-            <button data-f="2027-12-02" aria-pressed="false" style="flex:1"></button>
+            <button id="f-hoy" data-f="2026-09-20" aria-pressed="true" style="flex:1"></button>
+            <button id="f-2027" data-f="2027-12-02" aria-pressed="false" style="flex:1"></button>
           </div>
         </div>
       </div>

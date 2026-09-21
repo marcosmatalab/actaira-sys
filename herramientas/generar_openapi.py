@@ -113,6 +113,8 @@ def _documento_de(verbo: str, esquemas: dict[str, dict]) -> str | None:
         "preguntar": "actaira/cuestionario/v1",
         "soa": "actaira/soa/v1",
         "anexo": "actaira/anexo-iv/v1",
+        "aplicabilidad": "actaira/aplicabilidad/v1",
+        "comprobar": "actaira/control/v1",
         "revision": None,          # su esquema no esta publicado todavia
     }
     constante = directo.get(raiz)

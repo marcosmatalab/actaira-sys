@@ -35,6 +35,9 @@ import sys
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent
+import sys as _sys
+_sys.path.insert(0, str(RAIZ.parent / "herramientas"))
+from paginas import revisar_estructura  # noqa: E402
 ANCHO_LOGO = 900
 
 sys.path.insert(0, str(RAIZ / "marca"))
@@ -78,7 +81,14 @@ def construir() -> str:
     js = js.replace("__TEXTOS__", json.dumps(textos, ensure_ascii=False, separators=(",", ":")))
 
     pagina = (RAIZ / "plantilla" / "pagina.html").read_text(encoding="utf-8")
-    return pagina.replace("__ESTILO__", css).replace("__LOGICA__", js)
+    salida = pagina.replace("__ESTILO__", css).replace("__LOGICA__", js)
+    # La MISMA puerta que el panel y la portada. Vivia dentro del
+    # constructor del panel, asi que solo protegia al panel: esta pagina no
+    # declaraba ni `<!doctype html>` ni `lang`, y llevaba asi desde la
+    # primera version. Una puerta que no se puede reutilizar acaba
+    # protegiendo solo lo que se acordo de protegerla.
+    revisar_estructura(salida, "consola/consola.html")
+    return salida
 
 
 if __name__ == "__main__":

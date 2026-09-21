@@ -189,7 +189,16 @@ def cmd_comprobar(a: argparse.Namespace) -> int:
                          artefactos=tuple(Path(p) for p in a.artefacto),
                          pipeline=tuple(a.paso)),
                  a.reglas)
-    print(json.dumps(res.a_json(), ensure_ascii=False, indent=2))
+    # EL `esquema` SE ANADE AQUI Y NO DENTRO DE `a_json()`.
+    #
+    # `a_json()` es tambien el CONTENIDO que se sella como evidencia, y el
+    # digest de ese contenido es lo que hace que una evidencia vieja se pueda
+    # comparar con una nueva. Meterle un campo dentro habria cambiado el digest
+    # de todo lo sellado hasta hoy, es decir, habria roto la continuidad del
+    # expediente de cualquiera que ya use esto. El documento que se PUBLICA
+    # lleva su esquema; lo que se SELLA sigue siendo lo mismo de siempre.
+    print(json.dumps({"esquema": "actaira/control/v1", **res.a_json()},
+                     ensure_ascii=False, indent=2))
     # Un codigo por estado, y el ERROR se separa del INDETERMINADO a proposito:
     # «no pude decidir» y «me rompi» piden cosas distintas de quien lo recibe.
     return {"sin_hallazgos": 0, "con_hallazgos": 1, "indeterminado": 3,
@@ -1376,6 +1385,20 @@ def main(argv: list[str] | None = None) -> int:
 
     a2 = sub.add_parser("comprobar", help="corre el control del articulo 50 sobre un repositorio")
     a2.add_argument("repo")
+    # `--json` SE ACEPTA Y NO HACE NADA, y eso se dice.
+    #
+    # Este verbo no tiene otra salida: su unico formato es el documento. Pero la
+    # plataforma le pasa `--json` a TODOS los verbos, porque lo que consume es
+    # siempre un documento, y sin esta bandera `comprobar` moria por argumento
+    # invalido y la capa de HTTP lo traducia a «el motor no devolvio un
+    # documento que esta plataforma entienda» -- que es verdad y no dice nada.
+    # Es el mismo defecto que ya tuvieron `noconformidad` y `preguntar`.
+    #
+    # La alternativa era que la plataforma llevara una lista de los verbos a los
+    # que NO hay que pasarsela, y esa lista es exactamente la clase de tabla a
+    # mano que se queda corta el dia que alguien anade un verbo.
+    a2.add_argument("--json", action="store_true",
+                    help="se acepta por uniformidad; este verbo solo habla JSON")
     a2.add_argument("--artefacto", action="append", default=[])
     a2.add_argument("--paso", action="append", default=[],
                     choices=list(CONOCIDAS),

@@ -427,6 +427,8 @@ func (s *Servidor) Rutas() http.Handler {
 	mux.HandleFunc("POST /v1/clientes/{cliente}/soa", s.conCliente(s.soa))
 	mux.HandleFunc("POST /v1/clientes/{cliente}/anexo", s.conCliente(s.anexo))
 	mux.HandleFunc("GET /v1/clientes/{cliente}/revision", s.conCliente(s.revision))
+	mux.HandleFunc("POST /v1/clientes/{cliente}/aplicabilidad", s.conCliente(s.aplicabilidad))
+	mux.HandleFunc("POST /v1/clientes/{cliente}/comprobar", s.conCliente(s.comprobar))
 	return mux
 }
 
@@ -517,6 +519,9 @@ var VERBOS = []map[string]string{
 	{"verbo": "soa", "metodo": "POST", "ruta": "/v1/clientes/{cliente}/soa"},
 	{"verbo": "anexo", "metodo": "POST", "ruta": "/v1/clientes/{cliente}/anexo?cual=iv|v"},
 	{"verbo": "revision", "metodo": "GET", "ruta": "/v1/clientes/{cliente}/revision"},
+	{"verbo": "aplicabilidad", "metodo": "POST",
+		"ruta": "/v1/clientes/{cliente}/aplicabilidad"},
+	{"verbo": "comprobar", "metodo": "POST", "ruta": "/v1/clientes/{cliente}/comprobar"},
 }
 
 func (s *Servidor) verbos(w http.ResponseWriter, r *http.Request) {
@@ -784,6 +789,13 @@ var BANDERAS = map[string][]string{
 	"soa":       {"--idioma", "--json", "--respuestas", "--rol", "--alto-riesgo"},
 	"anexo":     {"--idioma", "--json", "--cual", "--respuestas", "--rol", "--alto-riesgo"},
 	"revision":  {"--idioma", "--json", "--almacen"},
+	// `aplicabilidad` sale del PERFIL y no toca el arbol, asi que lleva el
+	// perfil entero y ninguna ruta.
+	"aplicabilidad": {"--idioma", "--json", "--fecha", "--rol", "--alto-riesgo",
+		"--sector-publico", "--modelo-uso-general", "--riesgo-sistemico", "--via-anexo"},
+	// `comprobar` NO lleva perfil ni `--idioma`: lee bytes y dice lo que ve, y
+	// su documento trae los dos idiomas dentro.
+	"comprobar": {"--json"},
 }
 
 // verboDe saca el nombre del verbo de una entrada de `VERBOS`.
