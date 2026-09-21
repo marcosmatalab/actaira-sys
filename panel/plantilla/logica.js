@@ -92,6 +92,13 @@ const CAMPOS_DEL_DOCUMENTO = [
   "motivo", "por_que", "remediacion", "localizacion", "regla_id", "texto",
   "situacion", "regla", "id", "descripcion", "origen", "dias_abierta",
   "incoherencias", "vencida", "estancada", "nombres_de_estado",
+  // Los del almacen de evidencia. No estaban porque la pantalla no leia
+  // ninguno: la vista existia, pedia el documento y no pintaba nada de lo que
+  // venia dentro. Ahora los lee, asi que entran en la lista y el contrato los
+  // sujeta como a los demas.
+  "ruta", "existe", "verifica", "roturas", "cabeza", "nota_de_la_cabeza",
+  "cabeza_esperada", "cabeza_es_la_esperada", "por_que_no_es_la_esperada",
+  "observaciones", "sin_cadena_demostrable",
 ];
 
 /* Como se lee un estado. El nombre lo publica el MOTOR dentro del documento,
@@ -395,6 +402,12 @@ function pintarCategorias() {
   let i = 1;
   for (const clave of ["dev", "pyme", "empresa"]) {
     const b = el("button", "cat");
+    // El nombre de la categoria, en el DOM. Los botones de idioma y de tema lo
+    // llevan (`data-l`, `data-t`) y estos no, asi que la unica forma de pulsar
+    // una categoria desde fuera era contar posiciones -- y una prueba que
+    // cuenta posiciones se rompe el dia que se reordenan, que es el dia en que
+    // deja de mirar.
+    b.dataset.c = clave;
     b.setAttribute("aria-pressed", String(estado.categoria === clave));
     b.appendChild(el("p", "n", "0" + i++));
     b.appendChild(el("h3", null, t["cat_" + clave]));
@@ -567,7 +580,69 @@ function lineasDe(doc) {
     if (Array.isArray(lista) && lista.length) return lista.map(comoFila);
   }
   if (Array.isArray(doc.inspeccionado) && doc.inspeccionado.length) return lineasDeControl(doc);
+  // EL ALMACEN NO ES UNA LISTA, Y POR ESO NO SE PINTABA NUNCA.
+  //
+  // Las diez vistas de arriba traen una lista de algo. El almacen de evidencia
+  // trae un ESTADO: existe o no, la cadena cuadra o no, cual es la cabeza, y
+  // cuantas lineas no se puede demostrar que esten intactas. No hay ninguna
+  // lista que recorrer, asi que la cadena de formas acababa aqui devolviendo
+  // cero filas y la pantalla decia «conecta y pide el plan» encima de un
+  // volcado de JSON.
+  //
+  // Y es la vista que sostiene la UNICA afirmacion que este producto hace
+  // frente a un tercero: que la evidencia es la que esta casa escribio. La
+  // pasada anterior arreglo ocho formas de once y dio las once por buenas
+  // porque las ocho tenian lista; esta, que no la tiene, se quedo fuera sin
+  // que fallara nada. La cazo el navegador el primer dia que corrio.
+  if (doc.esquema === "actaira/almacen/v1") return lineasDeAlmacen(doc);
   return [];
+}
+
+function lineasDeAlmacen(doc) {
+  const t = T(), filas = [];
+  const fila = (clave, titulo, marca, etiqueta, motivo) => ({
+    clave, titulo, marca, etiqueta, motivo: motivo || "", hallazgos: [], preguntas: [],
+  });
+
+  filas.push(fila(t.almacen_fichero, doc.ruta || "",
+                  doc.existe ? "comprobada" : "sin_resolver",
+                  doc.existe ? t.almacen_hay : t.almacen_no_hay,
+                  doc.existe ? "" : t.almacen_no_existe));
+
+  // Lo que sigue solo se afirma sobre un fichero que existe. Decir «la cadena
+  // no verifica» de un almacen que no se ha escrito todavia seria una alarma
+  // fabricada, que es el defecto contra el que va la tercera negativa.
+  if (!doc.existe) return filas;
+
+  filas.push(fila(t.almacen_cadena,
+                  doc.verifica ? t.almacen_verifica : t.almacen_no_verifica,
+                  doc.verifica ? "comprobada" : "con_hallazgos",
+                  doc.verifica ? t.almacen_ok : t.almacen_rota,
+                  (doc.roturas || []).join("  —  ")));
+
+  // La nota de la cabeza la escribe el MOTOR, en los dos idiomas, y dice lo
+  // que la cadena NO demuestra. Es la frase mas importante de esta pantalla y
+  // no la escribe esta pagina.
+  filas.push(fila(t.almacen_cabeza, doc.cabeza || t.almacen_sin_cabeza,
+                  doc.cabeza ? "comprobada" : "sin_resolver", "",
+                  bil(doc.nota_de_la_cabeza)));
+
+  // `null` NO es `true`: nadie dijo que cabeza esperaba, asi que esa
+  // comprobacion no se ha hecho. Pintarla como si cuadrara seria inventar una
+  // comprobacion que no ocurrio.
+  filas.push(fila(t.almacen_cabeza_esperada,
+                  doc.cabeza_esperada || t.almacen_cabeza_no_comprobada,
+                  doc.cabeza_es_la_esperada === true ? "comprobada"
+                    : doc.cabeza_es_la_esperada === false ? "con_hallazgos" : "indeterminada",
+                  doc.cabeza_es_la_esperada === true ? t.almacen_ok
+                    : doc.cabeza_es_la_esperada === false ? t.almacen_rota : "",
+                  doc.por_que_no_es_la_esperada || ""));
+
+  filas.push(fila(String(doc.observaciones ?? 0), t.almacen_observaciones, "", "", ""));
+  filas.push(fila(String(doc.sin_cadena_demostrable ?? 0), t.almacen_sin_cadena,
+                  doc.sin_cadena_demostrable ? "indeterminada" : "",
+                  "", t.almacen_sin_cadena_pie));
+  return filas;
 }
 
 function dePregunta(p) {
@@ -701,9 +776,20 @@ function pintarLineas() {
   const r = estado.documentos[estado.vista];
   if (!r || !r.documento) { caja.appendChild(el("p", "vacio", vacio())); return; }
   let lineas = lineasDe(r.documento);
+  // «NINGUNA LINEA ENCAJA CON ESTE FILTRO» CON EL FILTRO EN «TODAS».
+  //
+  // Un documento que no trae nada y un filtro que lo esconde todo son dos
+  // cosas distintas, y aqui se decian con la misma frase. El caso normal es el
+  // de vencimientos un dia tranquilo: el recuento dice «nada que avisar hoy» y
+  // justo debajo salia «ninguna linea encaja con este filtro» sin que nadie
+  // hubiera tocado el filtro. Quien lo lee busca el filtro que no puso.
+  const habia = lineas.length;
   if (estado.filtro === "hallazgos") lineas = lineas.filter((l) => l.hallazgos.length);
   if (estado.filtro === "preguntas") lineas = lineas.filter((l) => l.preguntas.length);
-  if (!lineas.length) { caja.appendChild(el("p", "vacio", t.sin_lineas)); return; }
+  if (!lineas.length) {
+    caja.appendChild(el("p", "vacio", habia ? t.sin_lineas : t.sin_nada));
+    return;
+  }
   for (const l of lineas) {
     const fila = el("div", "linea");
     fila.appendChild(el("p", "art", l.clave));
@@ -725,8 +811,28 @@ function pintarLineas() {
       medio.appendChild(d);
     }
     fila.appendChild(medio);
-    fila.appendChild(el("span", "marca " + (CLASE_SITUACION[l.marca] || ""),
-                        nombreDe(l.marca)));
+    // EL NOMBRE DEL ESTADO LO PUBLICA EL MOTOR, SALVO CUANDO NO HAY ESTADO.
+    //
+    // `nombreDe` lee `nombres_de_estado` del documento, que es lo correcto: el
+    // vocabulario del producto es del motor. Pero hay un documento que no
+    // publica estados porque no los tiene -- el del almacen, que trae
+    // BOOLEANOS -- y ahi `nombreDe` caia al identificador en crudo, es decir a
+    // una palabra castellana dentro de una pantalla en aleman.
+    //
+    // Cuando la fila trae `etiqueta`, la palabra es de la pantalla y viaja en
+    // los seis idiomas. Eso no es traducir significado: es ponerle nombre a un
+    // `true` que el motor no nombra.
+    // Y si no hay nada que decir, no se pinta la insignia.
+    //
+    // Se pintaba SIEMPRE, asi que una fila sin estado -- las dos que son un
+    // recuento a secas en la vista del almacen -- salia con una pastilla gris
+    // vacia al final, que parece un estado que no se pudo leer. Enseñar un
+    // hueco donde no hay dato es peor que no enseñar nada: invita a buscarle
+    // un significado.
+    const insignia = l.etiqueta || (l.marca ? nombreDe(l.marca) : "");
+    if (insignia) {
+      fila.appendChild(el("span", "marca " + (CLASE_SITUACION[l.marca] || ""), insignia));
+    }
     caja.appendChild(fila);
   }
 }
