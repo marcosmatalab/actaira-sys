@@ -136,7 +136,7 @@ ortografía del castellano, la consola y las <!--cifra:pruebas-->561<!--/cifra--
 
 Cada fase cierra con una **pasada adversarial** antes de abrir la siguiente, y
 los defectos encontrados se escriben en `docs/BACKLOG.md` con su número y su
-lección. <!--cifra:defectos_adversariales-->96<!--/cifra--> hasta hoy. Los más caros no eran fallos: eran respuestas
+lección. <!--cifra:defectos_adversariales-->107<!--/cifra--> hasta hoy. Los más caros no eran fallos: eran respuestas
 plausibles y falsas, que es lo peor que puede emitir una herramienta que va a
 un auditor.
 

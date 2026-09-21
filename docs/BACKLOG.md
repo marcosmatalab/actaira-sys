@@ -1358,3 +1358,140 @@ meses sin pasar.
   cuenta los defectos admitía sólo punto detrás del número y se dejaba fuera la
   entrada que empieza «D-23, y esta la cometió el propio arreglo»: publicaba uno
   menos, en un módulo dedicado a que las cifras sean ciertas.
+
+## Cuarta pasada — publicar el repositorio, y lo que eso destapó
+
+El repositorio se subió a GitHub y la matriz de dos sistemas corrió por
+primera vez de verdad. **Se pagó sola en su primera ejecución**: cuatro cosas
+que no se podían ver desde aquí. Y exponer verbos nuevos a la plataforma
+destapó dos defectos del núcleo, uno de ellos de la peor categoría que este
+producto reconoce.
+
+### Lo que encontró la matriz el primer día
+
+- **D-97. Python 3.11 no puede con `ortografia --arreglar`.** Corregir la
+  prosa que vive dentro de las llaves de una f-string exige que el tokenizador
+  vea ahí dentro, y eso es PEP 701, que llegó en 3.12. En 3.11 la f-string
+  entera es un único componente y el corrector pasa de largo **sin decir
+  nada**: no falla, devuelve el texto sin corregir. `requires-python` decía
+  `>=3.11`, es decir, prometía un verbo que allí no hace su trabajo. Subido a
+  `>=3.12` con el motivo escrito. Callarlo habría sido peor que no tener el
+  verbo.
+- **D-98. `gofmt` en rojo sólo en el agente de Windows.** `core.autocrlf` es
+  el valor por defecto de ese agente y convierte al **sacar** el árbol,
+  después de que la prueba de finales de línea se escribiera. La prueba no
+  podía verlo porque mira el árbol, no la copia que git entrega. Añadido
+  `.gitattributes` con `eol=lf`.
+- **D-99. `build` no estaba en el extra `dev`.** La fase `paquete` se omitía
+  en cualquier máquina que no lo trajera puesto. Es la **tercera** vez que ese
+  extra se queda corto: ver D-93 con `pyyaml`. La lección ya no es la
+  dependencia concreta, es que una lista de dependencias que se amplía cuando
+  algo falla siempre va un paso por detrás.
+- **D-100. La fase `matriz` se ponía roja donde el producto está bien.** En un
+  agente de integración continua no se alcanza un segundo sistema, y eso no es
+  un fallo: allí el otro sistema lo corre la propia matriz. La fase levantaba
+  `Omitida` y `--sin-omitir` lo convertía en rojo. Una puerta que se pone roja
+  donde el producto está bien enseña a apagar la puerta. La fase mide dos
+  cosas y ahora dice cuál de las dos no se pudo medir, en vez de tirar las
+  dos.
+
+### Los dos del núcleo
+
+- **D-101. Un repositorio que NO EXISTE se leía como un repositorio VACÍO.**
+  `rglob` sobre una ruta ausente no falla: devuelve cero entradas. De ahí
+  salía el peor documento que este producto puede emitir:
+
+  ```
+  actaira comprobar /ruta/mal-escrita   ->   exit 0
+  {"resultado": "no_aplica", "inspeccionado": [], "motivo_indeterminado": null}
+  ```
+
+  Una afirmación de que el artículo 50 **no te ata**, sin haber mirado nada,
+  con el código de salida que significa «se miró y no apareció nada». Y
+  `sellar` la convertía en evidencia con su raíz Merkle, lista para un
+  auditor. Es la tercera negativa de la casa exactamente del revés, y es
+  «tres estados, nunca dos» otra vez: «miré y no hay puntos de generación» y
+  «no pude mirar» tienen que ser respuestas distintas.
+
+  Lo llamativo es que el motor genérico **sí** sujetaba la invariante, desde
+  el otro lado: `Ejecucion.__post_init__` revienta si una ejecución COMPLETADA
+  no leyó ni un fichero. Eso dejaba a `plan` y a `vigilar` soltando un
+  `ValueError` crudo con código 1, y al control del artículo 50 —que sale por
+  NO_APLICABLE, no por COMPLETADA— sin sujetar en absoluto. Se sujeta ahora en
+  `Arbol.leer`, que es donde se entra a mirar, y vale para todos los verbos.
+
+- **D-102. `verificar`, `contestar` y `empujon` soltaban traza cruda con
+  código 1.** Cuando el fichero que reciben no existe. Misma forma que D-90:
+  una excepción sin capturar disfrazada de veredicto legítimo. Ahora salen 4
+  con su motivo. El `except OSError` va **después** del de `BrokenPipeError`
+  a propósito: es una subclase, y al revés la tubería cerrada de `| head`
+  habría salido 4 en vez de 0.
+
+### La web: seis idiomas, y lo que se quitó
+
+La portada era la única superficie del producto que sólo existía en
+castellano, mientras el panel y la consola llevaban dos idiomas desde su
+primera versión. Un producto que promete «expediente listo para enseñar, en
+español y en inglés» y cuya portada no está en inglés se contradice en la
+primera pantalla.
+
+Ahora se construye como las otras dos y salen **seis páginas de verdad** —es,
+en, fr, pt, it, de—, cada una con su `lang`, su dirección y un conmutador de
+seis enlaces. No es un conmutador de JavaScript a propósito: una página que se
+reescribe en el navegador no se puede enviar por correo, se indexa en un solo
+idioma, y un lector de pantalla la pronuncia mal hasta que alguien pulsa algo.
+Las traducciones están escritas; `INDETERMINADO`, `NO_CUMPLE`, los
+identificadores de regla y los nombres de los verbos **no se traducen**, por
+lo mismo que decidió D-83.
+
+- **D-103. La portada anunciaba facturación que no existe.** En la tabla de lo
+  que está construido, que es justo la tabla que existe para no hacer eso. No
+  hay una línea de cobro en la plataforma. Fuera. Y la fila de la Plataforma
+  decía «en construcción» con OIDC, RBAC, aislamiento por cliente y topes ya
+  construidos y probados contra un Keycloak real.
+- **D-104. «Los diez verbos, enteros» cuando son dieciocho, y «Cuatro
+  comandos» sobre un bloque que enseña cinco.** El número se quita en vez de
+  corregirse: un número a mano envejece igual dentro de una frase que dentro
+  de una insignia.
+- **D-105. El README, la portada y la plantilla de CI mandaban a un paquete
+  que no existe.** Las tres decían `pip install actaira-motor`, y eso no está
+  publicado en PyPI: **la primera orden que lee quien llega al repositorio
+  fallaba con un 404**. No es un defecto del producto —instala y corre
+  perfectamente desde el repositorio— es un defecto de lo que el producto dice
+  de sí mismo, en la primera línea, que es donde no hay segunda oportunidad.
+  Hay ahora una sola declaración, `PUBLICADO_EN_PYPI`, y una fase que se pone
+  roja **en los dos sentidos**: si se manda a PyPI sin estar publicado, y si
+  se sigue mandando al repositorio cuando ya lo esté.
+- **D-106. Ni la consola ni la portada declaraban `<!doctype html>` ni
+  `lang`.** Sin doctype, el navegador renderiza en modo quirks y usa otro
+  modelo de caja: la página se mide distinto de como se diseñó y casi cuadra,
+  que es por lo que nadie lo nota. Sin `lang`, un lector de pantalla pronuncia
+  el castellano con las reglas del inglés. La comprobación existía **dentro
+  del constructor del panel**, así que sólo protegía al panel: una puerta que
+  no se puede reutilizar acaba protegiendo lo que se acordó de protegerla.
+  Ahora vive en `herramientas/paginas.py` y la usan las tres. De paso cazó un
+  salto de h2 a h4 en la portada y cinco botones sin nombre accesible en la
+  consola —las pestañas y los filtros—, que quien no ve la pantalla oía como
+  «botón, botón, botón».
+- **D-107. Dos definiciones del mismo número, y discrepaban.**
+  `generar_docs.py` contaba las pruebas con `rglob` y `sitio/cifras.py` con
+  `glob`: 562 contra 561, las dos publicadas. La que estaba mal era la
+  primera, y no por poco: el fichero de más es
+  `motor/tests/fixtures/clasificador-candidatos/evals/test_exactitud.py`, que
+  no es una prueba del producto sino una que vive dentro del repositorio de
+  **ejemplo**, el que el producto analiza como sujeto. La cifra del README
+  estaba hinchada con una prueba de mentira. Arreglado llamando a la única que
+  hay, no copiando el `glob` bueno: dos definiciones de acuerdo por ahora
+  siguen siendo dos definiciones.
+
+### Y dos verbos más en la plataforma
+
+`aplicabilidad` y `comprobar`, que el motor tenía y la API no traducía. La
+aplicabilidad es la **primera** pregunta del producto —qué te ata— y era la
+única de las grandes sin pantalla: sin ella había que lanzar un `plan`, que
+arranca el motor sobre el repositorio entero, para contestar algo que sale del
+perfil y no lee ni un byte. Quedan **fuera** a propósito, con su motivo:
+`sellar` y `contestar` firman con clave privada, y exponerlos por HTTP pone
+esa clave en el servidor; `conectar` clona una URL que manda quien llama, que
+es la superficie más grande del producto; `ortografia` y `exportar` son
+herramientas del árbol, no del cliente.
