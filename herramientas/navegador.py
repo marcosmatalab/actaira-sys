@@ -813,10 +813,11 @@ def gif(segundos: int, ancho: int, fps: int) -> int:
                         # `max_colors` bajo, y no los 256 por omision. Esta
                         # pantalla es interfaz plana: dos grises de fondo, un
                         # morado, seis colores de pastilla y el gris del texto
-                        # antialiasado. Con 128 no se distingue del original y
-                        # pesa un tercio menos, y lo que decide si alguien ve
-                        # un GIF de README entero no es su nitidez.
-                        "-vf", filtro + ",palettegen=stats_mode=diff:max_colors=128",
+                        # antialiasado. Medido sobre el mismo video, bajar de
+                        # 128 a 64 quita un 30 % del peso sin que se note, y lo
+                        # que decide si alguien ve un GIF de README entero no es
+                        # su nitidez.
+                        "-vf", filtro + ",palettegen=stats_mode=diff:max_colors=64",
                         str(paleta)], check=True, capture_output=True)
         # `dither=none`, y no un patron de Bayer. Esta pantalla es interfaz
         # plana -- fondos lisos, texto negro, seis colores de pastilla -- y
@@ -828,11 +829,23 @@ def gif(segundos: int, ancho: int, fps: int) -> int:
                         str(destino)], check=True, capture_output=True)
     peso = destino.stat().st_size / 1e6
     print(f"  {destino.relative_to(RAIZ)}  {peso:.1f} MB  ({segundos} s, {fps} fps, {ancho} px)")
+    # EL PRESUPUESTO ES 5 MB, Y LO CARO NO ES ESTE FICHERO: ES LA SERIE.
+    #
     # Un README con un GIF que tarda en cargar es un README que nadie ve
-    # entero. El limite no es una regla de nadie: es lo que aguanta la primera
-    # pantalla de un repositorio abierto desde un movil.
-    if peso > 10:
-        print("  AVISO: pasa de 10 MB. Baja `--fps` o `--ancho`.", file=sys.stderr)
+    # entero, y eso ya justificaria un limite. Pero el coste que de verdad
+    # importa es otro: esto vive en git, y un video grabado nunca sale igual
+    # dos veces, asi que CADA regeneracion mete un objeto nuevo en la historia
+    # y ninguno se va nunca. A ocho megas por pasada, cinco pasadas son
+    # cuarenta megas que todo el mundo se clona para siempre.
+    #
+    # De ahi las dos decisiones: el fichero pequeno (680 px, 5 fps, 64 colores
+    # -- se sigue leyendo el titular, las categorias y el ciclo, que es lo que
+    # un GIF de README tiene que ensenar) y regenerarlo SOLO cuando la pantalla
+    # cambie de verdad. Las capturas fijas no tienen este problema: un PNG de
+    # la misma pantalla sale casi identico y git lo reconoce.
+    if peso > 5:
+        print(f"  AVISO: {peso:.1f} MB pasa del presupuesto de 5 MB. "
+              f"Baja `--fps` o `--ancho`.", file=sys.stderr)
         return 1
     return 0
 
@@ -847,8 +860,8 @@ def main() -> int:
     g.add_argument("--web", metavar="CARPETA",
                    help="la portada entera en los seis idiomas, en esa carpeta")
     p.add_argument("--segundos", type=int, default=30)
-    p.add_argument("--ancho", type=int, default=860)
-    p.add_argument("--fps", type=int, default=6)
+    p.add_argument("--ancho", type=int, default=680)
+    p.add_argument("--fps", type=int, default=5)
     p.add_argument("--repeticiones", type=int, default=5)
     a = p.parse_args()
     try:

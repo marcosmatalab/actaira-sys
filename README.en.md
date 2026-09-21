@@ -12,7 +12,7 @@ With provenance per claim, and without inventing a percentage.
 [![Tests](https://img.shields.io/badge/tests-Python%20and%20Go-90099C)](motor/tests)
 [![Acceptance gate](https://img.shields.io/badge/gate-make%20todo-90099C)](herramientas/todo.py)
 
-<img src="docs/imagenes/panel.gif" width="860" alt="The Actaira panel: what binds you, what was checked by reading bytes, what is left to answer, the technical file, the search box and the six languages.">
+<img src="docs/imagenes/panel.gif" width="680" alt="The Actaira panel: what binds you, what was checked by reading bytes, what is left to answer, the technical file, the search box and the six languages.">
 
 <sub>Thirty seconds against the real API and the example repository. None of
 this is staged: it is recorded by one command, and that same command is the
@@ -66,6 +66,15 @@ actaira soa .       --rol proveedor --alto-riesgo si   # the ISO 42001 statement
 > to a 404 on the very first command. When it is published, that will be the
 > line and this note disappears. A gate checks it: while `PUBLICADO_EN_PYPI` is
 > `False`, no document may say otherwise.
+
+> **The verbs, the flags and the values are Spanish words**, and that is a
+> decision: the engine emits this same vocabulary *inside* the documents it
+> produces, so two runs of the same thing compare line by line. A second set of
+> English spellings would be two names for one verb, which is the failure this
+> tree has already hit four times. `si` means yes, `no` means no, `preguntar`
+> means ask, `--alto-riesgo` means high-risk — and the
+> [manual glosses every one of them](docs/MANUAL.en.md#the-vocabulary-is-spanish-and-it-stays-that-way).
+> A wrong value is rejected loudly, never quietly.
 
 Needs Python 3.12 or later. None of this uploads your code anywhere and no
 account is required: it runs with the network unplugged.
@@ -154,7 +163,7 @@ stale.
 | Questions in the bank | <!--cifra:preguntas-->90<!--/cifra-->, each tied to all three catalogues |
 | Tests | <!--cifra:pruebas-->563<!--/cifra--> Python + <!--cifra:pruebas_go-->98<!--/cifra--> Go |
 | Acceptance gate phases | <!--cifra:fases_de_la_puerta-->24<!--/cifra--> |
-| Defects from adversarial passes | <!--cifra:defectos_adversariales-->125<!--/cifra-->, each named in `docs/BACKLOG.md` |
+| Defects from adversarial passes | <!--cifra:defectos_adversariales-->127<!--/cifra-->, each named in `docs/BACKLOG.md` |
 
 And the number that does **not** exist: there is no compliance percentage. With
 an unanswered profile, <!--cifra:indeterminadas_perfil_vacio-->48<!--/cifra-->
@@ -225,7 +234,7 @@ something stops being installed, the summary cannot keep saying «0 red».
   instead of the screen going blank with nothing failing.
 - **The adversarial passes.** Every phase closes with one before the next opens,
   and what turns up is written into `docs/BACKLOG.md` with its number and its
-  lesson. <!--cifra:defectos_adversariales-->125<!--/cifra--> so far. The
+  lesson. <!--cifra:defectos_adversariales-->127<!--/cifra--> so far. The
   expensive ones were not crashes: they were plausible, false answers, which is
   the worst thing a tool headed for an auditor can emit.
 
@@ -310,6 +319,15 @@ python herramientas/navegador.py --capturas    # the images in this README and t
 python herramientas/navegador.py --gif         # the 30-second walkthrough
 python herramientas/navegador.py --puerta      # and the gate that checks it works
 ```
+
+**The GIF is only regenerated when the screen actually changes.** That is not
+penny-pinching: a recorded video never comes out the same twice, so every
+regeneration adds a new object to git history and none of them ever leave. That
+is why it weighs 3 MB and not 8 — 680 px, 5 fps, 64 colours; the headline, the
+categories and the cycle still read, which is what a README GIF has to show —
+and why the command goes red above 5 MB. Still screenshots do not have that
+problem: a PNG of the same screen comes out nearly identical and git recognises
+it.
 
 ## Licence and catalogue scope
 

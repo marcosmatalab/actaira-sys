@@ -12,7 +12,7 @@ Con procedencia por afirmación, y sin inventarse un porcentaje.
 [![Pruebas](https://img.shields.io/badge/pruebas-Python%20y%20Go-90099C)](motor/tests)
 [![Puerta de aceptación](https://img.shields.io/badge/puerta-make%20todo-90099C)](herramientas/todo.py)
 
-<img src="docs/imagenes/panel.gif" width="860" alt="El panel de Actaira: qué te ata, qué se comprobó leyendo bytes, qué falta por contestar, el expediente, el buscador y los seis idiomas.">
+<img src="docs/imagenes/panel.gif" width="680" alt="El panel de Actaira: qué te ata, qué se comprobó leyendo bytes, qué falta por contestar, el expediente, el buscador y los seis idiomas.">
 
 <sub>Treinta segundos contra la API de verdad y el repositorio de ejemplo. Nada
 de esto está montado: se graba con un comando, y el mismo comando es la puerta
@@ -153,7 +153,7 @@ Ninguno está escrito a mano. Salen del catálogo y del árbol, los rellena
 | Preguntas del banco | <!--cifra:preguntas-->90<!--/cifra-->, cada una atada a los tres catálogos |
 | Pruebas | <!--cifra:pruebas-->563<!--/cifra--> de Python + <!--cifra:pruebas_go-->98<!--/cifra--> de Go |
 | Fases de la puerta de aceptación | <!--cifra:fases_de_la_puerta-->24<!--/cifra--> |
-| Defectos de las pasadas adversariales | <!--cifra:defectos_adversariales-->125<!--/cifra-->, cada uno con su nombre en `docs/BACKLOG.md` |
+| Defectos de las pasadas adversariales | <!--cifra:defectos_adversariales-->127<!--/cifra-->, cada uno con su nombre en `docs/BACKLOG.md` |
 
 Y el número que **no** existe: no hay porcentaje de cumplimiento. Con un perfil
 sin responder, <!--cifra:indeterminadas_perfil_vacio-->48<!--/cifra-->
@@ -224,7 +224,7 @@ de estar instalado, el resumen no puede seguir diciendo «0 en rojo».
   en vez de que la pantalla se quede en blanco sin que falle nada.
 - **Las pasadas adversariales.** Cada fase cierra con una antes de abrir la
   siguiente, y lo encontrado se escribe en `docs/BACKLOG.md` con su número y su
-  lección. <!--cifra:defectos_adversariales-->125<!--/cifra--> hasta hoy. Los más
+  lección. <!--cifra:defectos_adversariales-->127<!--/cifra--> hasta hoy. Los más
   caros no eran fallos: eran respuestas plausibles y falsas, que es lo peor que
   puede emitir una herramienta que va a un auditor.
 
@@ -301,10 +301,18 @@ Con el mismo arnés que sujeta el panel, contra la pila de verdad. No hay ningun
 captura montada ni ningún dato inventado:
 
 ```bash
-python herramientas/navegador.py --capturas    # las imágenes de este README
+python herramientas/navegador.py --capturas    # las imágenes de este README y del manual
 python herramientas/navegador.py --gif         # el recorrido de 30 s
 python herramientas/navegador.py --puerta      # y lo que comprueba que funciona
 ```
+
+**El GIF se regenera sólo cuando la pantalla cambia de verdad.** No es
+tacañería: un vídeo grabado nunca sale igual dos veces, así que cada
+regeneración mete un objeto nuevo en la historia de git y ninguno se va. Por eso
+pesa 3 MB y no 8 —680 px, 5 fps, 64 colores; se sigue leyendo el titular, las
+categorías y el ciclo, que es lo que un GIF de README tiene que enseñar— y por
+eso el comando se pone rojo si pasa de 5 MB. Las capturas fijas no tienen ese
+problema: un PNG de la misma pantalla sale casi idéntico y git lo reconoce.
 
 ## Licencia y alcance de los catálogos
 
