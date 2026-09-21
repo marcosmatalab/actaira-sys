@@ -17,8 +17,11 @@ __ESTILO__
     <button class="enchufe" id="enchufe" aria-expanded="false">
       <span class="punto" id="punto"></span><span id="enchufe-txt"></span>
     </button>
+    <!-- EL IDIOMA DE LA INTERFAZ. Son seis, y se generan al construir desde
+         las claves de `textos.json`: escribirlos aqui a mano seria la misma
+         lista que se queda corta que ya escondio siete vistas de este panel. -->
     <div class="seg" id="idioma" role="group" aria-label="Idioma / Language">
-      <button data-l="es" aria-pressed="true">ES</button><button data-l="en" aria-pressed="false">EN</button>
+      __IDIOMAS__
     </div>
     <div class="seg" id="tema" role="group" aria-label="Tema / Theme">
       <button data-t="light" aria-pressed="false" title="">☼</button><button data-t="dark" aria-pressed="false" title="">☾</button>
@@ -30,6 +33,8 @@ __ESTILO__
   <p class="eyebrow" id="eyebrow"></p>
   <h1 id="titular"></h1>
   <p class="lede" id="entradilla"></p>
+  <p class="sub grave oculto" id="idioma-doc"
+     style="font-size:12px;max-width:62ch;margin:0 0 10px"></p>
   <p class="sub" id="origen-nota"
      style="font-size:12px;color:var(--muted);max-width:62ch"></p>
   <p class="aviso" id="sin-porcentaje"></p>

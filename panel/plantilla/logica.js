@@ -133,13 +133,32 @@ function el(etiqueta, clase, texto) {
   return n;
 }
 
-/* Un texto bilingue del documento, en el idioma elegido. Si falta el idioma
- * pedido NO se cae al otro en silencio: un expediente en ingles con una frase
- * en castellano dentro es el defecto que el motor lleva doce fases evitando, y
- * disimularlo aqui lo devolveria por la ventana. */
+/* EL IDIOMA DE LA INTERFAZ NO ES EL DEL DOCUMENTO, Y NO PUEDE SERLO.
+ *
+ * Esta pagina habla seis idiomas. El MOTOR emite sus documentos en dos, `es` y
+ * `en`, porque lo que va dentro es contenido normativo -- titulos de
+ * obligaciones, motivos, remediaciones, el texto de cada pregunta -- y eso lo
+ * escribe una persona, no una maquina. Traducirlo a maquina seria exactamente
+ * lo que la segunda negativa de esta casa prohibe.
+ *
+ * Asi que son dos ajustes distintos. Si se hubieran atado, poner la interfaz
+ * en frances habria dejado el contenido EN BLANCO: `bil()` devuelve vacio a
+ * proposito cuando falta el idioma pedido, y eso es correcto -- un expediente
+ * en un idioma con frases sueltas en otro es el defecto que el motor lleva
+ * doce fases evitando -- pero aplicado a un idioma que el motor no emite
+ * habria vaciado la pantalla sin decir por que.
+ *
+ * El documento se pide en el idioma de la interfaz cuando el motor lo emite, y
+ * en ingles cuando no. La pantalla lo DICE en vez de disimularlo. */
+const IDIOMAS_DEL_MOTOR = ["es", "en"];
+
+function idiomaDelDocumento() {
+  return IDIOMAS_DEL_MOTOR.indexOf(estado.idioma) === -1 ? "en" : estado.idioma;
+}
+
 function bil(x) {
   if (!x || typeof x !== "object") return "";
-  const v = x[estado.idioma];
+  const v = x[idiomaDelDocumento()];
   return typeof v === "string" ? v : "";
 }
 
@@ -151,7 +170,7 @@ async function pedir(metodo, camino, cuerpo) {
     method: metodo,
     headers: {
       "Authorization": "Bearer " + estado.credencial,
-      "Accept-Language": estado.idioma,
+      "Accept-Language": idiomaDelDocumento(),
       ...(cuerpo ? { "Content-Type": "application/json" } : {}),
     },
     body: cuerpo ? JSON.stringify(cuerpo) : undefined,
@@ -294,6 +313,21 @@ const CLASE_SITUACION = {
 function pintarTextos() {
   const t = T();
   document.documentElement.lang = estado.idioma;
+  // El aviso de que el documento no viene en el idioma de la pantalla.
+  const aviso = $("#idioma-doc");
+  if (aviso) {
+    const distinto = idiomaDelDocumento() !== estado.idioma;
+    aviso.textContent = distinto ? T().doc_en_otro_idioma : "";
+    aviso.classList.toggle("oculto", !distinto);
+  }
+  // LA NOTA DEL SERVIDOR SE REPINTA COMO TODO LO DEMAS.
+  //
+  // Se escribia UNA sola vez, al arrancar, asi que quien cambiaba de idioma se
+  // quedaba con ese parrafo en castellano dentro de una pantalla en aleman. Se
+  // ve a simple vista y llevaba ahi desde que la pagina tiene dos idiomas: lo
+  // que no lo cazaba era que ninguna prueba cambia el idioma y vuelve a mirar.
+  const servido = location.protocol === "http:" || location.protocol === "https:";
+  $("#servidor-nota").textContent = servido ? T().servidor_fijado : T().servidor_libre;
   document.title = t.titulo;
   const mapa = {
     "#eyebrow": "eyebrow", "#titular": "titular", "#entradilla": "entradilla",
@@ -332,9 +366,14 @@ function pintarTextos() {
   const antesRol = [...rol.selectedOptions].map((o) => o.value);
   vaciar(rol);
   for (const r of ROLES.roles) {
-    const o = el("option", null, r.nombre[estado.idioma] || r.nombre.es);
+    // El vocabulario de roles sale del MOTOR y existe en `es` y `en`, como
+    // todo el contenido normativo. Caia a `es` cuando faltaba el idioma, asi
+    // que un aleman veia la interfaz en aleman y los roles en castellano.
+    // Cae al mismo idioma al que cae el documento, que es la unica caida que
+    // esta pantalla explica.
+    const o = el("option", null, r.nombre[idiomaDelDocumento()] || r.nombre.en);
     o.value = r.id;
-    o.title = r.definicion[estado.idioma] || r.definicion.es;
+    o.title = r.definicion[idiomaDelDocumento()] || r.definicion.en;
     rol.appendChild(o);
   }
   const elegidos = antesRol.length ? antesRol : ["proveedor"];
@@ -757,9 +796,6 @@ function arrancar() {
   // para cualquier servidor. Por eso se rellena solo cuando hay origen.
   if (location.protocol === "http:" || location.protocol === "https:") {
     if (!$("#servidor").value) $("#servidor").value = location.origin;
-    $("#servidor-nota").textContent = T().servidor_fijado;
-  } else {
-    $("#servidor-nota").textContent = T().servidor_libre;
   }
   $("#fecha").value = new Date().toISOString().slice(0, 10);
   $("#alto_riesgo").value = "";

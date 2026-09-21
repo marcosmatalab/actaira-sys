@@ -132,7 +132,7 @@ docs/         ARQUITECTURA.md (las decisiones y por qué) y BACKLOG.md (los
 ```
 
 `make todo` corre las puertas: el catálogo, el cruce, los formularios, la
-ortografía del castellano, la consola y las <!--cifra:pruebas-->562<!--/cifra--> pruebas de Python, más <!--cifra:pruebas_go-->98<!--/cifra--> de Go.
+ortografía del castellano, la consola y las <!--cifra:pruebas-->563<!--/cifra--> pruebas de Python, más <!--cifra:pruebas_go-->98<!--/cifra--> de Go.
 
 Cada fase cierra con una **pasada adversarial** antes de abrir la siguiente, y
 los defectos encontrados se escriben en `docs/BACKLOG.md` con su número y su

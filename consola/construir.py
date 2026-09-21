@@ -81,7 +81,12 @@ def construir() -> str:
     js = js.replace("__TEXTOS__", json.dumps(textos, ensure_ascii=False, separators=(",", ":")))
 
     pagina = (RAIZ / "plantilla" / "pagina.html").read_text(encoding="utf-8")
-    salida = pagina.replace("__ESTILO__", css).replace("__LOGICA__", js)
+    botones = "".join(
+        f'<button data-l="{i}" aria-pressed="{str(i == "es").lower()}">'
+        f'{i.upper()}</button>' for i in textos)
+    salida = (pagina.replace("__ESTILO__", css)
+                    .replace("__LOGICA__", js)
+                    .replace("__IDIOMAS__", botones))
     # La MISMA puerta que el panel y la portada. Vivia dentro del
     # constructor del panel, asi que solo protegia al panel: esta pagina no
     # declaraba ni `<!doctype html>` ni `lang`, y llevaba asi desde la

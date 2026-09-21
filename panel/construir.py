@@ -280,7 +280,14 @@ def construir() -> str:
                                             separators=(",", ":")))
 
     pagina = (RAIZ / "plantilla" / "pagina.html").read_text(encoding="utf-8")
-    salida = pagina.replace("__ESTILO__", css).replace("__LOGICA__", js)
+    # Un boton por idioma de `textos.json`, generado. Escribirlos a mano en la
+    # plantilla es la lista que se queda corta el dia que se anade el septimo.
+    botones = "".join(
+        f'<button data-l="{i}" aria-pressed="{str(i == "es").lower()}">'
+        f'{i.upper()}</button>' for i in textos)
+    salida = (pagina.replace("__ESTILO__", css)
+                    .replace("__LOGICA__", js)
+                    .replace("__IDIOMAS__", botones))
     revisar_accesibilidad(salida, textos)
     return salida
 

@@ -56,12 +56,17 @@ def html():
 
 # --- los dos idiomas ------------------------------------------------------
 
-def test_los_dos_idiomas_tienen_las_mismas_claves():
+def test_los_seis_idiomas_tienen_las_mismas_claves():
     """Una clave que falte en uno sale como `undefined` en la pantalla de un
     cliente, y eso no lo detecta ningun test de unidad porque el fallo esta en
-    el dato y no en el codigo."""
+    el dato y no en el codigo.
+
+    Eran dos y son seis. El numero no se escribe aqui suelto: se exige que
+    esten LOS SEIS que la casa dice hablar, porque quitar uno sin darse cuenta
+    es exactamente el fallo que esto vigila.
+    """
     revisar_textos(TEXTOS)
-    assert set(TEXTOS) == {"es", "en"}
+    assert set(TEXTOS) == {"es", "en", "fr", "pt", "it", "de"}
     assert len(TEXTOS["es"]) >= 60
 
 
@@ -346,6 +351,31 @@ def test_el_panel_puede_ensenar_todo_lo_que_la_api_traduce():
         for idioma in ("es", "en"):
             assert textos[idioma].get(clave), (
                 f"falta el texto {idioma}.{clave} del boton de {vista!r}")
+
+
+def test_el_texto_se_escribe_al_pintar_y_no_al_arrancar():
+    """Lo que se escribe una sola vez se queda en el idioma de esa vez.
+
+    `#servidor-nota` se rellenaba dentro de `arrancar()`, asi que quien
+    cambiaba de idioma se quedaba con ese parrafo en castellano dentro de una
+    pantalla en aleman. Se veia a simple vista y llevaba ahi desde que la
+    pagina tiene dos idiomas.
+
+    Lo que no lo cazaba es que ninguna prueba cambia el idioma y vuelve a
+    mirar. Comprobar eso de verdad pide un navegador; lo que SI se puede
+    comprobar leyendo es la regla estructural de la que depende: el texto se
+    escribe al PINTAR, y `arrancar()` solo engancha. Cualquier `T()` dentro de
+    `arrancar()` es texto que no se va a repintar.
+    """
+    import re as _re
+
+    logica = (PANEL / "plantilla" / "logica.js").read_text(encoding="utf-8")
+    cuerpo = logica.split("function arrancar()", 1)[1]
+    cuerpo = cuerpo[:cuerpo.index("\n}\n")]
+    escritos = [l.strip() for l in cuerpo.splitlines() if _re.search(r"\bT\(\)\.", l)]
+    assert not escritos, (
+        "`arrancar()` escribe texto que no se repinta al cambiar de idioma: "
+        f"{escritos}")
 
 
 def test_toda_vista_de_rutas_es_alcanzable_desde_alguna_categoria():

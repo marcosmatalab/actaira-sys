@@ -15,14 +15,27 @@ RAIZ = Path(__file__).resolve().parents[2]
 CONSOLA = RAIZ / "consola"
 
 
-def test_los_dos_idiomas_cubren_las_mismas_claves():
-    """Una clave que falte en un idioma sale como `undefined` en la pantalla de un cliente."""
+SEIS = {"es", "en", "fr", "pt", "it", "de"}
+
+
+def test_los_seis_idiomas_cubren_las_mismas_claves():
+    """Una clave que falte en un idioma sale como `undefined` en la pantalla de un cliente.
+
+    Eran dos y son seis. Lo que se exige no es «los que haya»: son LOS SEIS que
+    la casa dice hablar, porque perder uno sin darse cuenta es justo el fallo
+    que esto vigila.
+    """
     t = json.loads((CONSOLA / "textos.json").read_text(encoding="utf-8"))
-    assert set(t) == {"es", "en"}
-    assert set(t["es"]) == set(t["en"]), set(t["es"]) ^ set(t["en"])
-    for idioma in ("es", "en"):
+    assert set(t) == SEIS
+    for idioma in sorted(SEIS):
+        assert set(t[idioma]) == set(t["es"]), set(t[idioma]) ^ set(t["es"])
+        # Las claves de los diccionarios anidados son DATOS con los que la
+        # pagina busca: traducirlas dejaria la busqueda sin encontrar nada.
         assert set(t[idioma]["preguntas"]) == set(t["es"]["preguntas"])
         assert set(t[idioma]["roles_n"]) == set(t["es"]["roles_n"])
+        assert set(t[idioma]["reglas"]) == set(t["es"]["reglas"])
+        assert set(t[idioma]["soa_proc"]) == set(t["es"]["soa_proc"])
+        assert len(t[idioma]["pasos"]) == len(t["es"]["pasos"])
         for clave, valor in t[idioma].items():
             if isinstance(valor, str):
                 assert valor.strip(), f"{idioma}.{clave} vacio"
@@ -81,7 +94,7 @@ def _js() -> str:
     return (CONSOLA / "plantilla" / "logica.js").read_text(encoding="utf-8")
 
 
-def test_toda_clave_de_texto_que_usa_la_logica_existe_en_los_dos_idiomas():
+def test_toda_clave_de_texto_que_usa_la_logica_existe_en_los_seis_idiomas():
     """La puerta contra la fuga de idioma, cuarta reincidencia en este arbol.
 
     Una clave que la logica lee y `textos.json` no trae sale como `undefined`
@@ -94,7 +107,13 @@ def test_toda_clave_de_texto_que_usa_la_logica_existe_en_los_dos_idiomas():
     usadas = set(re.findall(r"\bt\.([a-z_0-9]+)\b", js))
     usadas |= set(re.findall(r'\bt\["([a-z_0-9]+)"\]', js))
     usadas |= set(re.findall(r'\["[a-z-]+","([a-z_0-9]+)"\]', js.replace(" ", "")))
-    faltan = sorted(k for k in usadas if k not in t["es"] or k not in t["en"])
+    # Un CODIGO DE IDIOMA no es una clave de texto. La heuristica de arriba
+    # busca pares `["algo","otra"]` y se comia `["es","en"]`, que es la lista
+    # de los idiomas en los que el catalogo existe de verdad. Una puerta que
+    # denuncia lo que no es un fallo se acaba apagando.
+    usadas -= SEIS
+    faltan = sorted(k for k in usadas
+                    if any(k not in t[i] for i in sorted(SEIS)))
     assert faltan == [], faltan
 
 

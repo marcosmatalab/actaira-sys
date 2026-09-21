@@ -1,6 +1,25 @@
 const DATOS = __DATOS__;
 const T = __TEXTOS__;
 let idioma = "es", fecha = "2026-09-20", abierta = null, vista = "aplica", filtro = "todos";
+
+/* EL IDIOMA DE LA INTERFAZ NO ES EL DEL CATALOGO, Y NO PUEDE SERLO.
+ *
+ * Esta pagina habla seis idiomas. El CATALOGO -- los titulos de las
+ * obligaciones, los de los controles del Anexo A, el texto de cada pregunta y
+ * su ayuda -- esta en dos, `es` y `en`, porque es contenido normativo y lo
+ * escribe una persona. Traducirlo a maquina seria exactamente lo que la
+ * segunda negativa de esta casa prohibe, y ademas es texto que va a un
+ * auditor.
+ *
+ * Si se hubieran atado, poner la interfaz en frances habria escrito
+ * `undefined` en cada titulo de la tabla: `titulo["fr"]` no existe. Peor que
+ * vacio, porque vacio se nota y `undefined` parece un dato.
+ *
+ * Asi que el catalogo se lee en el idioma de la interfaz cuando existe, y en
+ * ingles cuando no. Y la pagina lo DICE. */
+const IDIOMAS_DEL_CATALOGO = ["es", "en"];
+const idiomaCat = () =>
+  IDIOMAS_DEL_CATALOGO.indexOf(idioma) === -1 ? "en" : idioma;
 /* Las respuestas viven SOLO en memoria. Nada de almacenamiento del navegador:
    son declaraciones con nombre y cargo dentro, y lo que aqui se guardara se
    quedaria en el disco de quien abriera la pagina despues. Salen por descarga,
@@ -144,13 +163,13 @@ function pintar(){
   document.getElementById("lista").innerHTML = obls.map(o => `
     <button class="fila" data-id="${o.id}">
       <span class="art">Art. ${esc(o.articulo)}</span>
-      <span><span class="tit">${esc(o.titulo[idioma])}</span>
+      <span><span class="tit">${esc(o.titulo[idiomaCat()])}</span>
         <span class="meta">${esc(t.niveles[o.nivel])}${o.iso42001.length?" · "+o.iso42001.join(" "):""}</span></span>
       <span class="pill" data-s="${res[o.id]}">${esc(t[res[o.id]])}</span>
     </button>`).join("");
 
   document.getElementById("tbody-iso").innerHTML = DATOS.controles_iso.map(c => `
-    <tr><td class="mono">${esc(c.id)}</td><td>${esc(c.titulo[idioma])}</td>
+    <tr><td class="mono">${esc(c.id)}</td><td>${esc(c.titulo[idiomaCat()])}</td>
     <td><span class="pill nivel">${esc(t.niveles[c.nivel])}</span></td>
     <td class="mono">${c.aiact.map(a=>"Art. "+a.replace("AIA-","").replace(/^0+/,"")).join(", ")||"—"}</td></tr>`).join("");
 
@@ -217,7 +236,7 @@ function pintarCuestionario(){
   document.getElementById("q-lista").innerHTML = vis.map(q => {
     const e = estadoPregunta(q), v = respuestas[q.id];
     const refs = q.por_que.map(r =>
-      `<span class="ref" data-m="${r.marco}">${esc(r.referencia[idioma])}</span>`).join("");
+      `<span class="ref" data-m="${r.marco}">${esc(r.referencia[idiomaCat()])}</span>`).join("");
     let campo;
     if (q.formato === "si_no" || q.formato === "eleccion"){
       const ops = q.formato === "si_no"
@@ -228,7 +247,7 @@ function pintarCuestionario(){
         const marcado = multi ? (Array.isArray(v) && v.includes(o.valor)) : String(v) === o.valor;
         return `<label><input type="${multi?"checkbox":"radio"}" name="n-${q.id}"
           data-q="${q.id}" data-o="${esc(o.valor)}" ${marcado?"checked":""}>
-          <span>${esc(o[idioma] !== undefined ? o[idioma] : o.valor)}</span></label>`;
+          <span>${esc(o[idiomaCat()] !== undefined ? o[idiomaCat()] : o.valor)}</span></label>`;
       }).join("") + `</div>`;
     } else if (q.formato === "texto_largo" || q.formato === "lista" || q.formato === "persona"){
       campo = `<textarea rows="3" data-q="${q.id}">${esc(v === undefined ? "" : (Array.isArray(v)?v.join("\n"):v))}</textarea>`;
@@ -239,9 +258,9 @@ function pintarCuestionario(){
       ? `<span class="mal">${esc(t.q_corta)}: ${(q.exige.minimo_caracteres)}</span>` : "";
     return `<div class="q" data-e="${e}">
       <span class="qid">${esc(q.id)} · ${esc(t.q_dest_n[q.destinatario])}</span>
-      <h4>${esc(q.texto[idioma])}</h4>
+      <h4>${esc(q.texto[idiomaCat()])}</h4>
       <div class="porque">${refs}</div>
-      <p class="ayuda">${esc(q.ayuda[idioma])}</p>
+      <p class="ayuda">${esc(q.ayuda[idiomaCat()])}</p>
       ${campo}
       <div class="pie2">
         <span>${esc(t.q_vigencia)} ${q.vigencia_dias} ${esc(t.q_dias)}</span>
@@ -332,14 +351,14 @@ function pintarSoa(res){
   ].map(([s, v, lb]) => `<div class="cifra" data-s="${s}"><b>${v}</b><span>${esc(lb)}</span></div>`).join("");
 
   document.getElementById("tbody-soa").innerHTML = filas.map(({c, proc, just}) => `
-    <tr><td class="mono">${esc(c.id)}<br><span class="just">${esc(c.titulo[idioma])}</span></td>
+    <tr><td class="mono">${esc(c.id)}<br><span class="just">${esc(c.titulo[idiomaCat()])}</span></td>
       <td><span class="pill" data-s="${proc==="pendiente_de_justificar"?"indeterminada":"ata"}">${
         esc(proc==="pendiente_de_justificar"?t.soa_pordecidir:t.soa_si)}</span></td>
       <td>${esc(t.soa_proc[proc])}</td>
       <td class="just">${esc(just)}</td></tr>`).join("");
 
   document.getElementById("tbody-cl").innerHTML = DATOS.clausulas.map(c => `
-    <tr><td class="mono">${esc(c.clausula)}</td><td>${esc(c.titulo[idioma])}</td>
+    <tr><td class="mono">${esc(c.clausula)}</td><td>${esc(c.titulo[idiomaCat()])}</td>
       <td>${c.exige_informacion_documentada ? esc(t.cl_si) : esc(t.cl_no)}</td>
       <td class="mono">${c.produce ? esc(c.produce) : esc(t.cl_no)}</td></tr>`).join("");
 }
@@ -357,10 +376,10 @@ function pintarDetalle(id, res){
   if (!o){ document.getElementById("detalle").innerHTML = ""; return; }
   const s = (res || resolver())[id];
   document.getElementById("detalle").innerHTML = `
-    <div class="detalle" role="dialog" aria-label="${esc(o.titulo[idioma])}">
+    <div class="detalle" role="dialog" aria-label="${esc(o.titulo[idiomaCat()])}">
       <button class="cerrar" id="cerrar">${esc(t.cerrar)}</button>
       <p class="eyebrow">Art. ${esc(o.articulo)} · ${esc(o.id)}</p>
-      <h3>${esc(o.titulo[idioma])}</h3>
+      <h3>${esc(o.titulo[idiomaCat()])}</h3>
       <span class="pill" data-s="${s}">${esc(t[s])}</span>
       <div class="regla">${esc(reglaDe(o, s))}</div>
       <dl>
@@ -368,7 +387,7 @@ function pintarDetalle(id, res){
         <dt>${esc(t.det_desde)}</dt><dd>${esc(desdeDe(o) || o.aplica_desde)}</dd>
         <dt>${esc(t.det_roles)}</dt><dd>${o.roles.map(r=>esc(t.roles_n[r]||r)).join(", ")}</dd>
         ${o.comprueba.length ? `<dt>${esc(t.det_comprueba)}</dt><dd>${o.comprueba.map(c=>`<code>${esc(c)}</code>`).join(" ")}</dd>` : ""}
-        ${o.iso42001.length ? `<dt>${esc(t.det_iso)}</dt><dd>${o.iso42001.map(i=>esc(i)+" "+esc((DATOS.controles_iso.find(c=>c.id===i)||{titulo:{}}).titulo[idioma]||"")).join("<br>")}</dd>` : ""}
+        ${o.iso42001.length ? `<dt>${esc(t.det_iso)}</dt><dd>${o.iso42001.map(i=>esc(i)+" "+esc((DATOS.controles_iso.find(c=>c.id===i)||{titulo:{}}).titulo[idiomaCat()]||"")).join("<br>")}</dd>` : ""}
       </dl></div>`;
   document.getElementById("cerrar").onclick = () => { abierta = null; document.getElementById("detalle").innerHTML = ""; };
 }
