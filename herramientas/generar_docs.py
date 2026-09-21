@@ -55,7 +55,12 @@ sys.path.insert(0, str(RAIZ / "motor" / "src"))
 from actaira_motor import __version__                                  # noqa: E402
 from actaira_motor.catalogo.cargador import cargar                     # noqa: E402
 
-DOCS = (RAIZ / "docs" / "ARQUITECTURA.md",)
+# El README entraba aqui tarde y por lo mismo que entro ARQUITECTURA.md: tenia
+# DOS cifras escritas a mano y las dos estaban viejas. La insignia decia 180
+# pruebas con 591 en el arbol, y la prosa decia «Diecinueve» defectos
+# adversariales con noventa y tantos en el backlog. Es el documento que mas
+# gente lee y el unico que no estaba bajo este mecanismo.
+DOCS = (RAIZ / "docs" / "ARQUITECTURA.md", RAIZ / "README.md")
 
 _MARCA = re.compile(r"<!--cifra:([a-z0-9_]+)-->(.*?)<!--/cifra-->", re.S)
 
@@ -94,6 +99,21 @@ def _indeterminadas_con_perfil_vacio() -> int:
                if v.situacion is Situacion.INDETERMINADA)
 
 
+def _defectos_adversariales() -> int:
+    """Los defectos con numero que el backlog da por cerrados.
+
+    Se cuentan del propio fichero y no de la memoria de nadie: el README decia
+    «Diecinueve hasta hoy» mucho despues de pasar de noventa, que es la misma
+    clase de cifra avalada y falsa que este modulo existe para quitar.
+    """
+    crudo = (RAIZ / "docs" / "BACKLOG.md").read_text(encoding="utf-8")
+    # El numero puede ir seguido de punto o de coma: hay una entrada que
+    # empieza «D-23, y esta la cometio el propio arreglo». Una expresion que
+    # solo admitia el punto se dejaba esa fuera y publicaba una menos, que en
+    # un modulo dedicado a que las cifras sean ciertas tiene su gracia.
+    return len(set(re.findall(r"\*\*(D-\d+)[.,]", crudo)))
+
+
 def cifras() -> dict[str, str]:
     c = cargar(str(RAIZ / "catalogo"))
     por_nivel = Counter(o.nivel for o in c.obligaciones.values())
@@ -119,6 +139,7 @@ def cifras() -> dict[str, str]:
         "paquetes_de_reglas": str(len(reglas)),
         "reglas": str(n_reglas),
         "pruebas": str(_pruebas()),
+        "defectos_adversariales": str(_defectos_adversariales()),
         "pruebas_go": str(_pruebas_go()),
         # El ejemplo trabajado de la seccion 2: cuantas obligaciones quedan sin
         # resolver con un perfil VACIO. Es la cifra que sostiene la afirmacion

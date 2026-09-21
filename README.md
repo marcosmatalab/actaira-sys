@@ -6,7 +6,7 @@
 Con procedencia por afirmación, y sin inventarse un porcentaje.
 
 [![Licencia](https://img.shields.io/badge/licencia-Apache--2.0-90099C)](LICENSE)
-[![Pruebas](https://img.shields.io/badge/pruebas-180-90099C)](motor/tests)
+[![Pruebas](https://img.shields.io/badge/pruebas-en%20motor%2Ftests-90099C)](motor/tests)
 
 </div>
 
@@ -115,16 +115,19 @@ catalogo/     el contenido normativo como DATOS, no como código, para que lo
 motor/        Python. Un motor genérico de controles; los artículos son JSON
 consola/      se construye desde el motor con `make consola`, no se edita
 integraciones/ SARIF y la plantilla de CI
+.github/      la puerta corrida en DOS sistemas. Un defecto que solo se ve en
+              uno es invisible mientras las pruebas corran en el otro, y eso
+              ya pasó dos veces
 docs/         ARQUITECTURA.md (las decisiones y por qué) y BACKLOG.md (los
               defectos encontrados en cada pasada adversarial, con su nombre)
 ```
 
 `make todo` corre las puertas: el catálogo, el cruce, los formularios, la
-ortografía del castellano, la consola y las 180 pruebas.
+ortografía del castellano, la consola y las <!--cifra:pruebas-->562<!--/cifra--> pruebas de Python, más <!--cifra:pruebas_go-->98<!--/cifra--> de Go.
 
 Cada fase cierra con una **pasada adversarial** antes de abrir la siguiente, y
 los defectos encontrados se escriben en `docs/BACKLOG.md` con su número y su
-lección. Diecinueve hasta hoy. Los más caros no eran fallos: eran respuestas
+lección. <!--cifra:defectos_adversariales-->96<!--/cifra--> hasta hoy. Los más caros no eran fallos: eran respuestas
 plausibles y falsas, que es lo peor que puede emitir una herramienta que va a
 un auditor.
 

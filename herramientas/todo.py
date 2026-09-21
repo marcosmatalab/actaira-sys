@@ -810,10 +810,16 @@ def fase_identidad(reg: list[str]) -> None:
     escrito, probado y `main` le pasaba `nil` -- asi que aqui se levanta el
     binario y se le habla.
 
-    El emisor es un doble local: una clave RSA de este proceso. Contra un Entra
-    ID o un Keycloak de verdad esto NO esta probado, y se dice aqui en vez de
-    dejarlo suponer -- lo que se demuestra es que el servidor verifica firmas,
-    reclamaciones y papeles, no que hable con un proveedor concreto.
+    El emisor es un doble local: una clave RSA de este proceso. Eso demuestra
+    que el servidor verifica firmas, reclamaciones y papeles, y no que hable
+    con un proveedor concreto: un doble emite lo que quien lo escribio creia
+    que emite un proveedor, asi que esta de acuerdo con el verificador por
+    construccion.
+
+    De eso se ocupa `identidad_real`, que levanta un Keycloak y le habla. Esta
+    fase se queda porque es RAPIDA y no necesita docker: cubre los casos de
+    ataque -- `alg:none`, caducado, otra audiencia -- que exigen forjar
+    testigos, y un proveedor de verdad no forja testigos malos a peticion.
     """
     if not shutil.which("go"):
         raise Omitida("`go` no esta en el PATH")
@@ -953,14 +959,311 @@ def fase_identidad(reg: list[str]) -> None:
             _afirma(not malos, "identidad:\n  " + "\n  ".join(malos))
             reg.append(f"OIDC contra el servidor levantado: {len(casos) + 1} casos, "
                        f"papeles, aislamiento entre clientes y cabeceras ignoradas")
-            reg.append("  (el emisor es un doble local: contra un proveedor de "
-                       "identidad real esto NO esta probado)")
+            reg.append("  (el emisor es un doble local; contra uno de verdad "
+                       "lo prueba la fase `identidad_real`)")
         finally:
             proceso.terminate()
             try:
                 proceso.wait(timeout=10)
             except subprocess.TimeoutExpired:
                 proceso.kill()
+
+def fase_identidad_real(reg: list[str]) -> None:
+    """Lo mismo que `identidad`, pero contra un proveedor que no escribimos.
+
+    La fase anterior firma los testigos con una clave de su propio proceso, asi
+    que el emisor y el verificador estan de acuerdo POR CONSTRUCCION: el doble
+    emite lo que quien lo escribio creia que emite un proveedor. Aqui el
+    testigo lo firma un Keycloak de verdad -- certificado por la OpenID
+    Foundation, levantado en un contenedor -- y las claves se leen de su juego
+    publicado, no se escriben a mano.
+
+    No hacen falta credenciales de nadie. Eso era lo que parecia bloquear esto,
+    y no lo era: el proveedor se levanta aqui.
+
+    Se OMITE si no hay docker, con su motivo, en vez de contarse como aprobada.
+    """
+    try:
+        from cryptography.hazmat.primitives import serialization  # noqa: F401
+    except ImportError:
+        raise Omitida("falta `cryptography` para leer el juego de claves") from None
+    if not shutil.which("go"):
+        raise Omitida("`go` no esta en el PATH")
+
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import idp
+
+    motivo = idp.disponible()
+    if motivo:
+        raise Omitida(f"{motivo}; sin el, el unico emisor es el doble local")
+
+    import json as _json
+    import secrets
+    import socket
+
+    try:
+        base_idp, lo_arranque_yo = idp.levantar()
+    except idp.NoSePuede as e:
+        raise Omitida(str(e)) from None
+
+    try:
+        idp.configurar(base_idp)
+        tok_ana = idp.testigo(base_idp, "ana")
+        tok_beto = idp.testigo(base_idp, "beto")
+        conf = idp.emisor(base_idp)
+
+        cab = idp.cabecera(tok_ana)
+        cla = idp.reclamaciones(tok_ana)
+
+        # Lo que el doble no podia ensenar, comprobado como PROPIEDAD y no como
+        # curiosidad: si algun dia Keycloak deja de mandar `aud` como lista,
+        # esta puerta lo dice en vez de seguir pasando por otro camino.
+        _afirma(isinstance(cla.get("aud"), list) and "actaira" in cla["aud"],
+                f"se esperaba `aud` como LISTA con actaira dentro, y vino {cla.get('aud')!r}")
+        _afirma(cab.get("kid") in conf["claves"],
+                "el `kid` del testigo no esta en el juego de claves publicado")
+        ajenos = [r for r in cla.get("roles", []) if r not in
+                  ("lectura", "observacion", "remediacion", "admin")]
+        _afirma(ajenos, "el proveedor no metio ningun rol propio: esta prueba ya "
+                        "no comprueba que los roles desconocidos se ignoren")
+        _afirma(cla.get("actaira_cliente") == "acme",
+                f"el testigo no trae `actaira_cliente`: {cla.get('actaira_cliente')!r}")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            t = Path(tmp)
+            for quien in ("acme", "beta"):
+                (t / "clientes" / quien).mkdir(parents=True)
+                shutil.copytree(FIXTURE, t / "clientes" / quien / "trabajo")
+
+            emisor = t / "emisor.json"
+            emisor.write_text(_json.dumps(conf), encoding="utf-8")
+            os.chmod(emisor, 0o600)
+            cred = t / "cred.json"
+            cred.write_text(_json.dumps({"est-" + secrets.token_urlsafe(24): "acme"}),
+                            encoding="utf-8")
+            os.chmod(cred, 0o600)
+
+            exe = lanzador_del_motor(t)
+            binario = t / ("api.exe" if os.name == "nt" else "api")
+            r = subprocess.run(["go", "build", "-o", str(binario), "./cmd/actaira-api"],
+                               cwd=RAIZ / "plataforma", capture_output=True,
+                               text=True, encoding="utf-8", errors="replace")
+            _afirma(r.returncode == 0, f"no compila el servidor: {r.stderr[-800:]}")
+
+            with socket.socket() as s:
+                s.bind(("127.0.0.1", 0))
+                puerto = s.getsockname()[1]
+            base = f"http://127.0.0.1:{puerto}"
+
+            env = dict(os.environ)
+            if os.name == "nt":
+                env["ACTAIRA_PERMISOS_AFIRMADOS_POR_EL_OPERADOR"] = "1"
+            proceso = subprocess.Popen(
+                [str(binario), "--clientes", str(t / "clientes"),
+                 "--credenciales", str(cred), "--emisor", str(emisor),
+                 "--motor", str(exe), "--escucha", f"127.0.0.1:{puerto}",
+                 "--revisar-cada", "0"],
+                cwd=RAIZ / "plataforma", env=env,
+                stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
+                encoding="utf-8", errors="replace")
+            try:
+                vivo = False
+                for _ in range(60):
+                    if proceso.poll() is not None:
+                        raise AssertionError(
+                            f"el servidor murio: {proceso.stdout.read()[-1200:]}")
+                    try:
+                        urllib.request.urlopen(base + "/salud", timeout=1).read()
+                        vivo = True
+                        break
+                    except (urllib.error.URLError, OSError):
+                        time.sleep(0.25)
+                _afirma(vivo, "el servidor no respondio a /salud")
+
+                def llamar(metodo, ruta, tok, datos=None, cabeceras=None):
+                    pet = urllib.request.Request(
+                        base + ruta, data=datos, method=metodo,
+                        headers={"Content-Type": "application/json",
+                                 "Authorization": f"Bearer {tok}",
+                                 **(cabeceras or {})})
+                    try:
+                        with urllib.request.urlopen(pet, timeout=240) as resp:
+                            return resp.status
+                    except urllib.error.HTTPError as e:
+                        return e.code
+
+                perfil = _json.dumps({"roles": ["proveedor"], "alto_riesgo": "si",
+                                      "via_anexo": "anexo_iii",
+                                      "fecha": "2027-12-02"}).encode()
+                leer_acme = "/v1/clientes/acme/noconformidades"
+                leer_beta = "/v1/clientes/beta/noconformidades"
+
+                casos = [
+                    # Ana es de acme y solo tiene lectura, segun KEYCLOAK.
+                    ("ana lee lo suyo", "GET", leer_acme, tok_ana, None, 200),
+                    ("ana NO observa", "POST", "/v1/clientes/acme/plan",
+                     tok_ana, perfil, 403),
+                    ("ana NO lee beta", "GET", leer_beta, tok_ana, None, 401),
+                    # Beto es de beta y tiene lectura y observacion.
+                    ("beto lee lo suyo", "GET", leer_beta, tok_beto, None, 200),
+                    ("beto observa lo suyo", "POST", "/v1/clientes/beta/plan",
+                     tok_beto, perfil, 200),
+                    ("beto NO lee acme", "GET", leer_acme, tok_beto, None, 401),
+                    # Y un testigo del reino `master`, que es un testigo
+                    # LEGITIMO del mismo proveedor emitido para otra cosa.
+                    ("otro reino del mismo proveedor", "GET", leer_acme,
+                     idp._admin(base_idp), None, 401),
+                ]
+                malos = []
+                for nombre, metodo, ruta, tok, datos, esperado in casos:
+                    salio = llamar(metodo, ruta, tok, datos)
+                    if salio != esperado:
+                        malos.append(f"{nombre}: se esperaba {esperado} y salio {salio}")
+
+                # Las cabeceras siguen sin dar permisos, tambien con un testigo
+                # que no escribimos nosotros.
+                salio = llamar("POST", "/v1/clientes/acme/plan", tok_ana, perfil,
+                               {"X-Roles": "admin", "X-Actaira-Cliente": "beta",
+                                "X-Tenant-Id": "beta"})
+                if salio != 403:
+                    malos.append(f"unas cabeceras de roles dieron permisos: {salio}")
+
+                _afirma(not malos, "identidad real:\n  " + "\n  ".join(malos))
+                reg.append(f"Keycloak {idp.VERSION_LEGIBLE} REAL en contenedor: "
+                           f"{len(casos) + 1} casos con testigos que NO escribio "
+                           f"esta casa, claves leidas de su JWKS")
+                reg.append(f"  aud vino como lista {cla['aud']}, y con "
+                           f"{len(ajenos)} roles del propio proveedor que se ignoran")
+                reg.append("  (Entra ID sigue sin probarse: `iss` con inquilino, "
+                           "`oid` en vez de `sub`, roles en `wids`)")
+            finally:
+                proceso.terminate()
+                try:
+                    proceso.wait(timeout=10)
+                except subprocess.TimeoutExpired:
+                    proceso.kill()
+    finally:
+        if lo_arranque_yo:
+            idp.parar()
+
+# Las pruebas que cambian de respuesta segun el sistema. No son todas: son las
+# que YA cazaron un defecto que solo se veia desde el otro lado.
+#
+#   test_conectores   D-94: `chmod 0600` sobre un directorio le quita el
+#                     permiso de entrar, asi que el conector de git quedaba
+#                     roto en todo POSIX. Cinco pruebas verdes en Windows.
+#   test_entorno      D-93: el extra `dev` no declaraba `pyyaml`. Verde en
+#                     Windows porque el interprete lo traia por otra via.
+#   test_portabilidad finales de linea, rutas y permisos.
+SENSIBLES_AL_SISTEMA = ("test_conectores.py", "test_entorno.py",
+                        "test_portabilidad.py")
+
+
+def fase_matriz(reg: list[str]) -> None:
+    """Que la puerta se corra en DOS sistemas, y que no deje de correrse.
+
+    B-004 no era un hueco de medida, era uno de proceso: todo lo que esta
+    puerta mide se media en un solo sistema, y los dos defectos que solo se
+    ven desde el otro llevaban meses invisibles. La matriz de integracion
+    continua es el arreglo, pero un fichero de flujo de trabajo que nadie ha
+    ejecutado es una promesa, no una comprobacion. Asi que esta fase hace dos
+    cosas distintas:
+
+      1. AFIRMA sobre el fichero de la matriz. Si alguien le quita un sistema,
+         o afloja el `--sin-omitir`, o deja de exigir cero saltadas bajo el
+         detector de carreras, esto se pone rojo. Es lo que impide que B-004
+         se reabra por edicion.
+      2. Si desde aqui se alcanza un SEGUNDO sistema -- WSL, en una maquina
+         Windows -- corre en el las pruebas sensibles al sistema de verdad. Si
+         no se alcanza, se OMITE con el motivo, que es lo que esta casa hace
+         con lo que no puede medir.
+
+    Lo segundo es una MUESTRA y se dice: la suite entera en los dos sistemas es
+    trabajo de la integracion continua, no de la maquina de quien desarrolla.
+    """
+    try:
+        import yaml
+    except ImportError:
+        raise Omitida("falta `yaml` para leer el fichero de la matriz") from None
+
+    flujo = RAIZ / ".github" / "workflows" / "ci.yml"
+    _afirma(flujo.exists(), f"no existe {flujo}: sin el, nadie corre esto en dos sistemas")
+    doc = yaml.safe_load(flujo.read_text(encoding="utf-8"))
+    crudo = flujo.read_text(encoding="utf-8")
+
+    tareas = doc.get("jobs", {})
+    _afirma("puerta" in tareas, "el flujo no tiene la tarea `puerta`")
+    estrategia = tareas["puerta"].get("strategy", {})
+    matriz = estrategia.get("matrix", {})
+
+    sistemas = matriz.get("sistema", [])
+    faltan = [s for s in ("ubuntu-latest", "windows-latest") if s not in sistemas]
+    _afirma(not faltan, f"la matriz no corre en {faltan}. Los dos defectos que "
+                        f"cerraron B-004 solo se veian uno en cada sistema")
+
+    _afirma(estrategia.get("fail-fast") is False,
+            "sin `fail-fast: false` el primer rojo cancela el otro sistema, que "
+            "es justo el dato por el que existe la matriz")
+
+    pitones = [str(v) for v in matriz.get("python", [])]
+    _afirma(len(pitones) >= 2,
+            f"la matriz prueba una sola version de Python ({pitones}): "
+            f"`pyproject.toml` promete mas de una")
+
+    _afirma("--sin-omitir" in crudo,
+            "el flujo no corre la puerta con `--sin-omitir` en ninguna parte: "
+            "sin eso, una fase que deje de poder medirse se calla y el resumen "
+            "sigue diciendo «0 en rojo»")
+    _afirma("-race" in crudo,
+            "el flujo no corre las pruebas de la plataforma bajo el detector de "
+            "carreras, que es lo que B-004 pedia")
+    _afirma("se saltaron" in crudo and "exit 1" in crudo,
+            "el flujo no falla cuando se saltan pruebas en un agente donde no "
+            "falta nada: una prueba que se salta no es una que pasa")
+
+    reg.append(f"matriz declarada: {len(sistemas)} sistemas x {len(pitones)} "
+               f"versiones de Python, sin omisiones en Linux y con -race")
+
+    # --- y ahora, el otro sistema de verdad, si se alcanza ------------------
+    if os.name != "nt":
+        raise Omitida("desde aqui no se alcanza un segundo sistema; la matriz "
+                      "entera es trabajo de la integracion continua")
+    if not shutil.which("wsl.exe"):
+        raise Omitida("no hay WSL para correr el otro lado; la matriz entera es "
+                      "trabajo de la integracion continua")
+
+    ruta = str(RAIZ).replace("\\", "/")
+    unidad, resto = ruta[0].lower(), ruta[2:]
+    dentro = f"/mnt/{unidad}{resto}"
+    guion = (
+        f'V=$HOME/.venvs/actaira; '
+        f'[ -x $V/bin/python ] || {{ echo FALTA_ENTORNO; exit 9; }}; '
+        f'cd "{dentro}" || {{ echo NO_LLEGA_AL_ARBOL; exit 9; }}; '
+        f'PYTHONPATH="{dentro}/motor/src" $V/bin/python -m pytest '
+        + " ".join(f"motor/tests/{n}" for n in SENSIBLES_AL_SISTEMA)
+        + ' -q 2>&1 | tail -4'
+    )
+    r = subprocess.run(["wsl.exe", "-e", "bash", "-lc", guion],
+                       capture_output=True, text=True, encoding="utf-8",
+                       errors="replace", timeout=900)
+    salida = (r.stdout or "").replace("\x00", "").strip()
+    if "FALTA_ENTORNO" in salida:
+        raise Omitida(
+            "hay WSL pero sin entorno preparado. Una vez: "
+            "`wsl -e bash -lc \'python3 -m venv $HOME/.venvs/actaira && "
+            "$HOME/.venvs/actaira/bin/pip install -e \"<el arbol>[dev]\"\'`")
+    if "NO_LLEGA_AL_ARBOL" in salida:
+        raise Omitida(f"WSL no ve el arbol en {dentro}")
+
+    ultima = salida.splitlines()[-1] if salida else ""
+    _afirma("failed" not in ultima and "error" not in ultima.lower(),
+            f"las pruebas sensibles al sistema fallan en el OTRO sistema:\n"
+            f"  {salida[-900:]}")
+    _afirma("passed" in ultima,
+            f"no se reconoce el resultado del otro sistema: {ultima!r}")
+    reg.append(f"y corridas de verdad en el otro sistema (WSL): {ultima}")
+    reg.append("  (es una MUESTRA -- las tres que ya cazaron un defecto de "
+               "sistema --, no la suite entera)")
 
 
 FASES: dict[str, Callable[[list[str]], None]] = {
@@ -983,11 +1286,13 @@ FASES: dict[str, Callable[[list[str]], None]] = {
     "api": fase_api,
     "paquete": fase_paquete,
     "identidad": fase_identidad,
+    "identidad_real": fase_identidad_real,
+    "matriz": fase_matriz,
     "documentacion": fase_documentacion,
 }
 
 
-def correr(nombres: list[str]) -> int:
+def correr(nombres: list[str], sin_omitir: bool = False) -> int:
     resultados: list[Resultado] = []
     for nombre in nombres:
         print(f"--- {nombre} " + "-" * max(0, 66 - len(nombre)), flush=True)
@@ -1021,6 +1326,18 @@ def correr(nombres: list[str]) -> int:
     # Una fase omitida no suma al verde, pero tampoco se convierte en rojo: lo
     # que no se pudo medir se dice, y quien lee decide. Lo que no se hace nunca
     # es contarla como aprobada, que es como un verde deja de significar algo.
+    #
+    # SALVO CON `--sin-omitir`, Y ESE ES EL PUNTO.
+    #
+    # En la maquina de quien desarrolla, omitir por falta de `docker` o de
+    # `node` es razonable. En una maquina de integracion continua, donde TODO
+    # esta instalado a proposito, una omision no significa «aqui no se puede»:
+    # significa que algo dejo de estar disponible y nadie se entero. Sin esta
+    # bandera, la forma mas facil de que una fase deje de medir para siempre es
+    # que empiece a omitirse, porque el resumen sigue diciendo «0 en rojo».
+    if sin_omitir and omitidas:
+        print("y se pidio --sin-omitir: en esta maquina una omision es un fallo")
+        return 1
     return 1 if fallos else 0
 
 
@@ -1028,6 +1345,10 @@ def main() -> int:
     p = argparse.ArgumentParser(description="La puerta de aceptacion de Actaira.")
     p.add_argument("fases", nargs="*", help="las fases a correr; por omision, todas")
     p.add_argument("--listar", action="store_true", help="los nombres de las fases")
+    p.add_argument("--sin-omitir", action="store_true",
+                   help="una fase omitida cuenta como fallo. Para la integracion "
+                        "continua, donde todo esta instalado y una omision "
+                        "significa que algo se rompio, no que no se pueda medir")
     a = p.parse_args()
     if a.listar:
         for nombre in FASES:
@@ -1037,7 +1358,7 @@ def main() -> int:
     desconocidas = [n for n in nombres if n not in FASES]
     if desconocidas:
         p.error(f"fases desconocidas: {desconocidas}. Las que hay: {list(FASES)}")
-    return correr(nombres)
+    return correr(nombres, sin_omitir=a.sin_omitir)
 
 
 if __name__ == "__main__":

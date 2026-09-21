@@ -18,13 +18,6 @@ Regla 2: una pasada por fase, y solo puede producir un arreglo o una linea aqui.
   cliente que haga `from mi_infra.ia import cliente` sale sin detectar. Es el
   precio aceptado de matar los falsos positivos, y esta escrito en el paquete de
   reglas.
-- **B-004. Nadie corre la suite en Linux salvo a mano.** El detector de
-  carreras y las dos pruebas de permisos ya se han corrido —en WSL, con Go
-  1.26.7 y gcc 13.3: ciento quince corridas, cero saltadas, cero avisos de
-  carrera— pero eso fue una vez y a mano. Todo lo que encontró esa pasada
-  (D-93, D-94) era invisible desde Windows, así que la lección no es que se
-  corriera: es que no se corre sola. Cierra el día que haya integración
-  continua con una matriz de dos sistemas.
 
 ## Cerrado en la pasada adversarial de la fase 2
 
@@ -1206,10 +1199,8 @@ la puerta, porque la puerta se corre a sí misma con el entorno ya arreglado.
 
 ### Lo que esta pasada NO comprobó, dicho para que nadie lo suponga
 
-- El OIDC contra un proveedor de identidad real. La fase `identidad` ya lo
-  declara ella misma: el emisor es un doble local, y ninguna instalación cierra
-  esto: hacen falta credenciales de un proveedor de verdad.
-- Que la suite se corra en Linux **sola**: ver **B-004**. Corrida a mano ya está.
+- El OIDC contra un proveedor de identidad real, y que la suite se corra en
+  Linux sola. Los dos se cerraron en la tercera pasada, más abajo.
 
 ## Segunda pasada, sobre Linux — lo que Windows no podía ver
 
@@ -1265,3 +1256,105 @@ se podían ver, uno de ellos grave.
   cambiara una línea. Sustituido por `frombytes`/`tobytes`, que es API estable
   y tampoco arrastra metadatos. La suite corre ahora con
   `-W error::DeprecationWarning` limpia.
+
+## Tercera pasada — los dos huecos que parecían no depender de nosotros
+
+Quedaban dos cosas sin comprobar, y las dos parecían necesitar algo de fuera:
+credenciales de un proveedor de identidad, y una cuenta de integración continua.
+Ninguna de las dos lo necesitaba.
+
+### El proveedor de identidad: `identidad_real`
+
+El hueco estaba mal planteado. No era «nos faltan credenciales de un Entra ID»:
+era **«nuestro doble está de acuerdo con nuestro verificador por
+construcción»**. Un doble emite exactamente lo que quien lo escribió creía que
+emite un proveedor, así que no puede producir la única cosa que hace falta para
+probar una integración: desacuerdo.
+
+Keycloak es software libre y está certificado por la OpenID Foundation. Se
+levanta uno en un contenedor —clavado por digest, no por etiqueta, por lo mismo
+que la plantilla manda anclar las acciones—, se le configura un reino con dos
+personas de dos clientes distintos, y se le habla. Las claves se leen de su
+**JWKS publicado** y se convierten a PEM; ninguna se escribe a mano. Ocho casos
+con testigos que esta casa no firmó.
+
+**Tres diferencias que el doble no podía enseñar, y que el verificador ya
+aguantaba:**
+
+- `aud` no es una cadena, es una **lista**: `["actaira", "account"]`, porque
+  Keycloak mete siempre su propio `account`. El verificador lee `aud` como
+  crudo y comprueba inclusión, así que pasó. Si lo hubiera leído como `string`,
+  habría rechazado a todos los usuarios de todos los Keycloak del mundo.
+- `roles` no trae solo los nuestros: llegan `default-roles-<reino>`,
+  `offline_access` y `uma_authorization` al lado de `lectura`. Un verificador
+  que tratara un rol desconocido como error habría rechazado a todo el mundo.
+  La fase **afirma que siguen llegando roles ajenos**: el día que dejen de
+  llegar, esta prueba ya no comprobaría que se ignoran, y lo dice en vez de
+  seguir verde por otro camino.
+- `actaira_cliente` **no llegaba**. Keycloak 26 trae el perfil declarativo con
+  `unmanagedAttributePolicy` desactivada y descarta en silencio, con un 201,
+  cualquier atributo no declarado. El testigo salía perfectamente firmado y sin
+  la reclamación que dice de quién es el expediente. No es un defecto del
+  producto —el verificador lo rechaza, que es lo correcto— pero es el primer
+  sitio donde se va a atascar quien despliegue esto, y ahora está escrito.
+
+**Por qué este cero es un cero de verdad.** La pasada no encontró ningún
+defecto del producto, y eso merece justificarse en vez de celebrarse. Tiene
+teeth por tres razones comprobables: la puerta se vio **fallar** —con `Puede()`
+cortocircuitado, salen en rojo «ana NO observa» y el caso de las cabeceras—; el
+proveedor **sí rompió cosas** durante el montaje, tres veces, sólo que del lado
+de la configuración; y las tres diferencias de arriba son sitios reales donde
+un verificador razonable habría fallado y éste no, porque `aud` se lee como
+crudo y los roles desconocidos se ignoran. No es que no se mirara: es que las
+decisiones que evitaban esos fallos estaban tomadas de antes.
+
+**Lo que sigue sin probarse, y por qué no se dice de otro modo:** Entra ID.
+Emite `iss` con el identificador del inquilino y una versión en la ruta, usa
+`oid` y no `sub` como identificador estable de la persona, y coloca los roles
+en `roles` o en `wids` según la configuración. Nada de eso se toca aquí. Lo que
+se prueba es que el verificador aguanta un testigo que no escribió esta casa.
+
+### La matriz de dos sistemas: `matriz` y `.github/workflows/ci.yml`
+
+B-004 no era un hueco de medida sino de proceso, y un fichero de flujo de
+trabajo que nadie ha ejecutado es una promesa, no una comprobación. Así que hay
+las dos cosas:
+
+- **El flujo**, con matriz de dos sistemas por dos versiones de Python,
+  `fail-fast: false` —si se cancelan, el primer rojo esconde si el otro sistema
+  también estaba roto, que es el dato por el que existe la matriz—, la puerta
+  con `--sin-omitir` en Linux, y las pruebas de la plataforma bajo `-race`
+  fallando si se salta **una sola**.
+- **La bandera `--sin-omitir`**, que convierte una omisión en fallo. En la
+  máquina de quien desarrolla, omitir por falta de `docker` es razonable; en un
+  agente donde todo está instalado a propósito, una omisión significa que algo
+  dejó de estar disponible y nadie se enteró. Sin ella, la forma más fácil de
+  que una fase deje de medir para siempre es que empiece a omitirse, porque el
+  resumen sigue diciendo «0 en rojo».
+- **La fase `matriz`**, que afirma sobre el propio flujo: si alguien le quita un
+  sistema, afloja el `--sin-omitir` o deja de exigir cero saltadas, se pone
+  roja. Y si desde la máquina se alcanza un segundo sistema —WSL— corre allí de
+  verdad las tres baterías sensibles al sistema, las mismas que ya cazaron
+  D-93 y D-94. Si no se alcanza, se omite con el motivo.
+
+**La demostración que importa.** Deshecho el arreglo de D-94, la suite **en
+Windows dice «45 passed»**: el defecto es completamente invisible. La fase
+`matriz`, corrida desde esa misma máquina Windows, se pone **roja** y nombra las
+tres pruebas que fallan en el otro sistema. Eso es exactamente lo que llevaba
+meses sin pasar.
+
+### Y una cifra vieja en el sitio más visible
+
+- **D-96. El README afirmaba 180 pruebas y «Diecinueve» defectos.** Hay 562
+  funciones de prueba de Python, 98 de Go y noventa y tantos defectos en este
+  fichero. `herramientas/generar_docs.py` existe precisamente para que ninguna
+  cifra de la documentación esté escrita a mano, y su propia cabecera cuenta el
+  daño: una cifra vieja dentro de un documento que promete procedencia deja de
+  ser un número flojo y pasa a ser un número **avalado**, porque quien lee deja
+  de comprobarlo. El README era el documento que más gente lee y el único que no
+  estaba bajo ese mecanismo. Ahora lo está. La insignia dejó de llevar el número
+  —un comentario HTML dentro de una URL de Markdown la rompe, así que un número
+  ahí no se puede mantener y por tanto no se pone—, y de paso la regla que
+  cuenta los defectos admitía sólo punto detrás del número y se dejaba fuera la
+  entrada que empieza «D-23, y esta la cometió el propio arreglo»: publicaba uno
+  menos, en un módulo dedicado a que las cifras sean ciertas.

@@ -1,0 +1,133 @@
+# La puerta de aceptacion de Actaira, corrida en DOS sistemas.
+#
+# ESTE FICHERO NO ES LA PLANTILLA DEL CLIENTE
+# ---------------------------------------------
+# La que se copia a un repositorio vigilado es `integraciones/github/actaira.yml`.
+# Esta corre el producto contra si mismo.
+#
+# POR QUE LA MATRIZ ES EL PUNTO ENTERO
+# --------------------------------------
+# La puerta salia 20/20 durante meses y tenia dos defectos que NO se podian ver
+# desde donde se corria:
+#
+#   - En Windows, tres verbos reventaban con la pagina de codigos cp850 y el
+#     traceback salia con el codigo que significa «hay hallazgos». Eso solo se
+#     ve en Windows.
+#   - El conector de git quedaba roto en TODO POSIX porque `chmod 0600` sobre
+#     un directorio le quita el permiso de entrar. Las cinco pruebas que lo
+#     cubren salian verdes porque solo se corrian en Windows. Eso solo se ve en
+#     Linux.
+#
+# Un defecto que solo se ve en un sistema es invisible mientras las pruebas
+# corran en el otro. Por eso la matriz no es una comodidad: es la unica forma
+# de que esos dos defectos no vuelvan.
+#
+# ANTES DE FIARSE DE ESTO: ANCLA LAS ACCIONES
+# ---------------------------------------------
+# Los `uses:` de abajo van POR ETIQUETA, y una etiqueta se puede mover: quien
+# controle `actions/checkout` puede cambiar lo que `v5` apunta y ejecutar su
+# codigo aqui dentro. Corre una vez:
+#
+#     ./integraciones/github/anclar.sh .github/workflows/ci.yml
+#
+# y cada `uses:` queda clavado a un digest. No se distribuye anclado porque los
+# digests envejecen y publicar uno inventado seria peor que no publicar ninguno.
+
+name: Puerta
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  puerta:
+    name: ${{ matrix.sistema }} · Python ${{ matrix.python }}
+    runs-on: ${{ matrix.sistema }}
+    strategy:
+      # Que una combinacion caiga NO cancela las demas. Si se cancelan, el
+      # primer rojo esconde si el otro sistema tambien estaba roto, que es
+      # justo el dato por el que existe esta matriz.
+      fail-fast: false
+      matrix:
+        # Los dos sistemas donde este producto corre de verdad, y las dos
+        # versiones de Python que `pyproject.toml` declara soportar: la minima
+        # y la ultima. Probar solo la ultima deja sin cubrir lo que se promete.
+        sistema: [ubuntu-latest, windows-latest]
+        python: ["3.11", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+
+      - uses: actions/setup-go@v6
+        with:
+          # La version sale de `go.mod` y no de un numero escrito aqui: dos
+          # sitios diciendo que version de Go hace falta acaban diciendo cosas
+          # distintas.
+          go-version-file: plataforma/go.mod
+          cache-dependency-path: plataforma/go.sum
+
+      # Las pruebas de la consola corren la pagina en un interprete de
+      # JavaScript. Sin esto se saltan solas y la consola deja de medirse.
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+
+      - name: Instalar el motor y lo que la suite necesita
+        run: pip install -e ".[dev]"
+
+      # En Linux esta todo: docker para el proveedor de identidad de verdad,
+      # node, y los bits de permiso que en Windows no informan. Asi que aqui
+      # una fase OMITIDA es un fallo: significa que algo dejo de estar
+      # disponible y el resumen habria seguido diciendo «0 en rojo».
+      - name: La puerta entera, sin permitir omisiones
+        if: runner.os == 'Linux'
+        run: python herramientas/todo.py --sin-omitir
+
+      # En Windows hay fases que NO se pueden medir y lo dicen con su motivo:
+      # los contenedores de Linux no corren en este agente, asi que
+      # `identidad_real` se omite. Exigir aqui lo mismo que en Linux obligaria
+      # a mentir en alguna parte.
+      - name: La puerta entera
+        if: runner.os == 'Windows'
+        run: python herramientas/todo.py
+
+      # El detector de carreras necesita cgo, y cgo necesita un compilador de
+      # C. En los agentes de Linux lo hay. La plataforma sirve peticiones
+      # concurrentes y lleva topes por cliente, asi que esto no es adorno.
+      #
+      # Con el motor instalado y el fixture apuntado: sin las dos cosas hay
+      # DIECIOCHO pruebas que se saltan solas y el verde no cubre lo que
+      # parece.
+      - name: Las pruebas de la plataforma bajo el detector de carreras
+        if: runner.os == 'Linux'
+        env:
+          CGO_ENABLED: "1"
+          ACTAIRA_FIXTURE: ${{ github.workspace }}/motor/tests/fixtures/clasificador-candidatos
+        working-directory: plataforma
+        run: |
+          go test -race ./... -count=1 -v > carreras.log 2>&1 || true
+          saltadas=$(grep -c -- '--- SKIP:' carreras.log || true)
+          echo "corridas $(grep -c -- '--- PASS:' carreras.log) | saltadas ${saltadas}"
+          if grep -q 'DATA RACE' carreras.log; then
+            grep -n -A30 'DATA RACE' carreras.log | head -80
+            echo "hay una carrera de datos"; exit 1
+          fi
+          if grep -q -- '--- FAIL:' carreras.log; then
+            grep -n -B2 -A20 -- '--- FAIL:' carreras.log | head -120
+            exit 1
+          fi
+          # Una prueba que se salta no es una prueba que pasa. Aqui esta todo
+          # instalado, asi que cero es cero.
+          if [ "${saltadas}" != "0" ]; then
+            grep -A1 -- '--- SKIP:' carreras.log | head -40
+            echo "se saltaron ${saltadas} pruebas en un agente donde no falta nada"
+            exit 1
+          fi
