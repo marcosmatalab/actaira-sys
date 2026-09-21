@@ -37,6 +37,12 @@ header{border-bottom:1px solid var(--line);background:var(--surface);position:st
 .bar nav{display:flex;gap:18px;flex-wrap:wrap}
 .bar nav a{font-size:13px;color:var(--ink-soft);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px}
 .bar nav a:hover{color:var(--ink);border-bottom-color:var(--marca)}
+/* En el movil la cabecera ocupaba el 21% de la pantalla en TRES filas
+   antes de que empezara el texto. La navegacion de secciones es la que
+   sobra: a las secciones se llega bajando, y el ancla no aporta nada en
+   una pantalla donde todo esta a un dedo. Lo que NO se esconde es el
+   idioma ni el enlace al codigo, que son acciones y no atajos. */
+@media(max-width:720px){.bar nav:not(.idiomas){display:none}}
 
 .hero{padding-block:76px 58px;border-bottom:1px solid var(--line)}
 .hero h1{font-family:var(--serif);font-weight:400;letter-spacing:-.015em;font-size:clamp(34px,6vw,62px);line-height:1.06;max-width:19ch}
@@ -106,7 +112,13 @@ td.q{color:var(--ink-soft);min-width:190px}
 
 .niveles{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
 @media(min-width:780px){.niveles{grid-template-columns:repeat(3,1fr)}}
-.nivel{background:var(--surface);padding:26px 24px}
+/* En columna y con el boton anclado abajo: las tres tarjetas tienen
+   distinto numero de lineas, asi que los botones salian a tres alturas
+   distintas y la fila se leia como descuidada. `margin-top:auto` en el
+   boton los pone en la misma linea sin fijar una altura a mano, que es
+   lo que se rompe en cuanto alguien anade una viñeta. */
+.nivel{background:var(--surface);padding:26px 24px;display:flex;flex-direction:column}
+.nivel .btn.bloque{margin-top:auto}
 .nivel.destacado{background:var(--surface-2)}
 .nivel h3{font-size:18px;font-weight:700;margin-bottom:4px}
 .nivel .precio{font-family:var(--mono);font-size:12px;color:var(--marca);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
@@ -123,6 +135,8 @@ footer{padding-block:46px;font-size:13px;color:var(--muted)}
 .foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 .foot a{color:var(--ink-soft)}
 .caveat{max-width:72ch;margin-top:24px;padding-top:18px;border-top:1px solid var(--line-soft);font-size:12.5px;line-height:1.7}
+.btn.bloque{display:block;text-align:center;margin-top:18px;width:100%}
+a.codigo{margin-left:14px;font-size:13px;font-weight:500;white-space:nowrap}
 nav.idiomas{display:flex;gap:2px;align-items:center;margin-left:14px;
   border:1px solid var(--line);border-radius:999px;padding:2px;background:var(--surface)}
 nav.idiomas a{padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:500;
@@ -151,6 +165,10 @@ nav.idiomas a[aria-current="page"]{background:var(--marca);color:#fff}
        JavaScript, se pueden abrir en otra pestana y se pueden marcar.
        `aria-current="page"` es lo que dice cual estas leyendo a quien no lo
        ve por el color. -->
+  <!-- EL ENLACE AL CODIGO. Esta pagina no tenia NI UN enlace externo, y todo
+       el argumento del producto es «el motor es el mismo fichero que puedes
+       leer». Se podia leer la frase y no habia donde pulsar. -->
+  <a class="codigo" href="https://github.com/marcosmatalab/actaira-sys" rel="noopener">Source</a>
   <nav class="idiomas" aria-label="Language"><a href="../" hreflang="es" lang="es" title="Español">ES</a><a href="./" hreflang="en" lang="en" aria-current="page" title="English">EN</a><a href="../fr/" hreflang="fr" lang="fr" title="Français">FR</a><a href="../pt/" hreflang="pt" lang="pt" title="Português">PT</a><a href="../it/" hreflang="it" lang="it" title="Italiano">IT</a><a href="../de/" hreflang="de" lang="de" title="Deutsch">DE</a></nav>
 </div></header>
 
@@ -162,8 +180,14 @@ nav.idiomas a[aria-current="page"]{background:var(--marca);color:#fff}
     Actaira reads your repository, decides what can be decided by reading bytes, and says out loud what it cannot decide. It generates Annex IV with provenance for every section, the ISO 42001 statement of applicability derived from your profile, and evidence that expires by itself when the thing it was taken on changes.
   </p>
   <div class="cta">
-    <a class="btn" href="#niveles">Start free</a>
-    <a class="btn ghost" href="#como">How it works</a>
+    <!-- A `#como`, que es donde esta la orden que te deja empezar gratis.
+         Llevaba a `#niveles`, la tabla de precios: pulsar «gratis» y aterrizar
+         en los precios es una promesa rota en el primer clic. -->
+    <a class="btn" href="#como">Start free</a>
+    <!-- El secundario llevaba TAMBIEN a `#como`: dos botones al mismo sitio.
+         Lo otro que quiere hacer quien llega aqui es mirar el codigo, que
+         es la mitad del argumento. -->
+    <a class="btn ghost" href="https://github.com/marcosmatalab/actaira-sys" rel="noopener">Read the source</a>
   </div>
   <div class="facts">
     <div><b>48</b>obligations in the Regulation</div>
@@ -369,6 +393,7 @@ actaira <span class="k">vigilar</span> .    <span class="c"># what expired, what
         <li>Merkle seal and Ed25519 signature, verifiable with no network</li>
         <li>No telemetry, no account, no limit on repositories</li>
       </ul>
+      <a class="btn ghost bloque" href="#como">Install</a>
     </div>
     <div class="nivel destacado">
       <h3>Platform</h3>
@@ -380,6 +405,7 @@ actaira <span class="k">vigilar</span> .    <span class="c"># what expired, what
         <li>An alert when something expires without anyone pushing anything</li>
         <li>A file ready to show, in Spanish and in English</li>
       </ul>
+      <a class="btn bloque" href="mailto:hola@actaira.com">Write to us</a>
     </div>
     <div class="nivel">
       <h3>Enterprise</h3>
@@ -391,6 +417,7 @@ actaira <span class="k">vigilar</span> .    <span class="c"># what expired, what
         <li>Your own rule packs for your sector</li>
         <li>Support through the audit, by the person who wrote this</li>
       </ul>
+      <a class="btn ghost bloque" href="mailto:hola@actaira.com">Write to us</a>
     </div>
   </div>
 </section>
@@ -412,7 +439,14 @@ actaira <span class="k">vigilar</span> .    <span class="c"># what expired, what
 <footer class="wrap">
   <div class="foot">
     <span>Actaira · Apache-2.0 · no telemetry, no account, works offline</span>
-    <span>actaira.com</span>
+    <!-- El pie no tenia ningun enlace. Un producto libre cuya pagina no lleva
+         al codigo, ni a la licencia, ni a nadie, no es self-serve: es un
+         folleto. -->
+    <span>
+      <a href="https://github.com/marcosmatalab/actaira-sys" rel="noopener">Source</a> ·
+      <a href="https://github.com/marcosmatalab/actaira-sys/blob/main/LICENSE" rel="noopener">Licence</a> ·
+      <a href="mailto:hola@actaira.com">Write to us</a>
+    </span>
   </div>
   <p class="caveat">
     On deadlines, because it is better said here than in the small print: the high-risk obligations of Annex III were deferred to December 2027 and those of Annex I to August 2028. In Spain the penalty regime lives in the draft Organic Law for the good use and governance of AI, still going through parliament. What is in force today are the Article 5 prohibitions, the Article 4 literacy duty, the general-purpose model obligations and the Article 50 transparency duty, in force since 2 August 2026. Actaira resolves those dates for you and separates what binds you today from what will bind you.

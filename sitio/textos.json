@@ -174,7 +174,12 @@
     "c004_pruebas": "pruebas",
     "c005_dependencia_en_ejecucion": "dependencia en ejecución",
     "c006_telemetria": "telemetría",
-    "l000_idioma": "Idioma"
+    "l000_idioma": "Idioma",
+    "l001_codigo": "Código",
+    "l002_instalar": "Instalar",
+    "l003_escribenos": "Escríbenos",
+    "l004_licencia": "Licencia",
+    "l005_ver_codigo": "Ver el código"
   },
   "en": {
     "t001_actaira": "Actaira",
@@ -351,7 +356,12 @@
     "c004_pruebas": "tests",
     "c005_dependencia_en_ejecucion": "runtime dependency",
     "c006_telemetria": "telemetry",
-    "l000_idioma": "Language"
+    "l000_idioma": "Language",
+    "l001_codigo": "Source",
+    "l002_instalar": "Install",
+    "l003_escribenos": "Write to us",
+    "l004_licencia": "Licence",
+    "l005_ver_codigo": "Read the source"
   },
   "fr": {
     "t001_actaira": "Actaira",
@@ -528,7 +538,12 @@
     "c004_pruebas": "tests",
     "c005_dependencia_en_ejecucion": "dépendance à l'exécution",
     "c006_telemetria": "télémétrie",
-    "l000_idioma": "Langue"
+    "l000_idioma": "Langue",
+    "l001_codigo": "Code",
+    "l002_instalar": "Installer",
+    "l003_escribenos": "Écrivez-nous",
+    "l004_licencia": "Licence",
+    "l005_ver_codigo": "Voir le code"
   },
   "pt": {
     "t001_actaira": "Actaira",
@@ -705,7 +720,12 @@
     "c004_pruebas": "testes",
     "c005_dependencia_en_ejecucion": "dependência em execução",
     "c006_telemetria": "telemetria",
-    "l000_idioma": "Idioma"
+    "l000_idioma": "Idioma",
+    "l001_codigo": "Código",
+    "l002_instalar": "Instalar",
+    "l003_escribenos": "Escreva-nos",
+    "l004_licencia": "Licença",
+    "l005_ver_codigo": "Ver o código"
   },
   "it": {
     "t001_actaira": "Actaira",
@@ -882,7 +902,12 @@
     "c004_pruebas": "test",
     "c005_dependencia_en_ejecucion": "dipendenza a runtime",
     "c006_telemetria": "telemetria",
-    "l000_idioma": "Lingua"
+    "l000_idioma": "Lingua",
+    "l001_codigo": "Codice",
+    "l002_instalar": "Installa",
+    "l003_escribenos": "Scrivici",
+    "l004_licencia": "Licenza",
+    "l005_ver_codigo": "Vedi il codice"
   },
   "de": {
     "t001_actaira": "Actaira",
@@ -1059,6 +1084,11 @@
     "c004_pruebas": "Tests",
     "c005_dependencia_en_ejecucion": "Laufzeitabhängigkeit",
     "c006_telemetria": "Telemetrie",
-    "l000_idioma": "Sprache"
+    "l000_idioma": "Sprache",
+    "l001_codigo": "Quellcode",
+    "l002_instalar": "Installieren",
+    "l003_escribenos": "Schreiben Sie uns",
+    "l004_licencia": "Lizenz",
+    "l005_ver_codigo": "Quellcode ansehen"
   }
 }

@@ -55,6 +55,23 @@ sys.path.insert(0, str(RAIZ / "herramientas"))
 from cifras import de  # noqa: E402
 from paginas import revisar_estructura, revisar_textos  # noqa: E402
 
+# LOS DOS SITIOS A LOS QUE ESTA PAGINA MANDA A ALGUIEN, ESCRITOS UNA VEZ.
+#
+# La portada no tenia NI UN enlace externo: ni al repositorio -- con todo el
+# argumento del producto siendo «el motor es el mismo fichero que puedes
+# leer» -- ni a la licencia, ni a nadie. La seccion se titulaba «Cómo se paga»
+# y no habia ni un boton en las tres tarjetas. Un visitante que quisiera
+# empezar tenia que volver a subir y buscar el bloque de ordenes a mano.
+REPO = "https://github.com/marcosmatalab/actaira-sys"
+
+# EL CORREO ESTA SUPUESTO, Y SE DICE AQUI.
+#
+# La decision fue «un correo en actaira.com», sin concretar cual. `hola@` es la
+# convencion en castellano y es lo que hay hasta que alguien diga otra cosa.
+# Vive en UNA linea a proposito: cambiarlo es cambiar esto, y las seis paginas
+# se rehacen solas.
+CORREO = "hola@actaira.com"
+
 # Donde vive cada idioma y como se llama EN SU PROPIA LENGUA.
 #
 # El castellano manda en la raiz porque es el idioma en el que esta escrito el
@@ -106,7 +123,9 @@ def construir(idioma: str, textos: dict, valores: dict[str, str]) -> str:
     html = re.sub(r"__T:([a-z0-9_]+)__", pon, plantilla)
     html = (html
             .replace("__LANG__", idioma)
-            .replace("__IDIOMAS__", _conmutador(idioma)))
+            .replace("__IDIOMAS__", _conmutador(idioma))
+            .replace("__REPO__", REPO)
+            .replace("__CORREO__", CORREO))
 
     # LAS CIFRAS SE INYECTAN POR CLAVE, NO POR ETIQUETA.
     #
