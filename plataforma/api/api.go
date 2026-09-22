@@ -489,7 +489,6 @@ func (s *Servidor) salud(w http.ResponseWriter, r *http.Request) {
 				"solo se revisara cuando alguien lo pida",
 		}
 	} else {
-		fallidos := s.Vigilancia.Fallidos()
 		cuerpo["vigilancia"] = map[string]any{
 			"activa":    true,
 			"intervalo": s.Vigilancia.Intervalo.String(),
@@ -497,7 +496,13 @@ func (s *Servidor) salud(w http.ResponseWriter, r *http.Request) {
 			// Los avisos que no se pudieron entregar se PUBLICAN. Registrarlos
 			// y seguir deja al cliente creyendo que le avisan cuando no, que es
 			// la unica forma de que una vigilancia sea peor que ninguna.
-			"avisos_sin_entregar": len(fallidos),
+			//
+			// La cifra sale del CONTADOR y no de `len(Fallidos())`. El detalle
+			// se acota -- la lista crecia sin tope en un proceso que vive meses
+			// --, asi que contarlo por ahi habria hecho que este numero dejara
+			// de subir a partir del aviso 257 y el estado de salud dijera que
+			// van bien unos avisos que nadie recibio.
+			"avisos_sin_entregar": s.Vigilancia.SinEntregar(),
 		}
 	}
 	escribir(w, http.StatusOK, cuerpo)
@@ -650,9 +655,15 @@ func (s *Servidor) correr(w http.ResponseWriter, r *http.Request, c *cliente.Cli
 }
 
 // correrSinRuta es para los verbos cuyo primer positional NO es una ruta.
+//
+// El permiso se pide por VERBO Y ACCION. El primer positional de estos verbos
+// es precisamente la accion -- `almacen verificar`, `noconformidad listar` --,
+// y dos de ellos tienen ademas acciones que ESCRIBEN (`almacen migrar`,
+// `noconformidad abrir`). Preguntando solo por el verbo, esas acciones
+// heredaban el permiso de la que lee. Ver `rbac.go`.
 func (s *Servidor) correrSinRuta(w http.ResponseWriter, r *http.Request,
 	c *cliente.Cliente, verbo string, args ...string) {
-	if !s.exigirPapel(w, r, verbo) {
+	if !s.exigirPapel(w, r, conAccion(verbo, args)) {
 		return
 	}
 	// El mismo tope que en `correr`. Un verbo sin ruta arranca exactamente el
@@ -706,7 +717,14 @@ func (s *Servidor) leerPerfil(w http.ResponseWriter, r *http.Request) (Perfil, [
 	if r.Body != nil {
 		dec := json.NewDecoder(http.MaxBytesReader(w, r.Body, 1<<16))
 		dec.DisallowUnknownFields()
-		if err := dec.Decode(&p); err != nil && err.Error() != "EOF" {
+		// UN CUERPO VACIO SE COMPARA POR IDENTIDAD, NO POR SU TEXTO.
+		//
+		// Esto miraba si el mensaje del error era exactamente «EOF». Un perfil
+		// vacio es legitimo -- todas estas rutas admiten que no mandes cuerpo --
+		// asi que de esa comparacion depende que la ruta funcione, y estaba
+		// atada a una cadena de la biblioteca estandar que nadie promete no
+		// cambiar. El dia que cambie, pedir sin cuerpo pasa a contestar 400.
+		if err := dec.Decode(&p); err != nil && !errors.Is(err, io.EOF) {
 			fallar(w, http.StatusBadRequest,
 				"el cuerpo no es un perfil que esta API entienda: "+err.Error(),
 				"the body is not a profile this API understands: "+err.Error())
@@ -771,6 +789,15 @@ func (s *Servidor) vigilar(w http.ResponseWriter, r *http.Request, c *cliente.Cl
 	args = append(args, "--almacen", c.Almacen(), "--registrar",
 		"--idioma", idiomaDe(r))
 	s.correr(w, r, c, "vigilar", c.Trabajo(), args...)
+}
+
+// conAccion pega la accion al verbo cuando el primer positional es una accion
+// y no una bandera. `aplicabilidad --idioma es` sigue siendo `aplicabilidad`.
+func conAccion(verbo string, args []string) string {
+	if len(args) == 0 || strings.HasPrefix(args[0], "-") {
+		return verbo
+	}
+	return verbo + " " + args[0]
 }
 
 // quitar saca una bandera y su valor de la lista.
@@ -897,7 +924,11 @@ func (s *Servidor) empujon(w http.ResponseWriter, r *http.Request, c *cliente.Cl
 		// funcionar de golpe es quitar el webhook -- pero NO en silencio.
 		s.registro.Warn("evento atendido SIN FIRMA: este cliente no tiene secreto "+
 			"de webhook configurado, asi que el evento no se puede atribuir a nadie",
-			"cliente", c.ID, "variable", VariableDelSecreto+strings.ToUpper(c.ID))
+			// El nombre SE PIDE, no se compone aqui. Componerlo era lo que
+			// estaba mal: este aviso es la unica instruccion que recibe quien
+			// opera, y decia una variable que `secretoDe` no lee nunca en
+			// cuanto el identificador del cliente lleva un guion.
+			"cliente", c.ID, "variable", NombreDelSecreto(c.ID))
 	default:
 		s.registro.Warn("evento RECHAZADO por firma",
 			"cliente", c.ID, "error", err.Error())

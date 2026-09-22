@@ -50,7 +50,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"log/slog"
 	"math/rand"
 	"os"
@@ -105,10 +104,44 @@ type Planificador struct {
 	// y entonces el reintento no se prueba.
 	revisarTodos func(context.Context, time.Time) ([]Aviso, []error)
 
+	// preparada protege a `preparar` de correrse dos veces a la vez.
+	//
+	// `preparar` ESCRIBE campos del planificador -- el revisor, el intervalo,
+	// los reintentos, el reloj -- y lo llaman los DOS metodos publicos:
+	// `Correr` una vez al empezar y `UnaPasada` en cada pasada. Los dos son
+	// exportados, asi que nada impide que alguien dispare una pasada suelta
+	// mientras el bucle corre, y entonces hay dos escritores sobre los mismos
+	// campos sin candado: una carrera de datos de manual.
+	//
+	// No la cazaba `-race` porque ninguna prueba los llama a la vez, que es
+	// justo lo que hace peligrosa a una carrera latente: no la ve quien mira,
+	// la ve quien despliega.
+	preparada     sync.Once
+	errAlPreparar error
+
 	mu       sync.Mutex
 	pasadas  int
 	fallidos []Aviso
+	// perdidos es CUANTOS avisos no se han entregado en toda la vida del
+	// proceso. `fallidos` guarda solo los ultimos, asi que no se puede contar
+	// por el; ver `_ULTIMOS_FALLIDOS`.
+	perdidos int
 }
+
+// _ULTIMOS_FALLIDOS es cuantos avisos no entregados se guardan ENTEROS.
+//
+// La lista crecia sin tope. Este proceso vive meses y `Entregar` es de quien lo
+// configura: un destino caido -- una URL que dejo de existir, un buzon lleno --
+// mete un aviso por cliente y por pasada, y ninguno se va nunca. Es la misma
+// fuga que ya se cerro en el limitador de ritmo y en el de concurrencia, y aqui
+// se habia dejado abierta.
+//
+// Lo que NO se hace es contar de menos. Olvidar un aviso y publicar un numero
+// mas bajo seria decirle al cliente que le fallan menos avisos de los que le
+// fallan, que es exactamente la clase de mentira por omision contra la que
+// existe este fichero. Asi que el DETALLE se acota y la CUENTA no: `Fallidos`
+// devuelve los ultimos y `SinEntregar` dice cuantos hubo.
+const _ULTIMOS_FALLIDOS = 256
 
 // Pasadas es cuantas veces ha revisado. Se publica para que el estado de salud
 // pueda decir si la vigilancia esta viva, en vez de que alguien lo suponga.
@@ -118,18 +151,37 @@ func (p *Planificador) Pasadas() int {
 	return p.pasadas
 }
 
-// Fallidos son los avisos que no se pudieron entregar tras agotar los intentos.
+// Fallidos son los ULTIMOS avisos que no se pudieron entregar tras agotar los
+// intentos, hasta `_ULTIMOS_FALLIDOS`.
 //
 // Se guardan y se publican. La alternativa -- registrarlos y seguir -- deja al
 // cliente creyendo que le avisan cuando no le avisan, que es la unica forma de
 // que una vigilancia sea peor que ninguna.
+//
+// Son los ultimos y no todos porque la lista crecia sin tope en un proceso que
+// vive meses. Cuantos hubo EN TOTAL lo dice `SinEntregar`, que no se acota: el
+// detalle se puede perder, la cuenta no.
 func (p *Planificador) Fallidos() []Aviso {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 	return append([]Aviso(nil), p.fallidos...)
 }
 
+// SinEntregar es cuantos avisos no se han entregado en toda la vida de este
+// proceso. Es la cifra que publica el estado de salud.
+func (p *Planificador) SinEntregar() int {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	return p.perdidos
+}
+
+// preparar rellena lo que falte, UNA sola vez.
 func (p *Planificador) preparar() error {
+	p.preparada.Do(func() { p.errAlPreparar = p.prepararUnaVez() })
+	return p.errAlPreparar
+}
+
+func (p *Planificador) prepararUnaVez() error {
 	if p.revisarTodos == nil {
 		if p.Revisor == nil {
 			return errors.New("un planificador sin revisor no revisa nada")
@@ -227,7 +279,13 @@ func (p *Planificador) UnaPasada(ctx context.Context) {
 		}
 		perdidos++
 		p.mu.Lock()
+		p.perdidos++
 		p.fallidos = append(p.fallidos, a)
+		if sobran := len(p.fallidos) - _ULTIMOS_FALLIDOS; sobran > 0 {
+			// Se tira por DELANTE: lo que le interesa a quien mira el estado
+			// de salud es lo ultimo que fallo, no lo de hace tres meses.
+			p.fallidos = append([]Aviso(nil), p.fallidos[sobran:]...)
+		}
 		p.mu.Unlock()
 	}
 
@@ -335,5 +393,3 @@ func EntregaAlRegistro(r *slog.Logger) Entrega {
 		return nil
 	}
 }
-
-var _ = fmt.Sprintf

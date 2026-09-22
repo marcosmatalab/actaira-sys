@@ -143,10 +143,24 @@ func (e *Emisor) Valido() error {
 	return nil
 }
 
+// `typ` NO ESTA AQUI, Y NO ES UN OLVIDO.
+//
+// Estaba: se leia en cada testigo y no se comparaba con nada. Un campo asi es
+// peor que no tenerlo en un fichero que enumera los cuatro fallos clasicos de
+// verificar JWT a mano y dice que «cada una tiene su linea de codigo y su
+// prueba»: quien lo lea dara por hecho que el tipo se comprueba.
+//
+// Y no se comprueba a proposito. La recomendacion de tipar explicitamente
+// (RFC 8725) sirve para que un testigo de un tipo no valga como otro, y aqui no
+// hay mas que uno: este servidor solo acepta testigos de acceso de SU emisor,
+// para SU audiencia. Exigir un valor concreto ademas rompe con proveedores
+// reales, que escriben `JWT`, `at+jwt` o `Bearer` segun les parece.
+//
+// Lo que SI cierra ese hueco es lo de abajo: `iss` exacto, `aud` obligatoria,
+// `exp` obligatoria y el algoritmo contra una lista cerrada de asimetricos.
 type cabeceraTestigo struct {
 	Alg string `json:"alg"`
 	Kid string `json:"kid"`
-	Typ string `json:"typ"`
 }
 
 type cuerpoTestigo struct {

@@ -153,6 +153,34 @@ func TestElSecretoSeBuscaPorElNombreDELCliente(t *testing.T) {
 	}
 }
 
+// El nombre que se AVISA tiene que ser el que se LEE.
+//
+// El manejador de `empujon` compone el aviso que le dice al operador que
+// variable exportar, y lo hacia por su cuenta pegando el identificador en
+// mayusculas sin convertir los guiones. `secretoDe` si los convierte. Con un
+// cliente como `acme-corp` -- que es la forma normal de un identificador aqui,
+// y `cliente.go` los admite -- el aviso mandaba poner una variable que este
+// servidor no lee nunca, y que ademas casi ningun interprete de ordenes deja
+// escribir. El operador la pone, el webhook sigue sin firmar, y nada falla.
+//
+// Esta prueba no mira el texto del aviso: mira que el nombre que se publica sea
+// EL MISMO del que sale el secreto. Comprobar la cadena habria vuelto a dejar
+// dos definiciones, que es justo lo que fallo.
+func TestElNombreQueSePublicaEsElQueSeLee(t *testing.T) {
+	for _, cliente := range []string{"acme", "acme-corp", "mi-cliente-de-prueba"} {
+		t.Setenv(NombreDelSecreto(cliente), SECRETO)
+		s, hay := secretoDe(cliente)
+		if !hay || s != SECRETO {
+			t.Errorf("%q: el secreto se exporto en %q y `secretoDe` no lo encuentra",
+				cliente, NombreDelSecreto(cliente))
+		}
+		if strings.ContainsAny(NombreDelSecreto(cliente), "-.") {
+			t.Errorf("%q: %q no es un nombre de variable de entorno que se pueda exportar",
+				cliente, NombreDelSecreto(cliente))
+		}
+	}
+}
+
 func TestVerificarFirmaDistingueLosTresEstados(t *testing.T) {
 	// Sin secreto, con firma buena y con firma mala son tres cosas, y la de en
 	// medio no puede colapsar en ninguna de las otras dos.

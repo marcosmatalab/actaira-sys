@@ -81,13 +81,38 @@ var CABECERAS = []string{
 // se puedan filtrar por estar escritos.
 const VariableDelSecreto = "ACTAIRA_SECRETO_WEBHOOK_"
 
-// secretoDe devuelve el secreto compartido de un cliente, si lo hay.
-func secretoDe(cliente string) (string, bool) {
+// NombreDelSecreto es la variable de entorno de la que sale el secreto de ese
+// cliente. Se exporta porque hay DOS sitios que la nombran y tienen que decir
+// lo mismo.
+//
+// ESTO ESTABA ESCRITO DOS VECES Y LAS DOS NO COINCIDIAN.
+//
+// La conversion vivia solo aqui dentro. El manejador de `empujon`, cuando
+// atiende un evento de un cliente sin secreto configurado, avisa en el registro
+// y le dice al operador QUE VARIABLE poner -- y la componia por su cuenta,
+// pegando el prefijo al identificador en mayusculas y sin convertir nada.
+//
+// Un identificador de cliente valido puede llevar guiones, y casi todos los
+// llevan (`cliente.go` los admite, y `acme-corp` es la forma normal). Asi que
+// el aviso mandaba exportar `ACTAIRA_SECRETO_WEBHOOK_ACME-CORP`, que ni
+// siquiera es un nombre de variable que la mayoria de los interpretes de
+// ordenes deje escribir, mientras el codigo leia
+// `ACTAIRA_SECRETO_WEBHOOK_ACME_CORP`. El operador hace lo que dice el aviso,
+// el webhook sigue sin firmar para siempre, y no falla nada: la ruta atiende
+// el evento igual y solo deja de poder atribuirlo a nadie.
+//
+// Es la regla 10 en su forma mas barata de cometer: dos formas de calcular el
+// mismo nombre, y la que ve una persona era la equivocada.
+func NombreDelSecreto(cliente string) string {
 	// El nombre del cliente va en mayusculas y con los guiones convertidos:
 	// una variable de entorno no puede llevar un guion.
-	nombre := VariableDelSecreto + strings.ToUpper(
+	return VariableDelSecreto + strings.ToUpper(
 		strings.NewReplacer("-", "_", ".", "_").Replace(cliente))
-	v := os.Getenv(nombre)
+}
+
+// secretoDe devuelve el secreto compartido de un cliente, si lo hay.
+func secretoDe(cliente string) (string, bool) {
+	v := os.Getenv(NombreDelSecreto(cliente))
 	return v, v != ""
 }
 

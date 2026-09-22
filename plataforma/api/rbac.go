@@ -49,12 +49,33 @@ const (
 // escribe evidencia es el verbo, no el camino por el que se pidio.
 var PERMISOS = map[string]string{
 	// Leer. No cambian nada y no arrancan el motor sobre el repositorio.
-	"almacen":       PapelLectura,
-	"noconformidad": PapelLectura,
-	"revision":      PapelLectura,
-	"soa":           PapelLectura,
-	"anexo":         PapelLectura,
-	"preguntar":     PapelLectura,
+	//
+	// DOS DE ESTAS CLAVES LLEVABAN EL NOMBRE DEL VERBO A SECAS, Y MENTIAN.
+	//
+	// `almacen` y `noconformidad` no son verbos de lectura: son verbos con
+	// VARIAS acciones, y solo una de cada uno lee. `almacen` tiene ademas
+	// `migrar`, que reescribe el almacen de evidencia entero; `noconformidad`
+	// tiene `abrir` y `avanzar`, que mueven el ciclo de una no conformidad --
+	// justo lo que el papel `remediacion` existe para repartir.
+	//
+	// Con la clave puesta en el verbo, la tabla declaraba de LECTURA todo eso.
+	// Hoy no es un agujero: la API solo publica las dos acciones que leen. Pero
+	// el dia que alguien anada la ruta que abre una no conformidad, nacera con
+	// permiso de lectura y NADIE se enterara -- que es lo contrario de lo que
+	// este fichero promete tres parrafos mas abajo, donde dice que una ruta sin
+	// permiso declarado nace sin funcionar, «que se arregla en un minuto y se
+	// nota». Un comentario que avala un control es peor que ninguno cuando es
+	// falso.
+	//
+	// Asi que se declara la ACCION. Lo que no este aqui -- `almacen migrar`,
+	// `noconformidad abrir`, `noconformidad avanzar` -- no tiene permiso
+	// declarado y por tanto NO PASA, que es el valor por omision correcto.
+	"almacen verificar":    PapelLectura,
+	"noconformidad listar": PapelLectura,
+	"revision":             PapelLectura,
+	"soa":                  PapelLectura,
+	"anexo":                PapelLectura,
+	"preguntar":            PapelLectura,
 	// No lee ni un byte del repositorio: la aplicabilidad sale del perfil.
 	"aplicabilidad": PapelLectura,
 
@@ -88,9 +109,27 @@ var JERARQUIA = map[string][]string{
 	PapelRemediacion: {PapelLectura},
 }
 
+// papelPara devuelve el papel que hace falta para eso, y si esta declarado.
+//
+// Mira la clave ENTERA primero -- «noconformidad listar» -- y solo despues el
+// verbo a secas. Ese orden es el arreglo: con la busqueda hecha unicamente por
+// el verbo, una accion que escribe heredaba el permiso de la que lee.
+//
+// El respaldo por el verbo se queda porque la mayoria de los verbos son uno y
+// no tienen acciones: `plan`, `soa`, `anexo`. Para los que si las tienen, basta
+// con NO declarar el verbo pelado, y entonces cada accion contesta por si misma
+// o no pasa.
+func papelPara(verbo string) (string, bool) {
+	if p, hay := PERMISOS[verbo]; hay {
+		return p, true
+	}
+	p, hay := PERMISOS[verboDe(verbo)]
+	return p, hay
+}
+
 // Puede dice si esos roles alcanzan para ese verbo.
 func Puede(roles []string, verbo string) bool {
-	hace_falta, conocido := PERMISOS[verboDe(verbo)]
+	hace_falta, conocido := papelPara(verbo)
 	if !conocido {
 		// Un verbo sin permiso declarado NO se deja pasar.
 		//
@@ -141,7 +180,7 @@ func PapelesConocidos() []string {
 // que hace la gente cuando adivina permisos es pedir el rol mas alto. Decir que
 // papel falta no revela nada que quien llama no pueda deducir probando.
 func ExplicarNegativa(roles []string, verbo string) string {
-	hace_falta, conocido := PERMISOS[verboDe(verbo)]
+	hace_falta, conocido := papelPara(verbo)
 	if !conocido {
 		return fmt.Sprintf(
 			"el verbo %q no tiene permiso declarado, asi que no se deja pasar. "+

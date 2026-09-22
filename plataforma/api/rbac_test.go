@@ -169,9 +169,39 @@ func TestTodoVerboQuePUBLICALaAPITienePermisoDeclarado(t *testing.T) {
 	// agujero -- naceria bloqueada -- pero si una ruta que no funciona y que
 	// alguien arreglara con prisa dandole `admin`.
 	for _, v := range VERBOS {
-		verbo := verboDe(v["verbo"])
-		if _, hay := PERMISOS[verbo]; !hay {
-			t.Errorf("la API publica %q y PERMISOS no dice que papel hace falta", verbo)
+		// Con la MISMA busqueda que usa el control, y no con `verboDe`. Con
+		// `verboDe` esta prueba solo exigia una entrada por verbo, asi que una
+		// tabla que declaraba de lectura un verbo con acciones que escriben
+		// salia verde: era la prueba la que redondeaba la pregunta.
+		if _, hay := papelPara(v["verbo"]); !hay {
+			t.Errorf("la API publica %q y PERMISOS no dice que papel hace falta",
+				v["verbo"])
+		}
+	}
+}
+
+// Y LO QUE ESCRIBE NO PUEDE PASAR POR LECTURA.
+//
+// `almacen` tiene `migrar`, que reescribe el almacen de evidencia entero, y
+// `noconformidad` tiene `abrir` y `avanzar`, que mueven el ciclo. Ninguna de
+// las tres se publica hoy. Esta prueba fija que, si alguna se publica, nazca
+// SIN permiso en vez de heredar el de la accion que lee.
+func TestLasAccionesQueEscribenNoHeredanElPermisoDeLeer(t *testing.T) {
+	for _, accion := range []string{
+		"almacen migrar", "noconformidad abrir", "noconformidad avanzar",
+	} {
+		if Puede([]string{PapelLectura}, accion) {
+			t.Errorf("%q pasa con papel de lectura, y esa accion escribe", accion)
+		}
+		if _, hay := papelPara(accion); hay {
+			t.Errorf("%q tiene permiso declarado sin que nadie lo publique: "+
+				"declararlo aqui es decidir por quien anada esa ruta", accion)
+		}
+	}
+	// Y las dos que si se publican siguen pasando con lectura.
+	for _, accion := range []string{"almacen verificar", "noconformidad listar"} {
+		if !Puede([]string{PapelLectura}, accion) {
+			t.Errorf("%q dejo de pasar con papel de lectura", accion)
 		}
 	}
 }

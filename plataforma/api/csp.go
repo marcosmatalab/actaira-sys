@@ -3,7 +3,6 @@ package api
 import (
 	"crypto/sha256"
 	"encoding/base64"
-	"fmt"
 	"regexp"
 	"strings"
 )
@@ -101,5 +100,3 @@ func politicaDe(html []byte) string {
 // PoliticaDelPanel es la politica del panel que sirve este binario. Se calcula
 // una vez al arrancar, de los bytes incrustados.
 var PoliticaDelPanel = politicaDe(panelHTML)
-
-var _ = fmt.Sprintf // reservado para diagnosticos

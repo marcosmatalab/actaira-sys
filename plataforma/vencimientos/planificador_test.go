@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"log/slog"
 	"os"
@@ -208,5 +209,46 @@ func TestCorrerRevisaINMEDIATAMENTEYLuegoCadaIntervalo(t *testing.T) {
 	}
 	if atomic.LoadInt32(&f.veces) != 3 {
 		t.Fatalf("reviso %d veces", f.veces)
+	}
+}
+
+// EL DETALLE SE ACOTA, LA CUENTA NO.
+//
+// `fallidos` crecia sin tope: un destino caido mete un aviso por cliente y por
+// pasada en un proceso que vive meses, y ninguno se iba nunca. Al acotarlo
+// aparece el riesgo contrario, que es peor: publicar la longitud de la lista
+// haria que el estado de salud dejara de contar a partir del aviso 257 y dijera
+// que van bien unos avisos que nadie recibio.
+func TestElDetalleSeAcotaPeroLaCuentaNoMiente(t *testing.T) {
+	const cuantos = _ULTIMOS_FALLIDOS + 40
+	p := &Planificador{
+		revisarTodos: func(context.Context, time.Time) ([]Aviso, []error) {
+			avisos := make([]Aviso, 0, cuantos)
+			for i := 0; i < cuantos; i++ {
+				avisos = append(avisos, Aviso{
+					Cliente: fmt.Sprintf("cliente-%03d", i), Controles: []string{"ACT-C-1"}})
+			}
+			return avisos, nil
+		},
+		Entregar:   func(context.Context, Aviso) error { return errors.New("el destino no contesta") },
+		Reintentos: 1,
+		Registro:   slog.New(slog.NewTextHandler(io.Discard, nil)),
+		Dormir:     func(context.Context, time.Duration) bool { return true },
+	}
+	p.UnaPasada(context.Background())
+
+	if n := p.SinEntregar(); n != cuantos {
+		t.Errorf("no se entregaron %d avisos y el contador dice %d: el estado de salud "+
+			"estaria diciendo que van bien unos avisos que nadie recibio", cuantos, n)
+	}
+	if n := len(p.Fallidos()); n != _ULTIMOS_FALLIDOS {
+		t.Errorf("se guardan %d avisos enteros y el tope es %d: la lista vuelve a crecer "+
+			"sin freno en un proceso que vive meses", n, _ULTIMOS_FALLIDOS)
+	}
+	// Y lo que se conserva son los ULTIMOS, que es lo que le sirve a quien mira.
+	ultimos := p.Fallidos()
+	if ultimos[len(ultimos)-1].Cliente != fmt.Sprintf("cliente-%03d", cuantos-1) {
+		t.Errorf("el ultimo aviso guardado es %q y deberia ser el mas reciente",
+			ultimos[len(ultimos)-1].Cliente)
 	}
 }
