@@ -161,9 +161,9 @@ stale.
 | Cross-framework pairs | <!--cifra:pares-->101<!--/cifra-->, with <!--cifra:pares_rotos-->0<!--/cifra--> broken and <!--cifra:huecos-->0<!--/cifra--> coverage gaps |
 | Rules that read code | <!--cifra:reglas-->68<!--/cifra--> in <!--cifra:paquetes_de_reglas-->17<!--/cifra--> packs |
 | Questions in the bank | <!--cifra:preguntas-->90<!--/cifra-->, each tied to all three catalogues |
-| Tests | <!--cifra:pruebas-->563<!--/cifra--> Python + <!--cifra:pruebas_go-->102<!--/cifra--> Go |
+| Tests | <!--cifra:pruebas-->564<!--/cifra--> Python + <!--cifra:pruebas_go-->102<!--/cifra--> Go |
 | Acceptance gate phases | <!--cifra:fases_de_la_puerta-->26<!--/cifra--> |
-| Defects from adversarial passes | <!--cifra:defectos_adversariales-->141<!--/cifra-->, each named in `docs/BACKLOG.md` |
+| Defects from adversarial passes | <!--cifra:defectos_adversariales-->142<!--/cifra-->, each named in `docs/BACKLOG.md` |
 
 And the number that does **not** exist: there is no compliance percentage. With
 an unanswered profile, <!--cifra:indeterminadas_perfil_vacio-->48<!--/cifra-->
@@ -254,7 +254,7 @@ something stops being installed, the summary cannot keep saying «0 red».
   instead of the screen going blank with nothing failing.
 - **The adversarial passes.** Every phase closes with one before the next opens,
   and what turns up is written into `docs/BACKLOG.md` with its number and its
-  lesson. <!--cifra:defectos_adversariales-->141<!--/cifra--> so far. The
+  lesson. <!--cifra:defectos_adversariales-->142<!--/cifra--> so far. The
   expensive ones were not crashes: they were plausible, false answers, which is
   the worst thing a tool headed for an auditor can emit.
 

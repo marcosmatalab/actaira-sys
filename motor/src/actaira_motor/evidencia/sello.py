@@ -107,7 +107,26 @@ def sellar(registros: list[Registro], cuando: datetime, clave_privada_pem: bytes
     )
     if clave_privada_pem:
         from cryptography.hazmat.primitives import serialization
+        from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
         k = serialization.load_pem_private_key(clave_privada_pem, password=None)
+        # LA CLAVE TIENE QUE SER Ed25519, Y SE DICE EN VEZ DE DESCUBRIRSE TARDE.
+        #
+        # `load_pem_private_key` devuelve cualquiera de los ocho tipos que la
+        # biblioteca sabe leer, y este codigo solo vale para uno: firma con un
+        # `sign` de un solo argumento y publica la clave en formato crudo, que
+        # es lo que hace Ed25519 y no hacen RSA ni las curvas NIST.
+        #
+        # Sin esta comprobacion, una clave RSA no daba un error claro: daba un
+        # `TypeError` sobre argumentos que faltan, en medio de una operacion de
+        # firma, o -- peor -- un sello que `verificar` no puede leer nunca,
+        # porque ese lado solo construye `Ed25519PublicKey`. Un sello que nadie
+        # puede verificar es peor que no tener sello.
+        if not isinstance(k, Ed25519PrivateKey):
+            raise ValueError(
+                f"la clave privada es {type(k).__name__} y este sello se firma con "
+                f"Ed25519. No es una preferencia: `verificar` solo sabe reconstruir "
+                f"una clave publica Ed25519, asi que un sello firmado con otra cosa "
+                f"no lo podria verificar nadie.")
         # Se firma sobre el JSON canonico de la cabecera, no sobre la raiz suelta:
         # una firma sobre 32 bytes pelados no ata la fecha ni el esquema, y esa
         # fue una de las dos deudas criptograficas que arrastraba la 2.3.0.

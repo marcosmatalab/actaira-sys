@@ -34,12 +34,6 @@ motor/src/actaira_motor/conectores/eventos.py: index
 motor/src/actaira_motor/conectores/eventos.py: index
 motor/src/actaira_motor/conectores/git.py: arg-type
 motor/src/actaira_motor/controles/agentes.py: assignment
-motor/src/actaira_motor/evidencia/sello.py: call-arg
-motor/src/actaira_motor/evidencia/sello.py: call-arg
-motor/src/actaira_motor/evidencia/sello.py: call-arg
-motor/src/actaira_motor/evidencia/sello.py: union-attr
-motor/src/actaira_motor/evidencia/sello.py: union-attr
-motor/src/actaira_motor/evidencia/sello.py: union-attr
 motor/src/actaira_motor/expediente/revision.py: index
 motor/src/actaira_motor/expediente/revision.py: var-annotated
 motor/src/actaira_motor/expediente/revision.py: var-annotated
@@ -56,5 +50,5 @@ motor/src/actaira_motor/remediacion/red.py: attr-defined
 motor/src/actaira_motor/remediacion/red.py: attr-defined
 motor/src/actaira_motor/remediacion/red.py: attr-defined
 motor/src/actaira_motor/vigilancia/almacen.py: assignment
-motor/src/actaira_motor/vigilancia/almacen.py: attr-defined
-motor/src/actaira_motor/vigilancia/almacen.py: attr-defined
+motor/src/actaira_motor/vigilancia/almacen.py: assignment
+motor/src/actaira_motor/vigilancia/almacen.py: misc

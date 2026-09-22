@@ -48,6 +48,35 @@ def test_todo_estado_distinto_de_valida_trae_motivo_escrito():
         assert set(m) == {"es", "en"} and m["es"].strip() and m["en"].strip()
 
 
+def test_una_clave_que_no_es_ed25519_se_RECHAZA_al_sellar():
+    """Y no con un `TypeError` a mitad de la firma, ni con un sello inverificable.
+
+    `load_pem_private_key` devuelve cualquiera de los ocho tipos que la
+    biblioteca sabe leer, y este sello solo vale para uno: firma con un `sign`
+    de un solo argumento y publica la clave en formato crudo. Con una clave RSA,
+    lo que salia era un `TypeError` sobre argumentos que faltan -- en medio de
+    una operacion de firma, que es el peor sitio para un mensaje que no dice
+    nada -- y, si hubiera salido, un sello que `verificar` no puede leer nunca,
+    porque ese lado solo construye `Ed25519PublicKey`.
+
+    Un sello que nadie puede verificar es peor que no tener sello: parece
+    procedencia y no lo es.
+    """
+    import pytest
+    from cryptography.hazmat.primitives import serialization
+    from cryptography.hazmat.primitives.asymmetric import rsa
+
+    k = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+    pem = k.private_bytes(serialization.Encoding.PEM, serialization.PrivateFormat.PKCS8,
+                          serialization.NoEncryption())
+    with pytest.raises(ValueError) as e:
+        sellar([_reg()], AHORA, pem)
+    # El mensaje NOMBRA lo que llego y lo que hace falta. Un `ValueError` pelado
+    # obligaria a quien lo reciba a adivinar cual de sus claves es la mala.
+    texto = str(e.value)
+    assert "RSA" in texto and "Ed25519" in texto
+
+
 def test_el_sello_firmado_verifica_sin_red_contra_la_clave_esperada():
     """Cambiado por D-3: sin clave esperada no basta, y eso es lo correcto."""
     from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey

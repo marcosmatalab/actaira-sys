@@ -2182,6 +2182,41 @@ queda corto (`pyyaml`, `build`, `playwright`, y ahora estas dos): una fase que
 se **omite** porque falta lo que necesita es una fase que no mide, y en
 integración continua —donde se corre con `--sin-omitir`— eso es rojo.
 
+**D-142. La lista de tipos dependia del sistema y de la version de una
+biblioteca.** La escribio D-141, y la cazo comprobarla en Linux antes de darla
+por buena: alli salian cuatro errores que no estaban y dos de la lista que no
+ocurren.
+
+No era deriva. `vigilancia/almacen.py` toma el candado con `fcntl` en POSIX y
+con `msvcrt` en Windows dentro de un `try/except ImportError`, asi que el modulo
+que mypy **no** puede resolver es distinto en cada sistema, y con el cambian los
+tipos que deduce. Una lista atada al sistema donde se genero pondria la puerta
+roja en el otro **con el producto intacto** -- y una puerta que se pone roja
+donde no hay nada que arreglar ensena a apagarla. La alternativa, dos listas,
+serian dos definiciones de la misma propiedad.
+
+Se fija la plataforma en `pyproject.toml`, y se escribe lo que eso cuesta: las
+ramas de Windows se comprueban contra los tipos de POSIX. Quien de verdad
+comprueba esas ramas es la matriz, que **corre** la suite en los dos.
+
+Con eso bajo de cuatro a dos, y los dos restantes no eran del sistema sino de la
+**version de `cryptography`**: 46 aqui y 50 alla, con uniones de tipos
+distintas. Y ahi lo que aparecio no era ruido de tipos:
+
+**`sellar` aceptaba cualquier clave privada y solo funciona con una.**
+`load_pem_private_key` devuelve cualquiera de los ocho tipos que la biblioteca
+sabe leer; este sello firma con un `sign` de un solo argumento y publica la
+clave en formato crudo, que es lo que hace Ed25519 y no hacen RSA ni las curvas
+NIST. Con una clave RSA salia un `TypeError` sobre argumentos que faltan, en
+medio de una operacion de firma; y si hubiera salido, habria salido un sello que
+`verificar` no puede leer nunca, porque ese lado solo construye
+`Ed25519PublicKey`. **Un sello que nadie puede verificar es peor que no tener
+sello: parece procedencia y no lo es.**
+
+Ahora se comprueba y se dice, nombrando lo que llego y lo que hace falta. Los
+conocidos bajan de 38 a 32 y la lista cuadra en los dos sistemas y con las dos
+versiones.
+
 ### Lo que esta pasada NO mira, dicho para que nadie lo suponga
 
 La cadena de evidencia, el candado del almacén y la aritmética del calendario se

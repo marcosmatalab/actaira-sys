@@ -186,3 +186,24 @@ ignore = ["B905"]
 python_version = "3.12"
 files = ["motor/src"]
 ignore_missing_imports = true
+
+# LA PLATAFORMA SE FIJA, Y LA MATRIZ ENSENO POR QUE.
+#
+# La lista de conocidos se genero en Windows y en Linux no cuadraba: cuatro
+# errores que no estaban y dos de la lista que alli no ocurren. No era deriva ni
+# descuido. `vigilancia/almacen.py` toma el candado con `fcntl` en POSIX y con
+# `msvcrt` en Windows, dentro de un `try/except ImportError`, asi que el modulo
+# que mypy NO puede resolver es distinto en cada sistema, y con el cambian los
+# tipos que deduce.
+#
+# Con la lista atada al sistema donde se genero, la puerta saldria roja en el
+# otro con el producto intacto -- y una puerta que se pone roja donde no hay
+# nada que arreglar ensena a apagarla. La alternativa, dos listas, serian dos
+# definiciones de la misma propiedad, que es la regla 10: acabarian diciendo
+# cosas distintas.
+#
+# LO QUE ESTO CUESTA, dicho y no escondido: las ramas de Windows se comprueban
+# contra los tipos de POSIX. Es el mismo precio que paga cualquier analisis
+# estatico de codigo que se bifurca por sistema, y se elige a sabiendas: quien
+# de verdad comprueba esas ramas es la matriz, que CORRE la suite en los dos.
+platform = "linux"
