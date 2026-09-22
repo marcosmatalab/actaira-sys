@@ -1,4 +1,4 @@
-r"""El panel, corrido en un NAVEGADOR de verdad, contra la API de verdad.
+r"""El panel y la consola, corridos en un NAVEGADOR de verdad.
 
 POR QUE ESTE FICHERO EXISTE
 -----------------------------
@@ -45,6 +45,7 @@ escrita contra eso.
 from __future__ import annotations
 
 import argparse
+import datetime as _dt
 import json
 import os
 import secrets
@@ -349,6 +350,113 @@ def navegador(base: str, token: str, *, video: Path | None = None,
             navegador_.close()
 
 
+VISTAS_DE_LA_CONSOLA = ["aplica", "pregunta", "soa"]
+"""Las tres vistas de `consola.html`, que hasta ahora no abria nadie.
+
+La consola es el tercer artefacto que se publica y NINGUNA prueba ejecutaba su
+JavaScript. Le paso exactamente lo que le habia pasado al panel: los tres
+`<main>` llevaban el mismo `id` que su boton de pestana, `getElementById`
+devolvia el boton -- que va antes en el documento -- y conmutar de vista
+escondia las PESTANAS en vez de los paneles. Al cargar quedaba una sola pestana
+a la vista, y el cuestionario entero y la declaracion de aplicabilidad no se
+podian alcanzar nunca. Sin un error de consola y con las veinte pruebas de
+`test_consola.py` en verde, porque todas leen el fichero y ninguna lo corre.
+
+`revisar_estructura` sujeta ahora la CAUSA -- ningun id repetido, en las tres
+paginas --, y esto sujeta el SINTOMA, que es lo unico que demuestra que la
+pantalla funciona: abrirla y pulsar.
+"""
+
+
+def consola(reg: list[str]) -> None:
+    """La consola, abierta y pulsada. No necesita pila: es un fichero suelto.
+
+    Y eso es justo lo que se afirma de paso: se abre con `file://`, sin
+    servidor y sin red, que es la mitad de su promesa.
+    """
+    pagina = (RAIZ / "consola" / "consola.html").resolve().as_uri()
+    with navegador(pagina, "") as (pag, _):
+        pg = pag.page
+        pg.goto(pagina, wait_until="load")
+        pg.wait_for_selector("#vistas")
+
+        def abierta() -> list[str]:
+            return pg.evaluate(
+                "(vs) => vs.filter(v => document.getElementById('p-' + v).offsetParent)",
+                VISTAS_DE_LA_CONSOLA)
+
+        # 1. Las TRES pestanas se ven. Es el defecto entero: dos desaparecian
+        #    al cargar y con ellas dos vistas del producto.
+        for v in VISTAS_DE_LA_CONSOLA:
+            b = pg.locator(f"#v-{v}")
+            todo._afirma(b.is_visible(),
+                         f"la pestana {v!r} de la consola no se ve: es el defecto que "
+                         f"escondio el cuestionario y la declaracion de aplicabilidad")
+
+        # 2. Pulsar cada una abre SU panel y solo el suyo.
+        for v in VISTAS_DE_LA_CONSOLA:
+            pg.locator(f"#v-{v}").click()
+            todo._afirma(abierta() == [v],
+                         f"al pulsar {v!r} la consola ensena {abierta()} en vez de solo {v!r}")
+
+        # 3. Las dos vistas que estaban escondidas traen lo que prometen.
+        pg.locator("#v-soa").click()
+        controles = pg.locator("#tbody-soa tr").count()
+        pg.locator("#v-pregunta").click()
+        preguntas = pg.locator("#q-lista .qid").count()
+        todo._afirma(controles > 0 and preguntas > 0,
+                     f"la declaracion de aplicabilidad pinto {controles} controles y el "
+                     f"cuestionario {preguntas} preguntas: una vista vacia no demuestra "
+                     f"que se pueda alcanzar")
+
+        # 4. Y RESPONDER NO TE ECHA DE LA VISTA.
+        #
+        #    Cada repintado llevaba pegada una llamada que forzaba la primera
+        #    pantalla, asi que contestar una pregunta, cambiar de idioma, mover
+        #    la fecha o tocar un rol te sacaba del cuestionario. Estaba tapado
+        #    por el defecto de los ids -- conmutar no conmutaba nada -- y quedo
+        #    a la vista al arreglarlo.
+        radios = pg.locator("#q-lista input[type=radio]")
+        todo._afirma(radios.count() > 0, "el cuestionario no trae ni una opcion que pulsar")
+        radios.first.check()
+        todo._afirma(abierta() == ["pregunta"],
+                     f"contestar una pregunta echo al usuario a {abierta()}: la vista que "
+                     f"esta abierta se queda abierta")
+        pg.locator("#v-soa").click()
+        # Los mandos que se ven desde CUALQUIER vista -- idioma y tema viven en
+        # la cabecera -- son los que pueden echarte de donde estas. Los de
+        # perfil y fecha viven dentro de la primera vista y desde aqui no se
+        # ven, que es lo correcto.
+        for accion in ("#idioma button[data-l='de']", "#tema button"):
+            pg.locator(accion).first.click()
+            todo._afirma(abierta() == ["soa"],
+                         f"tocar {accion!r} echo al usuario de la declaracion de "
+                         f"aplicabilidad a {abierta()}")
+        pg.locator("#idioma button[data-l='es']").first.click()
+
+        # 5. «HOY» ES HOY. El boton llevaba la fecha de construccion escrita en
+        #    el HTML, asi que la pantalla que contesta «que te ata hoy»
+        #    contestaba con un calendario que envejecia un dia cada dia.
+        hoy = _dt.date.today().isoformat()
+        pg.locator("#v-aplica").click()
+        marcada = pg.locator("#f-hoy").get_attribute("data-f")
+        todo._afirma(marcada == hoy,
+                     f"el boton «Hoy» de la consola apunta a {marcada!r} y hoy es {hoy!r}")
+        corta = (pg.locator("#lb-fecha-corta").inner_text() or "").strip()
+        todo._afirma(corta == hoy,
+                     f"la consola dice estar resolviendo a {corta!r} y hoy es {hoy!r}")
+
+        # 6. Ni `undefined` ni un error de consola en todo el recorrido.
+        texto = pg.locator("body").inner_text()
+        todo._afirma("undefined" not in texto,
+                     "la consola escribe `undefined`, que parece un dato")
+        todo._afirma(not pag.errores,
+                     f"la consola del navegador escribio errores: {pag.errores}")
+    reg.append(f"la consola: las {len(VISTAS_DE_LA_CONSOLA)} vistas se pulsan, "
+               f"{controles} controles y {preguntas} preguntas se pintan, y responder "
+               f"o cambiar de idioma NO te echa de la vista")
+
+
 def puerta(reg: list[str]) -> None:
     """Las once vistas, pulsadas de verdad. Es la fase `navegador` de la puerta."""
     textos_es = json.loads(
@@ -449,6 +557,44 @@ def puerta(reg: list[str]) -> None:
                 reg.append(f"  {r['verbo']:<5} {r['filas']:>3} filas  {r['ms']:>6} ms"
                            + ("" if r["filas"] else "   (vacio, y lo dice)"))
             reg.append(f"las {len(RECORRIDO)} vistas pintan filas ({filas_totales} en total)")
+
+            # EL CONTADOR DEL BUSCADOR CUENTA FILAS, NO EL CARTEL DE QUE NO HAY.
+            #
+            # Contaba los HIJOS de la caja de lineas, y cuando no hay nada que
+            # ensenar ahi dentro vive un parrafo que lo explica. Asi que una
+            # vista vacia -- la de no conformidades el dia que no hay ninguna --
+            # decia «este documento no trae ninguna linea» y justo al lado «1
+            # linea.»: dos afirmaciones contrarias en la misma pantalla, y la
+            # falsa era la que llevaba un numero. Y al escribir en el buscador,
+            # el parrafo casaba o no casaba como si fuera una fila, asi que se
+            # escondia la unica frase que explicaba que pasaba.
+            def _contador() -> str:
+                return (pag.page.locator("#buscar-cuenta").inner_text() or "").strip()
+
+            pag.pedir("nc")                       # la vista que viene vacia
+            todo._afirma(pag.page.locator("#lineas .linea").count() == 0,
+                         "esta comprobacion necesita una vista sin filas y `nc` trajo alguna")
+            todo._afirma(_contador() == "",
+                         f"una vista sin filas dice {_contador()!r} en el contador del "
+                         f"buscador, encima de la frase que dice que no hay ninguna")
+            pag.page.fill("#buscar", "zzz")
+            todo._afirma(pag.page.locator("#lineas .vacio").first.is_visible(),
+                         "buscar en una vista vacia escondio la unica frase que explica "
+                         "que pasa, y la cambio por «ninguna linea coincide»")
+            pag.page.fill("#buscar", "")
+
+            # Y con filas, el buscador sigue contando lo que filtra.
+            con_filas = pag.pedir("plan")
+            pag.page.fill("#buscar", "art.")
+            visibles = pag.page.evaluate(
+                "() => Array.from(document.querySelectorAll('#lineas .linea'))"
+                ".filter(n => !n.hidden).length")
+            todo._afirma(0 < visibles <= con_filas["filas"] and _contador() != "",
+                         f"el buscador dejo {visibles} filas de {con_filas['filas']} y el "
+                         f"contador dice {_contador()!r}")
+            pag.page.fill("#buscar", "")
+            reg.append(f"el buscador: con {con_filas['filas']} filas filtra y cuenta, y "
+                       f"en una vista vacia no cuenta el cartel como una fila")
 
             # EL ALMACEN, OTRA VEZ, AHORA QUE `vig` LO HA ESCRITO.
             #
@@ -918,7 +1064,8 @@ def gif(segundos: int, ancho: int, fps: int) -> int:
 
 
 def main() -> int:
-    p = argparse.ArgumentParser(description="El panel en un navegador de verdad.")
+    p = argparse.ArgumentParser(
+        description="El panel y la consola en un navegador de verdad.")
     g = p.add_mutually_exclusive_group(required=True)
     g.add_argument("--puerta", action="store_true", help="afirma, y sale rojo si no")
     g.add_argument("--capturas", action="store_true", help="las imagenes del README")
@@ -935,6 +1082,7 @@ def main() -> int:
         if a.puerta:
             reg: list[str] = []
             puerta(reg)
+            consola(reg)
             for linea in reg:
                 print(f"  {linea}")
             return 0

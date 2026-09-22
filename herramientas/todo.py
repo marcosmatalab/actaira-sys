@@ -1681,11 +1681,22 @@ def fase_navegador(reg: list[str]) -> None:
     rojo, que es exactamente lo que se quiere: el dia que Chromium deje de
     instalarse, el sintoma no puede volver a quedarse sin puerta en silencio.
 
-    Es la unica fase que ejecuta el JavaScript del panel. Las demas leen el
-    fichero; esta lo corre.
+    Es la unica fase que EJECUTA el JavaScript de las dos pantallas. Las demas
+    leen el fichero; esta lo corre.
+
+    Y son dos porque la consola tampoco lo tenia, con el mismo resultado: los
+    tres `<main>` compartian id con su boton de pestana, conmutar de vista
+    escondia las pestanas en vez de los paneles, y dos de las tres vistas -- el
+    cuestionario entero y la declaracion de aplicabilidad -- no se podian
+    alcanzar nunca. Veinte pruebas en verde, cero errores de consola, y todas
+    leen el fichero. La leccion que dejo el panel se aplico al panel y no al
+    artefacto de al lado.
     """
     import navegador
     navegador.puerta(reg)
+    # La consola NO necesita la pila: es un fichero suelto que se abre con
+    # `file://`, y eso es ademas la mitad de lo que promete.
+    navegador.consola(reg)
 
 
 def fase_fuentes(reg: list[str]) -> None:
