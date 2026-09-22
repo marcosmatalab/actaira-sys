@@ -1918,3 +1918,210 @@ fallo; las dos eran decisiones aplazadas, que es la forma educada de no tomarlas
   Y la atribucion, que tambien es parte del arreglo: recortar es modificar, las
   tres son SIL OFL 1.1, y eso pide atribucion. Esta en `NOTICE` y el texto de la
   licencia en `tipografias/LICENCIA-OFL.txt`.
+
+## Séptima pasada — el artefacto de al lado
+
+La sexta pasada metió el navegador en la puerta y cerró escribiendo lo que había
+aprendido: *«el panel no tenía ni una sola prueba que ejecutara su JavaScript»*.
+Se arregló para el panel. La consola —el tercer artefacto que se publica, el que
+enseña el cuestionario de noventa preguntas y la declaración de aplicabilidad—
+siguió sin que nadie la abriera nunca, con sus veinte pruebas en verde, y le pasó
+exactamente lo mismo por su cuenta.
+
+Esta pasada la abre. Y de paso recorre el lado Go, que llevaba tres pasadas sin
+que nadie leyera sus caminos de aviso.
+
+### Lo que estaba roto en la pantalla
+
+- **D-130. Dos de las tres vistas de la consola no se podían alcanzar nunca.**
+  Los tres `<main>` llevaban el **mismo `id`** que su botón de pestaña. Un id
+  repetido no falla: el navegador lo acepta y `getElementById` devuelve **el
+  primero en orden de documento**, que es el botón. Así que la función que
+  conmuta de vista escondía y enseñaba las *pestañas* en lugar de los paneles: al
+  cargar quedaba una sola pestaña visible, las otras dos desaparecían, y los
+  paneles se quedaban con el `oculto` que traían del HTML **para siempre**.
+
+  Efecto: el cuestionario entero y la declaración de aplicabilidad —treinta y
+  ocho controles y noventa preguntas, justo lo que esa página existe para
+  enseñar— eran inalcanzables. Cero errores de consola. Veinte pruebas en verde,
+  porque todas **leen** el fichero y ninguna lo **corre**.
+
+  Es el mismo síntoma que D-108 en el panel —siete de once vistas sin poder
+  pulsarse— con otra causa, y lo que falló las dos veces fue lo mismo: nadie
+  comprobaba una propiedad que se lee del HTML en dos líneas.
+
+  Dos puertas, una para la causa y otra para el síntoma. La causa:
+  `revisar_estructura` rechaza ahora **cualquier `id` repetido** en las tres
+  páginas, y se vio ponerse roja volviendo a juntar los ids. El síntoma: la fase
+  `navegador` abre también la consola —que no necesita pila, es un fichero que se
+  abre con `file://`, y eso es media promesa suya— y pulsa sus tres vistas.
+
+- **D-131. Repintar te echaba de la vista que tenías abierta.** Cada sitio que
+  repinta llevaba pegada, sin indentar, una llamada que forzaba la primera
+  pantalla. Contestar una pregunta, cambiar de idioma, mover la fecha o tocar un
+  rol te sacaba del cuestionario o de la declaración de aplicabilidad.
+
+  Estaba **tapado por D-130**: mientras conmutar de vista no conmutaba nada, ese
+  salto no se veía. Apareció a los diez segundos de arreglar lo otro, que es lo
+  que suele pasar cuando un defecto esconde a otro. La sincronización vive ahora
+  en un solo sitio —al final de `pintar()`, con la vista que hay abierta— en vez
+  de repetida en cinco.
+
+- **D-132. El botón que dice «Hoy» apuntaba al día en que se construyó la
+  página.** La fecha estaba escrita en el `data-f` del botón y en el estado
+  inicial del JavaScript: `2026-09-20`. La consola contesta «qué te ata **hoy**»
+  comparando esa fecha con la de entrada en vigor de cada obligación, así que una
+  obligación que ya ata salía como **futura**, y la distancia crecía un día por
+  cada día.
+
+  Se lee del reloj del navegador. **No** se inyecta al construir, que era la otra
+  salida: eso haría que dos máquinas sanas produjeran ficheros distintos el mismo
+  día siguiente, y la reproducibilidad de esta página es una puerta de la suite.
+  Y se compone con el calendario **local** en vez de recortar un `toISOString`,
+  que es UTC: en España, entre medianoche y las dos, «hoy» habría sido ayer.
+
+- **D-133. «1 línea.» debajo de la frase que dice que no hay ninguna.** El
+  contador del buscador del panel contaba los **hijos** de la caja de líneas, y
+  cuando no hay nada que enseñar ahí dentro vive un párrafo que lo explica. Una
+  vista vacía —la de no conformidades el día que no hay ninguna, que es el caso
+  normal— decía «Este documento no trae ninguna línea» y justo al lado «1
+  línea.». Dos afirmaciones contrarias en la misma pantalla, y la falsa era la
+  que llevaba un número.
+
+  Peor al escribir en el buscador: el párrafo casaba o no casaba **como si fuera
+  una fila**, así que se escondía la única frase que explicaba qué hacer y en su
+  sitio quedaba «Ninguna línea coincide con …», que además es mentira: nunca hubo
+  una línea que pudiera coincidir. En los seis idiomas. Reproducido en Chromium
+  antes de tocarlo y comprobado después.
+
+### Lo que estaba roto en la plataforma
+
+- **D-134. El aviso le mandaba al operador exportar una variable que el servidor
+  no lee nunca.** Cuando llega un evento de un cliente sin secreto de webhook
+  configurado, la ruta lo atiende y **lo dice**, nombrando la variable que hay
+  que poner. Ese nombre se componía en dos sitios y los dos no coincidían:
+  `secretoDe` convierte los guiones en subrayados —una variable de entorno no
+  puede llevar un guion— y el aviso pegaba el identificador en mayúsculas tal
+  cual.
+
+  Un identificador de cliente válido puede llevar guiones y casi todos los
+  llevan. Así que a `acme-corp` el servidor le mandaba exportar
+  `ACTAIRA_SECRETO_WEBHOOK_ACME-CORP`, que ni siquiera es un nombre que la
+  mayoría de los intérpretes de órdenes deje escribir, mientras leía
+  `..._ACME_CORP`. El operador hace lo que dice el aviso, el webhook **sigue sin
+  firmar para siempre**, y no falla nada: la ruta atiende el evento igual y solo
+  deja de poder atribuirlo a nadie.
+
+  Sobrevivió porque las siete pruebas de firma usan un cliente llamado `acme`,
+  sin guion. La composición vive ahora en una sola función exportada.
+
+- **D-135. La puerta de los seis idiomas comprobaba dos.**
+  `herramientas/paginas.py` trae un `revisar_textos` que compara **todos** los
+  idiomas contra todos, y lo usaba solo la portada. El panel tenía una copia
+  propia y la consola otra escrita a mano, las dos de cuando esas páginas
+  hablaban `es` y `en`, y las dos comparando esos dos por su nombre. Desde que
+  son seis, una clave que faltara en alemán, francés, italiano o portugués salía
+  como `undefined` en la pantalla de ese cliente **sin que ninguna puerta lo
+  viera** —que es literalmente el fallo que el docstring de esas copias decía
+  estar evitando.
+
+  Hoy no falta ninguna. La cifra no es el dato: dos definiciones de la misma
+  propiedad es la regla 10, y la que se queda corta es siempre la copia.
+
+- **D-136. La lista de avisos no entregados crecía sin tope.** Este proceso vive
+  meses y `Entregar` es de quien lo configura: un destino caído mete un aviso por
+  cliente y por pasada, y ninguno se iba nunca. Es la misma fuga que ya se cerró
+  en el limitador de ritmo y en el de concurrencia, dejada abierta aquí.
+
+  Al acotarla aparece el riesgo contrario, que es peor: publicar la longitud de
+  la lista haría que el estado de salud **dejara de contar** a partir del aviso
+  257 y dijera que van bien unos avisos que nadie recibió. Así que se acota el
+  **detalle** y no la **cuenta**: se guardan los últimos 256 enteros y un
+  contador aparte dice cuántos hubo, que es el que publica `/salud`.
+
+- **D-137. `typ` se leía en cada testigo y no se comparaba con nada.** Un campo
+  así es peor que no tenerlo en el fichero que enumera los cuatro fallos clásicos
+  de verificar JWT a mano y dice que *«cada una tiene su línea de código y su
+  prueba»*: quien lo lea dará por hecho que el tipo se comprueba.
+
+  Se quita, y se escribe por qué **no** se comprueba: la recomendación de tipar
+  explícitamente (RFC 8725) sirve para que un testigo de un tipo no valga como
+  otro, y aquí no hay más que uno; exigir un valor concreto además rompe con
+  proveedores reales, que escriben `JWT`, `at+jwt` o `Bearer` según les parece.
+  Lo que cierra ese hueco es lo que ya había: `iss` exacto, `aud` obligatoria,
+  `exp` obligatoria y el algoritmo contra una lista cerrada de asimétricos.
+
+  Con él salen dos `var _ = fmt.Sprintf` que no hacían nada y mantenían vivo un
+  `import` cada uno, un cálculo muerto en el control del artículo 50 —componía
+  una lista de apariciones que no salía a ningún sitio, con el mismo nombre que
+  un campo del documento que se llena en otro lado, así que la única manera de
+  saber si el documento había perdido algo era mirar las dos—, una palabra
+  repetida en el diccionario del corrector, un `Any` usado en una anotación y sin
+  importar, y una línea de una prueba que calculaba algo y no lo miraba.
+
+### Segunda vuelta de la séptima pasada — lo latente, al preguntar «¿queda algo?»
+
+Los ocho de arriba estaban rotos hoy. Estos tres no lo estaban: funcionaban, y
+fallarían el día que alguien añadiera lo siguiente. Se arreglan igual, porque un
+defecto que espera a que alguien más lo pise lo paga ese alguien.
+
+- **D-138. La tabla de permisos declaraba de lectura dos verbos que escriben.**
+  `PERMISOS` estaba indexada por **verbo**, y dos de los verbos tienen varias
+  acciones: `almacen` es `verificar` **y `migrar`** —que reescribe el almacén de
+  evidencia entero—, y `noconformidad` es `listar` **y `abrir` y `avanzar`**, que
+  mueven el ciclo, es decir exactamente lo que el papel `remediacion` existe para
+  repartir. Las dos entradas estaban bajo el comentario *«Leer. No cambian
+  nada»*.
+
+  Hoy no era un agujero: la API solo publica las dos acciones que leen. Lo que
+  estaba roto era la **promesa** —el mismo fichero dice, tres párrafos más abajo,
+  que una ruta sin permiso declarado *«nace sin funcionar, que se arregla en un
+  minuto y se nota»*— y con la clave en el verbo eso dejaba de ser cierto: la
+  ruta que abriera una no conformidad habría nacido con permiso de **lectura**, y
+  nadie se habría enterado.
+
+  Ahora la clave es **verbo y acción** (`almacen verificar`, `noconformidad
+  listar`), la búsqueda mira la clave entera antes que el verbo, y las tres
+  acciones que escriben **no están declaradas**: no pasan. Declararlas aquí sería
+  decidir por quien añada esa ruta.
+
+  Y la prueba que debía cubrirlo redondeaba la pregunta: recorría los verbos
+  publicados con `verboDe`, así que le bastaba una entrada por verbo. Usa ahora
+  la misma búsqueda que el control.
+
+- **D-139. Una carrera de datos latente en el planificador.** `preparar()`
+  **escribe** campos del planificador —el revisor, el intervalo, los reintentos,
+  el reloj— y lo llaman los dos métodos exportados: `Correr` al empezar y
+  `UnaPasada` en cada pasada. Nada impide disparar una pasada suelta mientras el
+  bucle corre, y entonces hay dos escritores sobre los mismos campos sin candado.
+
+  `-race` no la veía porque ninguna prueba los llama a la vez, que es justo lo
+  que hace peligrosa a una carrera latente: no la ve quien mira, la ve quien
+  despliega. `sync.Once` con el error guardado.
+
+- **D-140. Un cuerpo vacío se reconocía por el texto de su error.** `leerPerfil`
+  comparaba `err.Error() != "EOF"`. Un perfil vacío es legítimo —todas esas rutas
+  admiten que no mandes cuerpo— así que de esa comparación depende que la ruta
+  funcione, y estaba atada a una cadena de la biblioteca estándar que nadie
+  promete no cambiar. `errors.Is(err, io.EOF)`.
+
+Lo que se miró en esta vuelta y **no** se tocó, con su motivo: las firmas ECDSA
+se parten por la mitad sin exigir el tamaño canónico de la curva —es maleabilidad
+de codificación, no falsificación, y `ecdsa.Verify` rechaza cualquier `r`/`s` que
+no cuadre—; `ArgumentosSeguros` solo resuelve las rutas absolutas, que es lo que
+esta capa construye; y las 38 quejas de `mypy` y las 191 de `ruff` se revisaron
+una por una sin encontrar un fallo de ejecución detrás (las `F821` son de un
+repositorio de ejemplo escrito roto a propósito, y el `B023` es un falso positivo:
+la clausura se invoca dentro de la misma vuelta del bucle). **Ninguna de las dos
+herramientas está en la puerta ni configurada en `pyproject.toml`**, así que eso
+no es un verde: es que nadie las mide.
+
+### Lo que esta pasada NO mira, dicho para que nadie lo suponga
+
+La cadena de evidencia, el candado del almacén y la aritmética del calendario se
+leyeron y no se tocaron: tienen sus pruebas y esta pasada no encontró nada que
+las contradijera. Tampoco se ha auditado el **contenido normativo** del catálogo,
+que es trabajo de un jurista y no de una lectura de código. Y el defecto más
+grande de los ocho —D-130— llevaba ahí desde que la consola tiene tres vistas, lo
+cual dice de esta pasada menos de lo que dice de las seis anteriores: lo encontró
+abrir la página, no leerla.

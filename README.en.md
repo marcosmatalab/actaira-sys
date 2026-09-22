@@ -161,9 +161,9 @@ stale.
 | Cross-framework pairs | <!--cifra:pares-->101<!--/cifra-->, with <!--cifra:pares_rotos-->0<!--/cifra--> broken and <!--cifra:huecos-->0<!--/cifra--> coverage gaps |
 | Rules that read code | <!--cifra:reglas-->68<!--/cifra--> in <!--cifra:paquetes_de_reglas-->17<!--/cifra--> packs |
 | Questions in the bank | <!--cifra:preguntas-->90<!--/cifra-->, each tied to all three catalogues |
-| Tests | <!--cifra:pruebas-->563<!--/cifra--> Python + <!--cifra:pruebas_go-->98<!--/cifra--> Go |
+| Tests | <!--cifra:pruebas-->563<!--/cifra--> Python + <!--cifra:pruebas_go-->102<!--/cifra--> Go |
 | Acceptance gate phases | <!--cifra:fases_de_la_puerta-->25<!--/cifra--> |
-| Defects from adversarial passes | <!--cifra:defectos_adversariales-->129<!--/cifra-->, each named in `docs/BACKLOG.md` |
+| Defects from adversarial passes | <!--cifra:defectos_adversariales-->140<!--/cifra-->, each named in `docs/BACKLOG.md` |
 
 And the number that does **not** exist: there is no compliance percentage. With
 an unanswered profile, <!--cifra:indeterminadas_perfil_vacio-->48<!--/cifra-->
@@ -220,21 +220,33 @@ something stops being installed, the summary cannot keep saying «0 red».
   other system.
 - **The race detector.** The platform tests run under `-race`, with the engine
   installed and the fixture pointed at, and **zero skipped**: a test that skips
-  is not a test that passes.
-- **The browser.** One phase opens the panel in Chromium, clicks all
-  <!--cifra:vistas_del_panel-->11<!--/cifra--> views against the real API and
-  checks that each one paints rows — or says why not — that the six languages do
-  not print `undefined`, and that the console does not emit a single error. It
-  exists because the panel had **not one test that executed its JavaScript**:
-  seven of the eleven views were unreachable without anything failing, and a
-  `ReferenceError` that broke all eleven passed four audits in a row.
+  is not a test that passes. The matrix runs it on Linux **and so does the local
+  gate**, as soon as a C compiler is on the path; when there is none, the phase
+  says so instead of keeping quiet. It used to live only in continuous
+  integration, so in practice it was never run while writing, and a real data
+  race — two public scheduler methods writing the same fields — went through
+  three adversarial passes unseen.
+- **The browser.** One phase opens **both screens** in Chromium. The panel,
+  against the real API: it clicks all <!--cifra:vistas_del_panel-->11<!--/cifra-->
+  views and checks that each one paints rows — or says why not — that the six
+  languages do not print `undefined`, and that the browser console does not emit
+  a single error. And the applicability console, opened straight from disk: that
+  its three views can be clicked and that answering a question does not throw you
+  out of where you were. It exists because the panel had **not one test that
+  executed its JavaScript**: seven of the eleven views were unreachable without
+  anything failing, and a `ReferenceError` that broke all eleven passed four
+  audits in a row. The console was added after the same thing happened to it on
+  its own: its three `<main>` elements shared an `id` with their tab button, so
+  switching views hid the tabs instead of the panels and **two of its three views
+  could never be reached**, with all twenty of its tests green. The lesson had
+  been applied to the panel and not to the artefact next to it.
 - **The contract.** <!--cifra:vistas_del_panel-->11<!--/cifra--> JSON schemas
   published in `contrato/`, checked against what the engine emits and against
   the fields the panel reads. If the engine renames a field, the gate says so
   instead of the screen going blank with nothing failing.
 - **The adversarial passes.** Every phase closes with one before the next opens,
   and what turns up is written into `docs/BACKLOG.md` with its number and its
-  lesson. <!--cifra:defectos_adversariales-->129<!--/cifra--> so far. The
+  lesson. <!--cifra:defectos_adversariales-->140<!--/cifra--> so far. The
   expensive ones were not crashes: they were plausible, false answers, which is
   the worst thing a tool headed for an auditor can emit.
 

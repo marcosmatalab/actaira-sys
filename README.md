@@ -151,9 +151,9 @@ Ninguno está escrito a mano. Salen del catálogo y del árbol, los rellena
 | Pares del cruce entre marcos | <!--cifra:pares-->101<!--/cifra-->, con <!--cifra:pares_rotos-->0<!--/cifra--> rotos y <!--cifra:huecos-->0<!--/cifra--> huecos de cobertura |
 | Reglas que leen código | <!--cifra:reglas-->68<!--/cifra--> en <!--cifra:paquetes_de_reglas-->17<!--/cifra--> paquetes |
 | Preguntas del banco | <!--cifra:preguntas-->90<!--/cifra-->, cada una atada a los tres catálogos |
-| Pruebas | <!--cifra:pruebas-->563<!--/cifra--> de Python + <!--cifra:pruebas_go-->98<!--/cifra--> de Go |
+| Pruebas | <!--cifra:pruebas-->563<!--/cifra--> de Python + <!--cifra:pruebas_go-->102<!--/cifra--> de Go |
 | Fases de la puerta de aceptación | <!--cifra:fases_de_la_puerta-->25<!--/cifra--> |
-| Defectos de las pasadas adversariales | <!--cifra:defectos_adversariales-->129<!--/cifra-->, cada uno con su nombre en `docs/BACKLOG.md` |
+| Defectos de las pasadas adversariales | <!--cifra:defectos_adversariales-->140<!--/cifra-->, cada uno con su nombre en `docs/BACKLOG.md` |
 
 Y el número que **no** existe: no hay porcentaje de cumplimiento. Con un perfil
 sin responder, <!--cifra:indeterminadas_perfil_vacio-->48<!--/cifra-->
@@ -210,21 +210,33 @@ de estar instalado, el resumen no puede seguir diciendo «0 en rojo».
   desde el otro sistema.
 - **El detector de carreras.** Las pruebas de la plataforma corren bajo `-race`,
   con el motor instalado y el fixture apuntado, y **cero saltadas**: una prueba
-  que se salta no es una prueba que pasa.
-- **El navegador.** Una fase abre el panel en Chromium, pulsa las
-  <!--cifra:vistas_del_panel-->11<!--/cifra--> vistas contra la API de verdad y
-  comprueba que cada una pinta filas —o dice por qué no—, que los seis idiomas
-  no escriben `undefined`, y que la consola no suelta ni un error. Existe porque
-  el panel no tenía **ni una sola prueba que ejecutara su JavaScript**: siete de
-  las once vistas estuvieron inalcanzables sin que nada fallara, y un
-  `ReferenceError` que rompía las once pasó cuatro auditorías seguidas.
+  que se salta no es una prueba que pasa. Lo corre la matriz en Linux **y la
+  puerta local**, en cuanto hay un compilador de C en el camino; si no lo hay,
+  la fase lo dice en vez de callarse. Vivía solo en integración continua, así
+  que en la práctica no se corría al escribir, y una carrera de datos real
+  —dos métodos públicos del planificador escribiendo los mismos campos— pasó
+  tres pasadas adversariales sin que nadie la viera.
+- **El navegador.** Una fase abre **las dos pantallas** en Chromium. El panel,
+  contra la API de verdad: pulsa las <!--cifra:vistas_del_panel-->11<!--/cifra-->
+  vistas y comprueba que cada una pinta filas —o dice por qué no—, que los seis
+  idiomas no escriben `undefined` y que la consola del navegador no suelta ni un
+  error. Y la consola de aplicabilidad, que se abre sola desde el disco: que sus
+  tres vistas se pulsan y que contestar una pregunta no te echa de donde estabas.
+  Existe porque el panel no tenía **ni una sola prueba que ejecutara su
+  JavaScript**: siete de las once vistas estuvieron inalcanzables sin que nada
+  fallara, y un `ReferenceError` que rompía las once pasó cuatro auditorías
+  seguidas. La consola se añadió después de que le pasara lo mismo por su cuenta:
+  sus tres `<main>` compartían `id` con su botón de pestaña, así que conmutar de
+  vista escondía las pestañas en vez de los paneles y **dos de sus tres vistas no
+  se podían alcanzar nunca**, con sus veinte pruebas en verde. La lección se había
+  aplicado al panel y no al artefacto de al lado.
 - **El contrato.** <!--cifra:vistas_del_panel-->11<!--/cifra--> esquemas JSON
   publicados en `contrato/`, comprobados contra lo que el motor emite y contra
   los campos que el panel lee. Si el motor renombra un campo, la puerta lo dice
   en vez de que la pantalla se quede en blanco sin que falle nada.
 - **Las pasadas adversariales.** Cada fase cierra con una antes de abrir la
   siguiente, y lo encontrado se escribe en `docs/BACKLOG.md` con su número y su
-  lección. <!--cifra:defectos_adversariales-->129<!--/cifra--> hasta hoy. Los más
+  lección. <!--cifra:defectos_adversariales-->140<!--/cifra--> hasta hoy. Los más
   caros no eran fallos: eran respuestas plausibles y falsas, que es lo peor que
   puede emitir una herramienta que va a un auditor.
 

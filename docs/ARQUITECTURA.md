@@ -638,7 +638,7 @@ observación sin límites no la puede fabricar ni el motor ni la plataforma.
 ## 15. Estado real hoy, y lo que falta
 
 Construido y verde en este árbol (`python herramientas/todo.py`:
-**<!--cifra:pruebas-->563<!--/cifra--> pruebas de Python** y **<!--cifra:pruebas_go-->98<!--/cifra--> de Go**).
+**<!--cifra:pruebas-->563<!--/cifra--> pruebas de Python** y **<!--cifra:pruebas_go-->102<!--/cifra--> de Go**).
 
 La puerta de aceptación ya no es el `Makefile`. Lo era, y la mayoría de sus
 objetivos **no podían ponerse rojos**: terminaban en `; true`, `|| true` o
