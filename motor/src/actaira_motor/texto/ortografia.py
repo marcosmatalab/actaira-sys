@@ -139,7 +139,7 @@ SIEMPRE = {
     "rapido": "rápido", "rapida": "rápida", "proximo": "próximo", "proxima": "próxima",
     "comun": "común", "comunes": "comunes", "asimismo": "asimismo",
     "tramite": "trámite", "tramites": "trámites",
-    "credito": "crédito", "debito": "débito", "deficit": "déficit",
+    "debito": "débito", "deficit": "déficit",   # «credito» ya esta mas arriba
     "razon": "razón", "razonable": "razonable",
     "podia": "podía", "habia": "había", "tenia": "tenía", "queria": "quería",
     "hara": "hará", "estara": "estará", "dara": "dará", "ira": "irá",

@@ -130,9 +130,15 @@ def correr(entrada: Entrada, ruta_reglas: str | Path) -> ResultadoControl:
     genera_texto = por_regla.get("ACT-50-GEN-TXT", [])
     bots = por_regla.get("ACT-50-BOT", [])
 
-    inspeccionado = tuple(
-        f"{a.fichero}:{a.linea} ({a.llamada})" for a in barrido.apariciones
-    )
+    # AQUI SE COMPONIA UNA LISTA DE `fichero:linea (llamada)` Y NO SE USABA.
+    #
+    # No es una lista que se dejara de publicar: el campo `inspeccionado` del
+    # documento lo llena `controles/modelo.py` con los ficheros LEIDOS, que es
+    # lo que la pantalla pinta. Esto era otra cosa con el mismo nombre, y la
+    # unica manera de saber si el documento perdio algo era mirar las dos. Se
+    # quita para que quede una sola: lo que se inspecciono son los ficheros que
+    # se abrieron, y las apariciones concretas viajan como senales con su
+    # fichero y su linea.
 
     def _ejecucion(estado=EstadoEjecucion.COMPLETADA, motivo=None):
         return Ejecucion(

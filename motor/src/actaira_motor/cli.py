@@ -18,6 +18,7 @@ import os
 import sys
 from datetime import date, datetime, timezone
 from pathlib import Path
+from typing import Any
 
 from .aplicabilidad.motor import Perfil, recuento, resolver
 from .aplicabilidad.tabla import exportar

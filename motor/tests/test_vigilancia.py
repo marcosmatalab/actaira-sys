@@ -305,7 +305,6 @@ def test_el_flujo_no_pide_mas_permisos_de_los_que_gasta():
     mira no puede heredar el permiso de escribir de la tarea que escribe."""
     y = _flujo()
     assert "permissions: {}" in y, "nada por defecto; cada tarea pide lo suyo"
-    tareas = y.split("\n  ", 1)[1] if "\n  " in y else y
     assert y.count("contents: write") == 1, "solo la tarea que empuja escribe"
     # la tarea que empuja es la unica que hace git push
     trozo = y[y.index("  registrar:"):]
