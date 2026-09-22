@@ -1165,7 +1165,21 @@ function filtrarPorTexto() {
   // otra vez con un criterio, la pantalla estaria componiendo una pregunta que
   // el motor no hizo, y lo que se vería dejaría de ser el documento que hay.
   const q = ($("#buscar").value || "").trim().toLowerCase();
-  const filas = [...$("#lineas").children];
+  // LAS FILAS, NO LOS HIJOS DE LA CAJA.
+  //
+  // Cuando no hay nada que ensenar, `pintarLineas` deja ahi dentro UN parrafo
+  // que lo explica -- «este documento no trae ninguna linea», o «conecta un
+  // servidor y pide el plan» --, y ese parrafo es un hijo de la caja. Contando
+  // hijos, una vista vacia decia «1 linea.» justo debajo de la frase que dice
+  // que no hay ninguna: dos afirmaciones contrarias en la misma pantalla, y la
+  // falsa es la que lleva un numero. Pasa de verdad, y no en un caso raro: la
+  // vista de no conformidades sale vacia el dia que no hay ninguna.
+  //
+  // Peor todavia era escribir en el buscador: el parrafo casaba o no casaba
+  // como si fuera una fila, asi que se ESCONDIA la unica frase que explicaba
+  // que hacer, y en su sitio quedaba «ninguna linea coincide con ...», que
+  // ademas es mentira -- nunca hubo una linea que pudiera coincidir.
+  const filas = $$("#lineas .linea");
   let visibles = 0;
   for (const fila of filas) {
     const casa = !q || (fila.textContent || "").toLowerCase().includes(q);
