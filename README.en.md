@@ -162,8 +162,8 @@ stale.
 | Rules that read code | <!--cifra:reglas-->68<!--/cifra--> in <!--cifra:paquetes_de_reglas-->17<!--/cifra--> packs |
 | Questions in the bank | <!--cifra:preguntas-->90<!--/cifra-->, each tied to all three catalogues |
 | Tests | <!--cifra:pruebas-->563<!--/cifra--> Python + <!--cifra:pruebas_go-->102<!--/cifra--> Go |
-| Acceptance gate phases | <!--cifra:fases_de_la_puerta-->25<!--/cifra--> |
-| Defects from adversarial passes | <!--cifra:defectos_adversariales-->140<!--/cifra-->, each named in `docs/BACKLOG.md` |
+| Acceptance gate phases | <!--cifra:fases_de_la_puerta-->26<!--/cifra--> |
+| Defects from adversarial passes | <!--cifra:defectos_adversariales-->141<!--/cifra-->, each named in `docs/BACKLOG.md` |
 
 And the number that does **not** exist: there is no compliance percentage. With
 an unanswered profile, <!--cifra:indeterminadas_perfil_vacio-->48<!--/cifra-->
@@ -240,13 +240,21 @@ something stops being installed, the summary cannot keep saying «0 red».
   switching views hid the tabs instead of the panels and **two of its three views
   could never be reached**, with all twenty of its tests green. The lesson had
   been applied to the panel and not to the artefact next to it.
+- **What can be read without running it.** One phase runs `ruff` with the rules
+  that catch defects —names that do not exist, dead imports, variables computed
+  and thrown away, `except` blocks that swallow the cause— and it has to come
+  out clean. `mypy` does **not** come out clean and we do not pretend it does:
+  its debt is written error by error in `herramientas/mypy-conocidos.txt`, and
+  the phase turns red both ways —a new one, and an old one that was fixed and
+  left in the list— because a list that is too long stops saying how much debt
+  there is.
 - **The contract.** <!--cifra:vistas_del_panel-->11<!--/cifra--> JSON schemas
   published in `contrato/`, checked against what the engine emits and against
   the fields the panel reads. If the engine renames a field, the gate says so
   instead of the screen going blank with nothing failing.
 - **The adversarial passes.** Every phase closes with one before the next opens,
   and what turns up is written into `docs/BACKLOG.md` with its number and its
-  lesson. <!--cifra:defectos_adversariales-->140<!--/cifra--> so far. The
+  lesson. <!--cifra:defectos_adversariales-->141<!--/cifra--> so far. The
   expensive ones were not crashes: they were plausible, false answers, which is
   the worst thing a tool headed for an auditor can emit.
 

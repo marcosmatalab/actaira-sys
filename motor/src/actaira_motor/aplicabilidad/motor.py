@@ -31,7 +31,7 @@ regla que la constitucion de actaira fija para todo el camino de decision.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import date
 from enum import Enum
 from typing import Any

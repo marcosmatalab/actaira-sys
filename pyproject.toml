@@ -91,6 +91,12 @@ dev = [
   # chromium` una vez. Sin el, la fase se declara OMITIDA con ese motivo en vez
   # de fingir que midio algo.
   "playwright>=1.44",
+  # `ruff` y `mypy` los necesita la fase `lint`. Van aqui y no fuera por lo
+  # mismo que `pyyaml`, `build` y `playwright`: una fase que se OMITE porque
+  # falta lo que necesita es una fase que no mide, y en integracion continua
+  # -- donde se corre con `--sin-omitir` -- una omision es un rojo.
+  "ruff>=0.15",
+  "mypy>=1.11",
 ]
 
 [project.urls]
@@ -113,3 +119,70 @@ packages = ["motor/src/actaira_motor"]
 [tool.hatch.build.targets.sdist]
 include = ["motor", "catalogo", "consola", "docs", "integraciones", "ejemplos",
            "Makefile", "README.md", "LICENSE", "NOTICE"]
+
+# --- ruff -------------------------------------------------------------------
+#
+# POR QUE ESTO NO ESTABA, Y POR QUE ESTAR SIN CONFIGURAR ERA PEOR QUE NO ESTAR
+# ------------------------------------------------------------------------------
+# No habia ninguna declaracion de que reglas cumple este arbol. Lanzar `ruff` a
+# secas daba 187 quejas, de las que el 95 % eran de ESTILO -- variables de una
+# letra, dos sentencias en la misma linea, imports que no van arriba del todo --
+# y en este arbol son deliberadas. Una lista de 187 cosas que nadie va a mirar
+# es lo mismo que ninguna lista, con el agravante de que parece que hay control.
+#
+# Lo que se elige medir es lo que CAZA DEFECTOS, y nada mas:
+#
+#   F    pyflakes: un nombre que no existe, un import muerto, una variable que
+#        se calcula y se tira, una redefinicion que tapa a la de arriba. Es la
+#        familia que encuentra codigo que no hace lo que parece.
+#   E9   lo que ni siquiera se puede analizar.
+#   E71  comparaciones con `None`, `True` y `False` escritas con `==`, que en
+#        una casa donde «no se sabe» y «es falso» son estados distintos no es
+#        un detalle de estilo.
+#   E722 `except:` a secas, que se traga hasta un Ctrl-C. Hoy no hay ninguno y
+#        esto es para que siga siendo verdad.
+#   B    bugbear: el `except` que pierde la causa, el argumento por omision
+#        mutable, la clausura que captura la variable del bucle.
+#
+# LO QUE NO SE MIDE, dicho aqui para que nadie lo tome por un olvido: la
+# longitud de linea. Este arbol tiene 204 lineas de mas de 99 caracteres, casi
+# todas datos del catalogo o mensajes bilingues que parten peor de lo que leen.
+# Declararla obligaria a reformatear el arbol entero para no arreglar nada.
+[tool.ruff]
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["F", "E9", "E71", "E722", "B"]
+
+# B905: `zip()` sin `strict=`. La regla existe para cazar el `zip` que descarta
+# lo que sobra en silencio, y es buena -- pero las cuatro apariciones de este
+# arbol son el par consecutivo `zip(xs, xs[1:])` y las claves y valores de un
+# `ast.Dict`, donde las longitudes NO son iguales a proposito o lo son por
+# construccion. Ponerles `strict=True` seria falso en las primeras y ruido en
+# las segundas.
+ignore = ["B905"]
+
+[tool.ruff.lint.per-file-ignores]
+# Los repositorios de EJEMPLO estan escritos rotos a proposito: son la entrada
+# del motor, no codigo de este producto. `asistente.py` llama a dos funciones
+# que no existen porque eso es lo que el control tiene que ver. Se les exime de
+# las reglas de nombres, no de `E9`: un fixture que no se puede analizar no
+# sirve para probar nada.
+"motor/tests/fixtures/**" = ["F", "B"]
+
+# --- mypy -------------------------------------------------------------------
+#
+# Se declara para que haya UNA forma de correrlo, que es lo que faltaba: sin
+# esto, dos personas lo lanzaban con dos configuraciones y obtenian dos
+# respuestas.
+#
+# NO esta en modo estricto, y no se finge que lo este. Quedan errores conocidos
+# -- listados uno a uno en `herramientas/mypy-conocidos.txt` -- que son casi
+# todos «mypy no sabe estrechar este tipo aqui» y no fallos de ejecucion. La
+# fase `lint` compara contra esa lista y se pone roja EN LOS DOS SENTIDOS: si
+# aparece uno nuevo lo nombra, y si se arregla uno viejo tambien, para que la
+# lista no se quede mintiendo por arriba.
+[tool.mypy]
+python_version = "3.12"
+files = ["motor/src"]
+ignore_missing_imports = true

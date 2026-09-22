@@ -198,7 +198,6 @@ def revisar_accesibilidad(pagina: str, textos: dict) -> None:
     real de los colores compuestos, el orden de tabulacion percibido y si los
     textos se entienden. Eso lo mira una persona, y esta puerta no la sustituye.
     """
-    import re
 
     fallos = []
 

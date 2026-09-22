@@ -132,6 +132,5 @@ def _barras(raiz: Path, idioma: str = "es") -> dict[str, str]:
 
 
 if __name__ == "__main__":
-    import sys
     for k, v in de(Path(__file__).resolve().parents[1]).items():
         print(f"{v:>8}  {k}")

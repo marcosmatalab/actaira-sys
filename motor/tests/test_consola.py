@@ -260,7 +260,6 @@ def test_el_calendario_partido_de_la_consola_reproduce_al_del_motor():
     se corre en node contra los mismos perfiles que evalua Python.
     """
     from datetime import date
-    from itertools import product
 
     from actaira_motor.aplicabilidad.tabla import evaluar_con_tabla
 

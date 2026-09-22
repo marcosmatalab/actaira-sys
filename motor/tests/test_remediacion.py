@@ -19,14 +19,14 @@ import pytest
 
 from actaira_motor.gestion.noconformidad import ORDEN, EstadoNC
 from actaira_motor.remediacion.contrato import (TECHO, Delegacion, Encargo,
-                                                LimiteDelRemediador, elegir,
+                                                elegir,
                                                 emitible, nombres)
 from actaira_motor.remediacion.fichero import RemediadorFichero
 from actaira_motor.remediacion.rest import (ErrorDelRemediador, RemediadorHttp,
                                             PERFILES, _rellenar, _ruta,
                                             cargar_perfil)
 from actaira_motor.remediacion.traduccion import (TABLAS, EstadoQueNoConocemos,
-                                                  Lectura, leer, mover,
+                                                  leer, mover,
                                                   traducir_estado)
 
 RAIZ = Path(__file__).resolve().parents[2]
@@ -53,7 +53,7 @@ def test_ningun_estado_externo_llega_a_verificada():
     """
     assert TECHO is EstadoNC.EJECUTADA
     for sistema, tabla in TABLAS.items():
-        for columna, destino in tabla.items():
+        for columna, _destino in tabla.items():
             e = traducir_estado(sistema, columna)
             assert ORDEN.index(e) <= ORDEN.index(TECHO), (sistema, columna, e)
             assert e is not EstadoNC.VERIFICADA

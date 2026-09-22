@@ -15,7 +15,6 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-from conftest import CATALOGO
 
 from actaira_motor.controles.modelo import (Hallazgo, Resultado, ResultadoControl,
                                             proyectar)

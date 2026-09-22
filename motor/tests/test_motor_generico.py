@@ -2,7 +2,7 @@
 import json
 from pathlib import Path
 import pytest
-from actaira_motor.controles.motor import Arbol, Paquete, correr_paquete, TIPOS, EXIGE
+from actaira_motor.controles.motor import Arbol, Paquete, correr_paquete, EXIGE
 from actaira_motor.controles.modelo import Resultado
 
 RAIZ = Path(__file__).resolve().parents[2]

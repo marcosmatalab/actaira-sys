@@ -29,7 +29,7 @@ from .controles.tuberia import CONOCIDAS
 from .controles.motor import Arbol
 from .expediente.anexoiv import a_markdown, generar as generar_anexo
 from .integraciones.sarif import exportar as exportar_sarif
-from .texto.codigo import corregir_fuente, sucios as modulos_sucios
+from .texto.codigo import corregir_fuente
 from .texto.ortografia import corregir_es
 from .vigilancia.almacen import Almacen, AlmacenAlterado
 from .vigilancia.barrido import observar

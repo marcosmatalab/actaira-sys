@@ -208,7 +208,6 @@ def test_no_hay_interrogativos_acentuados_donde_subordinan():
     oracion subordina; con `se` la construccion es impersonal o refleja y lee
     como pregunta indirecta casi siempre.
     """
-    import json
     import re
     from pathlib import Path as P
 

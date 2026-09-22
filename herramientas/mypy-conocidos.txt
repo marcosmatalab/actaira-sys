@@ -1,0 +1,60 @@
+# Los errores de tipos que este arbol TIENE y no ha arreglado.
+#
+# POR QUE UNA LISTA Y NO UN NUMERO
+# ----------------------------------
+# Un tope numerico ("que no pase de 38") se cumple arreglando uno facil y
+# metiendo uno grave, y nadie se entera. Una lista nombra CUAL es cada uno, asi
+# que sustituir uno por otro tambien se ve.
+#
+# La fase `lint` la compara con lo que mypy dice hoy y se pone roja EN LOS DOS
+# SENTIDOS: si aparece uno que no esta aqui, lo nombra; y si se arregla uno de
+# aqui, tambien, porque una lista de deuda que se queda larga de mas deja de
+# decir cuanta deuda hay.
+#
+# QUE SON ESTOS, dicho para que nadie los tome por fallos latentes: se
+# revisaron uno a uno en la septima pasada y ninguno esconde un fallo de
+# ejecucion. Son casi todos "mypy no sabe estrechar este tipo aqui" -- un
+# `dict[str, object]` que se indexa, una clave privada de `cryptography` que
+# llega como union de ocho tipos, una lista vacia sin anotar. Arreglarlos de
+# verdad es anotar doce modulos del nucleo, y eso es un trabajo con su propio
+# riesgo: se hace a proposito y no de paso.
+#
+# Se regenera con:  python herramientas/lint.py --escribir-conocidos
+motor/src/actaira_motor/agentes/lectura.py: assignment
+motor/src/actaira_motor/agentes/lectura.py: assignment
+motor/src/actaira_motor/cli.py: index
+motor/src/actaira_motor/cli.py: var-annotated
+motor/src/actaira_motor/cli.py: var-annotated
+motor/src/actaira_motor/cli.py: var-annotated
+motor/src/actaira_motor/conectores/eventos.py: index
+motor/src/actaira_motor/conectores/eventos.py: index
+motor/src/actaira_motor/conectores/eventos.py: index
+motor/src/actaira_motor/conectores/eventos.py: index
+motor/src/actaira_motor/conectores/eventos.py: index
+motor/src/actaira_motor/conectores/eventos.py: index
+motor/src/actaira_motor/conectores/git.py: arg-type
+motor/src/actaira_motor/controles/agentes.py: assignment
+motor/src/actaira_motor/evidencia/sello.py: call-arg
+motor/src/actaira_motor/evidencia/sello.py: call-arg
+motor/src/actaira_motor/evidencia/sello.py: call-arg
+motor/src/actaira_motor/evidencia/sello.py: union-attr
+motor/src/actaira_motor/evidencia/sello.py: union-attr
+motor/src/actaira_motor/evidencia/sello.py: union-attr
+motor/src/actaira_motor/expediente/revision.py: index
+motor/src/actaira_motor/expediente/revision.py: var-annotated
+motor/src/actaira_motor/expediente/revision.py: var-annotated
+motor/src/actaira_motor/formularios/cuestionario.py: assignment
+motor/src/actaira_motor/formularios/declaracion.py: arg-type
+motor/src/actaira_motor/formularios/declaracion.py: arg-type
+motor/src/actaira_motor/formularios/declaracion.py: arg-type
+motor/src/actaira_motor/formularios/declaracion.py: arg-type
+motor/src/actaira_motor/formularios/plan.py: var-annotated
+motor/src/actaira_motor/remediacion/red.py: attr-defined
+motor/src/actaira_motor/remediacion/red.py: attr-defined
+motor/src/actaira_motor/remediacion/red.py: attr-defined
+motor/src/actaira_motor/remediacion/red.py: attr-defined
+motor/src/actaira_motor/remediacion/red.py: attr-defined
+motor/src/actaira_motor/remediacion/red.py: attr-defined
+motor/src/actaira_motor/vigilancia/almacen.py: assignment
+motor/src/actaira_motor/vigilancia/almacen.py: attr-defined
+motor/src/actaira_motor/vigilancia/almacen.py: attr-defined

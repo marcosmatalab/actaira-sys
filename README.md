@@ -152,8 +152,8 @@ Ninguno está escrito a mano. Salen del catálogo y del árbol, los rellena
 | Reglas que leen código | <!--cifra:reglas-->68<!--/cifra--> en <!--cifra:paquetes_de_reglas-->17<!--/cifra--> paquetes |
 | Preguntas del banco | <!--cifra:preguntas-->90<!--/cifra-->, cada una atada a los tres catálogos |
 | Pruebas | <!--cifra:pruebas-->563<!--/cifra--> de Python + <!--cifra:pruebas_go-->102<!--/cifra--> de Go |
-| Fases de la puerta de aceptación | <!--cifra:fases_de_la_puerta-->25<!--/cifra--> |
-| Defectos de las pasadas adversariales | <!--cifra:defectos_adversariales-->140<!--/cifra-->, cada uno con su nombre en `docs/BACKLOG.md` |
+| Fases de la puerta de aceptación | <!--cifra:fases_de_la_puerta-->26<!--/cifra--> |
+| Defectos de las pasadas adversariales | <!--cifra:defectos_adversariales-->141<!--/cifra-->, cada uno con su nombre en `docs/BACKLOG.md` |
 
 Y el número que **no** existe: no hay porcentaje de cumplimiento. Con un perfil
 sin responder, <!--cifra:indeterminadas_perfil_vacio-->48<!--/cifra-->
@@ -230,13 +230,20 @@ de estar instalado, el resumen no puede seguir diciendo «0 en rojo».
   vista escondía las pestañas en vez de los paneles y **dos de sus tres vistas no
   se podían alcanzar nunca**, con sus veinte pruebas en verde. La lección se había
   aplicado al panel y no al artefacto de al lado.
+- **Lo que se lee sin ejecutarlo.** Una fase corre `ruff` con las reglas que
+  cazan defectos —nombres que no existen, imports muertos, variables que se
+  calculan y se tiran, `except` que se tragan la causa— y tiene que salir
+  limpia. `mypy` **no** sale limpio y no se finge que sí: su deuda está escrita
+  error por error en `herramientas/mypy-conocidos.txt`, y la fase se pone roja
+  en los dos sentidos —uno nuevo, y uno arreglado que se queda en la lista—,
+  porque una lista larga de más deja de decir cuánta deuda hay.
 - **El contrato.** <!--cifra:vistas_del_panel-->11<!--/cifra--> esquemas JSON
   publicados en `contrato/`, comprobados contra lo que el motor emite y contra
   los campos que el panel lee. Si el motor renombra un campo, la puerta lo dice
   en vez de que la pantalla se quede en blanco sin que falle nada.
 - **Las pasadas adversariales.** Cada fase cierra con una antes de abrir la
   siguiente, y lo encontrado se escribe en `docs/BACKLOG.md` con su número y su
-  lección. <!--cifra:defectos_adversariales-->140<!--/cifra--> hasta hoy. Los más
+  lección. <!--cifra:defectos_adversariales-->141<!--/cifra--> hasta hoy. Los más
   caros no eran fallos: eran respuestas plausibles y falsas, que es lo peor que
   puede emitir una herramienta que va a un auditor.
 

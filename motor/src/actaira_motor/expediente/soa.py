@@ -42,9 +42,7 @@ incluidos no es un grado de cumplimiento de la norma.
 """
 from __future__ import annotations
 
-import json
 from datetime import date
-from pathlib import Path
 from typing import Any
 
 from ..aplicabilidad.tabla import inclusion_en_la_soa

@@ -1,6 +1,5 @@
 """Los cinco estados y el sello. El foso, y lo que lo sujeta."""
 from datetime import datetime, timedelta, timezone
-import pytest
 from actaira_motor.evidencia.registro import Registro, Estado, canonico
 from actaira_motor.evidencia.sello import (sellar, verificar, raiz_merkle,
                                            prueba_de_inclusion, verificar_inclusion)

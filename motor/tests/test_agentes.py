@@ -14,7 +14,6 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import pytest
 
 from actaira_motor.agentes import leer
 from actaira_motor.controles.agentes import correr

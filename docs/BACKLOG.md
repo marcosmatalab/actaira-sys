@@ -2113,8 +2113,74 @@ esta capa construye; y las 38 quejas de `mypy` y las 191 de `ruff` se revisaron
 una por una sin encontrar un fallo de ejecución detrás (las `F821` son de un
 repositorio de ejemplo escrito roto a propósito, y el `B023` es un falso positivo:
 la clausura se invoca dentro de la misma vuelta del bucle). **Ninguna de las dos
-herramientas está en la puerta ni configurada en `pyproject.toml`**, así que eso
-no es un verde: es que nadie las mide.
+herramientas estaba en la puerta ni configurada en `pyproject.toml`**, así que
+eso no era un verde: era que nadie las medía. Cerrado en **D-141**, aquí abajo.
+
+### Lo que se mide y lo que solo se mira
+
+**D-141. Dos herramientas sin configurar, y 187 quejas que nadie iba a mirar.**
+Salió de la pregunta anterior. Ni `ruff` ni `mypy` estaban declarados en
+`pyproject.toml` ni los corría nadie, y eso no es lo mismo que no usarlos:
+lanzados a secas daban **187 quejas y 38 errores**, y ninguna de las dos cifras
+significaba nada, porque no había ninguna declaración de **qué reglas cumple
+este árbol**. Una lista de 187 cosas que nadie va a mirar parece control y no lo
+es; y mientras no exista, un `F821` de verdad —un nombre que no existe, en una
+rama poco recorrida— no lo caza nadie hasta que lo pisa un cliente.
+
+**Lo que se elige medir es lo que caza defectos, y nada más.** `F` (nombres que
+no existen, imports muertos, variables que se calculan y se tiran,
+redefiniciones que tapan a la de arriba), `E9`, `E71` (comparar con `None`,
+`True` y `False` usando `==`, que en una casa donde «no se sabe» y «es falso»
+son estados distintos no es estilo), `E722` (`except:` a secas: hoy no hay
+ninguno, y esto es para que siga siendo verdad) y `B`.
+
+**Lo que se descarta, escrito y no omitido.** La longitud de línea: este árbol
+tiene 204 líneas de más de 99 caracteres, casi todas datos del catálogo o
+mensajes bilingües que parten peor de lo que leen; declararla obligaría a
+reformatear el árbol entero para no arreglar nada. Y `B905` —`zip()` sin
+`strict=`—, porque sus cuatro apariciones son el par consecutivo
+`zip(xs, xs[1:])` y las claves y valores de un `ast.Dict`, donde las longitudes
+no son iguales a propósito o lo son por construcción.
+
+De las 54 que quedaban tras elegir reglas: **42 eran imports muertos**, veinte
+de ellos en el motor. Se quitaron, y la suite se corrió inmediatamente después
+por un motivo concreto: `test_alcanzabilidad` calcula qué módulos se alcanzan
+**a través de los imports**, así que quitar uno muerto podía dejar un módulo
+huérfano. No pasó — 593 verdes — pero comprobarlo no era opcional.
+
+Las nueve restantes: dos variables que se calculaban y se tiraban (una se
+queda, renombrada, porque su lectura hace que un paquete sin `version` falle al
+cargarse y no al usarse), dos variables de bucle sin usar, y **cinco `B023` que
+son un falso positivo**: la clausura captura la variable del bucle y se invoca
+**dentro de la misma vuelta**. Se silencian nombrando la regla ahí, con el
+porqué escrito, y no apagándola en `pyproject.toml`: donde sí se guarde una
+clausura para más tarde, la regla tiene que seguir cantando.
+
+**`mypy` no sale limpio, y no se finge que sí.** Quedan 38 errores, revisados
+uno a uno, y ninguno esconde un fallo de ejecución: son estrechamientos de tipo
+que el analizador no sabe hacer —un `dict[str, object]` que se indexa, una clave
+privada de `cryptography` que llega como unión de ocho tipos, una lista vacía
+sin anotar—. Arreglarlos de verdad es anotar doce módulos del núcleo de un motor
+de cumplimiento, y eso tiene su propio riesgo: se hace a propósito y no de paso.
+
+Así que se declaran **uno por uno** en `herramientas/mypy-conocidos.txt`, y la
+fase `lint` compara **en los dos sentidos**. Un tope numérico («que no pase de
+38») se cumple arreglando uno fácil y metiendo uno grave; y una lista que solo
+se pone roja cuando crece se queda larga de más en cuanto alguien arregla algo,
+y a partir de ahí deja de decir cuánta deuda hay. La comparación es de
+multiconjunto, no de conjunto: si se arregla uno de dos errores iguales en el
+mismo fichero, eso tiene que verse. No se guardan números de línea, que sería
+más preciso e inservible —la lista se pondría roja cada vez que alguien añade un
+comentario encima, y una puerta que se pone roja por algo que no es un defecto
+se acaba apagando.
+
+Vista fallar **en los tres sentidos**: con un `F821` colado, con un error de
+tipos nuevo, y con una entrada de la lista que ya no ocurre.
+
+Y las dos entran en el extra `[dev]`, que es la quinta vez que ese bloque se
+queda corto (`pyyaml`, `build`, `playwright`, y ahora estas dos): una fase que
+se **omite** porque falta lo que necesita es una fase que no mide, y en
+integración continua —donde se corre con `--sin-omitir`— eso es rojo.
 
 ### Lo que esta pasada NO mira, dicho para que nadie lo suponga
 

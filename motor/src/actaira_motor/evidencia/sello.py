@@ -22,10 +22,8 @@ que la fija reintroduce el hash viejo a proposito para comprobar que muerde.
 from __future__ import annotations
 
 import hashlib
-import json
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from pathlib import Path
 from typing import Any
 
 from .registro import Registro, canonico
@@ -174,7 +172,6 @@ def verificar(sello_json: dict[str, Any], clave_esperada: str | None = None) -> 
         motivos.append(f"la raiz no reproduce: el sello dice {sello_json['raiz'][:24]}... y los registros dan {raiz[:24]}...")
     if sello_json.get("firma"):
         try:
-            from cryptography.exceptions import InvalidSignature
             from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
             pk = Ed25519PublicKey.from_public_bytes(bytes.fromhex(sello_json["clave_publica"]))
             cabecera = {"esquema": ESQUEMA_SELLO, "emitido_en": sello_json["emitido_en"], "raiz": sello_json["raiz"]}

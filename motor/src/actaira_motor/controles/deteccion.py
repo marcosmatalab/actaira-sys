@@ -72,7 +72,10 @@ class Aparicion:
 
 def cargar_paquete(ruta: str | Path) -> list[Regla]:
     d = json.loads(Path(ruta).read_text(encoding="utf-8"))
-    paquete, version, autor = d["paquete"], d["version"], d["autor"]
+    # `_version` se lee y no se usa: cada regla trae la suya. Esta aqui para que
+    # un paquete que no declare la del paquete falle AL CARGARSE, que es donde
+    # se puede decir cual es el fichero malo.
+    paquete, _version, autor = d["paquete"], d["version"], d["autor"]
     salida = []
     for r in d["reglas"]:
         salida.append(Regla(

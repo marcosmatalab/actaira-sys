@@ -30,11 +30,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
-from .deteccion import Barrido, Regla, barrer, cargar_paquete
+from .deteccion import Regla, barrer, cargar_paquete
 from .motor import Arbol
 from .marcado import read_facts
 from .tuberia import aplicar as aplicar_tuberia
-from .modelo import Hallazgo, Resultado, ResultadoControl
+from .modelo import Hallazgo, ResultadoControl
 from .. import __version__ as VERSION_MOTOR
 from ..resultado import (Ejecucion, EstadoEjecucion, EstadoSuficiencia, Falta,
                          Observacion, Senal, Suficiencia)

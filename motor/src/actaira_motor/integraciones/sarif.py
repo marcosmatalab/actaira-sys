@@ -50,7 +50,7 @@ def _regla(h: dict[str, Any], obligacion: dict[str, Any], idioma: str) -> dict[s
         },
         "defaultConfiguration": {"level": NIVEL.get(h["severidad"], "warning")},
         "properties": {
-            "tags": [f"ai-act", f"articulo-{art}", h["paquete"], obligacion.get("nivel", "")],
+            "tags": ["ai-act", f"articulo-{art}", h["paquete"], obligacion.get("nivel", "")],
             "obligacion": obligacion["id"],
             "iso42001": obligacion.get("iso42001", []),
         },

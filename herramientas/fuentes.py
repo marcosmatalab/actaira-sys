@@ -68,7 +68,6 @@ from __future__ import annotations
 
 import argparse
 import base64
-import json
 import re
 import sys
 import urllib.request
@@ -278,7 +277,7 @@ def comprobar() -> int:
     cubierto: set[int] = set()
     caras = 0
     peso = 0.0
-    for nombre, f in ficheros.items():
+    for _nombre, f in ficheros.items():
         css = f.read_text(encoding="utf-8")
         pide = re.findall(r"url\((?!data:)([^)]+)\)", css)
         if pide:

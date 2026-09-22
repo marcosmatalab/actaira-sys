@@ -1,5 +1,5 @@
 """Primera negativa, con puerta: ninguna salida publicada contiene un numero plegado."""
-import json, re
+import json
 from datetime import date
 from conftest import CATALOGO
 from actaira_motor.catalogo.cargador import cargar

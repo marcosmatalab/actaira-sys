@@ -14,7 +14,6 @@ funcionalidad entera, que es el modo de fallo que la regla persigue.
 from pathlib import Path
 
 import pytest
-from conftest import CATALOGO
 
 from actaira_motor.controles.art50 import Entrada, correr
 from actaira_motor.controles.marcado import read_facts, write_marking

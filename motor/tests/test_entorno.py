@@ -29,7 +29,6 @@ import importlib.util
 import os
 import shutil
 
-import pytest
 
 # Cada dependencia, con lo que se deja de comprobar si no esta. La segunda
 # columna es lo unico que hace util a esta puerta: un mensaje que dice

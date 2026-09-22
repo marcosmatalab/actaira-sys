@@ -1,7 +1,6 @@
 """El control del articulo 50: lo que puede afirmar y lo que se niega a afirmar."""
 from pathlib import Path
 import pytest
-from conftest import CATALOGO
 from actaira_motor.controles.art50 import Entrada, correr
 from actaira_motor.controles.marcado import write_marking, read_facts
 from actaira_motor.controles.modelo import Resultado
@@ -250,7 +249,7 @@ def test_el_xmp_en_un_trozo_tEXt_o_zTXt_TAMBIEN_se_lee(tmp_path):
     from PIL import Image
 
     from actaira_motor.controles.marcado import (
-        PNG_XMP_KEYWORD, TRAINED_ALGORITHMIC_MEDIA, read_facts, xmp_packet)
+        PNG_XMP_KEYWORD, TRAINED_ALGORITHMIC_MEDIA, xmp_packet)
 
     base = tmp_path / "base.png"
     Image.new("RGB", (16, 16), (7, 7, 7)).save(base)

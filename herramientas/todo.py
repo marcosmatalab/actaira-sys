@@ -208,6 +208,33 @@ def fase_suite(reg: list[str]) -> None:
     _afirma(r.returncode == 0, f"la suite salio {r.returncode}:\n{r.stdout[-3000:]}")
 
 
+def fase_lint(reg: list[str]) -> None:
+    """Las dos herramientas que leen el codigo sin ejecutarlo.
+
+    Ninguna de las dos estaba declarada ni la corria nadie, que no es lo mismo
+    que no usarlas: lanzadas a secas daban 187 quejas y 38 errores, y ninguna de
+    las dos cifras significaba nada, porque no habia ninguna declaracion de que
+    reglas cumple este arbol. Una lista de 187 cosas que nadie va a mirar parece
+    control y no lo es.
+
+    Las reglas viven en `pyproject.toml`, con el porque de cada familia elegida
+    y de cada una descartada; el trabajo lo hace `herramientas/lint.py`.
+
+    `ruff` tiene que salir LIMPIO. `mypy` NO, y no se finge que si: su deuda
+    esta escrita una por una en `herramientas/mypy-conocidos.txt` y esta fase la
+    compara EN LOS DOS SENTIDOS -- uno nuevo es rojo, y uno arreglado que se
+    queda en la lista tambien, porque una lista larga de mas deja de decir
+    cuanta deuda hay.
+    """
+    r = subprocess.run([PY, str(RAIZ / "herramientas" / "lint.py")], cwd=RAIZ,
+                       env=entorno(), capture_output=True, text=True,
+                       encoding="utf-8", errors="replace")
+    if r.stderr.startswith("OMITIDA:"):
+        raise Omitida(r.stderr.split(":", 1)[1].strip())
+    _afirma(r.returncode == 0, r.stdout.strip() or r.stderr.strip())
+    reg.extend(x for x in r.stdout.strip().splitlines() if x.strip())
+
+
 def fase_articulo50(reg: list[str]) -> None:
     """Un repositorio que genera y no aporta artefactos NO puede salir conforme."""
     _, salida = cli("comprobar", str(FIXTURE.parent / "repo-con-generacion"))
@@ -448,7 +475,7 @@ def fase_go(reg: list[str]) -> None:
     _afirma(not sin_formato, f"gofmt tiene cosas que decir:\n{sin_formato}")
     with tempfile.TemporaryDirectory() as tmp:
         tmp = Path(tmp)
-        exe = lanzador_del_motor(tmp)
+        lanzador_del_motor(tmp)
         env = dict(os.environ)
         # CON el motor en el camino y CON un repositorio de ejemplo.
         #
@@ -1804,6 +1831,7 @@ FASES: dict[str, Callable[[list[str]], None]] = {
     "panel": fase_panel,
     "portada": fase_portada,
     "suite": fase_suite,
+    "lint": fase_lint,
     "articulo50": fase_articulo50,
     "sello": fase_sello,
     "plan": fase_plan,

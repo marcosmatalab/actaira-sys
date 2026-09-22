@@ -55,7 +55,7 @@ from typing import Any
 from ..evidencia.registro import digest
 from ..rutas import nombre_en_el_arbol
 from .deteccion import _casa, _importa_paquete, _ruta_punteada
-from .modelo import Hallazgo, Resultado, ResultadoControl
+from .modelo import Hallazgo, ResultadoControl
 
 TIPOS = ("llamada", "llamada_sin_pareja", "fichero", "contenido",
          "contenido_prohibido", "aportado")
@@ -474,7 +474,7 @@ def correr_paquete(arbol: Arbol, paquete: Paquete, idioma_error: str = "es"
     from ..resultado import Ejecucion, EstadoEjecucion, Observacion, Senal
     from ..resultado.ejecucion import Sujeto
     from ..resultado.observacion import Limite
-    from ..resultado.suficiencia import EstadoSuficiencia, Falta, Suficiencia
+    from ..resultado.suficiencia import Falta
     from .. import __version__ as VERSION_MOTOR
 
     empezo = Ejecucion.ahora()
@@ -496,10 +496,17 @@ def correr_paquete(arbol: Arbol, paquete: Paquete, idioma_error: str = "es"
 
     for r in paquete.reglas:
         tipo = r.get("tipo", "llamada")
+        # `_h` captura `r`, la variable del bucle, y eso es justo lo que la regla
+        # B023 avisa. Aqui NO es un defecto: esta funcion se llama DENTRO de la
+        # misma vuelta que la define, nunca se guarda para despues, asi que `r`
+        # vale lo que tiene que valer. Se silencia nombrando la regla y no
+        # apagandola en `pyproject.toml`: donde si se guarde una clausura para
+        # mas tarde, la regla tiene que seguir cantando.
         def _h(loc: str) -> Hallazgo:
-            return Hallazgo(regla_id=r["id"], regla_version=r["version"], autor=paquete.autor,
-                            paquete=paquete.nombre, severidad=r["severidad"], localizacion=loc,
-                            remediacion_es=r["remediacion"]["es"], remediacion_en=r["remediacion"]["en"])
+            return Hallazgo(regla_id=r["id"], regla_version=r["version"], autor=paquete.autor,  # noqa: B023
+                            paquete=paquete.nombre, severidad=r["severidad"], localizacion=loc,  # noqa: B023
+                            remediacion_es=r["remediacion"]["es"],  # noqa: B023
+                            remediacion_en=r["remediacion"]["en"])  # noqa: B023
 
         if tipo == "aportado":
             preguntas.append(Pregunta(r["id"], paquete.obligacion, r["pregunta"],

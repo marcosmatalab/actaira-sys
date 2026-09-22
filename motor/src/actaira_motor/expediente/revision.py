@@ -79,7 +79,6 @@ def generar(catalogo, registros, ahora: datetime, *, revalidaciones=None,
     evidencia persigue desde la fase 8: «nadie ha mirado últimamente» y «nunca
     se miró» no se arreglan igual.
     """
-    from ..evidencia.registro import Estado
 
     revalidaciones = revalidaciones or {}
     por_control: dict[str, list] = {}

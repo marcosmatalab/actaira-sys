@@ -384,8 +384,8 @@ def decidir(empujon: Empujon, identidad_observada: str | None,
         # caeria en REOBSERVAR -- su `antes` ya no es la cabeza -- y la
         # idempotencia se sostendria para un camino y no para el otro.
         return Decision.REVALIDAR, {
-            "es": (f"este commit ya estaba en la cadena de empujones demostrados inertes: "
-                   f"es una reentrega, y decide lo mismo que la primera vez"),
+            "es": ("este commit ya estaba en la cadena de empujones demostrados inertes: "
+                   "es una reentrega, y decide lo mismo que la primera vez"),
             "en": ("this commit was already in the chain of pushes proven inert: it is a "
                    "redelivery, and it decides the same as the first time")}
     cabeza = inerte[-1] if inerte else identidad_observada

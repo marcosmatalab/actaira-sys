@@ -16,7 +16,6 @@ from __future__ import annotations
 
 from datetime import date, datetime
 from pathlib import Path
-from typing import Any
 
 from ..aplicabilidad.motor import Perfil, Situacion, resolver
 from ..catalogo.cargador import Catalogo

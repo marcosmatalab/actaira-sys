@@ -39,7 +39,7 @@ from typing import Any
 from ..aplicabilidad.motor import Perfil, Situacion, resolver
 from ..catalogo.cargador import Catalogo
 from ..controles.modelo import Resultado
-from ..controles.motor import Arbol, Paquete, Pregunta, correr_paquete
+from ..controles.motor import Arbol, Paquete, correr_paquete
 from ..resultado.observacion import FUERZAS
 from ..vocabulario import nombres_de
 

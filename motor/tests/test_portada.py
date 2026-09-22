@@ -11,8 +11,6 @@ esto falla.
 """
 from __future__ import annotations
 
-import glob
-import json
 import re
 import subprocess
 from pathlib import Path
@@ -66,7 +64,6 @@ def test_el_numero_de_pruebas_no_depende_de_lo_que_tenga_instalado_quien_mide(ht
     funcion parametrizada se recoge varias veces. La portada nunca dice mas
     pruebas de las que hay.
     """
-    import subprocess
     import sys
 
     dicho = int(_cifras_de(html)["pruebas"])
