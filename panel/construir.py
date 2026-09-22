@@ -33,6 +33,9 @@ ANCHO_LOGO = 900
 sys.path.insert(0, str(MARCA))
 import incrustar as _incrustar  # noqa: E402
 
+sys.path.insert(0, str(RAIZ.parent / "herramientas"))
+from paginas import revisar_estructura, revisar_textos  # noqa: E402
+
 PROHIBIDO_EN_LA_LOGICA = (
     "localStorage", "sessionStorage", "indexedDB", "document.cookie",
 )
@@ -55,15 +58,22 @@ def _logo(nombre: str) -> str:
     return _incrustar.datauri(nombre)
 
 
-def revisar_textos(textos: dict) -> None:
-    faltan = [f"en.{k}" for k in textos["es"] if k not in textos["en"]]
-    faltan += [f"es.{k}" for k in textos["en"] if k not in textos["es"]]
-    if faltan:
-        raise SystemExit(f"textos.json: claves que faltan en un idioma: {faltan}")
-    vacias = [f"{i}.{k}" for i in ("es", "en") for k, v in textos[i].items()
-              if not str(v).strip()]
-    if vacias:
-        raise SystemExit(f"textos.json: claves vacias: {vacias}")
+# `revisar_textos` SE IMPORTA, Y ANTES ERA UNA COPIA QUE MIRABA DOS IDIOMAS.
+#
+# Aqui vivia una version propia escrita cuando la pagina tenia `es` y `en`, y
+# comparaba exactamente esos dos por su nombre. La pagina paso a seis idiomas y
+# la comprobacion no: una clave que faltara en aleman, en frances, en italiano o
+# en portugues salia como `undefined` en la pantalla de ese cliente y ninguna
+# puerta lo veia -- que es literalmente el fallo que el docstring de esta
+# funcion decia estar evitando.
+#
+# La version de `herramientas/paginas.py` compara TODOS los idiomas contra todos
+# y ya la usaba la portada. Tener dos definiciones de la misma propiedad es la
+# regla 10 de esta casa, y la que se quedo corta es siempre la copia.
+#
+# Se deja importada con este nombre a proposito: `motor/tests/test_panel.py`
+# la lee de este modulo, asi que la prueba que la cubre sigue apuntando a la
+# unica definicion que hay.
 
 
 ANTES_DE_UNA_REGEX = set("(,=:[!&|?{};+-*%~^<>") | {"return", "typeof", "case", "in", "of"}
@@ -298,6 +308,17 @@ def construir() -> str:
     salida = (pagina.replace("__ESTILO__", css)
                     .replace("__LOGICA__", js)
                     .replace("__IDIOMAS__", botones))
+    # LA PUERTA COMPARTIDA, ADEMAS DE LA DE AQUI.
+    #
+    # `revisar_accesibilidad` es de este fichero y cubre lo que solo el panel
+    # necesita; `revisar_estructura` es la de las tres paginas y cubre lo que
+    # todas comparten -- el doctype, el `lang`, los encabezados, el foco y, desde
+    # que la consola perdio dos vistas por ello, que no haya UN SOLO id repetido.
+    # El panel era la unica pagina que no la llamaba, por el mismo motivo por el
+    # que existio: la comprobacion nacio dentro de este constructor, se saco para
+    # que la usaran las otras dos, y el original se quedo aqui sin volver a
+    # mirarse. Se llaman las dos.
+    revisar_estructura(salida, "panel/panel.html")
     revisar_accesibilidad(salida, textos)
     return salida
 

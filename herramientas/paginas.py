@@ -44,16 +44,28 @@ def revisar_estructura(pagina: str, quien: str) -> None:
     # proposito: la regla de foco vive en el `<style>`.
     marcado = re.sub(r"<script\b.*?</script>", "", pagina, flags=re.S | re.I)
 
-    # LO QUE HAY DENTRO DE `<script>` Y `<style>` NO ES MARCADO.
+    # NINGUN `id` REPETIDO, Y ESTA PUERTA COSTO DOS VISTAS ENTERAS.
     #
-    # La primera version miraba la pagina entera y denuncio dos `<input>` «sin
-    # id» que no existian: eran cadenas de texto dentro del JavaScript
-    # incrustado. Una puerta que da falsos positivos se desactiva, y una puerta
-    # desactivada no protege nada, asi que esto no es cosmetico.
+    # Un id duplicado no rompe nada visible: el navegador lo acepta y
+    # `document.getElementById` devuelve EL PRIMERO en orden de documento. En la
+    # consola, los tres `<main>` compartian id con su boton de pestana, asi que
+    # la funcion que conmuta de vista escondia y ensenaba las PESTANAS en vez de
+    # los paneles. Al cargar quedaba UNA sola pestana visible, y el cuestionario
+    # entero y la declaracion de aplicabilidad no se podian alcanzar nunca. Sin
+    # un error de consola y sin una prueba en rojo.
     #
-    # Los encabezados y el `focus-visible` se buscan sobre la pagina ENTERA a
-    # proposito: la regla de foco vive en el `<style>`.
-    marcado = re.sub(r"<script\b.*?</script>", "", pagina, flags=re.S | re.I)
+    # Es el mismo sintoma que la quinta pasada encontro en el panel -- siete de
+    # once vistas sin poder pulsarse -- por una causa distinta, y las dos veces
+    # fallo lo mismo: nadie comprobaba una propiedad que se lee del HTML en dos
+    # lineas. Se mira el MARCADO y no la pagina entera, porque un `id="..."`
+    # dentro de una plantilla de JavaScript es texto que el navegador nunca ve.
+    ids = re.findall(r'\sid="([^"]+)"', marcado)
+    repetidos = sorted({i for i in ids if ids.count(i) > 1})
+    if repetidos:
+        fallos.append(
+            f"ids repetidos: {repetidos}. `getElementById` devuelve el primero del "
+            f"documento, asi que el segundo elemento queda inalcanzable desde el "
+            f"codigo y nadie se entera: no falla, obedece al otro")
 
     if not re.match(r"\s*<!doctype html>", pagina, re.I):
         fallos.append(

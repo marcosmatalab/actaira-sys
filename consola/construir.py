@@ -37,7 +37,7 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent
 import sys as _sys
 _sys.path.insert(0, str(RAIZ.parent / "herramientas"))
-from paginas import revisar_estructura  # noqa: E402
+from paginas import revisar_estructura, revisar_textos  # noqa: E402
 ANCHO_LOGO = 900
 
 sys.path.insert(0, str(RAIZ / "marca"))
@@ -59,18 +59,17 @@ def construir() -> str:
     datos = json.loads((RAIZ / "datos.json").read_text(encoding="utf-8"))
     textos = json.loads((RAIZ / "textos.json").read_text(encoding="utf-8"))
 
-    # Que los textos cubran los dos idiomas no es un detalle de cortesia: el
-    # producto se vende en Espana y se lee en Europa, y una clave que falte en
-    # uno de los dos sale como `undefined` en la pantalla de un cliente.
-    faltan = []
-    for clave in textos["es"]:
-        if clave not in textos["en"]:
-            faltan.append(f"en.{clave}")
-    for clave in textos["en"]:
-        if clave not in textos["es"]:
-            faltan.append(f"es.{clave}")
-    if faltan:
-        raise SystemExit(f"textos.json: claves que faltan en un idioma: {faltan}")
+    # Que los textos cubran LOS SEIS idiomas no es un detalle de cortesia: una
+    # clave que falte en uno sale como `undefined` en la pantalla de ese
+    # cliente, y `undefined` es peor que vacio porque parece un dato.
+    #
+    # Esto eran doce lineas escritas aqui que comparaban `es` con `en` por su
+    # nombre. Se escribieron cuando la pagina tenia dos idiomas y no crecieron
+    # con ella: desde que son seis, un hueco en aleman, frances, italiano o
+    # portugues pasaba entero. La version de `herramientas/paginas.py` compara
+    # todos contra todos, la portada ya la usaba, y dos definiciones de la
+    # misma propiedad es la regla 10: la que se queda corta es la copia.
+    revisar_textos(textos)
 
 # LAS TIPOGRAFIAS VAN DELANTE, Y VIENEN DE DENTRO.
     #
