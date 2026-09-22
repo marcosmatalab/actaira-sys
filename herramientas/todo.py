@@ -532,6 +532,43 @@ def fase_go(reg: list[str]) -> None:
     for nombre, motivo in saltadas:
         reg.append(f"  saltada  {nombre}: {motivo[:95] or '(sin motivo declarado)'}")
 
+    # EL DETECTOR DE CARRERAS, AQUI Y NO SOLO EN LA INTEGRACION CONTINUA.
+    #
+    # `-race` vivia unicamente en el flujo de CI, y solo en el trabajo de
+    # Linux. Eso dejaba a quien desarrolla sin poder correrlo en la maquina
+    # donde escribe, asi que en la practica no se corria: una carrera de datos
+    # se descubria -- si se descubria -- despues de empujar.
+    #
+    # Y se descubrio una. `preparar()` del planificador ESCRIBE campos y lo
+    # llaman los dos metodos exportados, `Correr` y `UnaPasada`; ninguna prueba
+    # los llamaba a la vez, asi que el detector no tenia nada que ver y la
+    # carrera paso tres pasadas adversariales. Al escribir la prueba que si los
+    # llama a la vez, `-race` canto CUATRO avisos contra el codigo de entonces.
+    #
+    # NECESITA UN COMPILADOR DE C, y por eso esto no es una afirmacion de la
+    # fase sino una linea que dice lo que paso. Si no lo hay, se DICE en vez de
+    # callarse: la alternativa -- declarar la fase omitida -- pondria en rojo a
+    # todo el que corra la puerta sin compilador de C, y una puerta que se pone
+    # roja donde el producto esta bien enseña a apagarla.
+    cc = next((x for x in ("gcc", "clang", "cc") if shutil.which(x)), None)
+    if cc is None:
+        reg.append("  sin detector de carreras: no hay compilador de C en el PATH "
+                   "(`-race` lo necesita). Lo corre la matriz en Linux.")
+        return
+    env_race = dict(env)
+    env_race["CGO_ENABLED"] = "1"
+    r = subprocess.run(["go", "test", "-race", "./...", "-count=1"],
+                       cwd=plataforma, env=env_race, capture_output=True,
+                       text=True, encoding="utf-8", errors="replace")
+    todo_race = r.stdout + r.stderr
+    _afirma("WARNING: DATA RACE" not in todo_race,
+            "hay una carrera de datos:\n  "
+            + "\n  ".join(todo_race.split("WARNING: DATA RACE", 1)[-1].splitlines()[:18]))
+    _afirma(r.returncode == 0,
+            f"`go test -race` salio {r.returncode}:\n  "
+            + "\n  ".join([x for x in todo_race.splitlines() if "FAIL" in x][:10]))
+    reg.append(f"  y bajo el detector de carreras ({cc}): sin una sola carrera")
+
 
 def fase_api(reg: list[str]) -> None:
     """Levanta la API de verdad y comprueba el aislamiento por credencial."""
