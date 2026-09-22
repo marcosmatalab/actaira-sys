@@ -38,13 +38,31 @@ __ESTILO__
   <!-- Cada boton con su `id`. Nacen vacios a proposito -- el texto lo pone el
        idioma -- y un boton vacio sin id ni `aria-label` es un boton que un
        lector de pantalla no puede anunciar: quien no ve la pantalla oye
-       «boton» tres veces y no sabe cual es cual. El id lo ata a su texto. -->
-  <button id="v-aplica" data-v="aplica" role="tab" aria-selected="true"></button>
-  <button id="v-pregunta" data-v="pregunta" role="tab" aria-selected="false"></button>
-  <button id="v-soa" data-v="soa" role="tab" aria-selected="false"></button>
+       «boton» tres veces y no sabe cual es cual. El id lo ata a su texto.
+
+       EL PANEL QUE ABRE CADA PESTANA SE LLAMA `p-...` Y NO `v-...`.
+       ------------------------------------------------------------------
+       Los tres `<main>` de abajo llevaban EL MISMO id que su boton. Un id
+       repetido no falla: `getElementById` devuelve el primero en el
+       documento, que es el boton, asi que `cambiarVista` escondia y ensenaba
+       las PESTANAS en vez de los paneles. Efecto: al cargar quedaba una sola
+       pestana visible y las otras dos vistas -- el cuestionario entero y la
+       declaracion de aplicabilidad -- no se podian alcanzar nunca.
+
+       Es el mismo defecto que la quinta pasada encontro en el panel (siete de
+       once vistas sin poder pulsarse) reaparecido aqui, y por el mismo
+       motivo: la fase `navegador` abre el panel y no abre esta pagina. La
+       causa la sujeta ahora `revisar_estructura`, que rechaza cualquier id
+       repetido en las tres paginas. -->
+  <button id="v-aplica" data-v="aplica" role="tab" aria-selected="true"
+          aria-controls="p-aplica"></button>
+  <button id="v-pregunta" data-v="pregunta" role="tab" aria-selected="false"
+          aria-controls="p-pregunta"></button>
+  <button id="v-soa" data-v="soa" role="tab" aria-selected="false"
+          aria-controls="p-soa"></button>
 </nav>
 
-<main class="wrap" id="v-aplica">
+<main class="wrap" id="p-aplica" role="tabpanel" aria-labelledby="v-aplica">
   <div class="panel">
     <aside class="tarjeta">
       <h2><span id="lb-perfil"></span><span id="lb-fecha-corta"></span></h2>
@@ -58,7 +76,12 @@ __ESTILO__
         <div class="campo">
           <span class="pregunta" id="lb-fecha"></span>
           <div class="seg" id="fecha" style="width:100%">
-            <button id="f-hoy" data-f="2026-09-20" aria-pressed="true" style="flex:1"></button>
+            <!-- Sin `data-f` escrito: lo pone la logica con la fecha de HOY. Estaba
+                 clavado al dia en que se construyo la pagina, asi que el boton que
+                 dice «Hoy» llevaba a un dia del pasado, y se alejaba uno mas cada
+                 dia. No se inyecta al construir porque esta pagina tiene que salir
+                 byte a byte igual en cualquier maquina. -->
+            <button id="f-hoy" aria-pressed="true" style="flex:1"></button>
             <button id="f-2027" data-f="2027-12-02" aria-pressed="false" style="flex:1"></button>
           </div>
         </div>
@@ -83,7 +106,7 @@ __ESTILO__
   <p class="pie" id="pie"></p>
 </main>
 
-<main class="wrap oculto" id="v-pregunta">
+<main class="wrap oculto" id="p-pregunta" role="tabpanel" aria-labelledby="v-pregunta">
   <section class="seccion">
     <h2 id="q-t"></h2>
     <p id="q-p"></p>
@@ -99,7 +122,7 @@ __ESTILO__
   </section>
 </main>
 
-<main class="wrap oculto" id="v-soa">
+<main class="wrap oculto" id="p-soa" role="tabpanel" aria-labelledby="v-soa">
   <section class="seccion">
     <h2 id="soa-t"></h2>
     <p id="soa-p"></p>

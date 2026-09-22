@@ -1,6 +1,26 @@
 const DATOS = __DATOS__;
 const T = __TEXTOS__;
-let idioma = "es", fecha = "2026-09-20", abierta = null, vista = "aplica", filtro = "todos";
+/* «HOY» ES HOY, Y NO EL DIA EN QUE SE CONSTRUYO ESTA PAGINA.
+ *
+ * Aqui habia una fecha escrita, y el boton de la barra lateral -- el que dice
+ * «Hoy», «Today», «Heute» -- la llevaba tambien escrita en su `data-f`. Asi que
+ * la pantalla que contesta «que te ata HOY» contestaba con el calendario del
+ * dia en que alguien corrio `make consola`, y se iba separando de la realidad
+ * un dia por cada dia. No es cosmetico: la regla de aplicabilidad compara la
+ * fecha con la de entrada en vigor de cada obligacion, asi que una obligacion
+ * que ya ata sale como «futura» hasta que alguien vuelva a construir la pagina.
+ *
+ * Se lee del reloj del navegador y NO se inyecta al construir, que era la otra
+ * salida: inyectarla haria que dos maquinas sanas produjeran dos ficheros
+ * distintos el mismo dia siguiente, y la reproducibilidad de esta pagina es una
+ * puerta de la suite.
+ *
+ * Y se compone con el calendario LOCAL en vez de recortar un `toISOString`, que
+ * es UTC: en Espana, entre medianoche y las dos de la manana, «hoy» habria sido
+ * ayer. */
+const HOY = (d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`
+                  + `-${String(d.getDate()).padStart(2, "0")}`)(new Date());
+let idioma = "es", fecha = HOY, abierta = null, vista = "aplica", filtro = "todos";
 
 /* EL IDIOMA DE LA INTERFAZ NO ES EL DEL CATALOGO, Y NO PUEDE SERLO.
  *
@@ -118,6 +138,9 @@ function pintar(){
   document.getElementById("pie").textContent = t.pie;
   const bf = document.querySelectorAll("#fecha button");
   bf[0].textContent = t.hoy; bf[1].textContent = t.dic27;
+  // El boton «Hoy» apunta a hoy. Su `data-f` venia escrito en la plantilla con
+  // la fecha de construccion, asi que pulsarlo te llevaba a un dia del pasado.
+  bf[0].dataset.f = HOY;
   document.querySelectorAll("#vistas button").forEach(b => {
     b.textContent = t["v_" + b.dataset.v];
   });
@@ -176,6 +199,15 @@ function pintar(){
   if (abierta) pintarDetalle(abierta, res);
   pintarCuestionario();
   pintarSoa(res);
+  /* Y LA VISTA QUE HAY ABIERTA SE QUEDA ABIERTA.
+
+     Cada sitio que repinta llevaba pegada una llamada que forzaba la primera
+     pantalla, asi que responder una pregunta, cambiar de idioma, mover la
+     fecha o tocar un rol te echaba del cuestionario o de la declaracion de
+     aplicabilidad. No se veia porque los ids repetidos hacian que la
+     conmutacion no conmutara nada: arreglado aquello, el salto quedo a la
+     vista. Se sincroniza aqui, UNA vez, en vez de en cinco sitios. */
+  cambiarVista(vista);
 }
 
 /* --- la vista del cuestionario ---------------------------------------- */
@@ -363,10 +395,15 @@ function pintarSoa(res){
       <td class="mono">${c.produce ? esc(c.produce) : esc(t.cl_no)}</td></tr>`).join("");
 }
 
+/* Los PANELES se llaman `p-...` y las PESTANAS `v-...`, y no es cosmetica.
+   Los dos llevaban el mismo id, asi que `getElementById("v-"+x)` devolvia el
+   primero del documento -- el boton -- y esta funcion escondia las pestanas en
+   vez de los paneles: al cargar quedaba una sola pestana visible y las otras
+   dos vistas no se podian alcanzar nunca. Ver el comentario de `pagina.html`. */
 function cambiarVista(v){
   vista = v;
   for (const x of ["aplica", "pregunta", "soa"])
-    document.getElementById("v-" + x).classList.toggle("oculto", x !== v);
+    document.getElementById("p-" + x).classList.toggle("oculto", x !== v);
   document.querySelectorAll("#vistas button").forEach(b =>
     b.setAttribute("aria-selected", b.dataset.v === v));
 }
@@ -430,7 +467,6 @@ document.addEventListener("change", e => {
     if (!respuestas[q.id].length) delete respuestas[q.id];
   }
   pintar();
-cambiarVista("aplica");
 });
 
 document.addEventListener("click", e => {
@@ -439,20 +475,15 @@ document.addEventListener("click", e => {
   if (b.dataset.v && b.parentElement.id === "vistas"){ cambiarVista(b.dataset.v); return; }
   if (b.dataset.q !== undefined && b.parentElement.id === "q-filtro"){
     filtro = b.dataset.q; pintarCuestionario(); return; }
-  if (b.dataset.l){ idioma = b.dataset.l; document.querySelectorAll("#idioma button").forEach(x=>x.setAttribute("aria-pressed", x.dataset.l===idioma)); pintar();
-cambiarVista("aplica"); }
+  if (b.dataset.l){ idioma = b.dataset.l; document.querySelectorAll("#idioma button").forEach(x=>x.setAttribute("aria-pressed", x.dataset.l===idioma)); pintar(); }
   else if (b.dataset.t){ document.documentElement.dataset.theme = b.dataset.t; document.querySelectorAll("#tema button").forEach(x=>x.setAttribute("aria-pressed", x.dataset.t===b.dataset.t)); }
-  else if (b.dataset.f){ fecha = b.dataset.f; document.querySelectorAll("#fecha button").forEach(x=>x.setAttribute("aria-pressed", x.dataset.f===fecha)); pintar();
-cambiarVista("aplica"); }
-  else if (b.dataset.r){ roles.has(b.dataset.r) ? roles.delete(b.dataset.r) : roles.add(b.dataset.r); pintar();
-cambiarVista("aplica"); }
+  else if (b.dataset.f){ fecha = b.dataset.f; document.querySelectorAll("#fecha button").forEach(x=>x.setAttribute("aria-pressed", x.dataset.f===fecha)); pintar(); }
+  else if (b.dataset.r){ roles.has(b.dataset.r) ? roles.delete(b.dataset.r) : roles.add(b.dataset.r); pintar(); }
   else if (b.dataset.v !== undefined && b.parentElement.dataset.c){
     const c = b.parentElement.dataset.c;
     perfil[c] = b.dataset.v === "null" ? null : b.dataset.v === "true";
     pintar();
-cambiarVista("aplica");
   }
   else if (b.classList.contains("fila")){ abierta = b.dataset.id; pintarDetalle(abierta); }
 });
 pintar();
-cambiarVista("aplica");
